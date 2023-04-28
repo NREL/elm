@@ -1,0 +1,6 @@
+openai
+tiktoken
+scipy
+pandas
+numpy
+PyPDF2
