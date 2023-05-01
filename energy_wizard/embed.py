@@ -2,6 +2,7 @@
 """
 Energy Wizard text embedding
 """
+import re
 import os
 import openai
 import logging
@@ -21,13 +22,16 @@ class ChunkAndEmbed(ApiBase):
     DEFAULT_MODEL = 'text-embedding-ada-002'
     """Default model to do embeddings."""
 
-    def __init__(self, text, model=None):
+    def __init__(self, text, tag=None, model=None):
         """
         Parameters
         ----------
         text : str | list
             One or more pieces of text to embed or filepath to .txt file
             containing one piece of text.
+        tag : None | str
+            Optional reference tag to include at the beginning of each text
+            chunk
         model : None | str
             Optional specification of OpenAI model to use. Default is
             cls.DEFAULT_MODEL
@@ -35,6 +39,7 @@ class ChunkAndEmbed(ApiBase):
         super().__init__(model)
 
         self.text = text
+        self.tag = tag
         self.paragraphs = None
         self.text_chunks = None
 
@@ -45,6 +50,30 @@ class ChunkAndEmbed(ApiBase):
 
         if isinstance(self.text, (list, tuple)):
             self.text_chunks = self.text
+
+    @staticmethod
+    def clean_tables(text):
+        """Make sure that table headers are in the same paragraph as the table
+        itself. Typically, tables are looked for with pipes and hyphens, which
+        is how GPT cleans tables in text."""
+
+        # looks for "Table N.", should expand later
+        table_regex = r"^Table [0-9]+."
+
+        lines = text.split('\n')
+        for idx, line in enumerate(lines[:-2]):
+            next_line_1 = lines[idx + 1]
+            next_line_2 = lines[idx + 2]
+            match = re.search(table_regex, line)
+            cond1 = match is not None
+            cond2 = next_line_1.strip() == ''
+            cond3 = next_line_2.startswith('|')
+
+            if all([cond1, cond2, cond3]):
+                lines[idx + 1] = line
+                lines[idx] = ''
+
+        return '\n'.join(lines)
 
     @staticmethod
     def is_good_paragraph(paragraph):
@@ -76,6 +105,7 @@ class ChunkAndEmbed(ApiBase):
         """
 
         assert isinstance(text, str)
+        text = self.clean_tables(text)
         paragraphs = text.split('\n\n')
         paragraphs = [p for p in paragraphs if self.is_good_paragraph(p)]
         self.paragraphs = paragraphs
@@ -104,12 +134,14 @@ class ChunkAndEmbed(ApiBase):
 
         text_chunks = ['\n\n'.join([paragraphs[i] for i in chunk])
                        for chunk in chunks]
+        if self.tag is not None:
+            text_chunks = [self.tag + '\n' + chunk for chunk in text_chunks]
 
         self.text_chunks = text_chunks
 
         return text_chunks
 
-    async def run_async(self, rate_limit=40e3):
+    async def run_async(self, rate_limit=175e3):
         """Run text embedding
 
         NOTE: you need to call this using the await command in ipython or
@@ -119,7 +151,7 @@ class ChunkAndEmbed(ApiBase):
         ----------
         rate_limit : float
             OpenAI API rate limit (tokens / minute). Note that the
-            gpt-3.5-turbo limit is 90k as of 4/2023, but we're using a large
+            embedding limit is 350k as of 4/2023, but we're using a large
             factor of safety (~1/2) because we can only count the tokens on the
             input side and assume the output is about the same count.
 
@@ -129,12 +161,13 @@ class ChunkAndEmbed(ApiBase):
             List of 1D arrays representing the embeddings for all text chunks
         """
 
-        logger.info('Embedding...')
-
         if not isinstance(self.text_chunks, (list, tuple)):
             msg = ('You must chunk the text before running async embeddings!')
             logger.error(msg)
             raise RuntimeError(msg)
+
+        logger.info('Embedding {} text chunks...'
+                    .format(len(self.text_chunks)))
 
         all_request_jsons = []
         for chunk in self.text_chunks:
