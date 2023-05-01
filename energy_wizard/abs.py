@@ -156,7 +156,7 @@ class ApiBase(ABC):
                              .format(complete, len(all_request_jsons)))
                 to_do.remove(j)
 
-            logger.debug('Finished {} API calls, still have {} left'
+            logger.debug('Finished {} API calls, have {} left'
                          .format(complete, len(to_do)))
             if token_count == 0:
                 tsleep = np.maximum(0, 60 - (time.time() - t0))
@@ -165,22 +165,6 @@ class ApiBase(ABC):
                 break
 
         return out
-
-    def num_tokens(self, text):
-        """Return the number of tokens in a string.
-
-        Parameters
-        ----------
-        text : str
-            Text string to get number of tokens for
-
-        Returns
-        -------
-        n : int
-            Number of tokens in text
-        """
-        encoding = tiktoken.encoding_for_model(self.model)
-        return len(encoding.encode(text))
 
     @classmethod
     def get_embedding(cls, text):
@@ -200,3 +184,19 @@ class ApiBase(ABC):
                                             input=text)
         embedding = embedding["data"][0]["embedding"]
         return embedding
+
+    def num_tokens(self, text):
+        """Return the number of tokens in a string.
+
+        Parameters
+        ----------
+        text : str
+            Text string to get number of tokens for
+
+        Returns
+        -------
+        n : int
+            Number of tokens in text
+        """
+        encoding = tiktoken.encoding_for_model(self.model)
+        return len(encoding.encode(text))
