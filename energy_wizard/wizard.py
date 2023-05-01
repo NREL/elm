@@ -67,7 +67,7 @@ class EnergyWizard(ApiBase):
         for i, row in self.corpus.iterrows():
             scores[i] = self.dist_fun(embedding, row["embedding"])
 
-        best = np.argsort(scores)[-top_n:]
+        best = np.argsort(scores)[::-1][:top_n]
         strings = self.corpus.loc[best, 'text'].values.tolist()
         scores = scores[best]
 
