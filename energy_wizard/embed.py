@@ -35,6 +35,7 @@ class ChunkAndEmbed(ApiBase):
         super().__init__(model)
 
         self.text = text
+        self.paragraphs = None
         self.text_chunks = None
 
         if os.path.isfile(text):
@@ -44,6 +45,16 @@ class ChunkAndEmbed(ApiBase):
 
         if isinstance(self.text, (list, tuple)):
             self.text_chunks = self.text
+
+    @staticmethod
+    def is_good_paragraph(paragraph):
+        """Basic tests to make sure the paragraph is useful text."""
+        if '.....' in paragraph:
+            return False
+        elif paragraph.strip().isnumeric():
+            return False
+        else:
+            return True
 
     def chunk_text(self, text, tokens_per_chunk=500, overlap=1):
         """Chunk a large text string into multiple small chunks with overlap
@@ -64,7 +75,10 @@ class ChunkAndEmbed(ApiBase):
             List of strings where each string is an overlapping chunk of text
         """
 
+        assert isinstance(text, str)
         paragraphs = text.split('\n\n')
+        paragraphs = [p for p in paragraphs if self.is_good_paragraph(p)]
+        self.paragraphs = paragraphs
         tokens = [self.num_tokens(p) for p in paragraphs]
 
         chunks = []
