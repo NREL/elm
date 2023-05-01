@@ -77,13 +77,17 @@ class EnergyWizard(ApiBase):
 
         return strings, scores, references
 
-    def engineer_query(self, query):
+    def engineer_query(self, query, new_info_threshold=0.7):
         """Engineer a query for GPT using the corpus of information
 
         Parameters
         ----------
         query : str
             Question being asked of GPT
+        new_info_threshold : float
+            New text added to the engineered query must contain at least this
+            much new information. This helps prevent (for example) the table of
+            contents being added multiple times.
 
         Returns
         -------
@@ -104,10 +108,16 @@ class EnergyWizard(ApiBase):
         for string, ref in zip(strings, references):
             next_str = (f'\n\n{ref}:\n"""\n{string}\n"""')
             token_usage = self.num_tokens(message + next_str + question)
-            if token_usage > self.token_budget:
-                break
-            else:
-                message += next_str
+
+            new_words = set(next_str.split(' '))
+            additional_info = new_words - set(message.split(' '))
+            new_info_frac = len(additional_info) / len(new_words)
+
+            if new_info_frac > new_info_threshold:
+                if token_usage > self.token_budget:
+                    break
+                else:
+                    message += next_str
 
         return message + question
 
