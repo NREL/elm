@@ -2,9 +2,8 @@
 """
 Energy Wizard
 """
+import numpy as np
 import openai
-import tiktoken
-import textwrap
 
 from energy_wizard.abs import ApiBase
 from energy_wizard.dist import DistanceMetrics
@@ -12,11 +11,8 @@ from energy_wizard.dist import DistanceMetrics
 
 class EnergyWizard(ApiBase):
 
-    DEFAULT_MODEL = 'gpt-3.5-turbo'
-    """Default model to answer energy questions."""
-
     def __init__(self, corpus, dist_fun=DistanceMetrics.cosine_dist,
-                 model=None, token_budget=4096):
+                 model=None, token_budget=4096-500):
         """
         Parameters
         ----------
@@ -28,7 +24,9 @@ class EnergyWizard(ApiBase):
         model : str
             GPT model name, default is the DEFAULT_MODEL global var
         token_budget : int
-            Number of tokens that can be embedded in the prompt
+            Number of tokens that can be embedded in the prompt. Note that the
+            default budget for GPT-3.5-Turbo is 4096, but you want to subtract
+            some tokens to account for the response budget.
         """
 
         super().__init__(model)
@@ -64,13 +62,20 @@ class EnergyWizard(ApiBase):
             List of float scores of strings
         """
         embedding = self.get_embedding(query)
-        strings_and_scores = [
-            (row["text"], self.dist_fun(embedding, row["embedding"]))
-            for i, row in self.corpus.iterrows()
-        ]
-        strings_and_scores.sort(key=lambda x: x[1], reverse=True)
-        strings, score = zip(*strings_and_scores)
-        return strings[:top_n], score[:top_n]
+
+        scores = np.zeros(len(self.corpus))
+        for i, row in self.corpus.iterrows():
+            scores[i] = self.dist_fun(embedding, row["embedding"])
+
+        best = np.argsort(scores)[-top_n:]
+        strings = self.corpus.loc[best, 'text'].values.tolist()
+        scores = scores[best]
+
+        references = ['Unknown reference'] * top_n
+        if 'reference' in self.corpus:
+            references = self.corpus.loc[best, 'reference'].values.tolist()
+
+        return strings, scores, references
 
     def engineer_query(self, query):
         """Engineer a query for GPT using the corpus of information
@@ -87,45 +92,46 @@ class EnergyWizard(ApiBase):
             the original query
         """
 
-        strings, _ = self.rank_strings(query)
+        strings, _, references = self.rank_strings(query)
 
-        message = ('Use the below articles to answer the subsequent question. '
-                   'If the answer cannot be found in the articles, '
+        message = ('Use the information below to answer the subsequent '
+                   'question. Note that there may be additional data '
+                   'on this research in the references provided. '
+                   'If the answer cannot be found in the text, '
                    'write "I could not find an answer."')
         question = f"\n\nQuestion: {query}"
 
-        for string in strings:
-            next_article = (f'\n\nWikipedia article section:\n'
-                            f'"""\n{string}\n"""')
-            token_usage = self.num_tokens(message + next_article + question)
+        for string, ref in zip(strings, references):
+            next_str = (f'\n\n{ref}:\n"""\n{string}\n"""')
+            token_usage = self.num_tokens(message + next_str + question)
             if token_usage > self.token_budget:
                 break
             else:
-                message += next_article
+                message += next_str
 
         return message + question
 
-    @staticmethod
-    def pprint(text, width=90):
-        """Print a string with column width limits"""
-        for x in textwrap.wrap(text, width=width):
-            print(x)
-
-    def ask(self, query, debug=False, print=False):
+    def ask(self, query, debug=True, stream=True, temperature=0):
         """Answers a query using GPT and a dataframe of relevant texts and
         embeddings.
 
         Parameters
         ----------
         query : str
-            Question being asked of GPT
+            Question being asked of EnergyWizard
         debug : bool
             Flag to return extra diagnostics on the engineered question.
+        temperature : float
+            GPT model temperature: 0 is more reliable and nearly deterministic,
+            1 is more fluid and higher entropy
 
         Returns
         -------
         response : str
             GPT output / answer.
+        query : str
+            If debug is True, the engineered query asked of GPT will also be
+            returned here
         """
 
         query = self.engineer_query(query)
@@ -134,14 +140,24 @@ class EnergyWizard(ApiBase):
         messages = [{"role": "system", "content": role_str},
                     {"role": "user", "content": query}]
 
-        response = openai.ChatCompletion.create(model=self.model,
-                                                messages=messages,
-                                                temperature=0)
+        if stream:
+            response_message = ''
+            response = openai.ChatCompletion.create(model=self.model,
+                                                    messages=messages,
+                                                    temperature=temperature,
+                                                    stream=True)
+            for chunk in response:
+                chunk_msg = chunk['choices'][0]['delta']
+                chunk_msg = chunk_msg.get('content', '')
+                response_message += chunk_msg
+                print(chunk_msg, end='')
 
-        response_message = response["choices"][0]["message"]["content"]
-
-        if print:
-            self.pprint(response_message)
+        else:
+            response = openai.ChatCompletion.create(model=self.model,
+                                                    messages=messages,
+                                                    temperature=temperature,
+                                                    stream=False)
+            response_message = response["choices"][0]["message"]["content"]
 
         if debug:
             return response_message, query
