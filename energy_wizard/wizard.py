@@ -11,8 +11,11 @@ from energy_wizard.dist import DistanceMetrics
 
 class EnergyWizard:
 
-    EMBEDDING_MODEL = "text-embedding-ada-002"
-    GPT_MODEL = "gpt-3.5-turbo"
+    EMBEDDING_MODEL = 'text-embedding-ada-002'
+    """Default model to do text embeddings."""
+
+    DEFAULT_MODEL = 'gpt-3.5-turbo'
+    """Default model to answer energy questions."""
 
     def __init__(self, corpus, dist_fun=DistanceMetrics.cosine_dist,
                  model=None, token_budget=4096):
@@ -25,14 +28,14 @@ class EnergyWizard:
         dist_fun : None | function
             Function to evaluate the distance between two 1D arrays.
         model : str
-            GPT model name, default is the GPT_MODEL global var
+            GPT model name, default is the DEFAULT_MODEL global var
         token_budget : int
             Number of tokens that can be embedded in the prompt
         """
 
         self.corpus = self.parse_corpus(corpus)
         self.dist_fun = dist_fun
-        self.model = model or self.GPT_MODEL
+        self.model = model or self.DEFAULT_MODEL
         self.token_budget = token_budget
 
     @staticmethod
@@ -165,15 +168,13 @@ class EnergyWizard:
         query = self.engineer_query(query)
 
         role_str = "You parse through articles to answer questions."
-        messages = [
-            {"role": "system", "content": role_str},
-            {"role": "user", "content": query},
-        ]
-        response = openai.ChatCompletion.create(
-            model=self.model,
-            messages=messages,
-            temperature=0
-        )
+        messages = [{"role": "system", "content": role_str},
+                    {"role": "user", "content": query}]
+
+        response = openai.ChatCompletion.create(model=self.model,
+                                                messages=messages,
+                                                temperature=0)
+
         response_message = response["choices"][0]["message"]["content"]
 
         if print:
