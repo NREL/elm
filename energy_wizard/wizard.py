@@ -6,13 +6,11 @@ import openai
 import tiktoken
 import textwrap
 
+from energy_wizard.abs import ApiBase
 from energy_wizard.dist import DistanceMetrics
 
 
-class EnergyWizard:
-
-    EMBEDDING_MODEL = 'text-embedding-ada-002'
-    """Default model to do text embeddings."""
+class EnergyWizard(ApiBase):
 
     DEFAULT_MODEL = 'gpt-3.5-turbo'
     """Default model to answer energy questions."""
@@ -33,9 +31,9 @@ class EnergyWizard:
             Number of tokens that can be embedded in the prompt
         """
 
+        super().__init__(model)
         self.corpus = self.parse_corpus(corpus)
         self.dist_fun = dist_fun
-        self.model = model or self.DEFAULT_MODEL
         self.token_budget = token_budget
 
     @staticmethod
@@ -46,25 +44,6 @@ class EnergyWizard:
                    'corpus with columns: {}'.format(list(corpus.columns)))
             raise KeyError(msg)
         return corpus
-
-    @classmethod
-    def get_embedding(cls, text):
-        """Get the 1D array (list) embedding of a text string.
-
-        Parameters
-        ----------
-        text : str
-            Text to embed
-
-        Returns
-        -------
-        embedding : list
-            List of float that represents the numerical embedding of the text
-        """
-        embedding = openai.Embedding.create(model=cls.EMBEDDING_MODEL,
-                                            input=text)
-        embedding = embedding["data"][0]["embedding"]
-        return embedding
 
     def rank_strings(self, query, top_n=100):
         """Returns a list of strings and relatednesses, sorted from most
@@ -92,22 +71,6 @@ class EnergyWizard:
         strings_and_scores.sort(key=lambda x: x[1], reverse=True)
         strings, score = zip(*strings_and_scores)
         return strings[:top_n], score[:top_n]
-
-    def num_tokens(self, text):
-        """Return the number of tokens in a string.
-
-        Parameters
-        ----------
-        text : str
-            Text string to get number of tokens for
-
-        Returns
-        -------
-        n : int
-            Number of tokens in text
-        """
-        encoding = tiktoken.encoding_for_model(self.model)
-        return len(encoding.encode(text))
 
     def engineer_query(self, query):
         """Engineer a query for GPT using the corpus of information
