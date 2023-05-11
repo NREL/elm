@@ -4,7 +4,6 @@ Energy Wizard text embedding
 """
 import re
 import os
-import openai
 import logging
 
 from energy_wizard.abs import ApiBase

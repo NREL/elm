@@ -132,8 +132,9 @@ class EnergyWizard(ApiBase):
         debug : bool
             Flag to return extra diagnostics on the engineered question.
         temperature : float
-            GPT model temperature: 0 is more reliable and nearly deterministic,
-            1 is more fluid and higher entropy
+            GPT model temperature, a measure of response entropy from 0 to 1. 0
+            is more reliable and nearly deterministic; 1 will give the model
+            more creative freedom and may not return as factual of results.
 
         Returns
         -------

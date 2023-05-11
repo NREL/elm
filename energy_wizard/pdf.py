@@ -54,15 +54,22 @@ class PDFtoTXT(ApiBase):
         logger.info('Loading PDF: {}'.format(self.fp))
         out = []
         pdf = PdfReader(self.fp)
-        pages = pdf.pages
 
         if page_range is not None:
-            pages = pages[page_range[0]:page_range[1]]
+            assert len(page_range) == 2
+            page_range = slice(*page_range)
+        else:
+            page_range = slice(0, None)
 
-        for i, page in enumerate(pages):
-            out.append(page.extract_text())
-            logger.debug('Loaded page {} out of {}'
-                         .format(i + 1, len(pages)))
+        for i, page in enumerate(pdf.pages[page_range]):
+            page_text = page.extract_text()
+            if len(page_text.strip()) == 0:
+                logger.debug('Skipping empty page {} out of {}'
+                             .format(i + 1 + page_range.start, len(pdf.pages)))
+            else:
+                out.append(page_text)
+                logger.debug('Loaded page {} out of {}'
+                             .format(i + 1 + page_range.start, len(pdf.pages)))
 
         logger.info('Finished loading PDF.')
         return out
@@ -116,8 +123,11 @@ class PDFtoTXT(ApiBase):
             response = openai.ChatCompletion.create(model=self.model,
                                                     messages=messages,
                                                     temperature=0)
-            response_message = response["choices"][0]["message"]["content"]
-            clean_pages.append(response_message)
+
+            choice = response.get('choices', [{'message': {'content': ''}}])[0]
+            message = choice.get('message', {'content': ''})
+            content = message.get('content', '')
+            clean_pages.append(content)
             logger.debug('Cleaned page {} out of {}'
                          .format(i + 1, len(self.raw_text)))
 
@@ -163,7 +173,10 @@ class PDFtoTXT(ApiBase):
                                                 rate_limit=rate_limit)
 
         for i, page in enumerate(clean_pages):
-            clean_pages[i] = page['choices'][0]['message']['content']
+            choice = page.get('choices', [{'message': {'content': ''}}])[0]
+            message = choice.get('message', {'content': ''})
+            content = message.get('content', '')
+            clean_pages[i] = content
 
         logger.info('Finished cleaning PDF.')
 
@@ -190,7 +203,10 @@ class PDFtoTXT(ApiBase):
             clean_words = set([x for x in clean_words if len(x) > 2])
 
             isin = sum(x in clean_words for x in raw_words)
-            perc = 100 * isin / len(raw_words)
+
+            perc = 100
+            if isin > 0 and len(raw_words) > 0:
+                perc = 100 * isin / len(raw_words)
 
             if perc < 70:
                 logger.warning('Page {} of {} has a {:.2f}% match with {} '
