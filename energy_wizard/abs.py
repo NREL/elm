@@ -64,10 +64,11 @@ class ApiBase(ABC):
 
         Returns
         -------
-        out : str
-            Chat completion response string.
+        out : dict
+            API response in json format
         """
 
+        out = None
         kwargs = dict(url=url, headers=headers, json=request_json)
         try:
             async with aiohttp.ClientSession() as session:
@@ -77,12 +78,7 @@ class ApiBase(ABC):
         except Exception as e:
             msg = 'Error in OpenAI API call!'
             logger.exception(msg)
-            raise RuntimeError(msg) from e
-
-        if 'error' in out:
-            msg = ('Received API error {}'.format(out))
-            logger.error(msg)
-            raise RuntimeError(msg)
+            out = {'error': str(e)}
 
         return out
 
@@ -150,16 +146,24 @@ class ApiBase(ABC):
 
             to_retrieve = [j for j in to_do if j in tasks]
             for j in to_retrieve:
-                out[j] = await tasks[j]
-                complete = sum(x is not None for x in out)
-                logger.debug('Finished API call {} out of {}.'
-                             .format(complete, len(all_request_jsons)))
-                to_do.remove(j)
+                task_out = await tasks[j]
+
+                if 'error' in out:
+                    logger.error('Received API error for task #{}: {}'
+                                 .format(j, out))
+                else:
+                    out[j] = task_out
+                    complete = sum(x is not None for x in out)
+                    to_do.remove(j)
+                    logger.debug('Finished API call {} out of {}.'
+                                 .format(complete, len(all_request_jsons)))
 
             logger.debug('Finished {} API calls, have {} left'
                          .format(complete, len(to_do)))
             if token_count == 0:
                 tsleep = np.maximum(0, 60 - (time.time() - t0))
+                logger.debug('Sleeping {:.1f} seconds and resetting token '
+                             'counter...'.format(tsleep))
                 time.sleep(tsleep)
             if not any(to_do):
                 break
