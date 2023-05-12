@@ -107,7 +107,7 @@ class EnergyWizard(ApiBase):
 
         for string, ref in zip(strings, references):
             next_str = (f'\n\n{ref}:\n"""\n{string}\n"""')
-            token_usage = self.num_tokens(message + next_str + question)
+            token_usage = self.count_tokens(message + next_str + question)
 
             new_words = set(next_str.split(' '))
             additional_info = new_words - set(message.split(' '))

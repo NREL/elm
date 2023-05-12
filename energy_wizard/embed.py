@@ -25,9 +25,9 @@ class ChunkAndEmbed(ApiBase):
         """
         Parameters
         ----------
-        text : str | list
-            One or more pieces of text to embed or filepath to .txt file
-            containing one piece of text.
+        text : str
+            Single continuous piece of text to chunk up by paragraph and embed
+            or filepath to .txt file containing one piece of text.
         tag : None | str
             Optional reference tag to include at the beginning of each text
             chunk
@@ -39,7 +39,6 @@ class ChunkAndEmbed(ApiBase):
 
         self.text = text
         self.tag = tag
-        self.paragraphs = None
         self.text_chunks = None
 
         if os.path.isfile(text):
@@ -47,8 +46,11 @@ class ChunkAndEmbed(ApiBase):
             with open(text, 'r') as f:
                 self.text = f.read()
 
-        if isinstance(self.text, (list, tuple)):
-            self.text_chunks = self.text
+        assert isinstance(self.text, str)
+        self.text = self.clean_tables(self.text)
+        paragraphs = self.text.split('\n\n')
+        paragraphs = [p for p in paragraphs if self.is_good_paragraph(p)]
+        self.paragraphs = paragraphs
 
     @staticmethod
     def clean_tables(text):
@@ -56,7 +58,8 @@ class ChunkAndEmbed(ApiBase):
         itself. Typically, tables are looked for with pipes and hyphens, which
         is how GPT cleans tables in text."""
 
-        # looks for "Table N.", should expand later
+        # looks for "Table N.", should expand to other formats with additional
+        # regex patterns later
         table_regex = r"^Table [0-9]+."
 
         lines = text.split('\n')
@@ -84,18 +87,21 @@ class ChunkAndEmbed(ApiBase):
         else:
             return True
 
-    def chunk_text(self, text, tokens_per_chunk=500, overlap=1):
+    def chunk_text(self, tokens_per_chunk=500, overlap=1, token_limit=8191):
         """Chunk a large text string into multiple small chunks with overlap
+
+        NOTE: this will currently fail if a single paragraph is greater than
+        the token limit. Need to add a piece to split large paragraphs.
 
         Parameters
         ----------
-        text : str
-            Large body of text to chunk by paragraphs (looks for double
-            new-line chars)
         tokens_per_chunk : float
             Nominal token count per text chunk
         overlap : int
             Number of paragraphs to overlap between chunks
+        token_limit : float
+            Hard limit on the maximum number of tokens that can be embedded at
+            once
 
         Returns
         -------
@@ -103,18 +109,13 @@ class ChunkAndEmbed(ApiBase):
             List of strings where each string is an overlapping chunk of text
         """
 
-        assert isinstance(text, str)
-        text = self.clean_tables(text)
-        paragraphs = text.split('\n\n')
-        paragraphs = [p for p in paragraphs if self.is_good_paragraph(p)]
-        self.paragraphs = paragraphs
-        tokens = [self.num_tokens(p) for p in paragraphs]
+        tokens = [self.count_tokens(p) for p in self.paragraphs]
 
         chunks = []
         current = []
         tcount = 0
 
-        for i, (par, token) in enumerate(zip(paragraphs, tokens)):
+        for i, (par, token) in enumerate(zip(self.paragraphs, tokens)):
             tcount += token
             if tcount < tokens_per_chunk:
                 current.append(i)
@@ -126,15 +127,21 @@ class ChunkAndEmbed(ApiBase):
         if any(current):
             chunks.append(current)
 
-        for i, chunk in enumerate(chunks):
-            if chunk[-1] < len(paragraphs) - overlap:
-                chunk.append(chunk[-1] + overlap)
-            chunks[i] = chunk
+        text_chunks = []
+        for j, chunk in enumerate(chunks):
+            current_text_chunk = [self.paragraphs[i] for i in chunk]
+            current_text_chunk = '\n\n'.join(current_text_chunk)
+            if chunk[-1] < len(self.paragraphs) - overlap:
+                for k in range(1, overlap + 1):
+                    overlap_text = self.paragraphs[chunk[-1] + k]
+                    new = current_text_chunk + '\n\n' + overlap_text
+                    if self.count_tokens(new) < token_limit:
+                        current_text_chunk = new
 
-        text_chunks = ['\n\n'.join([paragraphs[i] for i in chunk])
-                       for chunk in chunks]
+            text_chunks.append(current_text_chunk)
+
         if self.tag is not None:
-            text_chunks = [self.tag + '\n' + chunk for chunk in text_chunks]
+            text_chunks = [self.tag + '\n\n' + chunk for chunk in text_chunks]
 
         self.text_chunks = text_chunks
 
@@ -144,7 +151,7 @@ class ChunkAndEmbed(ApiBase):
         """Run text embedding
 
         NOTE: you need to call this using the await command in ipython or
-        jupyter, e.g.: `out = await Embed.run_async()`
+        jupyter, e.g.: `out = await ChunkAndEmbed.run_async()`
 
         Parameters
         ----------
@@ -178,7 +185,13 @@ class ChunkAndEmbed(ApiBase):
                                                rate_limit=rate_limit)
 
         for i, chunk in enumerate(embeddings):
-            embeddings[i] = chunk['data'][0]['embedding']
+            try:
+                embeddings[i] = chunk['data'][0]['embedding']
+            except Exception:
+                msg = ('Could not get embeddings for chunk {}, '
+                       'received API response: {}'.format(i + 1, chunk))
+                logger.error(msg)
+                embeddings[i] = None
 
         logger.info('Finished all embeddings.')
 

@@ -129,7 +129,7 @@ class ApiBase(ABC):
             token_count = 0
             for i in to_do:
                 request = all_request_jsons[i]
-                token = self.num_tokens(str(request))
+                token = self.count_tokens(str(request))
                 token_count += token
                 logger.debug('Submitting {} out of {}, token count is at {} '
                              '(rate limit is {})'
@@ -189,7 +189,7 @@ class ApiBase(ABC):
         embedding = embedding["data"][0]["embedding"]
         return embedding
 
-    def num_tokens(self, text):
+    def count_tokens(self, text):
         """Return the number of tokens in a string.
 
         Parameters
