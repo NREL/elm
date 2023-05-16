@@ -115,7 +115,7 @@ class ChunkAndEmbed(ApiBase):
         current = []
         tcount = 0
 
-        for i, (par, token) in enumerate(zip(self.paragraphs, tokens)):
+        for i, token in enumerate(tokens):
             tcount += token
             if tcount < tokens_per_chunk:
                 current.append(i)
@@ -128,7 +128,7 @@ class ChunkAndEmbed(ApiBase):
             chunks.append(current)
 
         text_chunks = []
-        for j, chunk in enumerate(chunks):
+        for chunk in chunks:
             current_text_chunk = [self.paragraphs[i] for i in chunk]
             current_text_chunk = '\n\n'.join(current_text_chunk)
             if chunk[-1] < len(self.paragraphs) - overlap:

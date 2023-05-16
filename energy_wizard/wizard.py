@@ -2,6 +2,7 @@
 """
 Energy Wizard
 """
+import copy
 import numpy as np
 import openai
 
@@ -10,9 +11,15 @@ from energy_wizard.dist import DistanceMetrics
 
 
 class EnergyWizard(ApiBase):
+    """Interface to ask OpenAI LLMs about energy research."""
+
+    PROMPT_PREFIX = ('Use the information below to answer the subsequent '
+                     'question. If the answer cannot be found in the text, '
+                     'write "I could not find an answer."')
+    """Prefix to the engineered prompt"""
 
     def __init__(self, corpus, dist_fun=DistanceMetrics.cosine_dist,
-                 model=None, token_budget=4096-500):
+                 model=None, token_budget=3500):
         """
         Parameters
         ----------
@@ -30,12 +37,26 @@ class EnergyWizard(ApiBase):
         """
 
         super().__init__(model)
-        self.corpus = self.parse_corpus(corpus)
+        self.corpus = self.preflight_corpus(corpus)
         self.dist_fun = dist_fun
         self.token_budget = token_budget
 
     @staticmethod
-    def parse_corpus(corpus):
+    def preflight_corpus(corpus):
+        """Run preflight checks on the text corpus.
+
+        Parameters
+        ----------
+        corpus : pd.DataFrame
+            Corpus of text in dataframe format. Must have columns "text" and
+            "embedding".
+
+        Returns
+        -------
+        corpus : pd.DataFrame
+            Corpus of text in dataframe format. Must have columns "text" and
+            "embedding".
+        """
         assert 'text' in corpus
         if 'embedding' not in corpus:
             msg = ('Text corpus must have "embedding" column but received '
@@ -98,11 +119,7 @@ class EnergyWizard(ApiBase):
 
         strings, _, references = self.rank_strings(query)
 
-        message = ('Use the information below to answer the subsequent '
-                   'question. Note that there may be additional data '
-                   'on this research in the references provided. '
-                   'If the answer cannot be found in the text, '
-                   'write "I could not find an answer."')
+        message = copy.deepcopy(self.PROMPT_PREFIX)
         question = f"\n\nQuestion: {query}"
 
         for string, ref in zip(strings, references):
