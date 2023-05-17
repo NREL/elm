@@ -42,7 +42,7 @@ class EnergyWizard(ApiBase):
         self.token_budget = token_budget
 
     @staticmethod
-    def preflight_corpus(corpus):
+    def preflight_corpus(corpus, required=('text', 'embedding')):
         """Run preflight checks on the text corpus.
 
         Parameters
@@ -50,6 +50,8 @@ class EnergyWizard(ApiBase):
         corpus : pd.DataFrame
             Corpus of text in dataframe format. Must have columns "text" and
             "embedding".
+        required : list | tuple
+            Column names required to be in the corpus df
 
         Returns
         -------
@@ -57,10 +59,11 @@ class EnergyWizard(ApiBase):
             Corpus of text in dataframe format. Must have columns "text" and
             "embedding".
         """
-        assert 'text' in corpus
-        if 'embedding' not in corpus:
-            msg = ('Text corpus must have "embedding" column but received '
-                   'corpus with columns: {}'.format(list(corpus.columns)))
+        missing = [col for col in required if col not in corpus]
+        if any(missing):
+            msg = ('Text corpus must have {} columns but received '
+                   'corpus with columns: {}'
+                   .format(missing, list(corpus.columns)))
             raise KeyError(msg)
         return corpus
 
@@ -92,19 +95,17 @@ class EnergyWizard(ApiBase):
         strings = self.corpus.loc[best, 'text'].values.tolist()
         scores = scores[best]
 
-        references = ['Unknown reference'] * top_n
-        if 'reference' in self.corpus:
-            references = self.corpus.loc[best, 'reference'].values.tolist()
+        return strings, scores
 
-        return strings, scores, references
-
-    def engineer_query(self, query, new_info_threshold=0.7):
+    def engineer_query(self, query, token_budget=None, new_info_threshold=0.7):
         """Engineer a query for GPT using the corpus of information
 
         Parameters
         ----------
         query : str
             Question being asked of GPT
+        token_budget : int
+            Option to override the class init token budget.
         new_info_threshold : float
             New text added to the engineered query must contain at least this
             much new information. This helps prevent (for example) the table of
@@ -117,13 +118,15 @@ class EnergyWizard(ApiBase):
             the original query
         """
 
-        strings, _, references = self.rank_strings(query)
+        token_budget = token_budget or self.token_budget
+
+        strings, _ = self.rank_strings(query)
 
         message = copy.deepcopy(self.PROMPT_PREFIX)
         question = f"\n\nQuestion: {query}"
 
-        for string, ref in zip(strings, references):
-            next_str = (f'\n\n{ref}:\n"""\n{string}\n"""')
+        for string in strings:
+            next_str = (f'\n\n"""\n{string}\n"""')
             token_usage = self.count_tokens(message + next_str + question)
 
             new_words = set(next_str.split(' '))
@@ -131,14 +134,15 @@ class EnergyWizard(ApiBase):
             new_info_frac = len(additional_info) / len(new_words)
 
             if new_info_frac > new_info_threshold:
-                if token_usage > self.token_budget:
+                if token_usage > token_budget:
                     break
                 else:
                     message += next_str
 
         return message + question
 
-    def ask(self, query, debug=True, stream=True, temperature=0):
+    def ask(self, query, debug=True, stream=True, temperature=0,
+            token_budget=None, new_info_threshold=0.7):
         """Answers a query using GPT and a dataframe of relevant texts and
         embeddings.
 
@@ -152,6 +156,12 @@ class EnergyWizard(ApiBase):
             GPT model temperature, a measure of response entropy from 0 to 1. 0
             is more reliable and nearly deterministic; 1 will give the model
             more creative freedom and may not return as factual of results.
+        token_budget : int
+            Option to override the class init token budget.
+        new_info_threshold : float
+            New text added to the engineered query must contain at least this
+            much new information. This helps prevent (for example) the table of
+            contents being added multiple times.
 
         Returns
         -------
@@ -162,7 +172,8 @@ class EnergyWizard(ApiBase):
             returned here
         """
 
-        query = self.engineer_query(query)
+        query = self.engineer_query(query, token_budget=token_budget,
+                                    new_info_threshold=new_info_threshold)
 
         role_str = "You parse through articles to answer questions."
         messages = [{"role": "system", "content": role_str},
