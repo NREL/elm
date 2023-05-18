@@ -7,7 +7,6 @@ import numpy as np
 import openai
 
 from energy_wizard.abs import ApiBase
-from energy_wizard.dist import DistanceMetrics
 
 
 class EnergyWizard(ApiBase):
@@ -18,16 +17,13 @@ class EnergyWizard(ApiBase):
                      'write "I could not find an answer."')
     """Prefix to the engineered prompt"""
 
-    def __init__(self, corpus, dist_fun=DistanceMetrics.cosine_dist,
-                 model=None, token_budget=3500):
+    def __init__(self, corpus, model=None, token_budget=3500):
         """
         Parameters
         ----------
         corpus : pd.DataFrame
             Corpus of text in dataframe format. Must have columns "text" and
             "embedding".
-        dist_fun : None | function
-            Function to evaluate the distance between two 1D arrays.
         model : str
             GPT model name, default is the DEFAULT_MODEL global var
         token_budget : int
@@ -38,8 +34,9 @@ class EnergyWizard(ApiBase):
 
         super().__init__(model)
         self.corpus = self.preflight_corpus(corpus)
-        self.dist_fun = dist_fun
         self.token_budget = token_budget
+        self.embedding_arr = np.vstack(self.corpus['embedding'].values)
+        self.text_arr = self.corpus['text'].values
 
     @staticmethod
     def preflight_corpus(corpus, required=('text', 'embedding')):
@@ -67,6 +64,30 @@ class EnergyWizard(ApiBase):
             raise KeyError(msg)
         return corpus
 
+    def cosine_dist(self, query_embedding):
+        """Compute the cosine distance of the query embedding array vs. all of
+        the embedding arrays of the full text corpus
+
+        Parameters
+        ----------
+        query_embedding : np.ndarray
+            1D array of the numerical embedding of the request query.
+
+        Returns
+        -------
+        out : np.ndarray
+            1D array with length equal to the number of entries in the text
+            corpus. Each value is a distance score where smaller is closer
+        """
+
+        dot = np.dot(self.embedding_arr, query_embedding)
+        norm1 = np.linalg.norm(query_embedding)
+        norm2 = np.linalg.norm(self.embedding_arr, axis=1)
+
+        out = 1 - (dot / (norm1 * norm2))
+
+        return out
+
     def rank_strings(self, query, top_n=100):
         """Returns a list of strings and relatednesses, sorted from most
         related to least.
@@ -85,14 +106,12 @@ class EnergyWizard(ApiBase):
         score : list
             List of float scores of strings
         """
+
         embedding = self.get_embedding(query)
-
-        scores = np.zeros(len(self.corpus))
-        for i, row in self.corpus.iterrows():
-            scores[i] = self.dist_fun(embedding, row["embedding"])
-
+        scores = 1 - self.cosine_dist(embedding)
         best = np.argsort(scores)[::-1][:top_n]
-        strings = self.corpus.loc[best, 'text'].values.tolist()
+
+        strings = self.text_arr[best]
         scores = scores[best]
 
         return strings, scores
