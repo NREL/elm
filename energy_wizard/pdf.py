@@ -134,8 +134,8 @@ class PDFtoTXT(ApiBase):
         logger.info('Finished cleaning PDF.')
 
         self.text = clean_pages
-        self.validate_clean()
         self.full = self.combine_pages(self.text)
+        self.validate_clean()
 
         return clean_pages
 
@@ -181,14 +181,19 @@ class PDFtoTXT(ApiBase):
         logger.info('Finished cleaning PDF.')
 
         self.text = clean_pages
-        self.validate_clean()
         self.full = self.combine_pages(self.text)
+        self.validate_clean()
 
         return clean_pages
 
     def validate_clean(self):
         """Run some basic checks on the GPT cleaned text vs. the raw text"""
         repl = ('\n', '.', ',', '-', '/', ':')
+
+        if not any(self.full.replace('\n', '').strip()):
+            msg = 'Didnt get ANY clean output text!'
+            logger.error(msg)
+            raise RuntimeError(msg)
 
         def replace_chars_for_clean(text):
             for char in repl:
