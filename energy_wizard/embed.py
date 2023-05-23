@@ -112,7 +112,7 @@ class ChunkAndEmbed(ApiBase):
         tokens = [self.count_tokens(p) for p in self.paragraphs]
 
         chunks = []
-        current = []
+        current = [0]
         tcount = 0
 
         for i, token in enumerate(tokens):
@@ -121,10 +121,15 @@ class ChunkAndEmbed(ApiBase):
                 current.append(i)
             else:
                 tcount = 0
-                chunks.append(current)
-                current = [i]
 
-        if any(current):
+                if len(current) > 0:
+                    chunks.append(current)
+                    current = []
+
+                if i > 0:
+                    current = [i]
+
+        if len(current) > 0:
             chunks.append(current)
 
         text_chunks = []
