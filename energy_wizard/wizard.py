@@ -17,7 +17,7 @@ class EnergyWizard(ApiBase):
                          'text, write "I could not find an answer."')
     """Prefix to the engineered prompt"""
 
-    def __init__(self, corpus, model=None, token_budget=3500):
+    def __init__(self, corpus, model=None, token_budget=3500, ref_col=None):
         """
         Parameters
         ----------
@@ -30,6 +30,9 @@ class EnergyWizard(ApiBase):
             Number of tokens that can be embedded in the prompt. Note that the
             default budget for GPT-3.5-Turbo is 4096, but you want to subtract
             some tokens to account for the response budget.
+        ref_col : None | str
+            Optional column label in the corpus that provides a reference text
+            string for each chunk of text.
         """
 
         super().__init__(model)
@@ -37,6 +40,7 @@ class EnergyWizard(ApiBase):
         self.token_budget = token_budget
         self.embedding_arr = np.vstack(self.corpus['embedding'].values)
         self.text_arr = self.corpus['text'].values
+        self.ref_col = ref_col
 
     @staticmethod
     def preflight_corpus(corpus, required=('text', 'embedding')):
@@ -138,16 +142,20 @@ class EnergyWizard(ApiBase):
         message : str
             Engineered question to GPT including information from corpus and
             the original query
+        references : list
+            The list of references (strs) used in the engineered prompt is
+            returned here
         """
 
         token_budget = token_budget or self.token_budget
 
-        strings = self.rank_strings(query)[0]
+        strings, _, idx = self.rank_strings(query)
 
         message = copy.deepcopy(self.MODEL_INSTRUCTION)
         question = f"\n\nQuestion: {query}"
+        used_index = []
 
-        for string in strings:
+        for string, i in zip(strings, idx):
             next_str = (f'\n\n"""\n{string}\n"""')
             token_usage = self.count_tokens(message + next_str + question)
 
@@ -160,11 +168,35 @@ class EnergyWizard(ApiBase):
                     break
                 else:
                     message += next_str
+                    used_index.append(i)
 
-        return message + question
+        message = message + question
+        used_index = np.array(used_index)
+        references = self.make_ref_list(used_index)
+
+        return message, references
+
+    def make_ref_list(self, idx):
+        """Make a reference list
+
+        Parameters
+        ----------
+        used_index : np.ndarray
+            Indices of the used text from the text corpus
+
+        Returns
+        -------
+        ref_list : list
+            A list of references (strs) used.
+        """
+        ref_list = ''
+        if self.ref_col is not None and self.ref_col in self.corpus:
+            ref_list = list(self.corpus[self.ref_col].iloc[idx].unique())
+
+        return ref_list
 
     def ask(self, query, debug=True, stream=True, temperature=0,
-            token_budget=None, new_info_threshold=0.7):
+            token_budget=None, new_info_threshold=0.7, print_references=False):
         """Answers a query using GPT and a dataframe of relevant texts and
         embeddings.
 
@@ -184,6 +216,9 @@ class EnergyWizard(ApiBase):
             New text added to the engineered query must contain at least this
             much new information. This helps prevent (for example) the table of
             contents being added multiple times.
+        print_references : bool
+            Flag to print references if EnergyWizard is initialized with a
+            valid ref_col.
 
         Returns
         -------
@@ -192,10 +227,14 @@ class EnergyWizard(ApiBase):
         query : str
             If debug is True, the engineered query asked of GPT will also be
             returned here
+        references : list
+            If debug is True, the list of references (strs) used in the
+            engineered prompt is returned here
         """
 
-        query = self.engineer_query(query, token_budget=token_budget,
-                                    new_info_threshold=new_info_threshold)
+        out = self.engineer_query(query, token_budget=token_budget,
+                                  new_info_threshold=new_info_threshold)
+        query, references = out
 
         role_str = "You parse through articles to answer questions."
         messages = [{"role": "system", "content": role_str},
@@ -220,7 +259,11 @@ class EnergyWizard(ApiBase):
                                                     stream=False)
             response_message = response["choices"][0]["message"]["content"]
 
+        if stream and print_references and any(references):
+            print('\n\nThis response was based on the following references:')
+            print(' - ' + '\n - '.join(references))
+
         if debug:
-            return response_message, query
+            return response_message, query, references
         else:
             return response_message
