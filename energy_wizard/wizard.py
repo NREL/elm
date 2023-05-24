@@ -12,9 +12,9 @@ from energy_wizard.abs import ApiBase
 class EnergyWizard(ApiBase):
     """Interface to ask OpenAI LLMs about energy research."""
 
-    PROMPT_PREFIX = ('Use the information below to answer the subsequent '
-                     'question. If the answer cannot be found in the text, '
-                     'write "I could not find an answer."')
+    MODEL_INSTRUCTION = ('Use the information below to answer the subsequent '
+                         'question. If the answer cannot be found in the '
+                         'text, write "I could not find an answer."')
     """Prefix to the engineered prompt"""
 
     def __init__(self, corpus, model=None, token_budget=3500):
@@ -101,10 +101,13 @@ class EnergyWizard(ApiBase):
 
         Returns
         -------
-        strings : list
-            List of related strings
-        score : list
-            List of float scores of strings
+        strings : np.ndarray
+            1D array of related strings
+        score : np.ndarray
+            1D array of float scores of strings
+        idx : np.ndarray
+            1D array of indices in the text corpus corresponding to the
+            ranked strings/scores outputs.
         """
 
         embedding = self.get_embedding(query)
@@ -114,7 +117,7 @@ class EnergyWizard(ApiBase):
         strings = self.text_arr[best]
         scores = scores[best]
 
-        return strings, scores
+        return strings, scores, best
 
     def engineer_query(self, query, token_budget=None, new_info_threshold=0.7):
         """Engineer a query for GPT using the corpus of information
@@ -139,9 +142,9 @@ class EnergyWizard(ApiBase):
 
         token_budget = token_budget or self.token_budget
 
-        strings, _ = self.rank_strings(query)
+        strings = self.rank_strings(query)[0]
 
-        message = copy.deepcopy(self.PROMPT_PREFIX)
+        message = copy.deepcopy(self.MODEL_INSTRUCTION)
         question = f"\n\nQuestion: {query}"
 
         for string in strings:
