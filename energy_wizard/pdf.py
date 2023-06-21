@@ -2,7 +2,7 @@
 """
 Energy Wizard PDF to text parser
 """
-import openai
+import requests
 import copy
 from PyPDF2 import PdfReader
 import logging
@@ -119,10 +119,18 @@ class PDFtoTXT(ApiBase):
         clean_pages = []
 
         for i, raw_page in enumerate(self.raw_text):
-            messages = self.make_gpt_messages(copy.deepcopy(raw_page))
-            response = openai.ChatCompletion.create(model=self.model,
-                                                    messages=messages,
-                                                    temperature=0)
+            msg = self.make_gpt_messages(copy.deepcopy(raw_page))
+            req = {"model": self.model, "messages": msg, "temperature": 0.0}
+
+            kwargs = dict(url=self.URL, headers=self.HEADERS, json=req)
+
+            try:
+                response = requests.post(**kwargs)
+                response = response.json()
+            except Exception as e:
+                msg = 'Error in OpenAI API call!'
+                logger.exception(msg)
+                response = {'error': str(e)}
 
             choice = response.get('choices', [{'message': {'content': ''}}])[0]
             message = choice.get('message', {'content': ''})

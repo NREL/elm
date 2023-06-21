@@ -221,5 +221,11 @@ class ApiBase(ABC):
         n : int
             Number of tokens in text
         """
-        encoding = tiktoken.encoding_for_model(self.model)
+
+        # Optional mappings for weird azure names to tiktoken/openai names
+        tokenizer_aliases = {'gpt-35-turbo': 'gpt-3.5-turbo'}
+
+        token_model = tokenizer_aliases.get(self.model, self.model)
+        encoding = tiktoken.encoding_for_model(token_model)
+
         return len(encoding.encode(text))
