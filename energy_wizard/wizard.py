@@ -12,6 +12,9 @@ from energy_wizard.abs import ApiBase
 class EnergyWizard(ApiBase):
     """Interface to ask OpenAI LLMs about energy research."""
 
+    MODEL_ROLE = "You parse through articles to answer questions."
+    """High level model role, somewhat redundant to MODEL_INSTRUCTION"""
+
     MODEL_INSTRUCTION = ('Use the information below to answer the subsequent '
                          'question. If the answer cannot be found in the '
                          'text, write "I could not find an answer."')
@@ -236,16 +239,20 @@ class EnergyWizard(ApiBase):
                                   new_info_threshold=new_info_threshold)
         query, references = out
 
-        role_str = "You parse through articles to answer questions."
-        messages = [{"role": "system", "content": role_str},
+        messages = [{"role": "system", "content": self.MODEL_ROLE},
                     {"role": "user", "content": query}]
+        response_message = ''
+        kwargs = dict(model=self.model,
+                      messages=messages,
+                      temperature=temperature,
+                      stream=stream)
+
+        if 'azure' in str(openai.api_type).lower():
+            kwargs['engine'] = self.model
+
+        response = openai.ChatCompletion.create(**kwargs)
 
         if stream:
-            response_message = ''
-            response = openai.ChatCompletion.create(model=self.model,
-                                                    messages=messages,
-                                                    temperature=temperature,
-                                                    stream=True)
             for chunk in response:
                 chunk_msg = chunk['choices'][0]['delta']
                 chunk_msg = chunk_msg.get('content', '')
@@ -253,14 +260,11 @@ class EnergyWizard(ApiBase):
                 print(chunk_msg, end='')
 
         else:
-            response = openai.ChatCompletion.create(model=self.model,
-                                                    messages=messages,
-                                                    temperature=temperature,
-                                                    stream=False)
             response_message = response["choices"][0]["message"]["content"]
 
         if stream and print_references and any(references):
-            print('\n\nThis response was based on the following references:')
+            print('\n\nThe model was provided with the following documents to '
+                  'support its answer:')
             print(' - ' + '\n - '.join(references))
 
         if debug:

@@ -2,6 +2,7 @@
 """
 Energy Wizard text embedding
 """
+import openai
 import re
 import os
 import logging
@@ -14,9 +15,6 @@ logger = logging.getLogger(__name__)
 
 class ChunkAndEmbed(ApiBase):
     """Class to chunk text data and create embeddings"""
-
-    URL = 'https://api.openai.com/v1/embeddings'
-    """URL for embeddings"""
 
     DEFAULT_MODEL = 'text-embedding-ada-002'
     """Default model to do embeddings."""
@@ -183,9 +181,14 @@ class ChunkAndEmbed(ApiBase):
         all_request_jsons = []
         for chunk in self.text_chunks:
             req = {"input": chunk, "model": self.model}
+
+            if 'azure' in str(openai.api_type).lower():
+                req['engine'] = self.model
+
             all_request_jsons.append(req)
 
-        embeddings = await self.call_api_async(self.URL, self.HEADERS,
+        embeddings = await self.call_api_async(self.EMBEDDING_URL,
+                                               self.HEADERS,
                                                all_request_jsons,
                                                rate_limit=rate_limit)
 

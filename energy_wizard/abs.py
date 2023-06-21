@@ -7,6 +7,7 @@ import asyncio
 import aiohttp
 import openai
 import numpy as np
+import requests
 import tiktoken
 import time
 import logging
@@ -24,11 +25,16 @@ class ApiBase(ABC):
     EMBEDDING_MODEL = 'text-embedding-ada-002'
     """Default model to do text embeddings."""
 
+    EMBEDDING_URL = 'https://api.openai.com/v1/embeddings'
+    """OpenAI embedding API URL"""
+
     URL = 'https://api.openai.com/v1/chat/completions'
-    """OpenAI API URL"""
+    """OpenAI API API URL"""
 
     HEADERS = {"Content-Type": "application/json",
-               "Authorization": f"Bearer {openai.api_key}"}
+               "Authorization": f"Bearer {openai.api_key}",
+               "api-key": f"{openai.api_key}",
+               }
     """OpenAI API Headers"""
 
     def __init__(self, model=None):
@@ -184,9 +190,22 @@ class ApiBase(ABC):
         embedding : list
             List of float that represents the numerical embedding of the text
         """
-        embedding = openai.Embedding.create(model=cls.EMBEDDING_MODEL,
-                                            input=text)
-        embedding = embedding["data"][0]["embedding"]
+        kwargs = dict(url=cls.EMBEDDING_URL,
+                      headers=cls.HEADERS,
+                      json={'model': cls.EMBEDDING_MODEL,
+                            'input': text})
+
+        out = requests.post(**kwargs)
+        embedding = out.json()
+
+        try:
+            embedding = embedding["data"][0]["embedding"]
+        except Exception:
+            msg = ('Embedding request failed: {} {}'
+                   .format(out.reason, embedding))
+            logger.error(msg)
+            raise RuntimeError(msg)
+
         return embedding
 
     def count_tokens(self, text):
