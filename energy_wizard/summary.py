@@ -4,7 +4,6 @@ Research Summarization and Distillation with LLMs
 """
 import logging
 import os
-import openai
 
 from energy_wizard.abs import ApiBase
 from energy_wizard.chunk import Chunker

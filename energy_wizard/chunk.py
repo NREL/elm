@@ -93,6 +93,12 @@ class Chunker(ApiBase):
 
     @property
     def paragraphs(self):
+        """Get a list of paragraphs in the text demarkated by an empty line.
+
+        Returns
+        -------
+        list
+        """
         paragraphs = self.text.split('\n\n')
         paragraphs = [p for p in paragraphs if self.is_good_paragraph(p)]
         return paragraphs

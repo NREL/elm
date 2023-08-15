@@ -296,11 +296,11 @@ class ApiBase(ABC):
 
         try:
             embedding = embedding["data"][0]["embedding"]
-        except Exception:
+        except Exception as exc:
             msg = ('Embedding request failed: {} {}'
                    .format(out.reason, embedding))
             logger.error(msg)
-            raise RuntimeError(msg)
+            raise RuntimeError(msg) from exc
 
         return embedding
 
