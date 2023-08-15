@@ -44,6 +44,15 @@ class Chunker(ApiBase):
         self.token_limit = token_limit
         self._chunks = self.chunk_text()
 
+    def __getitem__(self, i):
+        """Get a chunk index
+
+        Returns
+        -------
+        str
+        """
+        return self.chunks[i]
+
     def __iter__(self):
         self._idc = 0
         return self

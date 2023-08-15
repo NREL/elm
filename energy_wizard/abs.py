@@ -37,6 +37,9 @@ class ApiBase(ABC):
                }
     """OpenAI API Headers"""
 
+    MODEL_ROLE = "You are a research assistant that answers questions."
+    """High level model role"""
+
     def __init__(self, model=None):
         """
         Parameters
@@ -82,8 +85,11 @@ class ApiBase(ABC):
                     out = await response.json()
 
         except Exception as e:
-            msg = 'Error in OpenAI API call!'
-            logger.exception(msg)
+            logger.debug(f'Error in OpenAI API call from '
+                         f'`aiohttp.ClientSession().post(**kwargs)` with '
+                         f'kwargs: {kwargs}')
+            logger.exception('Error in OpenAI API call! Turn on debug logging '
+                             'to see full query that caused error.')
             out = {'error': str(e)}
 
         return out
@@ -175,6 +181,96 @@ class ApiBase(ABC):
                 break
 
         return out
+
+    def generic_query(self, query, model_role=None, temperature=0):
+        """Ask a generic query
+
+        Parameters
+        ----------
+        query : str
+            Question to ask ChatGPT
+        model_role : str | None
+            Role for the model to take, e.g.: "You are a research assistant".
+            This defaults to self.MODEL_ROLE
+        temperature : float
+            GPT model temperature, a measure of response entropy from 0 to 1. 0
+            is more reliable and nearly deterministic; 1 will give the model
+            more creative freedom and may not return as factual of results.
+
+        Returns
+        -------
+        response : str
+            Model response
+        """
+
+        model_role = model_role or self.MODEL_ROLE
+        messages = [{"role": "system", "content": model_role},
+                    {"role": "user", "content": query}]
+        kwargs = dict(model=self.model,
+                      messages=messages,
+                      temperature=temperature,
+                      stream=False)
+
+        if 'azure' in str(openai.api_type).lower():
+            kwargs['engine'] = self.model
+
+        response = openai.ChatCompletion.create(**kwargs)
+        response = response["choices"][0]["message"]["content"]
+        return response
+
+    async def generic_async_query(self, queries, model_role, temperature=0,
+                                  rate_limit=40e3):
+        """Run a number of generic queries asynchronously
+
+        NOTE: you need to call this using the await command in ipython or
+        jupyter, e.g.: `out = await Summary.run_async()`
+
+        Parameters
+        ----------
+        query : list
+            Questions to ask ChatGPT (list of strings)
+        model_role : str | None
+            Role for the model to take, e.g.: "You are a research assistant".
+            This defaults to self.MODEL_ROLE
+        temperature : float
+            GPT model temperature, a measure of response entropy from 0 to 1. 0
+            is more reliable and nearly deterministic; 1 will give the model
+            more creative freedom and may not return as factual of results.
+        rate_limit : float
+            OpenAI API rate limit (tokens / minute). Note that the
+            gpt-3.5-turbo limit is 90k as of 4/2023, but we're using a large
+            factor of safety (~1/2) because we can only count the tokens on the
+            input side and assume the output is about the same count.
+
+        Returns
+        -------
+        response : list
+            Model responses with same length as query input.
+        """
+
+        model_role = model_role or self.MODEL_ROLE
+        all_request_jsons = []
+        for msg in queries:
+            msg = [{'role': 'system', 'content': self.MODEL_ROLE},
+                   {'role': 'user', 'content': msg}]
+            req = {"model": self.model, "messages": msg,
+                   "temperature": temperature}
+            all_request_jsons.append(req)
+
+        responses = await self.call_api_async(self.URL, self.HEADERS,
+                                              all_request_jsons,
+                                              rate_limit=rate_limit)
+
+        for i, response in enumerate(responses):
+            choice = response.get('choices', [{'message': {'content': ''}}])[0]
+            message = choice.get('message', {'content': ''})
+            content = message.get('content', '')
+            if not any(content):
+                logger.error(f'Received no output for query {i + 1}!')
+            else:
+                responses[i] = content
+
+        return responses
 
     @classmethod
     def get_embedding(cls, text):

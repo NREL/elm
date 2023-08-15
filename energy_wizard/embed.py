@@ -34,6 +34,13 @@ class ChunkAndEmbed(ApiBase):
         model : None | str
             Optional specification of OpenAI model to use. Default is
             cls.DEFAULT_MODEL
+        tokens_per_chunk : float
+            Nominal token count per text chunk
+        overlap : int
+            Number of paragraphs to overlap between chunks
+        token_limit : float
+            Hard limit on the maximum number of tokens that can be embedded at
+            once
         """
         super().__init__(model)
 
