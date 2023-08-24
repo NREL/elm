@@ -2,7 +2,7 @@
 """
 Utility to break text up into overlapping chunks.
 """
-
+import copy
 from energy_wizard.base import ApiBase
 
 
@@ -10,12 +10,11 @@ class Chunker(ApiBase):
     """
     Class to break text up into overlapping chunks
 
-    NOTE: this will currently fail if a single paragraph is greater than
-    the token limit. Need to add logic to split large paragraphs.
+    NOTE: very large paragraphs that exceed the tokens per chunk will not be
+    split up and will still be padded with overlap.
     """
 
-    def __init__(self, text, tag=None, tokens_per_chunk=500, overlap=1,
-                 token_limit=8191):
+    def __init__(self, text, tag=None, tokens_per_chunk=500, overlap=1):
         """
         Parameters
         ----------
@@ -26,12 +25,10 @@ class Chunker(ApiBase):
             Optional reference tag to include at the beginning of each text
             chunk
         tokens_per_chunk : float
-            Nominal token count per text chunk
+            Nominal token count per text chunk. Overlap paragraphs will exceed
+            this.
         overlap : int
             Number of paragraphs to overlap between chunks
-        token_limit : float
-            Hard limit on the maximum number of tokens that can be embedded at
-            once
         """
 
         super().__init__()
@@ -41,7 +38,6 @@ class Chunker(ApiBase):
         self.tag = tag
         self.tokens_per_chunk = tokens_per_chunk
         self.overlap = overlap
-        self.token_limit = token_limit
         self._chunks = self.chunk_text()
 
     def __getitem__(self, i):
@@ -113,6 +109,92 @@ class Chunker(ApiBase):
         else:
             return True
 
+    @property
+    def paragraph_tokens(self):
+        """Number of tokens per paragraph.
+
+        Returns
+        -------
+        list
+        """
+        return [self.count_tokens(p, self.model) for p in self.paragraphs]
+
+    def merge_chunks(self, chunks_input):
+        """Merge chunks until they reach the token limit per chunk.
+
+        Parameters
+        ----------
+        chunks_input : list
+            List of list of integers: [[0, 1], [2], [3, 4]] where nested lists
+            are chunks and the integers are paragraph indices
+
+        Returns
+        -------
+        chunks : list
+            List of list of integers: [[0, 1], [2], [3, 4]] where nested lists
+            are chunks and the integers are paragraph indices
+        """
+
+        chunks = copy.deepcopy(chunks_input)
+
+        for i in range(len(chunks) - 1):
+            chunk0 = chunks[i]
+            chunk1 = chunks[i + 1]
+            if chunk0 is not None and chunk1 is not None:
+                tcount0 = sum(self.paragraph_tokens[j] for j in chunk0)
+                tcount1 = sum(self.paragraph_tokens[j] for j in chunk1)
+                if tcount0 + tcount1 < self.tokens_per_chunk:
+                    chunk0 += chunk1
+                    chunks[i] = chunk0
+                    chunks[i + 1] = None
+
+        chunks = [c for c in chunks if c is not None]
+        flat_chunks = [a for b in chunks for a in b]
+
+        assert all(c in list(range(len(self.paragraphs))) for c in flat_chunks)
+
+        return chunks
+
+    def add_overlap(self, chunks_input):
+        """Add overlap on either side of a text chunk. This ignores token
+        limit.
+
+        Parameters
+        ----------
+        chunks_input : list
+            List of list of integers: [[0, 1], [2], [3, 4]] where nested lists
+            are chunks and the integers are paragraph indices
+
+        Returns
+        -------
+        chunks : list
+            List of list of integers: [[0, 1], [2], [3, 4]] where nested lists
+            are chunks and the integers are paragraph indices
+        """
+
+        chunks = copy.deepcopy(chunks_input)
+
+        for i, chunk1 in enumerate(chunks_input):
+
+            if i == 0:
+                chunk2 = chunks_input[i + 1]
+                chunk1 = chunk1 + chunk2[:self.overlap]
+
+            elif i == len(chunks) - 1:
+                chunk0 = chunks_input[i - 1]
+                chunk1 = chunk0[-self.overlap:] + chunk1
+
+            else:
+                chunk0 = chunks_input[i - 1]
+                chunk2 = chunks_input[i + 1]
+                chunk1 = (chunk0[-self.overlap:]
+                          + chunk1
+                          + chunk2[:self.overlap])
+
+            chunks[i] = chunk1
+
+        return chunks
+
     def chunk_text(self):
         """Perform the text chunking operation
 
@@ -122,41 +204,19 @@ class Chunker(ApiBase):
             List of strings where each string is an overlapping chunk of text
         """
 
-        tokens = [self.count_tokens(p, self.model) for p in self.paragraphs]
-
-        chunks = []
-        current = [0]
-        tcount = 0
-
-        for i, token in enumerate(tokens):
-            tcount += token
-            if tcount < self.tokens_per_chunk:
-                current.append(i)
+        chunks_input = [[i] for i in range(len(self.paragraphs))]
+        while True:
+            chunks = self.merge_chunks(chunks_input)
+            if chunks == chunks_input:
+                break
             else:
-                tcount = 0
+                chunks_input = copy.deepcopy(chunks)
 
-                if len(current) > 0:
-                    chunks.append(current)
-                    current = []
-
-                if i > 0:
-                    current = [i]
-
-        if len(current) > 0:
-            chunks.append(current)
-
+        chunks = self.add_overlap(chunks)
         text_chunks = []
         for chunk in chunks:
-            current_text_chunk = [self.paragraphs[i] for i in chunk]
-            current_text_chunk = '\n\n'.join(current_text_chunk)
-            if chunk[-1] < len(self.paragraphs) - self.overlap:
-                for k in range(1, self.overlap + 1):
-                    overlap_text = self.paragraphs[chunk[-1] + k]
-                    new = current_text_chunk + '\n\n' + overlap_text
-                    if self.count_tokens(new, self.model) < self.token_limit:
-                        current_text_chunk = new
-
-            text_chunks.append(current_text_chunk)
+            paragraphs = [self.paragraphs[c] for c in chunk]
+            text_chunks.append('\n\n'.join(paragraphs))
 
         if self.tag is not None:
             text_chunks = [self.tag + '\n\n' + chunk for chunk in text_chunks]

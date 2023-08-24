@@ -21,7 +21,7 @@ class ChunkAndEmbed(ApiBase):
     """Default model to do embeddings."""
 
     def __init__(self, text, tag=None, model=None, tokens_per_chunk=500,
-                 overlap=1, token_limit=8191):
+                 overlap=1):
         """
         Parameters
         ----------
@@ -38,9 +38,6 @@ class ChunkAndEmbed(ApiBase):
             Nominal token count per text chunk
         overlap : int
             Number of paragraphs to overlap between chunks
-        token_limit : float
-            Hard limit on the maximum number of tokens that can be embedded at
-            once
         """
         super().__init__(model)
 
@@ -57,7 +54,7 @@ class ChunkAndEmbed(ApiBase):
 
         self.text_chunks = Chunker(self.text, tag=tag,
                                    tokens_per_chunk=tokens_per_chunk,
-                                   overlap=overlap, token_limit=token_limit)
+                                   overlap=overlap)
 
     @staticmethod
     def clean_tables(text):
