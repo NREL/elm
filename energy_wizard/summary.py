@@ -25,8 +25,7 @@ class Summary(ApiBase):
                          'non-experts.')
     """Prefix to the engineered prompt"""
 
-    def __init__(self, text, model=None, tokens_per_chunk=500,
-                 overlap=1, token_limit=8191):
+    def __init__(self, text, model=None, tokens_per_chunk=500, overlap=1):
         """
         Parameters
         ----------
@@ -57,7 +56,7 @@ class Summary(ApiBase):
 
         self.text_chunks = Chunker(self.text,
                                    tokens_per_chunk=tokens_per_chunk,
-                                   overlap=overlap, token_limit=token_limit)
+                                   overlap=overlap)
 
     def run(self, temperature=0):
         """Use GPT to do a summary of input text.

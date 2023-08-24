@@ -172,6 +172,9 @@ class Chunker(ApiBase):
             are chunks and the integers are paragraph indices
         """
 
+        if len(chunks_input) == 1:
+            return chunks_input
+
         chunks = copy.deepcopy(chunks_input)
 
         for i, chunk1 in enumerate(chunks_input):

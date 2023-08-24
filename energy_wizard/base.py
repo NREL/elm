@@ -6,7 +6,6 @@ from abc import ABC
 import asyncio
 import aiohttp
 import openai
-import numpy as np
 import requests
 import tiktoken
 import time
@@ -359,13 +358,14 @@ class ApiQueue:
     async def collect_jobs(self):
         """Collect asyncronous API calls and API outputs. Store outputs in the
         `out` attribute."""
+        complete = len(self) - sum(self.todo)
         for i, itodo in enumerate(self.todo):
             if itodo and i in self.api_jobs:
                 task_out = await self.api_jobs[i]
 
                 if 'error' in task_out:
                     logger.error('Received API error for task #{}: {}'
-                                 .format(i + 1, self.out))
+                                 .format(i + 1, task_out))
                 else:
                     self.out[i] = task_out
                     self.todo[i] = False
