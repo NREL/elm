@@ -6,7 +6,7 @@ import copy
 import numpy as np
 import openai
 
-from energy_wizard.abs import ApiBase
+from energy_wizard.base import ApiBase
 
 
 class EnergyWizard(ApiBase):
@@ -160,7 +160,8 @@ class EnergyWizard(ApiBase):
 
         for string, i in zip(strings, idx):
             next_str = (f'\n\n"""\n{string}\n"""')
-            token_usage = self.count_tokens(message + next_str + question)
+            token_usage = self.count_tokens(message + next_str + question,
+                                            self.model)
 
             new_words = set(next_str.split(' '))
             additional_info = new_words - set(message.split(' '))

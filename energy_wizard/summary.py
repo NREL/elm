@@ -5,7 +5,7 @@ Research Summarization and Distillation with LLMs
 import logging
 import os
 
-from energy_wizard.abs import ApiBase
+from energy_wizard.base import ApiBase
 from energy_wizard.chunk import Chunker
 
 

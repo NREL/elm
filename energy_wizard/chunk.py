@@ -3,7 +3,7 @@
 Utility to break text up into overlapping chunks.
 """
 
-from energy_wizard.abs import ApiBase
+from energy_wizard.base import ApiBase
 
 
 class Chunker(ApiBase):
@@ -122,7 +122,7 @@ class Chunker(ApiBase):
             List of strings where each string is an overlapping chunk of text
         """
 
-        tokens = [self.count_tokens(p) for p in self.paragraphs]
+        tokens = [self.count_tokens(p, self.model) for p in self.paragraphs]
 
         chunks = []
         current = [0]
@@ -153,7 +153,7 @@ class Chunker(ApiBase):
                 for k in range(1, self.overlap + 1):
                     overlap_text = self.paragraphs[chunk[-1] + k]
                     new = current_text_chunk + '\n\n' + overlap_text
-                    if self.count_tokens(new) < self.token_limit:
+                    if self.count_tokens(new, self.model) < self.token_limit:
                         current_text_chunk = new
 
             text_chunks.append(current_text_chunk)

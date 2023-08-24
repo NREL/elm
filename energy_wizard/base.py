@@ -130,56 +130,9 @@ class ApiBase(ABC):
             List of API outputs where each list entry is a GPT answer from the
             corresponding message in the all_request_jsons input.
         """
-
-        tasks = {}
-        to_do = list(range(len(all_request_jsons)))
-        out = [None] * len(all_request_jsons)
-        logger.info('Submitting async API calls...')
-
-        while True:
-            t0 = time.time()
-            token_count = 0
-            for i in to_do:
-                request = all_request_jsons[i]
-                token = self.count_tokens(str(request))
-                token_count += token
-                logger.debug('Submitting {} out of {}, token count is at {} '
-                             '(rate limit is {})'
-                             .format(i + 1, len(all_request_jsons),
-                                     token_count, rate_limit))
-
-                if token_count > rate_limit:
-                    token_count = 0
-                    break
-                else:
-                    task = asyncio.create_task(self.call_api(url, headers,
-                                                             request))
-                    tasks[i] = task
-
-            to_retrieve = [j for j in to_do if j in tasks]
-            for j in to_retrieve:
-                task_out = await tasks[j]
-
-                if 'error' in out:
-                    logger.error('Received API error for task #{}: {}'
-                                 .format(j, out))
-                else:
-                    out[j] = task_out
-                    complete = sum(x is not None for x in out)
-                    to_do.remove(j)
-                    logger.debug('Finished API call {} out of {}.'
-                                 .format(complete, len(all_request_jsons)))
-
-            logger.debug('Finished {} API calls, have {} left'
-                         .format(complete, len(to_do)))
-            if token_count == 0:
-                tsleep = np.maximum(0, 60 - (time.time() - t0))
-                logger.debug('Sleeping {:.1f} seconds and resetting token '
-                             'counter...'.format(tsleep))
-                time.sleep(tsleep)
-            if not any(to_do):
-                break
-
+        runner = ApiQueue(url, headers, all_request_jsons,
+                          rate_limit=rate_limit)
+        out = await runner.run()
         return out
 
     def generic_query(self, query, model_role=None, temperature=0):
@@ -257,20 +210,20 @@ class ApiBase(ABC):
                    "temperature": temperature}
             all_request_jsons.append(req)
 
-        responses = await self.call_api_async(self.URL, self.HEADERS,
-                                              all_request_jsons,
-                                              rate_limit=rate_limit)
+        runner = ApiQueue(self.URL, self.HEADERS, all_request_jsons,
+                          rate_limit=rate_limit)
+        out = await runner.run()
 
-        for i, response in enumerate(responses):
+        for i, response in enumerate(out):
             choice = response.get('choices', [{'message': {'content': ''}}])[0]
             message = choice.get('message', {'content': ''})
             content = message.get('content', '')
             if not any(content):
                 logger.error(f'Received no output for query {i + 1}!')
             else:
-                responses[i] = content
+                out[i] = content
 
-        return responses
+        return out
 
     @classmethod
     def get_embedding(cls, text):
@@ -304,13 +257,16 @@ class ApiBase(ABC):
 
         return embedding
 
-    def count_tokens(self, text):
+    @staticmethod
+    def count_tokens(text, model):
         """Return the number of tokens in a string.
 
         Parameters
         ----------
         text : str
             Text string to get number of tokens for
+        model : str
+            specification of OpenAI model to use (e.g., "gpt-3.5-turbo")
 
         Returns
         -------
@@ -319,9 +275,119 @@ class ApiBase(ABC):
         """
 
         # Optional mappings for weird azure names to tiktoken/openai names
-        tokenizer_aliases = {'gpt-35-turbo': 'gpt-3.5-turbo'}
+        tokenizer_aliases = {'gpt-35-turbo': 'gpt-3.5-turbo',
+                             'gpt-4-32k': 'gpt-4-32k-0314'
+                             }
 
-        token_model = tokenizer_aliases.get(self.model, self.model)
+        token_model = tokenizer_aliases.get(model, model)
         encoding = tiktoken.encoding_for_model(token_model)
 
         return len(encoding.encode(text))
+
+
+class ApiQueue:
+    """Class to manage the parallel API queue and submission"""
+
+    def __init__(self, url, headers, request_jsons, rate_limit=40e3):
+        """
+        Parameters
+        ----------
+        url : str
+            OpenAI API url, typically either:
+                https://api.openai.com/v1/embeddings
+                https://api.openai.com/v1/chat/completions
+        headers : dict
+            OpenAI API headers, typically:
+                {"Content-Type": "application/json",
+                 "Authorization": f"Bearer {openai.api_key}"}
+        all_request_jsons : list
+            List of API data input, one entry typically looks like this for
+            chat completion:
+                {"model": "gpt-3.5-turbo",
+                 "messages": [{"role": "system", "content": "You do this..."},
+                              {"role": "user", "content": "Do this: {}"}],
+                 "temperature": 0.0}
+        rate_limit : float
+            OpenAI API rate limit (tokens / minute). Note that the
+            gpt-3.5-turbo limit is 90k as of 4/2023, but we're using a large
+            factor of safety (~1/2) because we can only count the tokens on the
+            input side and assume the output is about the same count.
+        """
+
+        self.url = url
+        self.headers = headers
+        self.request_jsons = request_jsons
+        self.rate_limit = rate_limit
+
+        self.api_jobs = {}
+        self.todo = [True] * len(self)
+        self.out = [None] * len(self)
+
+    def __len__(self):
+        """Number of API calls to submit"""
+        return len(self.request_jsons)
+
+    def submit_jobs(self):
+        """Submit a subset jobs asynchronously and hold jobs in the `api_jobs`
+        attribute. Break when the `rate_limit` is exceeded."""
+        token_count = 0
+        for i, itodo in enumerate(self.todo):
+            if (i not in self.api_jobs
+                    and itodo
+                    and token_count < self.rate_limit):
+                request = self.request_jsons[i]
+                model = request['model']
+                token = ApiBase.count_tokens(str(request), model)
+                token_count += token
+
+                task = asyncio.create_task(ApiBase.call_api(self.url,
+                                                            self.headers,
+                                                            request))
+                self.api_jobs[i] = task
+
+                logger.debug('Submitted {} out of {}, '
+                             'token count is at {} '
+                             '(rate limit is {})'
+                             .format(i + 1, len(self), token_count,
+                                     self.rate_limit))
+
+            elif token_count >= self.rate_limit:
+                token_count = 0
+                time.sleep(60)
+                break
+
+    async def collect_jobs(self):
+        """Collect asyncronous API calls and API outputs. Store outputs in the
+        `out` attribute."""
+        for i, itodo in enumerate(self.todo):
+            if itodo and i in self.api_jobs:
+                task_out = await self.api_jobs[i]
+
+                if 'error' in task_out:
+                    logger.error('Received API error for task #{}: {}'
+                                 .format(i + 1, self.out))
+                else:
+                    self.out[i] = task_out
+                    self.todo[i] = False
+                    complete = len(self) - sum(self.todo)
+
+        logger.debug('Finished {} API calls, have {} left'
+                     .format(complete, sum(self.todo)))
+
+    async def run(self):
+        """Run all asyncronous API calls.
+
+        Returns
+        -------
+        out : list
+            List of API call outputs with same ordering as `request_jsons`
+            input.
+        """
+
+        logger.debug('Submitting async API calls...')
+
+        while any(self.todo):
+            self.submit_jobs()
+            await self.collect_jobs()
+
+        return self.out

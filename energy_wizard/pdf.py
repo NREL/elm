@@ -7,7 +7,7 @@ import copy
 from PyPDF2 import PdfReader
 import logging
 
-from energy_wizard.abs import ApiBase
+from energy_wizard.base import ApiBase
 
 
 logger = logging.getLogger(__name__)
