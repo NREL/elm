@@ -38,6 +38,8 @@ class Chunker(ApiBase):
         self.tag = tag
         self.tokens_per_chunk = tokens_per_chunk
         self.overlap = overlap
+        self._paragraphs = None
+        self._ptokens = None
         self._chunks = self.chunk_text()
 
     def __getitem__(self, i):
@@ -95,9 +97,11 @@ class Chunker(ApiBase):
         -------
         list
         """
-        paragraphs = self.text.split('\n\n')
-        paragraphs = [p for p in paragraphs if self.is_good_paragraph(p)]
-        return paragraphs
+        if self._paragraphs is None:
+            self._paragraphs = self.text.split('\n\n')
+            self._paragraphs = [p for p in self._paragraphs
+                                if self.is_good_paragraph(p)]
+        return self._paragraphs
 
     @staticmethod
     def is_good_paragraph(paragraph):
@@ -117,7 +121,10 @@ class Chunker(ApiBase):
         -------
         list
         """
-        return [self.count_tokens(p, self.model) for p in self.paragraphs]
+        if self._ptokens is None:
+            self._ptokens = [self.count_tokens(p, self.model)
+                             for p in self.paragraphs]
+        return self._ptokens
 
     def merge_chunks(self, chunks_input):
         """Merge chunks until they reach the token limit per chunk.
