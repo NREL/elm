@@ -19,13 +19,13 @@ class Summary(ApiBase):
     MODEL_ROLE = "You are an energy scientist summarizing prior research"
     """High level model role, somewhat redundant to MODEL_INSTRUCTION"""
 
-    MODEL_INSTRUCTION = ('Summarize the following research paper, '
-                         'highlighting key points and limitations of the '
-                         'work in language that is easy to understand for '
-                         'non-experts.')
-    """Prefix to the engineered prompt"""
+    MODEL_INSTRUCTION = ('Can you please summarize the text quoted above '
+                         'in {n_words} words?')
+    """Prefix to the engineered prompt. That `n_words` is an initialization
+    argument for the Summary class."""
 
-    def __init__(self, text, model=None, tokens_per_chunk=500, overlap=1):
+    def __init__(self, text, model=None, tokens_per_chunk=500, overlap=1,
+                 n_words=500):
         """
         Parameters
         ----------
@@ -41,11 +41,16 @@ class Summary(ApiBase):
         ref_col : None | str
             Optional column label in the corpus that provides a reference text
             string for each chunk of text.
+        n_words : int
+            Desired length of the output text. Note that this is never perfect
+            but helps guide the LLM to an approximate desired output length.
+            400-600 words seems to work quite well with GPT-4.
         """
 
         super().__init__(model)
 
         self.text = text
+        self.n_words = n_words
 
         if os.path.isfile(text):
             logger.info('Loading text file: {}'.format(text))
@@ -57,6 +62,27 @@ class Summary(ApiBase):
         self.text_chunks = Chunker(self.text,
                                    tokens_per_chunk=tokens_per_chunk,
                                    overlap=overlap)
+
+    def combine(self, text_summary):
+        """Combine separate chunk summaries into one more comprehensive
+        narrative
+
+        Parameters
+        ----------
+        summary : str
+            Summary of text. May be several disjointed paragraphs
+
+        Returns
+        -------
+        summary : str
+            Summary of text. Paragraphs will be more cohesive.
+        """
+        role = 'You provide editorial services for technical writing.'
+        query = ('Can you combine the following paragraphs and '
+                 'ease the transitions between them? '
+                 f'\n\n"""{text_summary}"""')
+        text_summary = self.generic_query(query, model_role=role)
+        return text_summary
 
     def run(self, temperature=0):
         """Use GPT to do a summary of input text.
@@ -80,10 +106,13 @@ class Summary(ApiBase):
             logger.debug('Summarizing text chunk {} out of {}'
                          .format(i + 1, len(self.text_chunks)))
 
-            msg = f'{self.MODEL_INSTRUCTION}\n\n"""{chunk}"""'
+            instruction = self.MODEL_INSTRUCTION.format(n_words=self.n_words)
+            msg = f'"""{chunk}"""\n\n{instruction}'
             response = self.generic_query(msg, model_role=self.MODEL_ROLE,
                                           temperature=temperature)
             summary += f'\n\n{response}'
+
+        summary = self.combine(summary)
 
         return summary
 
@@ -114,8 +143,11 @@ class Summary(ApiBase):
         logger.info('Summarizing {} text chunks asynchronously...'
                     .format(len(self.text_chunks)))
 
-        queries = [f'{self.MODEL_INSTRUCTION}\n\n"""{chunk}"""'
-                   for chunk in self.text_chunks]
+        queries = []
+        for chunk in self.text_chunks:
+            instruction = self.MODEL_INSTRUCTION.format(n_words=self.n_words)
+            msg = f'"""{chunk}"""\n\n{instruction}'
+            queries.append(msg)
 
         summaries = await self.generic_async_query(queries,
                                                    model_role=self.MODEL_ROLE,
@@ -123,6 +155,7 @@ class Summary(ApiBase):
                                                    rate_limit=rate_limit)
 
         summary = '\n\n'.join(summaries)
+        summary = self.combine(summary)
 
         logger.info('Finished all summaries.')
 
