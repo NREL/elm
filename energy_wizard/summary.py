@@ -25,26 +25,27 @@ class Summary(ApiBase):
     argument for the Summary class."""
 
     def __init__(self, text, model=None, tokens_per_chunk=500, overlap=1,
-                 n_words=500):
+                 split_on='\n\n', n_words=500):
         """
         Parameters
         ----------
-        corpus : pd.DataFrame
-            Corpus of text in dataframe format. Must have columns "text" and
-            "embedding".
+        text : str
+            Single body of text to break up. Works well if this is a single
+            document with empty lines between paragraphs.
         model : str
             GPT model name, default is the DEFAULT_MODEL global var
-        token_budget : int
-            Number of tokens that can be embedded in the prompt. Note that the
-            default budget for GPT-3.5-Turbo is 4096, but you want to subtract
-            some tokens to account for the response budget.
-        ref_col : None | str
-            Optional column label in the corpus that provides a reference text
-            string for each chunk of text.
+        tokens_per_chunk : float
+            Nominal token count per text chunk. Overlap paragraphs will exceed
+            this.
+        overlap : int
+            Number of paragraphs to overlap between chunks
+        split_on : str
+            Sub string to split text into paragraphs.
         n_words : int
             Desired length of the output text. Note that this is never perfect
             but helps guide the LLM to an approximate desired output length.
-            400-600 words seems to work quite well with GPT-4.
+            400-600 words seems to work quite well with GPT-4. This gets
+            formatted into the MODEL_INSTRUCTION attribute.
         """
 
         super().__init__(model)
@@ -61,7 +62,7 @@ class Summary(ApiBase):
 
         self.text_chunks = Chunker(self.text,
                                    tokens_per_chunk=tokens_per_chunk,
-                                   overlap=overlap)
+                                   overlap=overlap, split_on=split_on)
 
     def combine(self, text_summary):
         """Combine separate chunk summaries into one more comprehensive

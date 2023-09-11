@@ -44,6 +44,7 @@ class Chunker(ApiBase):
         self.overlap = overlap
         self._paragraphs = None
         self._ptokens = None
+        self._ctokens = None
         self._chunks = self.chunk_text()
 
     def __getitem__(self, i):
@@ -143,6 +144,19 @@ class Chunker(ApiBase):
                              for p in self.paragraphs]
         return self._ptokens
 
+    @property
+    def chunk_tokens(self):
+        """Number of tokens per chunk.
+
+        Returns
+        -------
+        list
+        """
+        if self._ctokens is None:
+            self._ctokens = [self.count_tokens(c, self.model)
+                             for c in self.chunks]
+        return self._ctokens
+
     def merge_chunks(self, chunks_input):
         """Merge chunks until they reach the token limit per chunk.
 
@@ -196,7 +210,7 @@ class Chunker(ApiBase):
             are chunks and the integers are paragraph indices
         """
 
-        if len(chunks_input) == 1:
+        if len(chunks_input) == 1 or self.overlap == 0:
             return chunks_input
 
         chunks = copy.deepcopy(chunks_input)
