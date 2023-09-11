@@ -48,6 +48,7 @@ class ApiBase(ABC):
             cls.DEFAULT_MODEL
         """
         self.model = model or self.DEFAULT_MODEL
+        self.chat_messages = [{"role": "system", "content": self.MODEL_ROLE}]
 
     @staticmethod
     async def call_api(url, headers, request_json):
@@ -134,8 +135,42 @@ class ApiBase(ABC):
         out = await runner.run()
         return out
 
+    def chat(self, query, temperature=0):
+        """Have a continuous chat with the LLM including context from previous
+        chat() calls stored as attributes in this class.
+
+        Parameters
+        ----------
+        query : str
+            Question to ask ChatGPT
+        temperature : float
+            GPT model temperature, a measure of response entropy from 0 to 1. 0
+            is more reliable and nearly deterministic; 1 will give the model
+            more creative freedom and may not return as factual of results.
+
+        Returns
+        -------
+        response : str
+            Model response
+        """
+
+        self.chat_messages.append({"role": "user", "content": query})
+
+        kwargs = dict(model=self.model,
+                      messages=self.chat_messages,
+                      temperature=temperature,
+                      stream=False)
+        if 'azure' in str(openai.api_type).lower():
+            kwargs['engine'] = self.model
+
+        response = openai.ChatCompletion.create(**kwargs)
+        response = response["choices"][0]["message"]["content"]
+        self.chat_messages.append({'role': 'assistant', 'content': response})
+
+        return response
+
     def generic_query(self, query, model_role=None, temperature=0):
-        """Ask a generic query
+        """Ask a generic single query without conversation
 
         Parameters
         ----------
@@ -170,9 +205,10 @@ class ApiBase(ABC):
         response = response["choices"][0]["message"]["content"]
         return response
 
-    async def generic_async_query(self, queries, model_role, temperature=0,
-                                  rate_limit=40e3):
-        """Run a number of generic queries asynchronously
+    async def generic_async_query(self, queries, model_role=None,
+                                  temperature=0, rate_limit=40e3):
+        """Run a number of generic single queries asynchronously
+        (not conversational)
 
         NOTE: you need to call this using the await command in ipython or
         jupyter, e.g.: `out = await Summary.run_async()`
