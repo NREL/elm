@@ -32,8 +32,8 @@ class PDFtoTXT(ApiBase):
         super().__init__(model)
         self.fp = fp
         self.raw_text = self.load_pdf(page_range)
-        self.text = None
-        self.full = None
+        self.text = self.raw_text
+        self.full = self.combine_pages(self.raw_text)
 
     def load_pdf(self, page_range):
         """Basic load of pdf to text strings
