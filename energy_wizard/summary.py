@@ -84,7 +84,7 @@ class Summary(ApiBase):
         text_summary = self.generic_query(query, model_role=role)
         return text_summary
 
-    def run(self, temperature=0):
+    def run(self, temperature=0, fancy_combine=True):
         """Use GPT to do a summary of input text.
 
         Parameters
@@ -93,6 +93,9 @@ class Summary(ApiBase):
             GPT model temperature, a measure of response entropy from 0 to 1. 0
             is more reliable and nearly deterministic; 1 will give the model
             more creative freedom and may not return as factual of results.
+        fancy_combine : bool
+            Flag to use the GPT model to combine the separate outputs into a
+            cohesive summary.
 
         Returns
         -------
@@ -112,11 +115,13 @@ class Summary(ApiBase):
                                           temperature=temperature)
             summary += f'\n\n{response}'
 
-        summary = self.combine(summary)
+        if fancy_combine:
+            summary = self.combine(summary)
 
         return summary
 
-    async def run_async(self, temperature=0, rate_limit=40e3):
+    async def run_async(self, temperature=0, rate_limit=40e3,
+                        fancy_combine=True):
         """Run text summary asynchronously for all text chunks
 
         NOTE: you need to call this using the await command in ipython or
@@ -133,6 +138,9 @@ class Summary(ApiBase):
             gpt-3.5-turbo limit is 90k as of 4/2023, but we're using a large
             factor of safety (~1/2) because we can only count the tokens on the
             input side and assume the output is about the same count.
+        fancy_combine : bool
+            Flag to use the GPT model to combine the separate outputs into a
+            cohesive summary.
 
         Returns
         -------
@@ -155,7 +163,9 @@ class Summary(ApiBase):
                                                    rate_limit=rate_limit)
 
         summary = '\n\n'.join(summaries)
-        summary = self.combine(summary)
+
+        if fancy_combine:
+            summary = self.combine(summary)
 
         logger.info('Finished all summaries.')
 
