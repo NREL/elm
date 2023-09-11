@@ -14,7 +14,8 @@ class Chunker(ApiBase):
     split up and will still be padded with overlap.
     """
 
-    def __init__(self, text, tag=None, tokens_per_chunk=500, overlap=1):
+    def __init__(self, text, tag=None, tokens_per_chunk=500, overlap=1,
+                 split_on='\n\n'):
         """
         Parameters
         ----------
@@ -29,12 +30,15 @@ class Chunker(ApiBase):
             this.
         overlap : int
             Number of paragraphs to overlap between chunks
+        split_on : str
+            Sub string to split text into paragraphs.
         """
 
         super().__init__()
 
+        self._split_on = split_on
         self._idc = 0  # iter index for chunk
-        self.text = text
+        self.text = self.clean_paragraphs(text)
         self.tag = tag
         self.tokens_per_chunk = tokens_per_chunk
         self.overlap = overlap
@@ -98,10 +102,23 @@ class Chunker(ApiBase):
         list
         """
         if self._paragraphs is None:
-            self._paragraphs = self.text.split('\n\n')
+            self._paragraphs = self.text.split(self._split_on)
             self._paragraphs = [p for p in self._paragraphs
                                 if self.is_good_paragraph(p)]
         return self._paragraphs
+
+    @staticmethod
+    def clean_paragraphs(text):
+        """Clean up double line breaks to make sure paragraphs can be detected
+        in the text."""
+        previous_len = len(text)
+        while True:
+            text = text.replace('\n ', '\n')
+            if len(text) == previous_len:
+                break
+            else:
+                previous_len = len(text)
+        return text
 
     @staticmethod
     def is_good_paragraph(paragraph):
