@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Energy Wizard logic trees.
+Energy Wizard decision trees.
 """
 import networkx as nx
 import logging
@@ -9,11 +9,41 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class LogicTree:
-    """Class to traverse a directed graph."""
+class DecisionTree:
+    """Class to traverse a directed graph of LLM prompts. Nodes are
+    prompts and edges are transitions between prompts based on conditions
+    being met in the LLM response."""
 
     def __init__(self, graph):
-        """
+        """Class to traverse a directed graph of LLM prompts. Nodes are
+        prompts and edges are transitions between prompts based on conditions
+        being met in the LLM response.
+
+        Examples
+        --------
+        Here's a simple example to setup a decision tree graph and run with the
+        DecisionTree class:
+
+        >>> import logging
+        >>> import networkx as nx
+        >>> from rex import init_logger
+        >>> from energy_wizard.base import ApiBase
+        >>> from energy_wizard.tree import DecisionTree
+        >>>
+        >>> init_logger('energy_wizard.tree')
+        >>>
+        >>> G = nx.DiGraph(text='hello', name='Grant',
+                           api=ApiBase(model='gpt-35-turbo'))
+        >>>
+        >>> G.add_node('init', prompt='Say {text} to {name}')
+        >>> G.add_edge('init', 'next', condition=lambda x: 'Grant' in x)
+        >>> G.add_node('next', prompt='How are you?')
+        >>>
+        >>> tree = DecisionTree(G)
+        >>> out = tree.run()
+        >>>
+        >>> print(tree.all_messages_txt)
+
         Parameters
         ----------
         graph : nx.DiGraph
@@ -126,7 +156,7 @@ class LogicTree:
         raise AttributeError(msg)
 
     def run(self, node0='init'):
-        """Traverse the logic tree starting at the input node.
+        """Traverse the decision tree starting at the input node.
 
         Parameters
         ----------
