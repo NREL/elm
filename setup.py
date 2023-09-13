@@ -24,7 +24,7 @@ with open("requirements.txt") as f:
     install_requires = f.readlines()
 
 
-test_requires = ["pytest>=5.2", ]
+test_requires = ["pytest>=5.2", "pytest-mock"]
 description = "Energy Language Model"
 
 setup(

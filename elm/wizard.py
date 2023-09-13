@@ -251,7 +251,7 @@ class EnergyWizard(ApiBase):
         if 'azure' in str(openai.api_type).lower():
             kwargs['engine'] = self.model
 
-        response = self._CHAT_OBJ.create(**kwargs)
+        response = openai.ChatCompletion.create(**kwargs)
 
         if stream:
             for chunk in response:

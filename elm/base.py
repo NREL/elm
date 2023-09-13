@@ -39,9 +39,6 @@ class ApiBase(ABC):
     MODEL_ROLE = "You are a research assistant that answers questions."
     """High level model role"""
 
-    _CHAT_OBJ = openai.ChatCompletion
-    """OpenAI chat object. Can be changed for testing."""
-
     def __init__(self, model=None):
         """
         Parameters
@@ -166,7 +163,7 @@ class ApiBase(ABC):
         if 'azure' in str(openai.api_type).lower():
             kwargs['engine'] = self.model
 
-        response = self._CHAT_OBJ.create(**kwargs)
+        response = openai.ChatCompletion.create(**kwargs)
         response = response["choices"][0]["message"]["content"]
         self.chat_messages.append({'role': 'assistant', 'content': response})
 
@@ -204,7 +201,7 @@ class ApiBase(ABC):
         if 'azure' in str(openai.api_type).lower():
             kwargs['engine'] = self.model
 
-        response = self._CHAT_OBJ.create(**kwargs)
+        response = openai.ChatCompletion.create(**kwargs)
         response = response["choices"][0]["message"]["content"]
         return response
 

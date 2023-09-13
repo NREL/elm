@@ -57,6 +57,7 @@ class DecisionTree:
             transition.
         """
         self._g = graph
+        self._history = []
         assert isinstance(self.graph, nx.DiGraph)
         assert 'api' in self.graph.graph
 
@@ -94,6 +95,16 @@ class DecisionTree:
         return messages
 
     @property
+    def history(self):
+        """Get a record of the nodes traversed in the tree
+
+        Returns
+        -------
+        list
+        """
+        return self._history
+
+    @property
     def graph(self):
         """Get the networkx graph object
 
@@ -122,6 +133,7 @@ class DecisionTree:
         txt_fmt = {k: v for k, v in self.graph.graph.items() if k != 'api'}
         prompt = prompt.format(**txt_fmt)
 
+        self._history.append(node0)
         out = self.api.chat(prompt)
 
         successors = list(self.graph.successors(node0))
@@ -168,6 +180,9 @@ class DecisionTree:
         out : str
             Final response from LLM at the leaf node.
         """
+
+        self._history = []
+
         while True:
             try:
                 out = self.call_node(node0)

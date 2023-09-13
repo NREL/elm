@@ -20,14 +20,14 @@ def test_overlap():
     chunks1 = Chunker(TEXT, tokens_per_chunk=1, overlap=1)
     assert len(chunks1.text.split('\n\n')) == len(chunks1)
 
-    for i in range(len(chunks0)):
-        assert len(chunks0[i]) < len(chunks1[i])
+    for i, c0 in enumerate(chunks0):
+        assert len(c0) < len(chunks1[i])
 
     for i0 in [5, 10, 25]:
         c1 = chunks1[i0].split('\n\n')
-        assert c1[0] == chunks0[i0-1]
+        assert c1[0] == chunks0[i0 - 1]
         assert c1[1] == chunks0[i0]
-        assert c1[2] == chunks0[i0+1]
+        assert c1[2] == chunks0[i0 + 1]
 
 
 def test_by_tokens():
