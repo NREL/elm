@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-Energy Wizard PDF to text parser
+ELM PDF to text parser
 """
 import requests
 import copy
 from PyPDF2 import PdfReader
 import logging
 
-from energy_wizard.base import ApiBase
+from elm.base import ApiBase
 
 
 logger = logging.getLogger(__name__)

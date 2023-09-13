@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Energy Wizard abstract class for API calls
+ELM abstract class for API calls
 """
 from abc import ABC
 import asyncio

@@ -3,7 +3,7 @@
 Utility to break text up into overlapping chunks.
 """
 import copy
-from energy_wizard.base import ApiBase
+from elm.base import ApiBase
 
 
 class Chunker(ApiBase):

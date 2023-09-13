@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Energy Wizard
+ELM energy wizard
 """
 import copy
 import numpy as np
 import openai
 
-from energy_wizard.base import ApiBase
+from elm.base import ApiBase
 
 
 class EnergyWizard(ApiBase):

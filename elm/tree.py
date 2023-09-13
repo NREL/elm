@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Energy Wizard decision trees.
+ELM decision trees.
 """
 import networkx as nx
 import logging
@@ -27,10 +27,10 @@ class DecisionTree:
         >>> import logging
         >>> import networkx as nx
         >>> from rex import init_logger
-        >>> from energy_wizard.base import ApiBase
-        >>> from energy_wizard.tree import DecisionTree
+        >>> from elm.base import ApiBase
+        >>> from elm.tree import DecisionTree
         >>>
-        >>> init_logger('energy_wizard.tree')
+        >>> init_logger('elm.tree')
         >>>
         >>> G = nx.DiGraph(text='hello', name='Grant',
                            api=ApiBase(model='gpt-35-turbo'))

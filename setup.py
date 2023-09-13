@@ -14,7 +14,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(here, "README.rst"), encoding="utf-8") as f:
     readme = f.read()
 
-with open(os.path.join(here, "energy_wizard", "version.py"), encoding="utf-8") as f:
+with open(os.path.join(here, "elm", "version.py"), encoding="utf-8") as f:
     version = f.read()
 
 version = version.split('=')[-1].strip().strip('"').strip("'")
@@ -25,21 +25,21 @@ with open("requirements.txt") as f:
 
 
 test_requires = ["pytest>=5.2", ]
-description = "Energy Wizard"
+description = "Energy Language Model"
 
 setup(
-    name="energy_wizard",
+    name="elm",
     version=version,
     description=description,
     long_description=readme,
     author="Grant Buster",
     author_email="grant.buster@nrel.gov",
-    url="https://github.com/grantbuster/energy_wizard",
+    url="https://github.com/NREL/elm",
     packages=find_packages(),
-    package_dir={"energy_wizard": "energy_wizard"},
+    package_dir={"elm": "elm"},
     license="BSD 3-Clause",
     zip_safe=False,
-    keywords="energy wizard",
+    keywords="elm",
     python_requires='>=3.8',
     classifiers=[
         "Development Status :: 4 - Beta",

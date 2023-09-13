@@ -5,8 +5,8 @@ Research Summarization and Distillation with LLMs
 import logging
 import os
 
-from energy_wizard.base import ApiBase
-from energy_wizard.chunk import Chunker
+from elm.base import ApiBase
+from elm.chunk import Chunker
 
 
 logger = logging.getLogger(__name__)

@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-Energy Wizard text embedding
+ELM text embedding
 """
 import openai
 import re
 import os
 import logging
 
-from energy_wizard.base import ApiBase
-from energy_wizard.chunk import Chunker
+from elm.base import ApiBase
+from elm.chunk import Chunker
 
 
 logger = logging.getLogger(__name__)

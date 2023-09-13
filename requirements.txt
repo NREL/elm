@@ -4,3 +4,6 @@ scipy
 pandas
 numpy
 PyPDF2
+networkx
+matplotlib
+nrel-rex
