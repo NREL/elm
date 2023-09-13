@@ -21,20 +21,20 @@ class MockClass:
     """Dummy class to mock various api calls"""
 
     @staticmethod
-    def get_embedding(*args, **kwargs):
+    def get_embedding(*args, **kwargs):  # pylint: disable=unused-argument
         """Mock for ChunkAndEmbed.call_api()"""
         embedding = np.random.uniform(0, 1, 10)
         return embedding
 
     @staticmethod
-    def call(*args, **kwargs):
+    def call(*args, **kwargs):  # pylint: disable=unused-argument
         """Mock for ChunkAndEmbed.call_api()"""
         embedding = np.random.uniform(0, 1, 10)
         response = {'data': [{'embedding': embedding}]}
         return response
 
     @staticmethod
-    def create(*args, **kwargs):
+    def create(*args, **kwargs):  # pylint: disable=unused-argument
         """Mock for openai.ChatCompletion.create()"""
         response = {'choices': [{'message': {'content': 'hello!'}}]}
         return response

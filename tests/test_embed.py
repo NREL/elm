@@ -19,7 +19,7 @@ class MockClass:
     """Dummy class to mock ChunkAndEmbed.call_api()"""
 
     @staticmethod
-    def call(*args, **kwargs):
+    def call(*args, **kwargs):  # pylint: disable=unused-argument
         """Mock for ChunkAndEmbed.call_api()"""
         embedding = np.random.uniform(0, 1, 10)
         response = {'data': [{'embedding': embedding}]}
