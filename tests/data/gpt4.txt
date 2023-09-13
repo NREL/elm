@@ -1,0 +1,92 @@
+We’ve created GPT-4, the latest milestone in OpenAI’s effort in scaling up deep learning. GPT-4 is a large multimodal model (accepting image and text inputs, emitting text outputs) that, while less capable than humans in many real-world scenarios, exhibits human-level performance on various professional and academic benchmarks. For example, it passes a simulated bar exam with a score around the top 10% of test takers; in contrast, GPT-3.5’s score was around the bottom 10%. We’ve spent 6 months iteratively aligning GPT-4 using lessons from our adversarial testing program as well as ChatGPT, resulting in our best-ever results (though far from perfect) on factuality, steerability, and refusing to go outside of guardrails.
+
+Over the past two years, we rebuilt our entire deep learning stack and, together with Azure, co-designed a supercomputer from the ground up for our workload. A year ago, we trained GPT-3.5 as a first “test run” of the system. We found and fixed some bugs and improved our theoretical foundations. As a result, our GPT-4 training run was (for us at least!) unprecedentedly stable, becoming our first large model whose training performance we were able to accurately predict ahead of time. As we continue to focus on reliable scaling, we aim to hone our methodology to help us predict and prepare for future capabilities increasingly far in advance—something we view as critical for safety.
+
+We are releasing GPT-4’s text input capability via ChatGPT and the API (with a waitlist). To prepare the image input capability for wider availability, we’re collaborating closely with a single partner to start. We’re also open-sourcing OpenAI Evals, our framework for automated evaluation of AI model performance, to allow anyone to report shortcomings in our models to help guide further improvements.
+
+Capabilities
+In a casual conversation, the distinction between GPT-3.5 and GPT-4 can be subtle. The difference comes out when the complexity of the task reaches a sufficient threshold—GPT-4 is more reliable, creative, and able to handle much more nuanced instructions than GPT-3.5.
+
+To understand the difference between the two models, we tested on a variety of benchmarks, including simulating exams that were originally designed for humans. We proceeded by using the most recent publicly-available tests (in the case of the Olympiads and AP free response questions) or by purchasing 2022–2023 editions of practice exams. We did no specific training for these exams. A minority of the problems in the exams were seen by the model during training, but we believe the results to be representative—see our technical report for details.
+
+We also evaluated GPT-4 on traditional benchmarks designed for machine learning models. GPT-4 considerably outperforms existing large language models, alongside most state-of-the-art (SOTA) models which may include benchmark-specific crafting or additional training protocols:
+
+Many existing ML benchmarks are written in English. To get an initial sense of capability in other languages, we translated the MMLU benchmark—a suite of 14,000 multiple-choice problems spanning 57 subjects—into a variety of languages using Azure Translate (see Appendix). In the 24 of 26 languages tested, GPT-4 outperforms the English-language performance of GPT-3.5 and other LLMs (Chinchilla, PaLM), including for low-resource languages such as Latvian, Welsh, and Swahili:
+
+We’ve also been using GPT-4 internally, with great impact on functions like support, sales, content moderation, and programming. We also are using it to assist humans in evaluating AI outputs, starting the second phase in our alignment strategy.
+
+Visual inputs
+GPT-4 can accept a prompt of text and images, which—parallel to the text-only setting—lets the user specify any vision or language task. Specifically, it generates text outputs (natural language, code, etc.) given inputs consisting of interspersed text and images. Over a range of domains—including documents with text and photographs, diagrams, or screenshots—GPT-4 exhibits similar capabilities as it does on text-only inputs. Furthermore, it can be augmented with test-time techniques that were developed for text-only language models, including few-shot and chain-of-thought prompting. Image inputs are still a research preview and not publicly available.
+
+We preview GPT-4’s performance by evaluating it on a narrow suite of standard academic vision benchmarks. However, these numbers do not fully represent the extent of its capabilities as we are constantly discovering new and exciting tasks that the model is able to tackle. We plan to release further analyses and evaluation numbers as well as thorough investigation of the effect of test-time techniques soon.
+
+Steerability
+We’ve been working on each aspect of the plan outlined in our post about defining the behavior of AIs, including steerability. Rather than the classic ChatGPT personality with a fixed verbosity, tone, and style, developers (and soon ChatGPT users) can now prescribe their AI’s style and task by describing those directions in the “system” message. System messages allow API users to significantly customize their users’ experience within bounds. We will keep making improvements here (and particularly know that system messages are the easiest way to “jailbreak” the current model, i.e., the adherence to the bounds is not perfect), but we encourage you to try it out and let us know what you think.
+
+Limitations
+Despite its capabilities, GPT-4 has similar limitations as earlier GPT models. Most importantly, it still is not fully reliable (it “hallucinates” facts and makes reasoning errors). Great care should be taken when using language model outputs, particularly in high-stakes contexts, with the exact protocol (such as human review, grounding with additional context, or avoiding high-stakes uses altogether) matching the needs of a specific use-case.
+
+While still a real issue, GPT-4 significantly reduces hallucinations relative to previous models (which have themselves been improving with each iteration). GPT-4 scores 40% higher than our latest GPT-3.5 on our internal adversarial factuality evaluations:
+
+We have made progress on external benchmarks like TruthfulQA, which tests the model’s ability to separate fact from an adversarially-selected set of incorrect statements. These questions are paired with factually incorrect answers that are statistically appealing.
+
+The GPT-4 base model is only slightly better at this task than GPT-3.5; however, after RLHF post-training (applying the same process we used with GPT-3.5) there is a large gap. Examining some examples below, GPT-4 resists selecting common sayings (you can’t teach an old dog new tricks), however it still can miss subtle details (Elvis Presley was not the son of an actor).
+
+The model can have various biases in its outputs—we have made progress on these but there’s still more to do. Per our recent blog post, we aim to make AI systems we build have reasonable default behaviors that reflect a wide swathe of users’ values, allow those systems to be customized within broad bounds, and get public input on what those bounds should be.
+
+GPT-4 generally lacks knowledge of events that have occurred after the vast majority of its data cuts off (September 2021), and does not learn from its experience. It can sometimes make simple reasoning errors which do not seem to comport with competence across so many domains, or be overly gullible in accepting obvious false statements from a user. And sometimes it can fail at hard problems the same way humans do, such as introducing security vulnerabilities into code it produces.
+
+GPT-4 can also be confidently wrong in its predictions, not taking care to double-check work when it’s likely to make a mistake. Interestingly, the base pre-trained model is highly calibrated (its predicted confidence in an answer generally matches the probability of being correct). However, through our current post-training process, the calibration is reduced.
+
+Risks & mitigations
+We’ve been iterating on GPT-4 to make it safer and more aligned from the beginning of training, with efforts including selection and filtering of the pretraining data, evaluations and expert engagement, model safety improvements, and monitoring and enforcement.
+
+GPT-4 poses similar risks as previous models, such as generating harmful advice, buggy code, or inaccurate information. However, the additional capabilities of GPT-4 lead to new risk surfaces. To understand the extent of these risks, we engaged over 50 experts from domains such as AI alignment risks, cybersecurity, biorisk, trust and safety, and international security to adversarially test the model. Their findings specifically enabled us to test model behavior in high-risk areas which require expertise to evaluate. Feedback and data from these experts fed into our mitigations and improvements for the model; for example, we’ve collected additional data to improve GPT-4’s ability to refuse requests on how to synthesize dangerous chemicals.
+
+GPT-4 incorporates an additional safety reward signal during RLHF training to reduce harmful outputs (as defined by our usage guidelines) by training the model to refuse requests for such content. The reward is provided by a GPT-4 zero-shot classifier judging safety boundaries and completion style on safety-related prompts. To prevent the model from refusing valid requests, we collect a diverse dataset from various sources (e.g., labeled production data, human red-teaming, model-generated prompts) and apply the safety reward signal (with a positive or negative value) on both allowed and disallowed categories.
+
+Our mitigations have significantly improved many of GPT-4’s safety properties compared to GPT-3.5. We’ve decreased the model’s tendency to respond to requests for disallowed content by 82% compared to GPT-3.5, and GPT-4 responds to sensitive requests (e.g., medical advice and self-harm) in accordance with our policies 29% more often.
+
+Overall, our model-level interventions increase the difficulty of eliciting bad behavior but doing so is still possible. Additionally, there still exist “jailbreaks” to generate content which violate our usage guidelines. As the “risk per token” of AI systems increases, it will become critical to achieve extremely high degrees of reliability in these interventions; for now it’s important to complement these limitations with deployment-time safety techniques like monitoring for abuse.
+
+GPT-4 and successor models have the potential to significantly influence society in both beneficial and harmful ways. We are collaborating with external researchers to improve how we understand and assess potential impacts, as well as to build evaluations for dangerous capabilities that may emerge in future systems. We will soon share more of our thinking on the potential social and economic impacts of GPT-4 and other AI systems.
+
+Training process
+Like previous GPT models, the GPT-4 base model was trained to predict the next word in a document, and was trained using publicly available data (such as internet data) as well as data we’ve licensed. The data is a web-scale corpus of data including correct and incorrect solutions to math problems, weak and strong reasoning, self-contradictory and consistent statements, and representing a great variety of ideologies and ideas.
+
+So when prompted with a question, the base model can respond in a wide variety of ways that might be far from a user’s intent. To align it with the user’s intent within guardrails, we fine-tune the model’s behavior using reinforcement learning with human feedback (RLHF).
+
+Note that the model’s capabilities seem to come primarily from the pre-training process—RLHF does not improve exam performance (without active effort, it actually degrades it). But steering of the model comes from the post-training process—the base model requires prompt engineering to even know that it should answer the questions.
+
+Predictable scaling
+A large focus of the GPT-4 project has been building a deep learning stack that scales predictably. The primary reason is that, for very large training runs like GPT-4, it is not feasible to do extensive model-specific tuning. We developed infrastructure and optimization that have very predictable behavior across multiple scales. To verify this scalability, we accurately predicted in advance GPT-4’s final loss on our internal codebase (not part of the training set) by extrapolating from models trained using the same methodology but using 10,000x less compute:
+
+Now that we can accurately predict the metric we optimize during training (loss), we’re starting to develop methodology to predict more interpretable metrics. For example, we successfully predicted the pass rate on a subset of the HumanEval dataset, extrapolating from models with 1,000x less compute:
+
+Some capabilities are still hard to predict. For example, the Inverse Scaling Prize was a competition to find a metric that gets worse as model compute increases, and hindsight neglect was one of the winners. Just like with another recent result, GPT-4 reverses the trend:
+
+We believe that accurately predicting future machine learning capabilities is an important part of safety that doesn’t get nearly enough attention relative to its potential impact (though we’ve been encouraged by efforts across several institutions). We are scaling up our efforts to develop methods that provide society with better guidance about what to expect from future systems, and we hope this becomes a common goal in the field.
+
+OpenAI Evals
+We’re open-sourcing OpenAI Evals, our software framework for creating and running benchmarks for evaluating models like GPT-4, while inspecting their performance sample by sample. We use Evals to guide development of our models (both identifying shortcomings and preventing regressions), and our users can apply it for tracking performance across model versions (which will now be coming out regularly) and evolving product integrations. For example, Stripe has used Evals to complement their human evaluations to measure the accuracy of their GPT-powered documentation tool.
+
+Because the code is all open-source, Evals supports writing new classes to implement custom evaluation logic. In our own experience, however, many benchmarks follow one of a few “templates,” so we have also included the templates that have been most useful internally (including a template for “model-graded evals”—we’ve found that GPT-4 is surprisingly capable of checking its own work). Generally the most effective way to build a new eval will be to instantiate one of these templates along with providing data. We’re excited to see what others can build with these templates and with Evals more generally.
+
+We are hoping Evals becomes a vehicle to share and crowdsource benchmarks, representing a maximally wide set of failure modes and difficult tasks. As an example to follow, we’ve created a logic puzzles eval which contains ten prompts where GPT-4 fails. Evals is also compatible with implementing existing benchmarks; we’ve included several notebooks implementing academic benchmarks and a few variations of integrating (small subsets of) CoQA as an example.
+
+We invite everyone to use Evals to test our models and submit the most interesting examples. We believe that Evals will be an integral part of the process for using and building on top of our models, and we welcome direct contributions, questions, and feedback.
+
+ChatGPT Plus
+ChatGPT Plus subscribers will get GPT-4 access on chat.openai.com with a usage cap. We will adjust the exact usage cap depending on demand and system performance in practice, but we expect to be severely capacity constrained (though we will scale up and optimize over upcoming months).
+
+Depending on the traffic patterns we see, we may introduce a new subscription level for higher-volume GPT-4 usage; we also hope at some point to offer some amount of free GPT-4 queries so those without a subscription can try it too.
+
+API
+To get access to the GPT-4 API (which uses the same ChatCompletions API as gpt-3.5-turbo), please sign up for our waitlist. We will start inviting some developers today, and scale up gradually to balance capacity with demand. If you are a researcher studying the societal impact of AI or AI alignment issues, you can also apply for subsidized access via our Researcher Access Program.
+
+Once you have access, you can make text-only requests to the gpt-4 model (image inputs are still in limited alpha), which we will automatically update to our recommended stable model as we make new versions over time (you can pin the current version by calling gpt-4-0314, which we’ll support until June 14). Pricing is $0.03 per 1k prompt tokens and $0.06 per 1k completion tokens. Default rate limits are 40k tokens per minute and 200 requests per minute.
+
+gpt-4 has a context length of 8,192 tokens. We are also providing limited access to our 32,768–context (about 50 pages of text) version, gpt-4-32k, which will also be updated automatically over time (current version gpt-4-32k-0314, also supported until June 14). Pricing is $0.06 per 1K prompt tokens and $0.12 per 1k completion tokens. We are still improving model quality for long context and would love feedback on how it performs for your use-case. We are processing requests for the 8K and 32K engines at different rates based on capacity, so you may receive access to them at different times.
+
+Conclusion
+We look forward to GPT-4 becoming a valuable tool in improving people’s lives by powering many applications. There’s still a lot of work to do, and we look forward to improving this model through the collective efforts of the community building on top of, exploring, and contributing to the model.
