@@ -13,7 +13,7 @@ import elm.embed
 FP_PDF = os.path.join(TEST_DATA_DIR, 'GPT-4.pdf')
 FP_TXT = os.path.join(TEST_DATA_DIR, 'gpt4.txt')
 
-with open(FP_TXT, 'r') as f:
+with open(FP_TXT, 'r', encoding='utf8') as f:
     TEXT = f.read()
 
 
