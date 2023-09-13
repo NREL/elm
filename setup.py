@@ -4,10 +4,6 @@ setup.py
 import os
 from codecs import open
 from setuptools import setup, find_packages
-from setuptools.command.develop import develop
-from subprocess import check_call
-import shlex
-from warnings import warn
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -24,7 +20,7 @@ with open("requirements.txt") as f:
     install_requires = f.readlines()
 
 
-test_requires = ["pytest>=5.2", ]
+test_requires = ["pytest>=5.2", "pytest-mock"]
 description = "Energy Language Model"
 
 setup(

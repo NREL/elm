@@ -20,29 +20,23 @@ class ChunkAndEmbed(ApiBase):
     DEFAULT_MODEL = 'text-embedding-ada-002'
     """Default model to do embeddings."""
 
-    def __init__(self, text, tag=None, model=None, tokens_per_chunk=500,
-                 overlap=1):
+    def __init__(self, text, model=None, **chunk_kwargs):
         """
         Parameters
         ----------
         text : str
             Single continuous piece of text to chunk up by paragraph and embed
             or filepath to .txt file containing one piece of text.
-        tag : None | str
-            Optional reference tag to include at the beginning of each text
-            chunk
         model : None | str
             Optional specification of OpenAI model to use. Default is
             cls.DEFAULT_MODEL
-        tokens_per_chunk : float
-            Nominal token count per text chunk
-        overlap : int
-            Number of paragraphs to overlap between chunks
+        chunk_kwargs : dict | None
+            kwargs for initialization of :class:`elm.chunk.Chunker`
         """
+
         super().__init__(model)
 
         self.text = text
-        self.tag = tag
 
         if os.path.isfile(text):
             logger.info('Loading text file: {}'.format(text))
@@ -52,9 +46,7 @@ class ChunkAndEmbed(ApiBase):
         assert isinstance(self.text, str)
         self.text = self.clean_tables(self.text)
 
-        self.text_chunks = Chunker(self.text, tag=tag,
-                                   tokens_per_chunk=tokens_per_chunk,
-                                   overlap=overlap)
+        self.text_chunks = Chunker(self.text, **chunk_kwargs)
 
     @staticmethod
     def clean_tables(text):
@@ -81,8 +73,50 @@ class ChunkAndEmbed(ApiBase):
 
         return '\n'.join(lines)
 
+    def run(self, rate_limit=175e3):
+        """Run text embedding in serial
+
+        Parameters
+        ----------
+        rate_limit : float
+            OpenAI API rate limit (tokens / minute). Note that the
+            embedding limit is 350k as of 4/2023, but we're using a large
+            factor of safety (~1/2) because we can only count the tokens on the
+            input side and assume the output is about the same count.
+
+        Returns
+        -------
+        embedding : list
+            List of 1D arrays representing the embeddings for all text chunks
+        """
+
+        logger.info('Embedding {} text chunks...'
+                    .format(len(self.text_chunks)))
+
+        embeddings = []
+        for i, chunk in enumerate(self.text_chunks):
+            req = {"input": chunk, "model": self.model}
+
+            if 'azure' in str(openai.api_type).lower():
+                req['engine'] = self.model
+
+            out = self.call_api(self.EMBEDDING_URL, self.HEADERS, req)
+
+            try:
+                out = out['data'][0]['embedding']
+                embeddings.append(out)
+            except Exception:
+                msg = ('Could not get embeddings for chunk {}, '
+                       'received API response: {}'.format(i + 1, out))
+                logger.error(msg)
+                embeddings.append(None)
+
+        logger.info('Finished all embeddings.')
+
+        return embeddings
+
     async def run_async(self, rate_limit=175e3):
-        """Run text embedding
+        """Run text embedding on chunks asynchronously
 
         NOTE: you need to call this using the await command in ipython or
         jupyter, e.g.: `out = await ChunkAndEmbed.run_async()`
@@ -100,12 +134,6 @@ class ChunkAndEmbed(ApiBase):
         embedding : list
             List of 1D arrays representing the embeddings for all text chunks
         """
-
-        if not isinstance(self.text_chunks, Chunker):
-            msg = ('You must init a Chunker obj with the text before '
-                   'running async embeddings!')
-            logger.error(msg)
-            raise RuntimeError(msg)
 
         logger.info('Embedding {} text chunks...'
                     .format(len(self.text_chunks)))
