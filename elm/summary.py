@@ -55,6 +55,7 @@ class Summary(ApiBase):
         assert isinstance(self.text, str)
 
         self.text_chunks = Chunker(self.text, **chunk_kwargs)
+        self.summary_chunks = []
 
     def combine(self, text_summary):
         """Combine separate chunk summaries into one more comprehensive
@@ -106,6 +107,7 @@ class Summary(ApiBase):
             msg = f'"""{chunk}"""\n\n{instruction}'
             response = self.generic_query(msg, model_role=self.MODEL_ROLE,
                                           temperature=temperature)
+            self.summary_chunks.append(response)
             summary += f'\n\n{response}'
 
         if fancy_combine:
@@ -155,6 +157,7 @@ class Summary(ApiBase):
                                                    temperature=temperature,
                                                    rate_limit=rate_limit)
 
+        self.summary_chunks = summaries
         summary = '\n\n'.join(summaries)
 
         if fancy_combine:

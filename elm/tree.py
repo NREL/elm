@@ -53,8 +53,9 @@ class DecisionTree:
             have attribute "prompt" which can have {format} named arguments
             that will be filled from the high-level graph attributes. Edges can
             have attribute "condition" that is a callable to be executed on the
-            LLM response text. No edge condition will signify a preferred
-            transition.
+            LLM response text. An edge from a node without a condition acts as
+            an "else" statement if no other edge conditions are satisfied. A
+            single edge from node to node does not need a condition.
         """
         self._g = graph
         self._history = []
@@ -145,21 +146,23 @@ class DecisionTree:
             return out
 
         if len(successors) > 1 and all(c is None for c in conditions):
-            msg = (f'None of the edges from "{node0}" have '
+            msg = (f'At least one of the edges from "{node0}" should have '
                    f'a "condition": {edges}')
             logger.error(msg)
             raise AttributeError(msg)
 
+        # prioritize callable conditions
         for i, condition in enumerate(conditions):
+            if callable(condition) and condition(out):
+                logger.info(f'Node transition: "{node0}" -> "{successors[i]}" '
+                            '(satisfied by callable condition)')
+                return successors[i]
 
+        # None condition is basically "else" statement
+        for i, condition in enumerate(conditions):
             if condition is None:
                 logger.info(f'Node transition: "{node0}" -> "{successors[i]}" '
                             '(satisfied by None condition)')
-                return successors[i]
-
-            elif callable(condition) and condition(out):
-                logger.info(f'Node transition: "{node0}" -> "{successors[i]}" '
-                            '(satisfied by callable condition)')
                 return successors[i]
 
         msg = (f'None of the edge conditions from "{node0}" '
