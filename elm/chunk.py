@@ -257,7 +257,7 @@ class Chunker(ApiBase):
         text_chunks = []
         for chunk in chunks:
             paragraphs = [self.paragraphs[c] for c in chunk]
-            text_chunks.append('\n\n'.join(paragraphs))
+            text_chunks.append(self._split_on.join(paragraphs))
 
         if self.tag is not None:
             text_chunks = [self.tag + '\n\n' + chunk for chunk in text_chunks]
