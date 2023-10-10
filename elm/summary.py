@@ -20,8 +20,10 @@ class Summary(ApiBase):
     """High level model role, somewhat redundant to MODEL_INSTRUCTION"""
 
     MODEL_INSTRUCTION = ('Can you please summarize the text quoted above '
-                         'in {n_words} words?')
-    """Prefix to the engineered prompt. That `n_words` is an initialization
+                         'in {n_words} words?\n\n"""\n{text_chunk}\n"""')
+    """Prefix to the engineered prompt. The format args `text_chunk` and
+    `n_words` will be formatted by the Summary class at runtime. `text_chunk`
+    will be provided by the Summary text chunks, `n_words` is an initialization
     argument for the Summary class."""
 
     def __init__(self, text, model=None, n_words=500, **chunk_kwargs):
@@ -103,8 +105,8 @@ class Summary(ApiBase):
             logger.debug('Summarizing text chunk {} out of {}'
                          .format(i + 1, len(self.text_chunks)))
 
-            instruction = self.MODEL_INSTRUCTION.format(n_words=self.n_words)
-            msg = f'"""{chunk}"""\n\n{instruction}'
+            msg = self.MODEL_INSTRUCTION.format(text_chunk=chunk,
+                                                n_words=self.n_words)
             response = self.generic_query(msg, model_role=self.MODEL_ROLE,
                                           temperature=temperature)
             self.summary_chunks.append(response)
@@ -148,8 +150,8 @@ class Summary(ApiBase):
 
         queries = []
         for chunk in self.text_chunks:
-            instruction = self.MODEL_INSTRUCTION.format(n_words=self.n_words)
-            msg = f'"""{chunk}"""\n\n{instruction}'
+            msg = self.MODEL_INSTRUCTION.format(text_chunk=chunk,
+                                                n_words=self.n_words)
             queries.append(msg)
 
         summaries = await self.generic_async_query(queries,
