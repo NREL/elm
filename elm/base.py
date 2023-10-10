@@ -49,6 +49,7 @@ class ApiBase(ABC):
         """
         self.model = model or self.DEFAULT_MODEL
         self.chat_messages = [{"role": "system", "content": self.MODEL_ROLE}]
+        self.api_queue = None
 
     @staticmethod
     async def call_api(url, headers, request_json):
@@ -130,9 +131,9 @@ class ApiBase(ABC):
             List of API outputs where each list entry is a GPT answer from the
             corresponding message in the all_request_jsons input.
         """
-        runner = ApiQueue(url, headers, all_request_jsons,
-                          rate_limit=rate_limit)
-        out = await runner.run()
+        self.api_queue = ApiQueue(url, headers, all_request_jsons,
+                                  rate_limit=rate_limit)
+        out = await self.api_queue.run()
         return out
 
     def chat(self, query, temperature=0):
@@ -245,9 +246,9 @@ class ApiBase(ABC):
                    "temperature": temperature}
             all_request_jsons.append(req)
 
-        runner = ApiQueue(self.URL, self.HEADERS, all_request_jsons,
-                          rate_limit=rate_limit)
-        out = await runner.run()
+        self.api_queue = ApiQueue(self.URL, self.HEADERS, all_request_jsons,
+                                  rate_limit=rate_limit)
+        out = await self.api_queue.run()
 
         for i, response in enumerate(out):
             choice = response.get('choices', [{'message': {'content': ''}}])[0]
