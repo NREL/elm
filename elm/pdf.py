@@ -16,6 +16,18 @@ logger = logging.getLogger(__name__)
 class PDFtoTXT(ApiBase):
     """Class to parse text from a PDF document."""
 
+    MODEL_ROLE = ('You clean up poorly formatted text '
+                  'extracted from PDF documents.')
+    """High level model role."""
+
+    MODEL_INSTRUCTION = ('Text extracted from a PDF: '
+                         '\n"""\n{}\n"""\n\n'
+                         'The text above was extracted from a PDF document. '
+                         'Can you make it nicely formatted? '
+                         'Please only return the formatted text '
+                         'without comments or added information.')
+    """Instructions to the model with python format braces for pdf text"""
+
     def __init__(self, fp, page_range=None, model=None):
         """
         Parameters
@@ -68,14 +80,11 @@ class PDFtoTXT(ApiBase):
                              .format(i + 1 + page_range.start, len(pdf.pages)))
             else:
                 out.append(page_text)
-                logger.debug('Loaded page {} out of {}'
-                             .format(i + 1 + page_range.start, len(pdf.pages)))
 
         logger.info('Finished loading PDF.')
         return out
 
-    @staticmethod
-    def make_gpt_messages(pdf_raw_text):
+    def make_gpt_messages(self, pdf_raw_text):
         """Make the chat completion messages list for input to GPT
 
         Parameters
@@ -91,16 +100,9 @@ class PDFtoTXT(ApiBase):
                 [{"role": "system", "content": "You do this..."},
                  {"role": "user", "content": "Please do this: {}"}]
         """
-        query = ('Text extracted from a PDF: '
-                 '\"\"\"\n{}\"\"\"\n\n'
-                 'The text above was extracted from a PDF document. '
-                 'Can you make it nicely formatted? '
-                 'Please only return the formatted text, nothing else.'
-                 .format(pdf_raw_text))
 
-        role_str = ('You clean up poorly formatted text '
-                    'extracted from PDF documents.')
-        messages = [{"role": "system", "content": role_str},
+        query = self.MODEL_INSTRUCTION.format(pdf_raw_text)
+        messages = [{"role": "system", "content": self.MODEL_ROLE},
                     {"role": "user", "content": query}]
 
         return messages
@@ -147,7 +149,7 @@ class PDFtoTXT(ApiBase):
 
         return clean_pages
 
-    async def clean_txt_async(self, rate_limit=40e3):
+    async def clean_txt_async(self, ignore_error=None, rate_limit=40e3):
         """Use GPT to clean raw pdf text in parallel calls to the OpenAI API.
 
         NOTE: you need to call this using the await command in ipython or
@@ -155,6 +157,10 @@ class PDFtoTXT(ApiBase):
 
         Parameters
         ----------
+        ignore_error : None | callable
+            Optional callable to parse API error string. If the callable
+            returns True, the error will be ignored, the API call will not be
+            tried again, and the output will be an empty string.
         rate_limit : float
             OpenAI API rate limit (tokens / minute). Note that the
             gpt-3.5-turbo limit is 90k as of 4/2023, but we're using a large
@@ -178,6 +184,7 @@ class PDFtoTXT(ApiBase):
 
         clean_pages = await self.call_api_async(self.URL, self.HEADERS,
                                                 all_request_jsons,
+                                                ignore_error=ignore_error,
                                                 rate_limit=rate_limit)
 
         for i, page in enumerate(clean_pages):

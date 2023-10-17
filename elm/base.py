@@ -96,7 +96,7 @@ class ApiBase(ABC):
         return out
 
     async def call_api_async(self, url, headers, all_request_jsons,
-                             rate_limit=40e3):
+                             ignore_error=None, rate_limit=40e3):
         """Use GPT to clean raw pdf text in parallel calls to the OpenAI API.
 
         NOTE: you need to call this using the await command in ipython or
@@ -119,6 +119,10 @@ class ApiBase(ABC):
                  "messages": [{"role": "system", "content": "You do this..."},
                               {"role": "user", "content": "Do this: {}"}],
                  "temperature": 0.0}
+        ignore_error : None | callable
+            Optional callable to parse API error string. If the callable
+            returns True, the error will be ignored, the API call will not be
+            tried again, and the output will be an empty string.
         rate_limit : float
             OpenAI API rate limit (tokens / minute). Note that the
             gpt-3.5-turbo limit is 90k as of 4/2023, but we're using a large
@@ -132,6 +136,7 @@ class ApiBase(ABC):
             corresponding message in the all_request_jsons input.
         """
         self.api_queue = ApiQueue(url, headers, all_request_jsons,
+                                  ignore_error=ignore_error,
                                   rate_limit=rate_limit)
         out = await self.api_queue.run()
         return out
@@ -207,7 +212,8 @@ class ApiBase(ABC):
         return response
 
     async def generic_async_query(self, queries, model_role=None,
-                                  temperature=0, rate_limit=40e3):
+                                  temperature=0, ignore_error=None,
+                                  rate_limit=40e3):
         """Run a number of generic single queries asynchronously
         (not conversational)
 
@@ -225,6 +231,10 @@ class ApiBase(ABC):
             GPT model temperature, a measure of response entropy from 0 to 1. 0
             is more reliable and nearly deterministic; 1 will give the model
             more creative freedom and may not return as factual of results.
+        ignore_error : None | callable
+            Optional callable to parse API error string. If the callable
+            returns True, the error will be ignored, the API call will not be
+            tried again, and the output will be an empty string.
         rate_limit : float
             OpenAI API rate limit (tokens / minute). Note that the
             gpt-3.5-turbo limit is 90k as of 4/2023, but we're using a large
@@ -247,6 +257,7 @@ class ApiBase(ABC):
             all_request_jsons.append(req)
 
         self.api_queue = ApiQueue(self.URL, self.HEADERS, all_request_jsons,
+                                  ignore_error=ignore_error,
                                   rate_limit=rate_limit)
         out = await self.api_queue.run()
 
@@ -324,7 +335,8 @@ class ApiBase(ABC):
 class ApiQueue:
     """Class to manage the parallel API queue and submission"""
 
-    def __init__(self, url, headers, request_jsons, rate_limit=40e3):
+    def __init__(self, url, headers, request_jsons, ignore_error=None,
+                 rate_limit=40e3):
         """
         Parameters
         ----------
@@ -343,6 +355,10 @@ class ApiQueue:
                  "messages": [{"role": "system", "content": "You do this..."},
                               {"role": "user", "content": "Do this: {}"}],
                  "temperature": 0.0}
+        ignore_error : None | callable
+            Optional callable to parse API error string. If the callable
+            returns True, the error will be ignored, the API call will not be
+            tried again, and the output will be an empty string.
         rate_limit : float
             OpenAI API rate limit (tokens / minute). Note that the
             gpt-3.5-turbo limit is 90k as of 4/2023, but we're using a large
@@ -353,11 +369,13 @@ class ApiQueue:
         self.url = url
         self.headers = headers
         self.request_jsons = request_jsons
+        self.ignore_error = ignore_error
         self.rate_limit = rate_limit
 
         self.api_jobs = {}
         self.todo = [True] * len(self)
         self.out = [None] * len(self)
+        self.errors = [None] * len(self)
 
     def __len__(self):
         """Number of API calls to submit"""
@@ -401,8 +419,21 @@ class ApiQueue:
                 task_out = await self.api_jobs[i]
 
                 if 'error' in task_out:
-                    logger.error('Received API error for task #{}: {}'
-                                 .format(i + 1, task_out))
+                    msg = ('Received API error for task #{0} '
+                           '(see `ApiQueue.errors[{1}]` and '
+                           '`ApiQueue.request_jsons[{1}]` for more details). '
+                           'Error message: {2}'.format(i + 1, i, task_out))
+                    self.errors[i] = 'Error: {}'.format(task_out)
+                    if (self.ignore_error is not None
+                            and self.ignore_error(str(task_out))):
+                        msg += ' Ignoring error and moving on.'
+                        dummy = {'choices': [{'message': {'content': ''}}]}
+                        self.out[i] = dummy
+                        self.todo[i] = False
+                        complete = len(self) - sum(self.todo)
+                    else:
+                        msg += ' Retrying query.'
+                    logger.error(msg)
                 else:
                     self.out[i] = task_out
                     self.todo[i] = False

@@ -99,6 +99,8 @@ class Summary(ApiBase):
             Summary of text.
         """
 
+        logger.info('Summarizing {} text chunks in serial...'
+                    .format(len(self.text_chunks)))
         summary = ''
 
         for i, chunk in enumerate(self.text_chunks):
@@ -115,10 +117,12 @@ class Summary(ApiBase):
         if fancy_combine:
             summary = self.combine(summary)
 
+        logger.info('Finished all summaries.')
+
         return summary
 
-    async def run_async(self, temperature=0, rate_limit=40e3,
-                        fancy_combine=True):
+    async def run_async(self, temperature=0, ignore_error=None,
+                        rate_limit=40e3, fancy_combine=True):
         """Run text summary asynchronously for all text chunks
 
         NOTE: you need to call this using the await command in ipython or
@@ -130,6 +134,10 @@ class Summary(ApiBase):
             GPT model temperature, a measure of response entropy from 0 to 1. 0
             is more reliable and nearly deterministic; 1 will give the model
             more creative freedom and may not return as factual of results.
+        ignore_error : None | callable
+            Optional callable to parse API error string. If the callable
+            returns True, the error will be ignored, the API call will not be
+            tried again, and the output will be an empty string.
         rate_limit : float
             OpenAI API rate limit (tokens / minute). Note that the
             gpt-3.5-turbo limit is 90k as of 4/2023, but we're using a large
@@ -157,6 +165,7 @@ class Summary(ApiBase):
         summaries = await self.generic_async_query(queries,
                                                    model_role=self.MODEL_ROLE,
                                                    temperature=temperature,
+                                                   ignore_error=ignore_error,
                                                    rate_limit=rate_limit)
 
         self.summary_chunks = summaries
