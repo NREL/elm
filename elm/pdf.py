@@ -219,8 +219,8 @@ class PDFtoTXT(ApiBase):
             raw_words = replace_chars_for_clean(raw).split(' ')
             clean_words = replace_chars_for_clean(clean).split(' ')
 
-            raw_words = set([x for x in raw_words if len(x) > 2])
-            clean_words = set([x for x in clean_words if len(x) > 2])
+            raw_words = {x for x in raw_words if len(x) > 2}
+            clean_words = {x for x in clean_words if len(x) > 2}
 
             isin = sum(x in clean_words for x in raw_words)
 
