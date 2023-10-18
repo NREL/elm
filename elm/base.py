@@ -3,6 +3,7 @@
 ELM abstract class for API calls
 """
 from abc import ABC
+import numpy as np
 import asyncio
 import aiohttp
 import openai
@@ -336,7 +337,7 @@ class ApiQueue:
     """Class to manage the parallel API queue and submission"""
 
     def __init__(self, url, headers, request_jsons, ignore_error=None,
-                 rate_limit=40e3):
+                 rate_limit=40e3, max_retries=5):
         """
         Parameters
         ----------
@@ -364,6 +365,9 @@ class ApiQueue:
             gpt-3.5-turbo limit is 90k as of 4/2023, but we're using a large
             factor of safety (~1/2) because we can only count the tokens on the
             input side and assume the output is about the same count.
+        max_retries : int
+            Number of times to retry an API call with an error response before
+            raising an error.
         """
 
         self.url = url
@@ -371,11 +375,13 @@ class ApiQueue:
         self.request_jsons = request_jsons
         self.ignore_error = ignore_error
         self.rate_limit = rate_limit
+        self.max_retries = max_retries
 
         self.api_jobs = {}
         self.todo = [True] * len(self)
         self.out = [None] * len(self)
         self.errors = [None] * len(self)
+        self.tries = np.zeros(len(self))
 
     def __len__(self):
         """Number of API calls to submit"""
@@ -398,12 +404,14 @@ class ApiQueue:
                                                             self.headers,
                                                             request))
                 self.api_jobs[i] = task
+                self.tries[i] += 1
 
                 logger.debug('Submitted {} out of {}, '
                              'token count is at {} '
-                             '(rate limit is {})'
+                             '(rate limit is {}). '
+                             'Max attempts for a job is {}'
                              .format(i + 1, len(self), token_count,
-                                     self.rate_limit))
+                                     self.rate_limit, int(self.tries.max())))
 
             elif token_count >= self.rate_limit:
                 token_count = 0
@@ -424,6 +432,7 @@ class ApiQueue:
                            '`ApiQueue.request_jsons[{1}]` for more details). '
                            'Error message: {2}'.format(i + 1, i, task_out))
                     self.errors[i] = 'Error: {}'.format(task_out)
+
                     if (self.ignore_error is not None
                             and self.ignore_error(str(task_out))):
                         msg += ' Ignoring error and moving on.'
@@ -433,7 +442,9 @@ class ApiQueue:
                         complete = len(self) - sum(self.todo)
                     else:
                         msg += ' Retrying query.'
+
                     logger.error(msg)
+
                 else:
                     self.out[i] = task_out
                     self.todo[i] = False
@@ -454,8 +465,21 @@ class ApiQueue:
 
         logger.debug('Submitting async API calls...')
 
+        self.api_jobs = {}
+        self.todo = [True] * len(self)
+        self.out = [None] * len(self)
+        self.errors = [None] * len(self)
+        self.tries = np.zeros(len(self))
+
         while any(self.todo):
             self.submit_jobs()
             await self.collect_jobs()
+
+            if any(self.tries > self.max_retries):
+                msg = (f'Hit {self.max_retries} retries on API queries. '
+                       'Stopping. See `ApiQueue.errors` for more '
+                       'details on error response')
+                logger.error(msg)
+                raise RuntimeError(msg)
 
         return self.out
