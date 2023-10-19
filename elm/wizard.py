@@ -127,10 +127,10 @@ class EnergyWizard(ApiBase):
         return strings, scores, best
 
     def _make_convo_query(self):
-        messages = [f"{msg['role'].upper()}: {msg['content']}"
-                    for msg in self.messages]
-        messages = '\n\n'.join(messages)
-        return messages
+        query = [f"{msg['role'].upper()}: {msg['content']}"
+                    for msg in self.chat_messages]
+        query = '\n\n'.join(query)
+        return query
 
     def engineer_query(self, query, token_budget=None, new_info_threshold=0.7,
                        conversational=False):
