@@ -49,8 +49,13 @@ class ApiBase(ABC):
             cls.DEFAULT_MODEL
         """
         self.model = model or self.DEFAULT_MODEL
-        self.chat_messages = [{"role": "system", "content": self.MODEL_ROLE}]
         self.api_queue = None
+        self.chat_messages = []
+        self.clear()
+
+    def clear(self):
+        """Clear chat"""
+        self.chat_messages = [{"role": "system", "content": self.MODEL_ROLE}]
 
     @staticmethod
     async def call_api(url, headers, request_json):

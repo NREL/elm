@@ -126,7 +126,14 @@ class EnergyWizard(ApiBase):
 
         return strings, scores, best
 
-    def engineer_query(self, query, token_budget=None, new_info_threshold=0.7):
+    def _make_convo_query(self):
+        messages = [f"{msg['role'].upper()}: {msg['content']}"
+                    for msg in self.messages]
+        messages = '\n\n'.join(messages)
+        return messages
+
+    def engineer_query(self, query, token_budget=None, new_info_threshold=0.7,
+                       conversational=False):
         """Engineer a query for GPT using the corpus of information
 
         Parameters
@@ -139,6 +146,9 @@ class EnergyWizard(ApiBase):
             New text added to the engineered query must contain at least this
             much new information. This helps prevent (for example) the table of
             contents being added multiple times.
+        conversational : bool
+            Flag to ask query with conversation history. Call
+            EnergyWizard.clear() to reset the chat.
 
         Returns
         -------
@@ -149,6 +159,9 @@ class EnergyWizard(ApiBase):
             The list of references (strs) used in the engineered prompt is
             returned here
         """
+
+        if conversational:
+            query = self._make_convo_query()
 
         token_budget = token_budget or self.token_budget
 
@@ -199,8 +212,14 @@ class EnergyWizard(ApiBase):
 
         return ref_list
 
-    def ask(self, query, debug=True, stream=True, temperature=0,
-            token_budget=None, new_info_threshold=0.7, print_references=False):
+    def ask(self, query,
+            debug=True,
+            stream=True,
+            temperature=0,
+            conversational=False,
+            token_budget=None,
+            new_info_threshold=0.7,
+            print_references=False):
         """Answers a query using GPT and a dataframe of relevant texts and
         embeddings.
 
@@ -214,6 +233,9 @@ class EnergyWizard(ApiBase):
             GPT model temperature, a measure of response entropy from 0 to 1. 0
             is more reliable and nearly deterministic; 1 will give the model
             more creative freedom and may not return as factual of results.
+        conversational : bool
+            Flag to ask query with conversation history. Call
+            EnergyWizard.clear() to reset the chat.
         token_budget : int
             Option to override the class init token budget.
         new_info_threshold : float
@@ -236,8 +258,10 @@ class EnergyWizard(ApiBase):
             engineered prompt is returned here
         """
 
+        self.chat_messages.append({"role": "user", "content": query})
         out = self.engineer_query(query, token_budget=token_budget,
-                                  new_info_threshold=new_info_threshold)
+                                  new_info_threshold=new_info_threshold,
+                                  conversational=conversational)
         query, references = out
 
         messages = [{"role": "system", "content": self.MODEL_ROLE},
@@ -267,6 +291,9 @@ class EnergyWizard(ApiBase):
             print('\n\nThe model was provided with the following documents to '
                   'support its answer:')
             print(' - ' + '\n - '.join(references))
+
+        self.chat_messages.append({'role': 'assistant',
+                                   'content': response_message})
 
         if debug:
             return response_message, query, references
