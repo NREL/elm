@@ -80,7 +80,7 @@ class DecisionTree:
         -------
         list
         """
-        return self.api.chat_messages
+        return self.api.messages
 
     @property
     def all_messages_txt(self):
@@ -90,10 +90,7 @@ class DecisionTree:
         -------
         str
         """
-        messages = [f"{msg['role'].upper()}: {msg['content']}"
-                    for msg in self.messages]
-        messages = '\n\n'.join(messages)
-        return messages
+        return self.api.all_messages_txt
 
     @property
     def history(self):

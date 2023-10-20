@@ -50,12 +50,26 @@ class ApiBase(ABC):
         """
         self.model = model or self.DEFAULT_MODEL
         self.api_queue = None
-        self.chat_messages = []
+        self.messages = []
         self.clear()
 
+    @property
+    def all_messages_txt(self):
+        """Get a string printout of the full conversation with the LLM
+
+        Returns
+        -------
+        str
+        """
+        messages = [f"{msg['role'].upper()}: {msg['content']}"
+                    for msg in self.messages]
+        messages = '\n\n'.join(messages)
+        return messages
+
     def clear(self):
-        """Clear chat"""
-        self.chat_messages = [{"role": "system", "content": self.MODEL_ROLE}]
+        """Clear chat history and reduce messages to just the initial model
+        role message."""
+        self.messages = [{"role": "system", "content": self.MODEL_ROLE}]
 
     @staticmethod
     async def call_api(url, headers, request_json):
@@ -166,10 +180,10 @@ class ApiBase(ABC):
             Model response
         """
 
-        self.chat_messages.append({"role": "user", "content": query})
+        self.messages.append({"role": "user", "content": query})
 
         kwargs = dict(model=self.model,
-                      messages=self.chat_messages,
+                      messages=self.messages,
                       temperature=temperature,
                       stream=False)
         if 'azure' in str(openai.api_type).lower():
@@ -177,7 +191,7 @@ class ApiBase(ABC):
 
         response = openai.ChatCompletion.create(**kwargs)
         response = response["choices"][0]["message"]["content"]
-        self.chat_messages.append({'role': 'assistant', 'content': response})
+        self.messages.append({'role': 'assistant', 'content': response})
 
         return response
 

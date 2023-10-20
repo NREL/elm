@@ -126,14 +126,8 @@ class EnergyWizard(ApiBase):
 
         return strings, scores, best
 
-    def _make_convo_query(self):
-        query = [f"{msg['role'].upper()}: {msg['content']}"
-                    for msg in self.chat_messages]
-        query = '\n\n'.join(query)
-        return query
-
     def engineer_query(self, query, token_budget=None, new_info_threshold=0.7,
-                       conversational=False):
+                       convo=False):
         """Engineer a query for GPT using the corpus of information
 
         Parameters
@@ -146,10 +140,10 @@ class EnergyWizard(ApiBase):
             New text added to the engineered query must contain at least this
             much new information. This helps prevent (for example) the table of
             contents being added multiple times.
-        conversational : bool
-            Flag to ask query with conversation history. Call
-            EnergyWizard.clear() to reset the chat.
-
+        convo : bool
+            Flag to perform semantic search with full conversation history
+            (True) or just the single query (False). Call EnergyWizard.clear()
+            to reset the chat history.
         Returns
         -------
         message : str
@@ -160,8 +154,13 @@ class EnergyWizard(ApiBase):
             returned here
         """
 
-        if conversational:
-            query = self._make_convo_query()
+        self.messages.append({"role": "user", "content": query})
+
+        if convo:
+            # [1:] to not include the system role in the semantic search
+            query = [f"{msg['role'].upper()}: {msg['content']}"
+                     for msg in self.messages[1:]]
+            query = '\n\n'.join(query)
 
         token_budget = token_budget or self.token_budget
 
@@ -212,16 +211,16 @@ class EnergyWizard(ApiBase):
 
         return ref_list
 
-    def ask(self, query,
-            debug=True,
-            stream=True,
-            temperature=0,
-            conversational=False,
-            token_budget=None,
-            new_info_threshold=0.7,
-            print_references=False):
-        """Answers a query using GPT and a dataframe of relevant texts and
-        embeddings.
+    def chat(self, query,
+             debug=True,
+             stream=True,
+             temperature=0,
+             convo=False,
+             token_budget=None,
+             new_info_threshold=0.7,
+             print_references=False):
+        """Answers a query by doing a semantic search of relevant text with
+        embeddings and then sending engineered query to the LLM.
 
         Parameters
         ----------
@@ -233,9 +232,10 @@ class EnergyWizard(ApiBase):
             GPT model temperature, a measure of response entropy from 0 to 1. 0
             is more reliable and nearly deterministic; 1 will give the model
             more creative freedom and may not return as factual of results.
-        conversational : bool
-            Flag to ask query with conversation history. Call
-            EnergyWizard.clear() to reset the chat.
+        convo : bool
+            Flag to perform semantic search with full conversation history
+            (True) or just the single query (False). Call EnergyWizard.clear()
+            to reset the chat history.
         token_budget : int
             Option to override the class init token budget.
         new_info_threshold : float
@@ -258,10 +258,9 @@ class EnergyWizard(ApiBase):
             engineered prompt is returned here
         """
 
-        self.chat_messages.append({"role": "user", "content": query})
         out = self.engineer_query(query, token_budget=token_budget,
                                   new_info_threshold=new_info_threshold,
-                                  conversational=conversational)
+                                  convo=convo)
         query, references = out
 
         messages = [{"role": "system", "content": self.MODEL_ROLE},
@@ -292,8 +291,8 @@ class EnergyWizard(ApiBase):
                   'support its answer:')
             print(' - ' + '\n - '.join(references))
 
-        self.chat_messages.append({'role': 'assistant',
-                                   'content': response_message})
+        self.messages.append({'role': 'assistant',
+                              'content': response_message})
 
         if debug:
             return response_message, query, references
