@@ -30,9 +30,10 @@ class Summary(ApiBase):
         """
         Parameters
         ----------
-        text : str
-            Single body of text to break up. Works well if this is a single
-            document with empty lines between paragraphs.
+        text : str | list
+            Single body of text to chunk up using elm.Chunker or a pre-chunked
+            list of strings. Works well if this is a single document with empty
+            lines between paragraphs.
         model : str
             GPT model name, default is the DEFAULT_MODEL global var
         n_words : int
@@ -49,14 +50,17 @@ class Summary(ApiBase):
         self.text = text
         self.n_words = n_words
 
-        if os.path.isfile(text):
-            logger.info('Loading text file: {}'.format(text))
-            with open(text, 'r') as f:
-                self.text = f.read()
+        assert isinstance(self.text, (str, list, tuple))
 
-        assert isinstance(self.text, str)
+        if isinstance(self.text, str):
+            if os.path.isfile(text):
+                logger.info('Loading text file: {}'.format(text))
+                with open(text, 'r') as f:
+                    self.text = f.read()
+            self.text_chunks = Chunker(self.text, **chunk_kwargs)
+        else:
+            self.text_chunks = self.text
 
-        self.text_chunks = Chunker(self.text, **chunk_kwargs)
         self.summary_chunks = []
 
     def combine(self, text_summary):
