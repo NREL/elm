@@ -401,6 +401,7 @@ class ApiQueue:
         self.out = [None] * len(self)
         self.errors = [None] * len(self)
         self.tries = np.zeros(len(self))
+        self._retry = False
 
     def __len__(self):
         """Number of API calls to submit"""
@@ -462,7 +463,7 @@ class ApiQueue:
                     else:
                         del self.api_jobs[i]
                         msg += ' Retrying query.'
-
+                        self._retry = True
                     logger.error(msg)
 
                 else:
@@ -490,8 +491,10 @@ class ApiQueue:
         self.out = [None] * len(self)
         self.errors = [None] * len(self)
         self.tries = np.zeros(len(self))
+        self._retry = False
 
         while any(self.todo):
+            self._retry = False
             self.submit_jobs()
             await self.collect_jobs()
 
@@ -501,7 +504,7 @@ class ApiQueue:
                        'details on error response')
                 logger.error(msg)
                 raise RuntimeError(msg)
-            elif any(self.todo):
+            elif self._retry:
                 time.sleep(60)
 
         return self.out
