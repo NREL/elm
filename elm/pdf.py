@@ -330,7 +330,7 @@ class PDFtoTXT(ApiBase):
         return full
 
     def clean_headers(self, char_thresh=0.6, page_thresh=0.8, split_on='\n',
-                      iheaders=[0, 1, -2, -1]):
+                      iheaders=(0, 1, -2, -1)):
         """Clean headers/footers that are duplicated across pages
 
         Parameters
@@ -343,7 +343,7 @@ class PDFtoTXT(ApiBase):
             removal
         split_on : str
             Chars to split lines of a page on
-        iheaders : list
+        iheaders : list | tuple
             Integer indices to look for headers after splitting a page into
             lines based on split_on. This needs to go from the start of the
             page to the end.
