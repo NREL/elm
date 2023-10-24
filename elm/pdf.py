@@ -203,7 +203,27 @@ class PDFtoTXT(ApiBase):
 
         return clean_pages
 
-    def clean_poppler(self, fp_out):
+    def is_double_col(self, separator='    '):
+        """Does the text look like it has multiple vertical text columns?
+
+        Parameters
+        ----------
+        separator : str
+            Heuristic split string to look for spaces between columns
+
+        Returns
+        -------
+        out : bool
+            True if more than one vertical text column
+        """
+        lines = self.full.split('\n')
+        n_cols = np.zeros(len(lines))
+        for i, line in enumerate(lines):
+            columns = line.strip().split(separator)
+            n_cols[i] = len(columns)
+        return np.median(n_cols) >= 2
+
+    def clean_poppler(self, fp_out, layout=True):
         """Clean the pdf using the poppler pdftotxt utility
 
         Requires the `pdftotext` command line utility from this software:
@@ -213,15 +233,23 @@ class PDFtoTXT(ApiBase):
         ----------
         fp_out : str
             Filepath to output .txt file
+        layout : bool
+            Layout flag for poppler pdftotxt utility: "maintain original
+            physical layout". Layout=True works well for single column text,
+            layout=False collapses the double columns into single columns which
+            works better for downstream chunking and LLM work.
 
         Returns
         -------
         out : str
             Joined cleaned pages
         """
-        stdout = subprocess.run(['pdftotext', '-layout',
-                                 f"{self.fp}", f"{fp_out}"],
-                                check=True, stdout=subprocess.PIPE)
+
+        args = ['pdftotext', f"{self.fp}", f"{fp_out}"]
+        if layout:
+            args.insert(1, '-layout')
+
+        stdout = subprocess.run(args, check=True, stdout=subprocess.PIPE)
         if stdout.returncode == 0:
             logger.info(f'Saved to disk: {fp_out}')
         else:
