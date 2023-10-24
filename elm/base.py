@@ -460,6 +460,7 @@ class ApiQueue:
                         self.todo[i] = False
                         complete = len(self) - sum(self.todo)
                     else:
+                        del self.api_jobs[i]
                         msg += ' Retrying query.'
 
                     logger.error(msg)
@@ -500,5 +501,7 @@ class ApiQueue:
                        'details on error response')
                 logger.error(msg)
                 raise RuntimeError(msg)
+            elif any(self.todo):
+                time.sleep(60)
 
         return self.out
