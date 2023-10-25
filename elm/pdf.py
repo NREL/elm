@@ -2,6 +2,7 @@
 """
 ELM PDF to text parser
 """
+import os
 import subprocess
 import numpy as np
 import requests
@@ -248,6 +249,9 @@ class PDFtoTXT(ApiBase):
         args = ['pdftotext', f"{self.fp}", f"{fp_out}"]
         if layout:
             args.insert(1, '-layout')
+
+        if not os.path.exists(os.path.dirname(fp_out)):
+            os.makedirs(os.path.dirname(fp_out), exist_ok=True)
 
         stdout = subprocess.run(args, check=True, stdout=subprocess.PIPE)
         if stdout.returncode == 0:
