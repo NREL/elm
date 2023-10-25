@@ -356,7 +356,7 @@ class ApiQueue:
     """Class to manage the parallel API queue and submission"""
 
     def __init__(self, url, headers, request_jsons, ignore_error=None,
-                 rate_limit=40e3, max_retries=5):
+                 rate_limit=40e3, max_retries=10):
         """
         Parameters
         ----------
@@ -395,84 +395,123 @@ class ApiQueue:
         self.ignore_error = ignore_error
         self.rate_limit = rate_limit
         self.max_retries = max_retries
+        self.api_jobs = None
+        self.todo = None
+        self.out = None
+        self.errors = None
+        self.tries = None
+        self._retry = False
+        self._tsub = 0
+        self._reset()
+        self.job_names = [f'job_{str(ijob).zfill(4)}'
+                          for ijob in range(len(request_jsons))]
 
+    def _reset(self):
         self.api_jobs = {}
         self.todo = [True] * len(self)
         self.out = [None] * len(self)
         self.errors = [None] * len(self)
-        self.tries = np.zeros(len(self))
+        self.tries = np.zeros(len(self), dtype=int)
         self._retry = False
+        self._tsub = 0
 
     def __len__(self):
         """Number of API calls to submit"""
         return len(self.request_jsons)
 
+    @property
+    def waiting_on(self):
+        """Get a list of async jobs that are being waited on."""
+        return [job for ijob, job in self.api_jobs.items() if self.todo[ijob]]
+
     def submit_jobs(self):
         """Submit a subset jobs asynchronously and hold jobs in the `api_jobs`
         attribute. Break when the `rate_limit` is exceeded."""
+
         token_count = 0
-        for i, itodo in enumerate(self.todo):
-            if (i not in self.api_jobs
+        t_elap = (time.time() - self._tsub) / 60
+        avail_tokens = self.rate_limit * t_elap
+        avail_tokens = min(self.rate_limit, avail_tokens)
+
+        for ijob, itodo in enumerate(self.todo):
+            if (ijob not in self.api_jobs
                     and itodo
-                    and token_count < self.rate_limit):
-                request = self.request_jsons[i]
+                    and token_count < avail_tokens):
+                request = self.request_jsons[ijob]
                 model = request['model']
-                token = ApiBase.count_tokens(str(request), model)
-                token_count += token
+                tokens = ApiBase.count_tokens(str(request), model)
 
-                task = asyncio.create_task(ApiBase.call_api(self.url,
-                                                            self.headers,
-                                                            request))
-                self.api_jobs[i] = task
-                self.tries[i] += 1
+                if tokens > self.rate_limit:
+                    msg = ('Job index #{} with has {} tokens which '
+                           'is greater than the rate limit of {}!'
+                           .format(ijob, tokens, self.rate_limit))
+                    logger.error(msg)
+                    raise RuntimeError(msg)
 
-                logger.debug('Submitted {} out of {}, '
-                             'token count is at {} '
-                             '(rate limit is {}). '
-                             'Max attempts for a job is {}'
-                             .format(i + 1, len(self), token_count,
-                                     self.rate_limit, int(self.tries.max())))
+                elif tokens < avail_tokens:
+                    token_count += tokens
+                    task = asyncio.create_task(ApiBase.call_api(self.url,
+                                                                self.headers,
+                                                                request),
+                                               name=self.job_names[ijob])
+                    self.api_jobs[ijob] = task
+                    self.tries[ijob] += 1
+                    self._tsub = time.time()
 
-            elif token_count >= self.rate_limit:
+                    logger.debug('Submitted "{}" ({} out of {}). '
+                                 'Token count: {} '
+                                 '(rate limit is {}). '
+                                 'Attempts: {}'
+                                 .format(self.job_names[ijob],
+                                         ijob + 1, len(self), token_count,
+                                         self.rate_limit,
+                                         self.tries[ijob]))
+
+            elif token_count >= avail_tokens:
                 token_count = 0
-                time.sleep(60)
                 break
 
     async def collect_jobs(self):
         """Collect asyncronous API calls and API outputs. Store outputs in the
         `out` attribute."""
-        complete = len(self) - sum(self.todo)
-        for i, itodo in enumerate(self.todo):
-            if itodo and i in self.api_jobs:
-                task_out = await self.api_jobs[i]
 
-                if 'error' in task_out:
-                    msg = ('Received API error for task #{0} '
-                           '(see `ApiQueue.errors[{1}]` and '
-                           '`ApiQueue.request_jsons[{1}]` for more details). '
-                           'Error message: {2}'.format(i + 1, i, task_out))
-                    self.errors[i] = 'Error: {}'.format(task_out)
+        if not any(self.waiting_on):
+            return
 
-                    if (self.ignore_error is not None
-                            and self.ignore_error(str(task_out))):
-                        msg += ' Ignoring error and moving on.'
-                        dummy = {'choices': [{'message': {'content': ''}}]}
-                        self.out[i] = dummy
-                        self.todo[i] = False
-                        complete = len(self) - sum(self.todo)
-                    else:
-                        del self.api_jobs[i]
-                        msg += ' Retrying query.'
-                        self._retry = True
-                    logger.error(msg)
+        complete, _ = await asyncio.wait(self.waiting_on,
+                                         return_when=asyncio.FIRST_COMPLETED)
 
+        for job in complete:
+            job_name = job.get_name()
+            ijob = self.job_names.index(job_name)
+            task_out = job.result()
+
+            if 'error' in task_out:
+                msg = ('Received API error for task #{0} '
+                       '(see `ApiQueue.errors[{1}]` and '
+                       '`ApiQueue.request_jsons[{1}]` for more details). '
+                       'Error message: {2}'.format(ijob + 1, ijob, task_out))
+                self.errors[ijob] = 'Error: {}'.format(task_out)
+
+                if (self.ignore_error is not None
+                        and self.ignore_error(str(task_out))):
+                    msg += ' Ignoring error and moving on.'
+                    dummy = {'choices': [{'message': {'content': ''}}]}
+                    self.out[ijob] = dummy
+                    self.todo[ijob] = False
                 else:
-                    self.out[i] = task_out
-                    self.todo[i] = False
-                    complete = len(self) - sum(self.todo)
+                    del self.api_jobs[ijob]
+                    msg += ' Retrying query.'
+                    self._retry = True
+                logger.error(msg)
 
-        logger.debug('Finished {} API calls, have {} left'
-                     .format(complete, sum(self.todo)))
+            else:
+                self.out[ijob] = task_out
+                self.todo[ijob] = False
+
+        n_complete = len(self) - sum(self.todo)
+        logger.debug('Finished {} API calls, {} left'
+                     .format(n_complete, sum(self.todo)))
 
     async def run(self):
         """Run all asyncronous API calls.
@@ -484,16 +523,12 @@ class ApiQueue:
             input.
         """
 
+        self._reset()
         logger.debug('Submitting async API calls...')
 
-        self.api_jobs = {}
-        self.todo = [True] * len(self)
-        self.out = [None] * len(self)
-        self.errors = [None] * len(self)
-        self.tries = np.zeros(len(self))
-        self._retry = False
-
+        i = 0
         while any(self.todo):
+            i += 1
             self._retry = False
             self.submit_jobs()
             await self.collect_jobs()
@@ -505,6 +540,10 @@ class ApiQueue:
                 logger.error(msg)
                 raise RuntimeError(msg)
             elif self._retry:
-                time.sleep(60)
+                time.sleep(10)
+            elif i > 1e4:
+                raise RuntimeError('Hit 1e4 iterations. What are you doing?')
+            elif any(self.todo):
+                time.sleep(5)
 
         return self.out
