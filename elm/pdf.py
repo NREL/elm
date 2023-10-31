@@ -335,6 +335,35 @@ class PDFtoTXT(ApiBase):
         full = full.replace('•', '-')
         return full
 
+    def _get_nominal_headers(self, split_on, iheaders):
+        """Get nominal headers from a standard page. Aim for a "typical" page
+        that is likely to have a normal header, not the first or last.
+
+        Parameters
+        ----------
+        split_on : str
+            Chars to split lines of a page on
+        iheaders : list | tuple
+            Integer indices to look for headers after splitting a page into
+            lines based on split_on. This needs to go from the start of the
+            page to the end.
+
+        Returns
+        -------
+        headers : list
+            List of headers where each entry is a string header
+        """
+
+        headers = [None] * len(iheaders)
+        page_lens = np.array([len(p) for p in self.pages])
+        median_len = np.median(page_lens)
+        ipage = np.argmin(np.abs(page_lens - median_len))
+        page = self.pages[ipage]
+        for i, ih in enumerate(iheaders):
+            headers[i] = page.split(split_on)[ih]
+
+        return headers
+
     def clean_headers(self, char_thresh=0.6, page_thresh=0.8, split_on='\n',
                       iheaders=(0, 1, -2, -1)):
         """Clean headers/footers that are duplicated across pages
@@ -360,12 +389,8 @@ class PDFtoTXT(ApiBase):
             Clean text with all pages joined
         """
         logger.info('Cleaning headers')
-        headers = [None] * len(iheaders)
+        headers = self._get_nominal_headers(split_on, iheaders)
         tests = np.zeros((len(self.pages), len(headers)))
-
-        page = self.pages[-1]
-        for i, ih in enumerate(iheaders):
-            headers[i] = page.split(split_on)[ih]
 
         for ip, page in enumerate(self.pages):
             for ih, header in zip(iheaders, headers):
