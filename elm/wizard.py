@@ -218,7 +218,8 @@ class EnergyWizard(ApiBase):
              convo=False,
              token_budget=None,
              new_info_threshold=0.7,
-             print_references=False):
+             print_references=False,
+             return_chat_obj=False):
         """Answers a query by doing a semantic search of relevant text with
         embeddings and then sending engineered query to the LLM.
 
@@ -248,6 +249,8 @@ class EnergyWizard(ApiBase):
         print_references : bool
             Flag to print references if EnergyWizard is initialized with a
             valid ref_col.
+        return_chat_obj : bool
+            Flag to only return the ChatCompletion from OpenAI API.
 
         Returns
         -------
@@ -278,6 +281,9 @@ class EnergyWizard(ApiBase):
             kwargs['engine'] = self.model
 
         response = openai.ChatCompletion.create(**kwargs)
+
+        if return_chat_obj:
+            return response, query, references
 
         if stream:
             for chunk in response:
