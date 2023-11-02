@@ -228,6 +228,9 @@ class EnergyWizard(ApiBase):
             Question being asked of EnergyWizard
         debug : bool
             Flag to return extra diagnostics on the engineered question.
+        stream : bool
+            Flag to print subsequent chunks of the response in a streaming
+            fashion
         temperature : float
             GPT model temperature, a measure of response entropy from 0 to 1. 0
             is more reliable and nearly deterministic; 1 will give the model
@@ -286,13 +289,16 @@ class EnergyWizard(ApiBase):
         else:
             response_message = response["choices"][0]["message"]["content"]
 
-        if stream and print_references and any(references):
-            print('\n\nThe model was provided with the following documents to '
-                  'support its answer:')
-            print(' - ' + '\n - '.join(references))
-
         self.messages.append({'role': 'assistant',
                               'content': response_message})
+
+        if any(references) and print_references:
+            ref_msg = ('\n\nThe model was provided with the '
+                       'following documents to support its answer:')
+            ref_msg += '\n - ' + '\n - '.join(references)
+            response_message += ref_msg
+            if stream:
+                print(ref_msg)
 
         if debug:
             return response_message, query, references
