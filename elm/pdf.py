@@ -6,6 +6,7 @@ import os
 import subprocess
 import numpy as np
 import requests
+import tempfile
 import copy
 from PyPDF2 import PdfReader
 import logging
@@ -224,7 +225,7 @@ class PDFtoTXT(ApiBase):
             n_cols[i] = len(columns)
         return np.median(n_cols) >= 2
 
-    def clean_poppler(self, fp_out, layout=True):
+    def clean_poppler(self, layout=True):
         """Clean the pdf using the poppler pdftotxt utility
 
         Requires the `pdftotext` command line utility from this software:
@@ -232,8 +233,6 @@ class PDFtoTXT(ApiBase):
 
         Parameters
         ----------
-        fp_out : str
-            Filepath to output .txt file
         layout : bool
             Layout flag for poppler pdftotxt utility: "maintain original
             physical layout". Layout=True works well for single column text,
@@ -246,21 +245,24 @@ class PDFtoTXT(ApiBase):
             Joined cleaned pages
         """
 
-        args = ['pdftotext', f"{self.fp}", f"{fp_out}"]
-        if layout:
-            args.insert(1, '-layout')
+        with tempfile.TemporaryDirectory() as td:
+            fp_out = os.path.join(td, 'poppler_out.txt')
+            args = ['pdftotext', f"{self.fp}", f"{fp_out}"]
+            if layout:
+                args.insert(1, '-layout')
 
-        if not os.path.exists(os.path.dirname(fp_out)):
-            os.makedirs(os.path.dirname(fp_out), exist_ok=True)
+            if not os.path.exists(os.path.dirname(fp_out)):
+                os.makedirs(os.path.dirname(fp_out), exist_ok=True)
 
-        stdout = subprocess.run(args, check=True, stdout=subprocess.PIPE)
-        if stdout.returncode == 0:
-            logger.info(f'Saved to disk: {fp_out}')
-        else:
-            raise RuntimeError(stdout)
+            stdout = subprocess.run(args, check=True, stdout=subprocess.PIPE)
+            if stdout.returncode != 0:
+                msg = ('Poppler raised return code {}: {}'
+                       .format(stdout.returncode, stdout))
+                logger.exception(msg)
+                raise RuntimeError(msg)
 
-        with open(fp_out, 'r') as f:
-            clean_txt = f.read()
+            with open(fp_out, 'r') as f:
+                clean_txt = f.read()
 
         # break on poppler page break
         self.pages = clean_txt.split('\x0c')
@@ -333,6 +335,35 @@ class PDFtoTXT(ApiBase):
         full = full.replace('•', '-')
         return full
 
+    def _get_nominal_headers(self, split_on, iheaders):
+        """Get nominal headers from a standard page. Aim for a "typical" page
+        that is likely to have a normal header, not the first or last.
+
+        Parameters
+        ----------
+        split_on : str
+            Chars to split lines of a page on
+        iheaders : list | tuple
+            Integer indices to look for headers after splitting a page into
+            lines based on split_on. This needs to go from the start of the
+            page to the end.
+
+        Returns
+        -------
+        headers : list
+            List of headers where each entry is a string header
+        """
+
+        headers = [None] * len(iheaders)
+        page_lens = np.array([len(p) for p in self.pages])
+        median_len = np.median(page_lens)
+        ipage = np.argmin(np.abs(page_lens - median_len))
+        page = self.pages[ipage]
+        for i, ih in enumerate(iheaders):
+            headers[i] = page.split(split_on)[ih]
+
+        return headers
+
     def clean_headers(self, char_thresh=0.6, page_thresh=0.8, split_on='\n',
                       iheaders=(0, 1, -2, -1)):
         """Clean headers/footers that are duplicated across pages
@@ -358,12 +389,8 @@ class PDFtoTXT(ApiBase):
             Clean text with all pages joined
         """
         logger.info('Cleaning headers')
-        headers = [None] * len(iheaders)
+        headers = self._get_nominal_headers(split_on, iheaders)
         tests = np.zeros((len(self.pages), len(headers)))
-
-        page = self.pages[-1]
-        for i, ih in enumerate(iheaders):
-            headers[i] = page.split(split_on)[ih]
 
         for ip, page in enumerate(self.pages):
             for ih, header in zip(iheaders, headers):
@@ -399,7 +426,7 @@ class PDFtoTXT(ApiBase):
         for ip, page in enumerate(self.pages):
             page = page.split(split_on)
             for i, iheader in enumerate(iheaders):
-                if tests[i]:
+                if tests[i] and len(page) > np.abs(iheader):
                     _ = page.pop(iheader)
 
             page = split_on.join(page)
