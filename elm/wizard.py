@@ -218,7 +218,8 @@ class EnergyWizard(ApiBase):
              convo=False,
              token_budget=None,
              new_info_threshold=0.7,
-             print_references=False):
+             print_references=False,
+             return_chat_obj=False):
         """Answers a query by doing a semantic search of relevant text with
         embeddings and then sending engineered query to the LLM.
 
@@ -228,6 +229,9 @@ class EnergyWizard(ApiBase):
             Question being asked of EnergyWizard
         debug : bool
             Flag to return extra diagnostics on the engineered question.
+        stream : bool
+            Flag to print subsequent chunks of the response in a streaming
+            fashion
         temperature : float
             GPT model temperature, a measure of response entropy from 0 to 1. 0
             is more reliable and nearly deterministic; 1 will give the model
@@ -245,6 +249,8 @@ class EnergyWizard(ApiBase):
         print_references : bool
             Flag to print references if EnergyWizard is initialized with a
             valid ref_col.
+        return_chat_obj : bool
+            Flag to only return the ChatCompletion from OpenAI API.
 
         Returns
         -------
@@ -276,6 +282,9 @@ class EnergyWizard(ApiBase):
 
         response = openai.ChatCompletion.create(**kwargs)
 
+        if return_chat_obj:
+            return response, query, references
+
         if stream:
             for chunk in response:
                 chunk_msg = chunk['choices'][0]['delta']
@@ -286,13 +295,16 @@ class EnergyWizard(ApiBase):
         else:
             response_message = response["choices"][0]["message"]["content"]
 
-        if stream and print_references and any(references):
-            print('\n\nThe model was provided with the following documents to '
-                  'support its answer:')
-            print(' - ' + '\n - '.join(references))
-
         self.messages.append({'role': 'assistant',
                               'content': response_message})
+
+        if any(references) and print_references:
+            ref_msg = ('\n\nThe model was provided with the '
+                       'following documents to support its answer:')
+            ref_msg += '\n - ' + '\n - '.join(references)
+            response_message += ref_msg
+            if stream:
+                print(ref_msg)
 
         if debug:
             return response_message, query, references

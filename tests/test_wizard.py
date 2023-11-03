@@ -72,7 +72,7 @@ def test_chunk_and_embed(mocker):
                       print_references=True)
     msg, query, ref = out
 
-    assert msg == 'hello!'
+    assert msg.startswith('hello!')
     assert query.startswith(EnergyWizard.MODEL_INSTRUCTION)
     assert query.endswith(question)
     assert 'source0' in ref
