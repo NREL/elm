@@ -24,7 +24,7 @@ test_requires = ["pytest>=5.2", "pytest-mock"]
 description = "Energy Language Model"
 
 setup(
-    name="elm",
+    name="NREL-elm",
     version=version,
     description=description,
     long_description=readme,
