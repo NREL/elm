@@ -2,7 +2,13 @@
 Energy Language Model (ELM)
 ***************************
 
-The Energy Language Model (ELM) software provides interfaces to apply Large Language Models (LLMs) like ChatGPT and GPT-4 to energy research.
+The Energy Language Model (ELM) software provides interfaces to apply Large Language Models (LLMs) like ChatGPT and GPT-4 to energy research. For example, you might be interested in:
+
+- `Converting PDFs into a text database <https://nrel.github.io/elm/_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT>`_
+- `Chunking text documents and embedding into a vector database <https://nrel.github.io/elm/_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed>`_
+- `Performing recursive document summarization <https://nrel.github.io/elm/_autosummary/elm.summary.Summary.html#elm.summary.Summary>`_
+- `Building an automated data extraction workflow using decision trees <https://nrel.github.io/elm/_autosummary/elm.tree.DecisionTree.html#elm.tree.DecisionTree>`_
+- `Building a chatbot to interface with your own text corpus <https://nrel.github.io/elm/_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard>`_
 
 Installing ELM
 ==============
