@@ -2,6 +2,21 @@
 Energy Language Model (ELM)
 ***************************
 
+.. image:: https://github.com/NREL/elm/workflows/Documentation/badge.svg
+    :target: https://nrel.github.io/sup3r/
+
+.. image:: https://github.com/NREL/elm/workflows/pytests/badge.svg
+    :target: https://github.com/NREL/elm/actions?query=workflow%3A%22pytests%22
+
+.. image:: https://github.com/NREL/elm/workflows/Lint%20Code%20Base/badge.svg
+    :target: https://github.com/NREL/elm/actions?query=workflow%3A%22Lint+Code+Base%22
+
+.. image:: https://img.shields.io/pypi/pyversions/NREL-elm.svg
+    :target: https://pypi.org/project/NREL-elm/
+
+.. image:: https://badge.fury.io/py/NREL-elm.svg
+    :target: https://badge.fury.io/py/NREL-elm
+
 The Energy Language Model (ELM) software provides interfaces to apply Large Language Models (LLMs) like ChatGPT and GPT-4 to energy research. For example, you might be interested in:
 
 - `Converting PDFs into a text database <https://nrel.github.io/elm/_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT>`_
