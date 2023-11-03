@@ -27,10 +27,15 @@ def test_osti_from_oids():
     oids = ['1832215', '1811650', 1785959, '1785688', 1763974]
     osti = OstiList.from_osti_ids(oids)
     assert len(osti) == len(oids)
+
+
+def test_osti_download():
+    """Test osti download"""
+    oids = 1962806  # single small report
+    osti = OstiList.from_osti_ids(oids)
     with tempfile.TemporaryDirectory() as td:
         out_dir = os.path.join(td, 'out')
         osti.download(out_dir)
-
         fps = os.listdir(out_dir)
-        assert len(fps) == len(oids)
+        assert len(fps) == 1
         assert all(fp.endswith('.pdf') for fp in fps)

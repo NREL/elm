@@ -293,7 +293,7 @@ class OstiList(list):
         out : OstiList
             OstiList object with entries for each oid input.
         """
-        if isinstance(oids, str):
+        if not isinstance(oids, (list, tuple)):
             oids = [oids]
         oids = [str(oid) for oid in oids]
         out = None
