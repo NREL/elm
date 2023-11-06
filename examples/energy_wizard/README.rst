@@ -1,0 +1,21 @@
+*****************
+The Energy Wizard
+*****************
+
+This example demonstrates how to download a set of PDFs, convert to text,
+chunk, embed, and then run a streamlit app that interfaces an LLM with the text
+corpus.
+
+Downloading and Embedding PDFs
+==============================
+
+Run ``python ./retrieve_docs.py`` to retrieve 20 of the latest NREL technical
+reports from OSTI. The script then converts the PDFs to text and then runs the
+text through the OpenAI embedding model.
+
+Running the Streamlit App
+=========================
+
+Run ``streamlit run ./run_app.py`` to start the streamlit app. You can now chat
+with the Energy Wizard, which will interface with the downloaded text corpus to
+answer your questions.
