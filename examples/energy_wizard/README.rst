@@ -6,6 +6,12 @@ This example demonstrates how to download a set of PDFs, convert to text,
 chunk, embed, and then run a streamlit app that interfaces an LLM with the text
 corpus.
 
+Notes:
+
+- Streamlit is required to run this app, which is not an explicit requirement of this repo (``pip install streamlit``)
+
+- You need to set up your own OpenAI or Azure-OpenAI API keys to run the scripts.
+
 Downloading and Embedding PDFs
 ==============================
 
