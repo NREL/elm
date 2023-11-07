@@ -7,6 +7,8 @@ from elm import TEST_DATA_DIR
 from elm.pdf import PDFtoTXT
 import elm.pdf
 
+os.environ["OPENAI_API_KEY"] = "dummy"
+
 FP_PDF = os.path.join(TEST_DATA_DIR, 'GPT-4.pdf')
 FP_TXT = os.path.join(TEST_DATA_DIR, 'gpt4.txt')
 

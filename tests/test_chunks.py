@@ -8,6 +8,8 @@ from elm import TEST_DATA_DIR
 from elm.chunk import Chunker
 
 
+os.environ["OPENAI_API_KEY"] = "dummy"
+
 FP_TXT = os.path.join(TEST_DATA_DIR, 'gpt4.txt')
 with open(FP_TXT, 'r', encoding='utf8') as f:
     TEXT = f.read()

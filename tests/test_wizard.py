@@ -10,6 +10,8 @@ from elm.embed import ChunkAndEmbed
 from elm.wizard import EnergyWizard
 import elm.embed
 
+os.environ["OPENAI_API_KEY"] = "dummy"
+
 FP_PDF = os.path.join(TEST_DATA_DIR, 'GPT-4.pdf')
 FP_TXT = os.path.join(TEST_DATA_DIR, 'gpt4.txt')
 

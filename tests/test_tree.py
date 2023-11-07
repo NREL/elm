@@ -9,6 +9,8 @@ from elm.base import ApiBase
 from elm.tree import DecisionTree
 import elm.embed
 
+os.environ["OPENAI_API_KEY"] = "dummy"
+
 FP_PDF = os.path.join(TEST_DATA_DIR, 'GPT-4.pdf')
 FP_TXT = os.path.join(TEST_DATA_DIR, 'gpt4.txt')
 
