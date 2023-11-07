@@ -80,6 +80,8 @@ if __name__ == '__main__':
         inverter based resources?
     \n - What are some of the unique cyber security challenges facing
     renewables?
+    \n - Can you give me some ideas for follow-on research related to climate
+    change adaptation with renewables?
     """
 
     st.title(msg)
