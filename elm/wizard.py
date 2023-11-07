@@ -280,7 +280,7 @@ class EnergyWizard(ApiBase):
         if 'azure' in str(openai.api_type).lower():
             kwargs['engine'] = self.model
 
-        response = openai.ChatCompletion.create(**kwargs)
+        response = self._client.chat.completions.create(**kwargs)
 
         if return_chat_obj:
             return response, query, references

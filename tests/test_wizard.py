@@ -45,8 +45,6 @@ def make_corpus(mocker):
     mocker.patch.object(elm.embed.ChunkAndEmbed, "call_api", MockClass.call)
     mocker.patch.object(elm.wizard.EnergyWizard, "get_embedding",
                         MockClass.get_embedding)
-    mocker.patch.object(elm.wizard.openai.ChatCompletion, "create",
-                        MockClass.create)
 
     ce0 = ChunkAndEmbed(TEXT, tokens_per_chunk=400)
     embeddings = ce0.run()
@@ -66,6 +64,9 @@ def test_chunk_and_embed(mocker):
     corpus = make_corpus(mocker)
     wizard = EnergyWizard(pd.DataFrame(corpus), token_budget=1000,
                           ref_col='ref')
+
+    mocker.patch.object(wizard._client.chat.completions, "create",
+                        MockClass.create)
 
     question = 'What time is it?'
     out = wizard.chat(question, debug=True, stream=False,
@@ -87,6 +88,9 @@ def test_convo_query(mocker):
     corpus = make_corpus(mocker)
     wizard = EnergyWizard(pd.DataFrame(corpus), token_budget=1000,
                           ref_col='ref')
+
+    mocker.patch.object(wizard._client.chat.completions, "create",
+                        MockClass.create)
 
     question1 = 'What time is it?'
     question2 = 'How about now?'

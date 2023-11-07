@@ -3,6 +3,7 @@
 ELM abstract class for API calls
 """
 from abc import ABC
+import os
 import numpy as np
 import asyncio
 import aiohttp
@@ -29,7 +30,10 @@ class ApiBase(ABC):
     """OpenAI embedding API URL"""
 
     URL = 'https://api.openai.com/v1/chat/completions'
-    """OpenAI API API URL"""
+    """OpenAI API URL to be used with environment variable OPENAI_API_KEY. Use
+    an Azure API endpoint to trigger Azure usage along with environment
+    variables AZURE_OPENAI_KEY, AZURE_OPENAI_VERSION, and
+    AZURE_OPENAI_ENDPOINT"""
 
     HEADERS = {"Content-Type": "application/json",
                "Authorization": f"Bearer {openai.api_key}",
@@ -52,6 +56,21 @@ class ApiBase(ABC):
         self.api_queue = None
         self.messages = []
         self.clear()
+
+        if 'openai.azure.com' in self.URL.lower():
+            key = os.environ.get("AZURE_OPENAI_KEY")
+            version = os.environ.get("AZURE_OPENAI_VERSION")
+            endpoint = os.environ.get("AZURE_OPENAI_ENDPOINT")
+            assert key is not None, "Must set AZURE_OPENAI_KEY!"
+            assert version is not None, "Must set AZURE_OPENAI_VERSION!"
+            assert endpoint is not None, "Must set AZURE_OPENAI_ENDPOINT!"
+            self._client = openai.AzureOpenAI(api_key=key,
+                                              api_version=version,
+                                              azure_endpoint=endpoint)
+        else:
+            key = os.environ.get("OPENAI_API_KEY")
+            assert key is not None, "Must set OPENAI_API_KEY!"
+            self._client = openai.OpenAI(api_key=key)
 
     @property
     def all_messages_txt(self):
@@ -189,7 +208,7 @@ class ApiBase(ABC):
         if 'azure' in str(openai.api_type).lower():
             kwargs['engine'] = self.model
 
-        response = openai.ChatCompletion.create(**kwargs)
+        response = self._client.chat.completions.create(**kwargs)
         response = response["choices"][0]["message"]["content"]
         self.messages.append({'role': 'assistant', 'content': response})
 
@@ -227,7 +246,7 @@ class ApiBase(ABC):
         if 'azure' in str(openai.api_type).lower():
             kwargs['engine'] = self.model
 
-        response = openai.ChatCompletion.create(**kwargs)
+        response = self._client.chat.completions.create(**kwargs)
         response = response["choices"][0]["message"]["content"]
         return response
 
