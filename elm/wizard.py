@@ -4,7 +4,6 @@ ELM energy wizard
 """
 import copy
 import numpy as np
-import openai
 
 from elm.base import ApiBase
 
@@ -69,6 +68,11 @@ class EnergyWizard(ApiBase):
                    'corpus with columns: {}'
                    .format(missing, list(corpus.columns)))
             raise KeyError(msg)
+
+        if not isinstance(corpus.index.values[0], int):
+            corpus['index'] = np.arange(len(corpus))
+            corpus = corpus.set_index('index', drop=False)
+
         return corpus
 
     def cosine_dist(self, query_embedding):
@@ -277,9 +281,6 @@ class EnergyWizard(ApiBase):
                       temperature=temperature,
                       stream=stream)
 
-        if 'azure' in str(openai.api_type).lower():
-            kwargs['engine'] = self.model
-
         response = self._client.chat.completions.create(**kwargs)
 
         if return_chat_obj:
@@ -287,8 +288,7 @@ class EnergyWizard(ApiBase):
 
         if stream:
             for chunk in response:
-                chunk_msg = chunk['choices'][0]['delta']
-                chunk_msg = chunk_msg.get('content', '')
+                chunk_msg = chunk.choices[0].delta.content or ""
                 response_message += chunk_msg
                 print(chunk_msg, end='')
 

@@ -205,8 +205,6 @@ class ApiBase(ABC):
                       messages=self.messages,
                       temperature=temperature,
                       stream=False)
-        if 'azure' in str(openai.api_type).lower():
-            kwargs['engine'] = self.model
 
         response = self._client.chat.completions.create(**kwargs)
         response = response["choices"][0]["message"]["content"]
@@ -242,9 +240,6 @@ class ApiBase(ABC):
                       messages=messages,
                       temperature=temperature,
                       stream=False)
-
-        if 'azure' in str(openai.api_type).lower():
-            kwargs['engine'] = self.model
 
         response = self._client.chat.completions.create(**kwargs)
         response = response["choices"][0]["message"]["content"]
