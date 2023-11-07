@@ -273,7 +273,6 @@ class OstiList(list):
                 if not isinstance(out, str):
                     out = json.dumps(out)
                 df.at[i, attr] = out
-            df.at[i, 'fp'] = f'./osti_pdfs/{record.osti_id}.pdf'
             df.at[i, 'fn'] = f'{record.osti_id}.pdf'
             i += 1
         return df

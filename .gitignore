@@ -112,3 +112,10 @@ ENV/
 # vim
 *.swp
 tags
+
+# example data
+examples/energy_wizard/pdfs/
+examples/energy_wizard/embed/
+examples/energy_wizard/txt/
+examples/energy_wizard/meta.csv
+*ignore*.py
