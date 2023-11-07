@@ -67,7 +67,22 @@ def get_wizard():
 
 if __name__ == '__main__':
     wizard = get_wizard()
-    st.title("Energy Wizard")
+
+    msg = """Hello!\nI am the Energy Wizard. I have access to all NREL
+    technical reports from 1-1-2022 to present. Note that each question you ask
+    is independent. I am not fully conversational yet like ChatGPT is. Here
+    are some examples of questions you can ask me:
+    \n - What are some of the key takeaways from the LA100 study?
+    \n - What kind of work does NREL do on energy security and resilience?
+    \n - Who is working on the reV model?
+    \n - Who at NREL has published on capacity expansion analysis?
+    \n - Can you teach me the basics of grid inertia versus
+        inverter based resources?
+    \n - What are some of the unique cyber security challenges facing
+    renewables?
+    """
+
+    st.title(msg)
 
     if "messages" not in st.session_state:
         st.session_state.messages = []
@@ -76,7 +91,7 @@ if __name__ == '__main__':
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
-    msg = "Ask the Energy Wizard a question about NREL research!"
+    msg = "Type your question here"
     if prompt := st.chat_input(msg):
         st.chat_message("user").markdown(prompt)
         st.session_state.messages.append({"role": "user", "content": prompt})
@@ -93,7 +108,7 @@ if __name__ == '__main__':
             references = out[-1]
 
             for response in out[0]:
-                full_response += response.choices[0].delta.get("content", "")
+                full_response += response.choices[0].delta.content or ""
                 message_placeholder.markdown(full_response + "▌")
 
             ref_msg = ('\n\nThe wizard was provided with the '
