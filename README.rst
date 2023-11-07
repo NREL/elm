@@ -26,7 +26,7 @@ The Energy Language Model (ELM) software provides interfaces to apply Large Lang
 - `Chunking text documents and embedding into a vector database <https://nrel.github.io/elm/_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed>`_
 - `Performing recursive document summarization <https://nrel.github.io/elm/_autosummary/elm.summary.Summary.html#elm.summary.Summary>`_
 - `Building an automated data extraction workflow using decision trees <https://nrel.github.io/elm/_autosummary/elm.tree.DecisionTree.html#elm.tree.DecisionTree>`_
-- `Building a chatbot to interface with your own text corpus <https://nrel.github.io/elm/_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard>`_
+- `Building a chatbot app that interfaces with reports from OSTI <https://github.com/NREL/elm/tree/main/examples/energy_wizard>`_
 
 Installing ELM
 ==============
