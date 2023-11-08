@@ -12,9 +12,9 @@ model = 'gpt-4'
 # NREL-Azure endpoint. You can also use just the openai endpoint.
 # NOTE: embedding values are different between OpenAI and Azure models!
 openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
-openai.api_key = os.getenv("AZURE_OPENAI_API_KEY")
+openai.api_key = os.getenv("AZURE_OPENAI_KEY")
 openai.api_type = 'azure'
-openai.api_version = '2023-03-15-preview'
+openai.api_version = os.getenv('AZURE_OPENAI_VERSION')
 
 EnergyWizard.EMBEDDING_MODEL = 'text-embedding-ada-002-2'
 EnergyWizard.EMBEDDING_URL = ('https://stratus-embeddings-south-central.'
