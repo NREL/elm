@@ -1,3 +1,4 @@
+"""This script launches a streamlit app for the Energy Wizard"""
 import streamlit as st
 import os
 import openai
