@@ -257,11 +257,6 @@ class PDFtoTXT(ApiBase):
             try:
                 stdout = subprocess.run(args, check=True,
                                         stdout=subprocess.PIPE)
-                if stdout.returncode != 0:
-                    msg = ('Poppler raised return code {}: {}'
-                           .format(stdout.returncode, stdout))
-                    logger.exception(msg)
-                    raise RuntimeError(msg)
             except Exception as e:
                 msg = ('PDF cleaning with poppler failed! This usually '
                        'because you have not installed the poppler utility '
@@ -269,6 +264,12 @@ class PDFtoTXT(ApiBase):
                        f'Full error: {e}')
                 logger.exception(msg)
                 raise RuntimeError(msg) from e
+            else:
+                if stdout.returncode != 0:
+                    msg = ('Poppler raised return code {}: {}'
+                           .format(stdout.returncode, stdout))
+                    logger.exception(msg)
+                    raise RuntimeError(msg)
 
             with open(fp_out, 'r') as f:
                 clean_txt = f.read()
