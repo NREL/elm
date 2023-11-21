@@ -8,6 +8,8 @@ corpus.
 
 Notes:
 
+- In this example, we use the optional `popper <https://poppler.freedesktop.org/>`_ PDF utility which you will have to install separately. You can also use the python-native ``PyPDF2`` package when calling using ``elm.pdf.PDFtoTXT`` but we have found that poppler works better.
+
 - Streamlit is required to run this app, which is not an explicit requirement of this repo (``pip install streamlit``)
 
 - You need to set up your own OpenAI or Azure-OpenAI API keys to run the scripts.

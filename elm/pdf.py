@@ -254,12 +254,22 @@ class PDFtoTXT(ApiBase):
             if not os.path.exists(os.path.dirname(fp_out)):
                 os.makedirs(os.path.dirname(fp_out), exist_ok=True)
 
-            stdout = subprocess.run(args, check=True, stdout=subprocess.PIPE)
-            if stdout.returncode != 0:
-                msg = ('Poppler raised return code {}: {}'
-                       .format(stdout.returncode, stdout))
+            try:
+                stdout = subprocess.run(args, check=True,
+                                        stdout=subprocess.PIPE)
+            except Exception as e:
+                msg = ('PDF cleaning with poppler failed! This usually '
+                       'because you have not installed the poppler utility '
+                       '(see https://poppler.freedesktop.org/). '
+                       f'Full error: {e}')
                 logger.exception(msg)
-                raise RuntimeError(msg)
+                raise RuntimeError(msg) from e
+            else:
+                if stdout.returncode != 0:
+                    msg = ('Poppler raised return code {}: {}'
+                           .format(stdout.returncode, stdout))
+                    logger.exception(msg)
+                    raise RuntimeError(msg)
 
             with open(fp_out, 'r') as f:
                 clean_txt = f.read()
