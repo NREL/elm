@@ -67,10 +67,10 @@ def get_wizard():
     try:
         corpus = get_corpus()
     except:
-        print("Error: No Corpus. Have you run 'retrieve_docs.py'?")
+        print("Error: Have you run 'retrieve_docs.py'?")
         st.header("Error")
-        st.write("Error: No Corpus. Have you run 'retrieve_docs.py'?")
-        sys.exit()
+        st.write("Error: Have you run 'retrieve_docs.py'?")
+        sys.exit(0)
 
     wizard = EnergyWizard(corpus, ref_col='ref', model=model)
     return wizard
