@@ -66,7 +66,7 @@ def get_wizard():
     # Getting Corpus of data. If no corpus throw error for user.
     try:
         corpus = get_corpus()
-    except:
+    except Exception:
         print("Error: Have you run 'retrieve_docs.py'?")
         st.header("Error")
         st.write("Error: Have you run 'retrieve_docs.py'?")
