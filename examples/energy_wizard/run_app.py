@@ -62,12 +62,13 @@ def get_corpus():
 @st.cache_resource
 def get_wizard():
     """Get the energy wizard object."""
-    
-    """Getting Corpus of data. If no corpus throw error for user to run retrieve docs."""
+
+    #Getting Corpus of data. If no corpus throw error for user to run retrieve docs.
     try:
         corpus = get_corpus()
     except:
         print("Error: No Corpus. Have you run 'retrieve_docs.py'?")
+        st.header("Error")
         st.write("Error: No Corpus. Have you run 'retrieve_docs.py'?")
         sys.exit()
 
