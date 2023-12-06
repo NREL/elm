@@ -63,7 +63,7 @@ def get_corpus():
 def get_wizard():
     """Get the energy wizard object."""
 
-    #Getting Corpus of data. If no corpus throw error for user to run retrieve docs.
+    # Getting Corpus of data. If no corpus throw error for user.
     try:
         corpus = get_corpus()
     except:
