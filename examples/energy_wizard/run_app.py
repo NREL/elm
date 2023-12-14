@@ -4,6 +4,7 @@ import os
 import openai
 from glob import glob
 import pandas as pd
+import sys
 
 from elm import EnergyWizard
 
@@ -61,7 +62,16 @@ def get_corpus():
 @st.cache_resource
 def get_wizard():
     """Get the energy wizard object."""
-    corpus = get_corpus()
+
+    # Getting Corpus of data. If no corpus throw error for user.
+    try:
+        corpus = get_corpus()
+    except Exception:
+        print("Error: Have you run 'retrieve_docs.py'?")
+        st.header("Error")
+        st.write("Error: Have you run 'retrieve_docs.py'?")
+        sys.exit(0)
+
     wizard = EnergyWizard(corpus, ref_col='ref', model=model)
     return wizard
 

@@ -38,6 +38,7 @@ class EnergyWizard(ApiBase):
         """
 
         super().__init__(model)
+        
         self.corpus = self.preflight_corpus(corpus)
         self.token_budget = token_budget
         self.embedding_arr = np.vstack(self.corpus['embedding'].values)
