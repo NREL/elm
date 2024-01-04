@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>elm.chunk.Chunker &mdash; elm 0.0.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=47de8214"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="elm.embed" href="elm.embed.html" />
+    <link rel="prev" title="elm.chunk" href="elm.chunk.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            elm
+          </a>
+              <div class="version">
+                0.0.3
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples.energy_wizard.html">The Energy Wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples.energy_wizard.html#downloading-and-embedding-pdfs">Downloading and Embedding PDFs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.energy_wizard.html#running-the-streamlit-app">Running the Streamlit App</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="elm.html">API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="elm.base.html">elm.base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.base.ApiBase.html">elm.base.ApiBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.base.ApiBase.html#elm.base.ApiBase"><code class="docutils literal notranslate"><span class="pre">ApiBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.base.ApiQueue.html">elm.base.ApiQueue</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.base.ApiQueue.html#elm.base.ApiQueue"><code class="docutils literal notranslate"><span class="pre">ApiQueue</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="elm.chunk.html">elm.chunk</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">elm.chunk.Chunker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#elm.chunk.Chunker"><code class="docutils literal notranslate"><span class="pre">Chunker</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elm.embed.html">elm.embed</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.embed.ChunkAndEmbed.html">elm.embed.ChunkAndEmbed</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed"><code class="docutils literal notranslate"><span class="pre">ChunkAndEmbed</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elm.osti.html">elm.osti</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.osti.OstiList.html">elm.osti.OstiList</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.osti.OstiList.html#elm.osti.OstiList"><code class="docutils literal notranslate"><span class="pre">OstiList</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.osti.OstiRecord.html">elm.osti.OstiRecord</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.osti.OstiRecord.html#elm.osti.OstiRecord"><code class="docutils literal notranslate"><span class="pre">OstiRecord</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elm.pdf.html">elm.pdf</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.pdf.PDFtoTXT.html">elm.pdf.PDFtoTXT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT"><code class="docutils literal notranslate"><span class="pre">PDFtoTXT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elm.summary.html">elm.summary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.summary.Summary.html">elm.summary.Summary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.summary.Summary.html#elm.summary.Summary"><code class="docutils literal notranslate"><span class="pre">Summary</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elm.tree.html">elm.tree</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.tree.DecisionTree.html">elm.tree.DecisionTree</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.tree.DecisionTree.html#elm.tree.DecisionTree"><code class="docutils literal notranslate"><span class="pre">DecisionTree</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elm.version.html">elm.version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="elm.wizard.html">elm.wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.wizard.EnergyWizard.html">elm.wizard.EnergyWizard</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard"><code class="docutils literal notranslate"><span class="pre">EnergyWizard</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">elm</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="elm.html">elm</a></li>
+          <li class="breadcrumb-item"><a href="elm.chunk.html">elm.chunk</a></li>
+      <li class="breadcrumb-item active">elm.chunk.Chunker</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/nrel/elm/blob/main/docs/source/_autosummary/elm.chunk.Chunker.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="elm-chunk-chunker">
+<h1>elm.chunk.Chunker<a class="headerlink" href="#elm-chunk-chunker" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="elm.chunk.Chunker">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Chunker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokens_per_chunk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\n\n'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/elm/chunk.html#Chunker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elm.chunk.Chunker" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="elm.base.ApiBase.html#elm.base.ApiBase" title="elm.base.ApiBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApiBase</span></code></a></p>
+<p>Class to break text up into overlapping chunks</p>
+<p>NOTE: very large paragraphs that exceed the tokens per chunk will not be
+split up and will still be padded with overlap.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> (<em>str</em>) – Single body of text to break up. Works well if this is a single
+document with empty lines between paragraphs.</p></li>
+<li><p><strong>tag</strong> (<em>None | str</em>) – Optional reference tag to include at the beginning of each text
+chunk</p></li>
+<li><p><strong>tokens_per_chunk</strong> (<em>float</em>) – Nominal token count per text chunk. Overlap paragraphs will exceed
+this.</p></li>
+<li><p><strong>overlap</strong> (<em>int</em>) – Number of paragraphs to overlap between chunks</p></li>
+<li><p><strong>split_on</strong> (<em>str</em>) – Sub string to split text into paragraphs.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.chunk.Chunker.add_overlap" title="elm.chunk.Chunker.add_overlap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_overlap</span></code></a>(chunks_input)</p></td>
+<td><p>Add overlap on either side of a text chunk.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.chunk.Chunker.call_api" title="elm.chunk.Chunker.call_api"><code class="xref py py-obj docutils literal notranslate"><span class="pre">call_api</span></code></a>(url, headers, request_json)</p></td>
+<td><p>Make an asyncronous OpenAI API call.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.chunk.Chunker.call_api_async" title="elm.chunk.Chunker.call_api_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">call_api_async</span></code></a>(url, headers, all_request_jsons)</p></td>
+<td><p>Use GPT to clean raw pdf text in parallel calls to the OpenAI API.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.chunk.Chunker.chat" title="elm.chunk.Chunker.chat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat</span></code></a>(query[, temperature])</p></td>
+<td><p>Have a continuous chat with the LLM including context from previous chat() calls stored as attributes in this class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.chunk.Chunker.chunk_text" title="elm.chunk.Chunker.chunk_text"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chunk_text</span></code></a>()</p></td>
+<td><p>Perform the text chunking operation</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.chunk.Chunker.clean_paragraphs" title="elm.chunk.Chunker.clean_paragraphs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clean_paragraphs</span></code></a>(text)</p></td>
+<td><p>Clean up double line breaks to make sure paragraphs can be detected in the text.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.chunk.Chunker.clear" title="elm.chunk.Chunker.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
+<td><p>Clear chat history and reduce messages to just the initial model role message.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.chunk.Chunker.count_tokens" title="elm.chunk.Chunker.count_tokens"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count_tokens</span></code></a>(text, model)</p></td>
+<td><p>Return the number of tokens in a string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.chunk.Chunker.generic_async_query" title="elm.chunk.Chunker.generic_async_query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generic_async_query</span></code></a>(queries[, model_role, ...])</p></td>
+<td><p>Run a number of generic single queries asynchronously (not conversational)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.chunk.Chunker.generic_query" title="elm.chunk.Chunker.generic_query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generic_query</span></code></a>(query[, model_role, temperature])</p></td>
+<td><p>Ask a generic single query without conversation</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.chunk.Chunker.get_embedding" title="elm.chunk.Chunker.get_embedding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_embedding</span></code></a>(text)</p></td>
+<td><p>Get the 1D array (list) embedding of a text string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.chunk.Chunker.is_good_paragraph" title="elm.chunk.Chunker.is_good_paragraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_good_paragraph</span></code></a>(paragraph)</p></td>
+<td><p>Basic tests to make sure the paragraph is useful text.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.chunk.Chunker.merge_chunks" title="elm.chunk.Chunker.merge_chunks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_chunks</span></code></a>(chunks_input)</p></td>
+<td><p>Merge chunks until they reach the token limit per chunk.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.chunk.Chunker.DEFAULT_MODEL" title="elm.chunk.Chunker.DEFAULT_MODEL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DEFAULT_MODEL</span></code></a></p></td>
+<td><p>Default model to do pdf text cleaning.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.chunk.Chunker.EMBEDDING_MODEL" title="elm.chunk.Chunker.EMBEDDING_MODEL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EMBEDDING_MODEL</span></code></a></p></td>
+<td><p>Default model to do text embeddings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.chunk.Chunker.EMBEDDING_URL" title="elm.chunk.Chunker.EMBEDDING_URL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EMBEDDING_URL</span></code></a></p></td>
+<td><p>OpenAI embedding API URL</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.chunk.Chunker.HEADERS" title="elm.chunk.Chunker.HEADERS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HEADERS</span></code></a></p></td>
+<td><p>OpenAI API Headers</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.chunk.Chunker.MODEL_ROLE" title="elm.chunk.Chunker.MODEL_ROLE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MODEL_ROLE</span></code></a></p></td>
+<td><p>High level model role</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.chunk.Chunker.URL" title="elm.chunk.Chunker.URL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">URL</span></code></a></p></td>
+<td><p>OpenAI API URL to be used with environment variable OPENAI_API_KEY.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.chunk.Chunker.all_messages_txt" title="elm.chunk.Chunker.all_messages_txt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_messages_txt</span></code></a></p></td>
+<td><p>Get a string printout of the full conversation with the LLM</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.chunk.Chunker.chunk_tokens" title="elm.chunk.Chunker.chunk_tokens"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chunk_tokens</span></code></a></p></td>
+<td><p>Number of tokens per chunk.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.chunk.Chunker.chunks" title="elm.chunk.Chunker.chunks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chunks</span></code></a></p></td>
+<td><p>List of overlapping text chunks (strings).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.chunk.Chunker.paragraph_tokens" title="elm.chunk.Chunker.paragraph_tokens"><code class="xref py py-obj docutils literal notranslate"><span class="pre">paragraph_tokens</span></code></a></p></td>
+<td><p>Number of tokens per paragraph.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.chunk.Chunker.paragraphs" title="elm.chunk.Chunker.paragraphs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">paragraphs</span></code></a></p></td>
+<td><p>Get a list of paragraphs in the text demarkated by an empty line.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py property">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.chunks">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chunks</span></span><a class="headerlink" href="#elm.chunk.Chunker.chunks" title="Link to this definition"></a></dt>
+<dd><p>List of overlapping text chunks (strings).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>list</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.paragraphs">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">paragraphs</span></span><a class="headerlink" href="#elm.chunk.Chunker.paragraphs" title="Link to this definition"></a></dt>
+<dd><p>Get a list of paragraphs in the text demarkated by an empty line.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>list</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.clean_paragraphs">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clean_paragraphs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/elm/chunk.html#Chunker.clean_paragraphs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elm.chunk.Chunker.clean_paragraphs" title="Link to this definition"></a></dt>
+<dd><p>Clean up double line breaks to make sure paragraphs can be detected
+in the text.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.is_good_paragraph">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_good_paragraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">paragraph</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/elm/chunk.html#Chunker.is_good_paragraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elm.chunk.Chunker.is_good_paragraph" title="Link to this definition"></a></dt>
+<dd><p>Basic tests to make sure the paragraph is useful text.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.paragraph_tokens">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">paragraph_tokens</span></span><a class="headerlink" href="#elm.chunk.Chunker.paragraph_tokens" title="Link to this definition"></a></dt>
+<dd><p>Number of tokens per paragraph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>list</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.chunk_tokens">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chunk_tokens</span></span><a class="headerlink" href="#elm.chunk.Chunker.chunk_tokens" title="Link to this definition"></a></dt>
+<dd><p>Number of tokens per chunk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>list</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.merge_chunks">
+<span class="sig-name descname"><span class="pre">merge_chunks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunks_input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/elm/chunk.html#Chunker.merge_chunks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elm.chunk.Chunker.merge_chunks" title="Link to this definition"></a></dt>
+<dd><p>Merge chunks until they reach the token limit per chunk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>chunks_input</strong> (<em>list</em>) – List of list of integers: [[0, 1], [2], [3, 4]] where nested lists
+are chunks and the integers are paragraph indices</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>chunks</strong> (<em>list</em>) – List of list of integers: [[0, 1], [2], [3, 4]] where nested lists
+are chunks and the integers are paragraph indices</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.add_overlap">
+<span class="sig-name descname"><span class="pre">add_overlap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunks_input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/elm/chunk.html#Chunker.add_overlap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elm.chunk.Chunker.add_overlap" title="Link to this definition"></a></dt>
+<dd><p>Add overlap on either side of a text chunk. This ignores token
+limit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>chunks_input</strong> (<em>list</em>) – List of list of integers: [[0, 1], [2], [3, 4]] where nested lists
+are chunks and the integers are paragraph indices</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>chunks</strong> (<em>list</em>) – List of list of integers: [[0, 1], [2], [3, 4]] where nested lists
+are chunks and the integers are paragraph indices</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.chunk_text">
+<span class="sig-name descname"><span class="pre">chunk_text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/elm/chunk.html#Chunker.chunk_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elm.chunk.Chunker.chunk_text" title="Link to this definition"></a></dt>
+<dd><p>Perform the text chunking operation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>chunks</strong> (<em>list</em>) – List of strings where each string is an overlapping chunk of text</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.DEFAULT_MODEL">
+<span class="sig-name descname"><span class="pre">DEFAULT_MODEL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'gpt-3.5-turbo'</span></em><a class="headerlink" href="#elm.chunk.Chunker.DEFAULT_MODEL" title="Link to this definition"></a></dt>
+<dd><p>Default model to do pdf text cleaning.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.EMBEDDING_MODEL">
+<span class="sig-name descname"><span class="pre">EMBEDDING_MODEL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'text-embedding-ada-002'</span></em><a class="headerlink" href="#elm.chunk.Chunker.EMBEDDING_MODEL" title="Link to this definition"></a></dt>
+<dd><p>Default model to do text embeddings.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.EMBEDDING_URL">
+<span class="sig-name descname"><span class="pre">EMBEDDING_URL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://api.openai.com/v1/embeddings'</span></em><a class="headerlink" href="#elm.chunk.Chunker.EMBEDDING_URL" title="Link to this definition"></a></dt>
+<dd><p>OpenAI embedding API URL</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.HEADERS">
+<span class="sig-name descname"><span class="pre">HEADERS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'Authorization':</span> <span class="pre">'Bearer</span> <span class="pre">None',</span> <span class="pre">'Content-Type':</span> <span class="pre">'application/json',</span> <span class="pre">'api-key':</span> <span class="pre">'None'}</span></em><a class="headerlink" href="#elm.chunk.Chunker.HEADERS" title="Link to this definition"></a></dt>
+<dd><p>OpenAI API Headers</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.MODEL_ROLE">
+<span class="sig-name descname"><span class="pre">MODEL_ROLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'You</span> <span class="pre">are</span> <span class="pre">a</span> <span class="pre">research</span> <span class="pre">assistant</span> <span class="pre">that</span> <span class="pre">answers</span> <span class="pre">questions.'</span></em><a class="headerlink" href="#elm.chunk.Chunker.MODEL_ROLE" title="Link to this definition"></a></dt>
+<dd><p>High level model role</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.URL">
+<span class="sig-name descname"><span class="pre">URL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://api.openai.com/v1/chat/completions'</span></em><a class="headerlink" href="#elm.chunk.Chunker.URL" title="Link to this definition"></a></dt>
+<dd><p>OpenAI API URL to be used with environment variable OPENAI_API_KEY. Use
+an Azure API endpoint to trigger Azure usage along with environment
+variables AZURE_OPENAI_KEY, AZURE_OPENAI_VERSION, and
+AZURE_OPENAI_ENDPOINT</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.all_messages_txt">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_messages_txt</span></span><a class="headerlink" href="#elm.chunk.Chunker.all_messages_txt" title="Link to this definition"></a></dt>
+<dd><p>Get a string printout of the full conversation with the LLM</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>str</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.call_api">
+<em class="property"><span class="pre">async</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">call_api</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_json</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#elm.chunk.Chunker.call_api" title="Link to this definition"></a></dt>
+<dd><p>Make an asyncronous OpenAI API call.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul>
+<li><p><strong>url</strong> (<em>str</em>) –</p>
+<dl class="simple">
+<dt>OpenAI API url, typically either:</dt><dd><p><a class="reference external" href="https://api.openai.com/v1/embeddings">https://api.openai.com/v1/embeddings</a>
+<a class="reference external" href="https://api.openai.com/v1/chat/completions">https://api.openai.com/v1/chat/completions</a></p>
+</dd>
+</dl>
+</li>
+<li><p><strong>headers</strong> (<em>dict</em>) –</p>
+<dl class="simple">
+<dt>OpenAI API headers, typically:</dt><dd><dl class="simple">
+<dt>{“Content-Type”: “application/json”,</dt><dd><p>“Authorization”: f”Bearer {openai.api_key}”}</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><p><strong>request_json</strong> (<em>dict</em>) –</p>
+<dl>
+<dt>API data input, typically looks like this for chat completion:</dt><dd><dl>
+<dt>{“model”: “gpt-3.5-turbo”,</dt><dd><dl class="simple">
+<dt>“messages”: [{“role”: “system”, “content”: “You do this…”},</dt><dd><p>{“role”: “user”, “content”: “Do this: {}”}],</p>
+</dd>
+</dl>
+<p>“temperature”: 0.0}</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>out</strong> (<em>dict</em>) – API response in json format</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.call_api_async">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">call_api_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_request_jsons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40000.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#elm.chunk.Chunker.call_api_async" title="Link to this definition"></a></dt>
+<dd><p>Use GPT to clean raw pdf text in parallel calls to the OpenAI API.</p>
+<p>NOTE: you need to call this using the await command in ipython or
+jupyter, e.g.: <cite>out = await PDFtoTXT.clean_txt_async()</cite></p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul>
+<li><p><strong>url</strong> (<em>str</em>) –</p>
+<dl class="simple">
+<dt>OpenAI API url, typically either:</dt><dd><p><a class="reference external" href="https://api.openai.com/v1/embeddings">https://api.openai.com/v1/embeddings</a>
+<a class="reference external" href="https://api.openai.com/v1/chat/completions">https://api.openai.com/v1/chat/completions</a></p>
+</dd>
+</dl>
+</li>
+<li><p><strong>headers</strong> (<em>dict</em>) –</p>
+<dl class="simple">
+<dt>OpenAI API headers, typically:</dt><dd><dl class="simple">
+<dt>{“Content-Type”: “application/json”,</dt><dd><p>“Authorization”: f”Bearer {openai.api_key}”}</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><p><strong>all_request_jsons</strong> (<em>list</em>) – List of API data input, one entry typically looks like this for
+chat completion:</p>
+<blockquote>
+<div><dl>
+<dt>{“model”: “gpt-3.5-turbo”,</dt><dd><dl class="simple">
+<dt>“messages”: [{“role”: “system”, “content”: “You do this…”},</dt><dd><p>{“role”: “user”, “content”: “Do this: {}”}],</p>
+</dd>
+</dl>
+<p>“temperature”: 0.0}</p>
+</dd>
+</dl>
+</div></blockquote>
+</li>
+<li><p><strong>ignore_error</strong> (<em>None | callable</em>) – Optional callable to parse API error string. If the callable
+returns True, the error will be ignored, the API call will not be
+tried again, and the output will be an empty string.</p></li>
+<li><p><strong>rate_limit</strong> (<em>float</em>) – OpenAI API rate limit (tokens / minute). Note that the
+gpt-3.5-turbo limit is 90k as of 4/2023, but we’re using a large
+factor of safety (~1/2) because we can only count the tokens on the
+input side and assume the output is about the same count.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>out</strong> (<em>list</em>) – List of API outputs where each list entry is a GPT answer from the
+corresponding message in the all_request_jsons input.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.chat">
+<span class="sig-name descname"><span class="pre">chat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#elm.chunk.Chunker.chat" title="Link to this definition"></a></dt>
+<dd><p>Have a continuous chat with the LLM including context from previous
+chat() calls stored as attributes in this class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> (<em>str</em>) – Question to ask ChatGPT</p></li>
+<li><p><strong>temperature</strong> (<em>float</em>) – GPT model temperature, a measure of response entropy from 0 to 1. 0
+is more reliable and nearly deterministic; 1 will give the model
+more creative freedom and may not return as factual of results.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>response</strong> (<em>str</em>) – Model response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#elm.chunk.Chunker.clear" title="Link to this definition"></a></dt>
+<dd><p>Clear chat history and reduce messages to just the initial model
+role message.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.count_tokens">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">count_tokens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#elm.chunk.Chunker.count_tokens" title="Link to this definition"></a></dt>
+<dd><p>Return the number of tokens in a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> (<em>str</em>) – Text string to get number of tokens for</p></li>
+<li><p><strong>model</strong> (<em>str</em>) – specification of OpenAI model to use (e.g., “gpt-3.5-turbo”)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>n</strong> (<em>int</em>) – Number of tokens in text</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.generic_async_query">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generic_async_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">queries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_role</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40000.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#elm.chunk.Chunker.generic_async_query" title="Link to this definition"></a></dt>
+<dd><p>Run a number of generic single queries asynchronously
+(not conversational)</p>
+<p>NOTE: you need to call this using the await command in ipython or
+jupyter, e.g.: <cite>out = await Summary.run_async()</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> (<em>list</em>) – Questions to ask ChatGPT (list of strings)</p></li>
+<li><p><strong>model_role</strong> (<em>str | None</em>) – Role for the model to take, e.g.: “You are a research assistant”.
+This defaults to self.MODEL_ROLE</p></li>
+<li><p><strong>temperature</strong> (<em>float</em>) – GPT model temperature, a measure of response entropy from 0 to 1. 0
+is more reliable and nearly deterministic; 1 will give the model
+more creative freedom and may not return as factual of results.</p></li>
+<li><p><strong>ignore_error</strong> (<em>None | callable</em>) – Optional callable to parse API error string. If the callable
+returns True, the error will be ignored, the API call will not be
+tried again, and the output will be an empty string.</p></li>
+<li><p><strong>rate_limit</strong> (<em>float</em>) – OpenAI API rate limit (tokens / minute). Note that the
+gpt-3.5-turbo limit is 90k as of 4/2023, but we’re using a large
+factor of safety (~1/2) because we can only count the tokens on the
+input side and assume the output is about the same count.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>response</strong> (<em>list</em>) – Model responses with same length as query input.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.generic_query">
+<span class="sig-name descname"><span class="pre">generic_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_role</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#elm.chunk.Chunker.generic_query" title="Link to this definition"></a></dt>
+<dd><p>Ask a generic single query without conversation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> (<em>str</em>) – Question to ask ChatGPT</p></li>
+<li><p><strong>model_role</strong> (<em>str | None</em>) – Role for the model to take, e.g.: “You are a research assistant”.
+This defaults to self.MODEL_ROLE</p></li>
+<li><p><strong>temperature</strong> (<em>float</em>) – GPT model temperature, a measure of response entropy from 0 to 1. 0
+is more reliable and nearly deterministic; 1 will give the model
+more creative freedom and may not return as factual of results.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>response</strong> (<em>str</em>) – Model response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.chunk.Chunker.get_embedding">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#elm.chunk.Chunker.get_embedding" title="Link to this definition"></a></dt>
+<dd><p>Get the 1D array (list) embedding of a text string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – Text to embed</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>embedding</strong> (<em>list</em>) – List of float that represents the numerical embedding of the text</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="elm.chunk.html" class="btn btn-neutral float-left" title="elm.chunk" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="elm.embed.html" class="btn btn-neutral float-right" title="elm.embed" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alliance for Sustainable Energy, LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

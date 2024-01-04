@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>elm.tree.DecisionTree &mdash; elm 0.0.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=47de8214"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="elm.version" href="elm.version.html" />
+    <link rel="prev" title="elm.tree" href="elm.tree.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            elm
+          </a>
+              <div class="version">
+                0.0.3
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples.energy_wizard.html">The Energy Wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples.energy_wizard.html#downloading-and-embedding-pdfs">Downloading and Embedding PDFs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.energy_wizard.html#running-the-streamlit-app">Running the Streamlit App</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="elm.html">API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="elm.base.html">elm.base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.base.ApiBase.html">elm.base.ApiBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.base.ApiBase.html#elm.base.ApiBase"><code class="docutils literal notranslate"><span class="pre">ApiBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.base.ApiQueue.html">elm.base.ApiQueue</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.base.ApiQueue.html#elm.base.ApiQueue"><code class="docutils literal notranslate"><span class="pre">ApiQueue</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elm.chunk.html">elm.chunk</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.chunk.Chunker.html">elm.chunk.Chunker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.chunk.Chunker.html#elm.chunk.Chunker"><code class="docutils literal notranslate"><span class="pre">Chunker</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elm.embed.html">elm.embed</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.embed.ChunkAndEmbed.html">elm.embed.ChunkAndEmbed</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed"><code class="docutils literal notranslate"><span class="pre">ChunkAndEmbed</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elm.osti.html">elm.osti</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.osti.OstiList.html">elm.osti.OstiList</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.osti.OstiList.html#elm.osti.OstiList"><code class="docutils literal notranslate"><span class="pre">OstiList</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.osti.OstiRecord.html">elm.osti.OstiRecord</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.osti.OstiRecord.html#elm.osti.OstiRecord"><code class="docutils literal notranslate"><span class="pre">OstiRecord</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elm.pdf.html">elm.pdf</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.pdf.PDFtoTXT.html">elm.pdf.PDFtoTXT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT"><code class="docutils literal notranslate"><span class="pre">PDFtoTXT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elm.summary.html">elm.summary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.summary.Summary.html">elm.summary.Summary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.summary.Summary.html#elm.summary.Summary"><code class="docutils literal notranslate"><span class="pre">Summary</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="elm.tree.html">elm.tree</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">elm.tree.DecisionTree</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#elm.tree.DecisionTree"><code class="docutils literal notranslate"><span class="pre">DecisionTree</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elm.version.html">elm.version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="elm.wizard.html">elm.wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.wizard.EnergyWizard.html">elm.wizard.EnergyWizard</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard"><code class="docutils literal notranslate"><span class="pre">EnergyWizard</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">elm</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="elm.html">elm</a></li>
+          <li class="breadcrumb-item"><a href="elm.tree.html">elm.tree</a></li>
+      <li class="breadcrumb-item active">elm.tree.DecisionTree</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/nrel/elm/blob/main/docs/source/_autosummary/elm.tree.DecisionTree.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="elm-tree-decisiontree">
+<h1>elm.tree.DecisionTree<a class="headerlink" href="#elm-tree-decisiontree" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="elm.tree.DecisionTree">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DecisionTree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/elm/tree.html#DecisionTree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elm.tree.DecisionTree" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Class to traverse a directed graph of LLM prompts. Nodes are
+prompts and edges are transitions between prompts based on conditions
+being met in the LLM response.</p>
+<p>Class to traverse a directed graph of LLM prompts. Nodes are
+prompts and edges are transitions between prompts based on conditions
+being met in the LLM response.</p>
+<p class="rubric">Examples</p>
+<p>Here’s a simple example to setup a decision tree graph and run with the
+DecisionTree class:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">rex</span> <span class="kn">import</span> <span class="n">init_logger</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">elm.base</span> <span class="kn">import</span> <span class="n">ApiBase</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">elm.tree</span> <span class="kn">import</span> <span class="n">DecisionTree</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">init_logger</span><span class="p">(</span><span class="s1">&#39;elm.tree&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Grant&#39;</span><span class="p">,</span>
+<span class="go">                   api=ApiBase(model=&#39;gpt-35-turbo&#39;))</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;init&#39;</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="s1">&#39;Say </span><span class="si">{text}</span><span class="s1"> to </span><span class="si">{name}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s1">&#39;init&#39;</span><span class="p">,</span> <span class="s1">&#39;next&#39;</span><span class="p">,</span> <span class="n">condition</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39;Grant&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;next&#39;</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="s1">&#39;How are you?&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">DecisionTree</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">all_messages_txt</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>graph</strong> (<em>nx.DiGraph</em>) – Directed acyclic graph where nodes are LLM prompts and edges are
+logical transitions based on the response. Must have high-level
+graph attribute “api” which is an ApiBase instance. Nodes should
+have attribute “prompt” which can have {format} named arguments
+that will be filled from the high-level graph attributes. Edges can
+have attribute “condition” that is a callable to be executed on the
+LLM response text. An edge from a node without a condition acts as
+an “else” statement if no other edge conditions are satisfied. A
+single edge from node to node does not need a condition.</p>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.tree.DecisionTree.call_node" title="elm.tree.DecisionTree.call_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">call_node</span></code></a>(node0)</p></td>
+<td><p>Call the LLM with the prompt from the input node and search the successor edges for a valid transition condition</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.tree.DecisionTree.run" title="elm.tree.DecisionTree.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>([node0])</p></td>
+<td><p>Traverse the decision tree starting at the input node.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.tree.DecisionTree.all_messages_txt" title="elm.tree.DecisionTree.all_messages_txt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_messages_txt</span></code></a></p></td>
+<td><p>Get a printout of the full conversation with the LLM</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.tree.DecisionTree.api" title="elm.tree.DecisionTree.api"><code class="xref py py-obj docutils literal notranslate"><span class="pre">api</span></code></a></p></td>
+<td><p>Get the ApiBase object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.tree.DecisionTree.graph" title="elm.tree.DecisionTree.graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph</span></code></a></p></td>
+<td><p>Get the networkx graph object</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.tree.DecisionTree.history" title="elm.tree.DecisionTree.history"><code class="xref py py-obj docutils literal notranslate"><span class="pre">history</span></code></a></p></td>
+<td><p>Get a record of the nodes traversed in the tree</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.tree.DecisionTree.messages" title="elm.tree.DecisionTree.messages"><code class="xref py py-obj docutils literal notranslate"><span class="pre">messages</span></code></a></p></td>
+<td><p>Get a list of the conversation messages with the LLM.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py property">
+<dt class="sig sig-object py" id="elm.tree.DecisionTree.api">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">api</span></span><a class="headerlink" href="#elm.tree.DecisionTree.api" title="Link to this definition"></a></dt>
+<dd><p>Get the ApiBase object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>ApiBase</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="elm.tree.DecisionTree.messages">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">messages</span></span><a class="headerlink" href="#elm.tree.DecisionTree.messages" title="Link to this definition"></a></dt>
+<dd><p>Get a list of the conversation messages with the LLM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>list</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="elm.tree.DecisionTree.all_messages_txt">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_messages_txt</span></span><a class="headerlink" href="#elm.tree.DecisionTree.all_messages_txt" title="Link to this definition"></a></dt>
+<dd><p>Get a printout of the full conversation with the LLM</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>str</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="elm.tree.DecisionTree.history">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">history</span></span><a class="headerlink" href="#elm.tree.DecisionTree.history" title="Link to this definition"></a></dt>
+<dd><p>Get a record of the nodes traversed in the tree</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>list</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="elm.tree.DecisionTree.graph">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">graph</span></span><a class="headerlink" href="#elm.tree.DecisionTree.graph" title="Link to this definition"></a></dt>
+<dd><p>Get the networkx graph object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>nx.DiGraph</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.tree.DecisionTree.call_node">
+<span class="sig-name descname"><span class="pre">call_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/elm/tree.html#DecisionTree.call_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elm.tree.DecisionTree.call_node" title="Link to this definition"></a></dt>
+<dd><p>Call the LLM with the prompt from the input node and search the
+successor edges for a valid transition condition</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>node0</strong> (<em>str</em>) – Name of node being executed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>out</strong> (<em>str</em>) – Next node or LLM response if at a leaf node.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.tree.DecisionTree.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'init'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/elm/tree.html#DecisionTree.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elm.tree.DecisionTree.run" title="Link to this definition"></a></dt>
+<dd><p>Traverse the decision tree starting at the input node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>node0</strong> (<em>str</em>) – Name of starting node in the graph. This is typically called “init”</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>out</strong> (<em>str</em>) – Final response from LLM at the leaf node.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="elm.tree.html" class="btn btn-neutral float-left" title="elm.tree" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="elm.version.html" class="btn btn-neutral float-right" title="elm.version" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alliance for Sustainable Energy, LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

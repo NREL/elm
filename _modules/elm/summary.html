@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>elm.summary &mdash; elm 0.0.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=47de8214"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            elm
+          </a>
+              <div class="version">
+                0.0.3
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.energy_wizard.html">The Energy Wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.energy_wizard.html#downloading-and-embedding-pdfs">Downloading and Embedding PDFs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.energy_wizard.html#running-the-streamlit-app">Running the Streamlit App</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary/elm.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.base.html">elm.base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.base.ApiBase.html">elm.base.ApiBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.base.ApiBase.html#elm.base.ApiBase"><code class="docutils literal notranslate"><span class="pre">ApiBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.base.ApiQueue.html">elm.base.ApiQueue</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.base.ApiQueue.html#elm.base.ApiQueue"><code class="docutils literal notranslate"><span class="pre">ApiQueue</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.chunk.html">elm.chunk</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.chunk.Chunker.html">elm.chunk.Chunker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker"><code class="docutils literal notranslate"><span class="pre">Chunker</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.embed.html">elm.embed</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.embed.ChunkAndEmbed.html">elm.embed.ChunkAndEmbed</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed"><code class="docutils literal notranslate"><span class="pre">ChunkAndEmbed</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.osti.html">elm.osti</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.osti.OstiList.html">elm.osti.OstiList</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.osti.OstiList.html#elm.osti.OstiList"><code class="docutils literal notranslate"><span class="pre">OstiList</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.osti.OstiRecord.html">elm.osti.OstiRecord</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.osti.OstiRecord.html#elm.osti.OstiRecord"><code class="docutils literal notranslate"><span class="pre">OstiRecord</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.pdf.html">elm.pdf</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.pdf.PDFtoTXT.html">elm.pdf.PDFtoTXT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT"><code class="docutils literal notranslate"><span class="pre">PDFtoTXT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.summary.html">elm.summary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.summary.Summary.html">elm.summary.Summary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.summary.Summary.html#elm.summary.Summary"><code class="docutils literal notranslate"><span class="pre">Summary</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.tree.html">elm.tree</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.tree.DecisionTree.html">elm.tree.DecisionTree</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.tree.DecisionTree.html#elm.tree.DecisionTree"><code class="docutils literal notranslate"><span class="pre">DecisionTree</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.version.html">elm.version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.wizard.html">elm.wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.wizard.EnergyWizard.html">elm.wizard.EnergyWizard</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard"><code class="docutils literal notranslate"><span class="pre">EnergyWizard</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">elm</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">elm.summary</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for elm.summary</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Research Summarization and Distillation with LLMs</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">elm.base</span> <span class="kn">import</span> <span class="n">ApiBase</span>
+<span class="kn">from</span> <span class="nn">elm.chunk</span> <span class="kn">import</span> <span class="n">Chunker</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Summary">
+<a class="viewcode-back" href="../../_autosummary/elm.summary.Summary.html#elm.summary.Summary">[docs]</a>
+<span class="k">class</span> <span class="nc">Summary</span><span class="p">(</span><span class="n">ApiBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Interface to perform Recursive Summarization and Distillation of</span>
+<span class="sd">    research text&quot;&quot;&quot;</span>
+
+    <span class="n">MODEL_ROLE</span> <span class="o">=</span> <span class="s2">&quot;You are an energy scientist summarizing prior research&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;High level model role, somewhat redundant to MODEL_INSTRUCTION&quot;&quot;&quot;</span>
+
+    <span class="n">MODEL_INSTRUCTION</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Can you please summarize the text quoted above &#39;</span>
+                         <span class="s1">&#39;in </span><span class="si">{n_words}</span><span class="s1"> words?</span><span class="se">\n\n</span><span class="s1">&quot;&quot;&quot;</span><span class="se">\n</span><span class="si">{text_chunk}</span><span class="se">\n</span><span class="s1">&quot;&quot;&quot;&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Prefix to the engineered prompt. The format args `text_chunk` and</span>
+<span class="sd">    `n_words` will be formatted by the Summary class at runtime. `text_chunk`</span>
+<span class="sd">    will be provided by the Summary text chunks, `n_words` is an initialization</span>
+<span class="sd">    argument for the Summary class.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_words</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="o">**</span><span class="n">chunk_kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        text : str | list</span>
+<span class="sd">            Single body of text to chunk up using elm.Chunker or a pre-chunked</span>
+<span class="sd">            list of strings. Works well if this is a single document with empty</span>
+<span class="sd">            lines between paragraphs.</span>
+<span class="sd">        model : str</span>
+<span class="sd">            GPT model name, default is the DEFAULT_MODEL global var</span>
+<span class="sd">        n_words : int</span>
+<span class="sd">            Desired length of the output text. Note that this is never perfect</span>
+<span class="sd">            but helps guide the LLM to an approximate desired output length.</span>
+<span class="sd">            400-600 words seems to work quite well with GPT-4. This gets</span>
+<span class="sd">            formatted into the MODEL_INSTRUCTION attribute.</span>
+<span class="sd">        chunk_kwargs : dict | None</span>
+<span class="sd">            kwargs for initialization of :class:`elm.chunk.Chunker`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_words</span> <span class="o">=</span> <span class="n">n_words</span>
+
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Loading text file: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">text_chunks</span> <span class="o">=</span> <span class="n">Chunker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="o">**</span><span class="n">chunk_kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">text_chunks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">summary_chunks</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="Summary.combine">
+<a class="viewcode-back" href="../../_autosummary/elm.summary.Summary.html#elm.summary.Summary.combine">[docs]</a>
+    <span class="k">def</span> <span class="nf">combine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text_summary</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Combine separate chunk summaries into one more comprehensive</span>
+<span class="sd">        narrative</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        summary : str</span>
+<span class="sd">            Summary of text. May be several disjointed paragraphs</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        summary : str</span>
+<span class="sd">            Summary of text. Paragraphs will be more cohesive.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">role</span> <span class="o">=</span> <span class="s1">&#39;You provide editorial services for technical writing.&#39;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Can you combine the following paragraphs and &#39;</span>
+                 <span class="s1">&#39;ease the transitions between them? &#39;</span>
+                 <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&quot;&quot;&quot;</span><span class="si">{</span><span class="n">text_summary</span><span class="si">}</span><span class="s1">&quot;&quot;&quot;&#39;</span><span class="p">)</span>
+        <span class="n">text_summary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generic_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">model_role</span><span class="o">=</span><span class="n">role</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">text_summary</span></div>
+
+
+<div class="viewcode-block" id="Summary.run">
+<a class="viewcode-back" href="../../_autosummary/elm.summary.Summary.html#elm.summary.Summary.run">[docs]</a>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fancy_combine</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Use GPT to do a summary of input text.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        temperature : float</span>
+<span class="sd">            GPT model temperature, a measure of response entropy from 0 to 1. 0</span>
+<span class="sd">            is more reliable and nearly deterministic; 1 will give the model</span>
+<span class="sd">            more creative freedom and may not return as factual of results.</span>
+<span class="sd">        fancy_combine : bool</span>
+<span class="sd">            Flag to use the GPT model to combine the separate outputs into a</span>
+<span class="sd">            cohesive summary.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        summary : str</span>
+<span class="sd">            Summary of text.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Summarizing </span><span class="si">{}</span><span class="s1"> text chunks in serial...&#39;</span>
+                    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text_chunks</span><span class="p">)))</span>
+        <span class="n">summary</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text_chunks</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Summarizing text chunk </span><span class="si">{}</span><span class="s1"> out of </span><span class="si">{}</span><span class="s1">&#39;</span>
+                         <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text_chunks</span><span class="p">)))</span>
+
+            <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MODEL_INSTRUCTION</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">text_chunk</span><span class="o">=</span><span class="n">chunk</span><span class="p">,</span>
+                                                <span class="n">n_words</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_words</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generic_query</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">model_role</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">MODEL_ROLE</span><span class="p">,</span>
+                                          <span class="n">temperature</span><span class="o">=</span><span class="n">temperature</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">summary_chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+            <span class="n">summary</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="si">{</span><span class="n">response</span><span class="si">}</span><span class="s1">&#39;</span>
+
+        <span class="k">if</span> <span class="n">fancy_combine</span><span class="p">:</span>
+            <span class="n">summary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Finished all summaries.&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">summary</span></div>
+
+
+<div class="viewcode-block" id="Summary.run_async">
+<a class="viewcode-back" href="../../_autosummary/elm.summary.Summary.html#elm.summary.Summary.run_async">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_async</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ignore_error</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">rate_limit</span><span class="o">=</span><span class="mf">40e3</span><span class="p">,</span> <span class="n">fancy_combine</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run text summary asynchronously for all text chunks</span>
+
+<span class="sd">        NOTE: you need to call this using the await command in ipython or</span>
+<span class="sd">        jupyter, e.g.: `out = await Summary.run_async()`</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        temperature : float</span>
+<span class="sd">            GPT model temperature, a measure of response entropy from 0 to 1. 0</span>
+<span class="sd">            is more reliable and nearly deterministic; 1 will give the model</span>
+<span class="sd">            more creative freedom and may not return as factual of results.</span>
+<span class="sd">        ignore_error : None | callable</span>
+<span class="sd">            Optional callable to parse API error string. If the callable</span>
+<span class="sd">            returns True, the error will be ignored, the API call will not be</span>
+<span class="sd">            tried again, and the output will be an empty string.</span>
+<span class="sd">        rate_limit : float</span>
+<span class="sd">            OpenAI API rate limit (tokens / minute). Note that the</span>
+<span class="sd">            gpt-3.5-turbo limit is 90k as of 4/2023, but we&#39;re using a large</span>
+<span class="sd">            factor of safety (~1/2) because we can only count the tokens on the</span>
+<span class="sd">            input side and assume the output is about the same count.</span>
+<span class="sd">        fancy_combine : bool</span>
+<span class="sd">            Flag to use the GPT model to combine the separate outputs into a</span>
+<span class="sd">            cohesive summary.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        summary : str</span>
+<span class="sd">            Summary of text.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Summarizing </span><span class="si">{}</span><span class="s1"> text chunks asynchronously...&#39;</span>
+                    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text_chunks</span><span class="p">)))</span>
+
+        <span class="n">queries</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_chunks</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MODEL_INSTRUCTION</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">text_chunk</span><span class="o">=</span><span class="n">chunk</span><span class="p">,</span>
+                                                <span class="n">n_words</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_words</span><span class="p">)</span>
+            <span class="n">queries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">summaries</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">generic_async_query</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span>
+                                                   <span class="n">model_role</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">MODEL_ROLE</span><span class="p">,</span>
+                                                   <span class="n">temperature</span><span class="o">=</span><span class="n">temperature</span><span class="p">,</span>
+                                                   <span class="n">ignore_error</span><span class="o">=</span><span class="n">ignore_error</span><span class="p">,</span>
+                                                   <span class="n">rate_limit</span><span class="o">=</span><span class="n">rate_limit</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">summary_chunks</span> <span class="o">=</span> <span class="n">summaries</span>
+        <span class="n">summary</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">summaries</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">fancy_combine</span><span class="p">:</span>
+            <span class="n">summary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Finished all summaries.&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">summary</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alliance for Sustainable Energy, LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
