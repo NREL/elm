@@ -38,7 +38,7 @@ class EnergyWizard(ApiBase):
         """
 
         super().__init__(model)
-        
+
         self.corpus = self.preflight_corpus(corpus)
         self.token_budget = token_budget
         self.embedding_arr = np.vstack(self.corpus['embedding'].values)
@@ -294,7 +294,7 @@ class EnergyWizard(ApiBase):
                 print(chunk_msg, end='')
 
         else:
-            response_message = response["choices"][0]["message"]["content"]
+            response_message = response.choices[0].message.content
 
         self.messages.append({'role': 'assistant',
                               'content': response_message})

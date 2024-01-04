@@ -19,6 +19,10 @@ with open(FP_TXT, 'r', encoding='utf8') as f:
     TEXT = f.read()
 
 
+class MockObject:
+    """Dummy class for mocking api response objects"""
+
+
 class MockClass:
     """Dummy class to mock various api calls"""
 
@@ -38,7 +42,11 @@ class MockClass:
     @staticmethod
     def create(*args, **kwargs):  # pylint: disable=unused-argument
         """Mock for openai.ChatCompletion.create()"""
-        response = {'choices': [{'message': {'content': 'hello!'}}]}
+        # pylint: disable=attribute-defined-outside-init
+        response = MockObject()
+        response.choices = [MockObject()]
+        response.choices[0].message = MockObject()
+        response.choices[0].message.content = 'hello!'
         return response
 
 
