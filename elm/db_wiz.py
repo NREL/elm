@@ -134,9 +134,10 @@ class DataBaseWizard(ApiBase):
         """Take the raw user query and ask the LLM for a SQL query that will
         get data to support a response
         """
-        e_query = ('{}\n\nPlease create a SQL query that will pull data '
-                   'that can answer this user question and please only '
-                   'return the SQL query with no commentary or preface: "{}"'
+        e_query = ('{}\n\nPlease create a SQL query that will answer this '
+                   'user question: "{}"\n\n'
+                   'Return all columns from the database. '
+                   'Please only return the SQL query with no commentary or preface.'
                    .format(self.database_describe, query))
         out = super().chat(e_query, temperature=0)
         return out
