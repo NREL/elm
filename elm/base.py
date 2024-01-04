@@ -207,7 +207,7 @@ class ApiBase(ABC):
                       stream=False)
 
         response = self._client.chat.completions.create(**kwargs)
-        response = response["choices"][0]["message"]["content"]
+        response = response.choices[0].message.content
         self.messages.append({'role': 'assistant', 'content': response})
 
         return response

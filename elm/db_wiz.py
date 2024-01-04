@@ -2,6 +2,7 @@
 """
 ELM energy wizard
 """
+import os
 import copy
 import numpy as np
 import json
@@ -15,10 +16,10 @@ from elm.wizard import EnergyWizard
 class DataBaseWizard(ApiBase):
     """Interface to ask OpenAI LLMs about energy research."""
 
-    MODEL_ROLE = "You are a helpful assistant"
+    MODEL_ROLE = ("You are a data engineer pulling data from a relational "
+                  "database using SQL and writing python code to plot the "
+                  "output based on user queries.")
     """High level model role, somewhat redundant to MODEL_INSTRUCTION"""
-
-    
 
     def __init__(self, connection_string, model=None, token_budget=3500, ref_col=None):
         """
@@ -40,21 +41,32 @@ class DataBaseWizard(ApiBase):
 
         super().__init__(model)
         self.connection_string = connection_string
+        self.connection = psycopg2.connect(self.connection_string)
         self.token_budget = token_budget
-        # Initializing database schema
-        self.database_schema = self.get_schema()
-        self.database_first_lines = self.get_lines()
-        self.database_unique_values = self.get_unique_values()
 
-        self.database_describe = ('You have been given access to the database '
-                    'schema {}. The first ten lines of the database are {}\n '
-                    '. Each column of text contains the following unique '
-                    'values {}. The table name is loads.lc_day_profile_demand_enduse.'
-                    .format(self.database_schema, 
-                            self.database_first_lines,
-                            self.database_unique_values))
-        
-        with open(fpcache,stringw)
+        fpcache = './db_description.txt'
+
+        if os.path.exists(fpcache):
+            with open(fpcache, 'r') as f:
+                self.database_describe = f.read()
+
+        else:
+            # Initializing database schema
+            self.database_schema = self.get_schema()
+            self.database_first_lines = self.get_lines()
+            self.database_unique_values = self.get_unique_values()
+
+            self.database_describe = ('You have been given access to the database '
+                        'schema {}. The first ten lines of the database are {}\n '
+                        '. Each column of text contains the following unique '
+                        'values {}. The table name is loads.lc_day_profile_demand_enduse.'
+                        .format(self.database_schema,
+                                self.database_first_lines,
+                                self.database_unique_values))
+
+            with open(fpcache, 'w') as f:
+                f.write(self.database_describe)
+
 
     ## Getting database Schema
     def get_schema(self):
@@ -65,9 +77,7 @@ class DataBaseWizard(ApiBase):
         ORDER BY table_name, ordinal_position;
         """
 
-        connection = psycopg2.connect(self.connection_string)
-
-        with connection.cursor() as cur:
+        with self.connection.cursor() as cur:
             cur.execute(query)
             schema = {}
             for table, col, dtype in cur.fetchall():
@@ -85,18 +95,18 @@ class DataBaseWizard(ApiBase):
         if isinstance(obj, (datetime, date)):
             return obj.isoformat()
         raise TypeError ("Type %s not serializable" % type(obj))
-    
+
     ## Getting First 10 lines of database
     def get_lines(self):
-        query = ''' 
-        SELECT * 
+        query = '''
+        SELECT *
         FROM loads.lc_day_profile_demand_enduse
         LIMIT 10;
         '''
-        connection = psycopg2.connect(self.connection_string)
-        cursor = connection.cursor()
-        cursor.execute(query)
-        first_lines = cursor.fetchall()
+
+        with self.connection.cursor() as cursor:
+            cursor.execute(query)
+            first_lines = cursor.fetchall()
 
         first_lines_json = json.dumps(first_lines, default=self.json_serial)
         return first_lines_json
@@ -105,18 +115,17 @@ class DataBaseWizard(ApiBase):
     def get_unique_values(self):
         schema = json.loads(self.database_schema)
 
-        connection = psycopg2.connect(self.connection_string)
-        cursor = connection.cursor()
+        with self.connection.cursor() as cursor:
 
-        structure_dict = {}
-        for table in schema:
-            for entry in schema[table]:
-                if entry['type'] == 'text':
-                    column_name = entry['column']
-                    query = f'SELECT DISTINCT {column_name} FROM loads.{table}'
+            structure_dict = {}
+            for table in schema:
+                for entry in schema[table]:
+                    if entry['type'] == 'text':
+                        column_name = entry['column']
+                        query = f'SELECT DISTINCT {column_name} FROM loads.{table}'
 
-                    cursor.execute(query)
-                    structure_dict[entry['column']] = str(cursor.fetchall())
+                        cursor.execute(query)
+                        structure_dict[entry['column']] = str(cursor.fetchall())
 
         return json.dumps(structure_dict)
 
@@ -125,15 +134,11 @@ class DataBaseWizard(ApiBase):
         """Take the raw user query and ask the LLM for a SQL query that will
         get data to support a response
         """
-        sql_role = ('You are a data engineer creating SQL queries that will '
-                    'pull data for user requests. Return only the SQL query '
-                    'as a single string that can be run directly without any '
-                    'comments. ')
-        e_query = ('Please create a SQL query that will pull data that can '
-                   'answer this user question: {}'
-                   .format(query))
-        out = self.generic_query(e_query, model_role=sql_role,
-                                 temperature=0)
+        e_query = ('{}\n\nPlease create a SQL query that will pull data '
+                   'that can answer this user question and please only '
+                   'return the SQL query with no commentary or preface: "{}"'
+                   .format(self.database_describe, query))
+        out = super().chat(e_query, temperature=0)
         return out
 
     def run_sql(self, sql):
@@ -141,32 +146,30 @@ class DataBaseWizard(ApiBase):
         based on the db connection (self.connection), returns dataframe
         response."""
         query = sql
-        # Move Connection or cursor to init and test so that you aren't re-intializing 
-        # it with each instance. 
-        connection = psycopg2.connect(self.connection_string)
-        cursor = connection.cursor()
-        cursor.execute(query)
-        data = cursor.fetchall()
-        column_names = [desc[0] for desc in cursor.description]
+        # Move Connection or cursor to init and test so that you aren't re-intializing
+        # it with each instance.
+        with self.connection.cursor() as cursor:
+            cursor.execute(query)
+            data = cursor.fetchall()
+            column_names = [desc[0] for desc in cursor.description]
         df = pd.DataFrame(data, columns=column_names)
         return df
 
     def get_py_code(self, query, df):
         """"""
-        py_role = ('You make python code to support a user question '
-                    'based on available data using the existing dataframe df '
-                    'using matplotlib.')
-        e_query = ('Here is the dataframe head \n{}\n'
-                   'Here is the dataframe tail \n{}\n'
-                   'Here is the dataframe description \n{}\n'
-                   'Here is the dataframe datatypes \n{}\n'
-                   'Write python code to support this query based on the dataframe: \n{}\n.'
+        e_query = ('Great it worked! I have made a dataframe from the output '
+                   'of the SQL query you gave me. '
+                   'Here is the dataframe head: \n{}\n'
+                   'Here is the dataframe tail: \n{}\n'
+                   'Here is the dataframe description: \n{}\n'
+                   'Here is the dataframe datatypes: \n{}\n'
+                   'Now please write python code using matplotlib to plot '
+                   'the data in the dataframe based on the original user query: "{}"'
                    .format(df.head(), df.tail(), df.describe(), df.dtypes, query))
-        out = self.generic_query(e_query, model_role=py_role,
-                                 temperature=0)
-        
+        out = super().chat(e_query, temperature=0)
+
         ## get response from output
-        # Need to fix full response 
+        # Need to fix full response
         full_response = out
         print(full_response)
         ## get python code from response
@@ -176,7 +179,7 @@ class DataBaseWizard(ApiBase):
         return py
 
     def run_py_code(self, py, df):
-        try: 
+        try:
             exec(py)
         except:
             print(py)
@@ -235,9 +238,10 @@ class DataBaseWizard(ApiBase):
             engineered prompt is returned here
         """
 
-        self.sql = self.get_sql_for(query) 
+        self.query = query
+        self.sql = self.get_sql_for(query)
         self.df = self.run_sql(self.sql)
-        self.py = self.get_py_code(query = query, df = self.df)  
+        self.py = self.get_py_code(query = query, df = self.df)
         #self.run_py_code(self.py, self.df)
 
-        
+
