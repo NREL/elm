@@ -57,9 +57,9 @@ class DataBaseWizard(ApiBase):
             self.database_unique_values = self.get_unique_values()
 
             self.database_describe = ('You have been given access to the database '
-                        'schema {}. The first ten lines of the database are {}\n '
-                        '. Each column of text contains the following unique '
-                        'values {}. The table name is loads.lc_day_profile_demand_enduse.'
+                        'schema {}.\n The first ten lines of the database are {}.\n '
+                        'Each column of text contains the following unique '
+                        'values {}.\n The table name is loads.lc_day_profile_demand_enduse.'
                         .format(self.database_schema,
                                 self.database_first_lines,
                                 self.database_unique_values))
@@ -172,7 +172,7 @@ class DataBaseWizard(ApiBase):
         ## get response from output
         # Need to fix full response
         full_response = out
-        print(full_response)
+        #print(full_response)
         ## get python code from response
         full_response = full_response[full_response.find('python')+6:]
         full_response = full_response[:full_response.find('```')]
