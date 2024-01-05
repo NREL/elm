@@ -182,6 +182,7 @@ class DataBaseWizard(ApiBase):
     def run_py_code(self, py, df):
         try:
             exec(py)
+            return plt
         except:
             print(py)
         """Jordan to write code that takes LLM response and generates plots"""
@@ -243,6 +244,7 @@ class DataBaseWizard(ApiBase):
         self.sql = self.get_sql_for(query)
         self.df = self.run_sql(self.sql)
         self.py = self.get_py_code(query = query, df = self.df)
-        #self.run_py_code(self.py, self.df)
+        self.plt = self.run_py_code(self.py, self.df)
+        return self.plt
 
 
