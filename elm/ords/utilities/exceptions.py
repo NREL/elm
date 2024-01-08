@@ -20,3 +20,7 @@ class ELMOrdsError(ELMError):
 
 class ELMOrdsNotInitializedError(ELMOrdsError):
     """ELM Ordinances not initialized error."""
+
+
+class ELMOrdsValueError(ELMOrdsError, ValueError):
+    """ELM Ordinances ValueError."""
