@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from elm.ords.utilities.service_queues import (
+from elm.ords.services.queues import (
     initialize_service_queue,
     tear_down_service_queue,
     get_service_queue,
