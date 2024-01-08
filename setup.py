@@ -47,4 +47,7 @@ setup(
         "Programming Language :: Python :: 3.10",
     ],
     install_requires=install_requires,
+    extras_require={
+        "dev": install_requires + test_requires,
+    },
 )
