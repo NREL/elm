@@ -24,3 +24,7 @@ class ELMOrdsNotInitializedError(ELMOrdsError):
 
 class ELMOrdsValueError(ELMOrdsError, ValueError):
     """ELM Ordinances ValueError."""
+
+
+class ELMOrdsRuntimeError(ELMOrdsError, RuntimeError):
+    """ELM Ordinances RuntimeError."""

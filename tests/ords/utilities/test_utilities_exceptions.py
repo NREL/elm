@@ -11,6 +11,8 @@ import pytest
 
 from elm.ords.utilities.exceptions import (
     ELMOrdsError,
+    ELMOrdsValueError,
+    ELMOrdsRuntimeError,
     ELMOrdsNotInitializedError,
 )
 
@@ -51,6 +53,14 @@ def test_exceptions_log_uncaught_error(assert_message_was_logged):
         (
             ELMOrdsNotInitializedError,
             [ELMOrdsError, ELMOrdsNotInitializedError],
+        ),
+        (
+            ELMOrdsValueError,
+            [ELMOrdsError, ValueError, ELMOrdsValueError],
+        ),
+        (
+            ELMOrdsRuntimeError,
+            [ELMOrdsError, RuntimeError, ELMOrdsRuntimeError],
         ),
     ],
 )
