@@ -85,7 +85,7 @@ class RateLimitedService(Service):
             if the usage tracker is set to compute the total over
             minute-long intervals, this value should be the max usage
             per minute.
-        usage_tracker : `elm.ords.utilities.usage.UsageTracker`
+        usage_tracker : `elm.ords.utilities.usage.TimeBoundedUsageTracker`
             A UsageTracker instance. This will be used to track usage
             per time interval and compare to `rate_limit`.
         """

@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 from elm.ords.services.base import RateLimitedService
-from elm.ords.utilities.usage import UsageTracker
+from elm.ords.utilities.usage import TimeBoundedUsageTracker
 
 
 def test_rate_limited_service():
@@ -16,7 +16,7 @@ def test_rate_limited_service():
         async def process(self, fut, *args, **kwargs):
             fut.set_result(0)
 
-    usage_tracker = UsageTracker(max_seconds=5)
+    usage_tracker = TimeBoundedUsageTracker(max_seconds=5)
     service = TestService(rate_limit=100, usage_tracker=usage_tracker)
 
     assert service.can_process

@@ -10,7 +10,7 @@ import pytest
 from elm.ords.utilities.usage import (
     count_openai_tokens,
     TimedEntry,
-    UsageTracker,
+    TimeBoundedUsageTracker,
     retry_with_exponential_backoff,
     async_retry_with_exponential_backoff,
 )
@@ -55,10 +55,10 @@ def test_timed_entry():
     assert b.value == 10000
 
 
-def test_usage_tracker():
-    """Test the `UsageTracker` class"""
+def test_time_bounded_usage_tracker():
+    """Test the `TimeBoundedUsageTracker` class"""
 
-    tracker = UsageTracker(max_seconds=5)
+    tracker = TimeBoundedUsageTracker(max_seconds=5)
     assert tracker.total == 0
     tracker.add(500)
     assert tracker.total == 500

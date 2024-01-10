@@ -76,7 +76,7 @@ class TimedEntry:
         return self._time < other
 
 
-class UsageTracker:
+class TimeBoundedUsageTracker:
     """Track usage of a resource over time.
 
     This class wraps a double-ended queue, and any inputs older than
