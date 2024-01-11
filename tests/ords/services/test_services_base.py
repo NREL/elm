@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 from elm.ords.services.base import RateLimitedService
-from elm.ords.utilities.usage import TimeBoundedUsageTracker
+from elm.ords.services.usage import TimeBoundedUsageTracker
 
 
 def test_rate_limited_service():
