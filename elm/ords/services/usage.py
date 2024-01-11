@@ -5,7 +5,6 @@ import logging
 from collections import UserDict, deque
 from functools import total_ordering, wraps
 
-import openai
 
 logger = logging.getLogger(__name__)
 
