@@ -14,7 +14,7 @@ from elm.ords.utilities.retry import (
 from elm.ords.utilities.exceptions import ELMOrdsRuntimeError
 
 
-@pytest.mark.parametrize("jitter,bounds", [(False, (2, 3)), (True, (4, 5))])
+@pytest.mark.parametrize("jitter, bounds", [(False, (2, 3)), (True, (4, 5))])
 def test_sync_retry(jitter, bounds, monkeypatch):
     """Test the `retry_with_exponential_backoff` decorator"""
 
@@ -34,7 +34,7 @@ def test_sync_retry(jitter, bounds, monkeypatch):
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("jitter,bounds", [(False, (2, 3)), (True, (4, 5))])
+@pytest.mark.parametrize("jitter, bounds", [(False, (2, 3)), (True, (4, 5))])
 async def test_async_retry(jitter, bounds, monkeypatch):
     """Test the `async_retry_with_exponential_backoff` decorator"""
 
