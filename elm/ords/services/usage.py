@@ -50,7 +50,7 @@ class TimeBoundedUsageTracker:
     https://stackoverflow.com/questions/51485656/efficient-time-bound-queue-in-python
     """
 
-    def __init__(self, max_seconds=65):
+    def __init__(self, max_seconds=70):
         """
 
         Parameters
@@ -143,19 +143,23 @@ class UsageTracker(UserDict):
                 totals[tracked_value] = totals.get(tracked_value, 0) + count
         return totals
 
-    def update_from_model(self, response, sub_label="default"):
+    def update_from_model(self, response=None, sub_label="default"):
         """Update usage from a model response.
 
         Parameters
         ----------
-        response : object
+        response : object, optional
             Model call response, which either contains usage information
-            or can be used to infer/compute usage.
+            or can be used to infer/compute usage. If ``None``, no
+            update is made.
         sub_label : str, optional
             Optional label to categorize usage under. This can be used
             to track usage related to certain categories.
             By default, ``"default"``.
         """
+        if response is None:
+            return
+
         self[sub_label] = self.response_parser(
             self.get(sub_label, {}), response
         )

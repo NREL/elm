@@ -62,11 +62,16 @@ def test_usage_tracker():
     assert tracker == {}
     assert tracker.totals == {}
 
+    tracker.update_from_model()
+    assert tracker == {}
+    assert tracker.totals == {}
+
     tracker.update_from_model({})
     assert tracker == {"default": {"requests": 1, "inputs": 0}}
     assert tracker.totals == {"requests": 1, "inputs": 0}
 
     tracker.update_from_model({"inputs": 100}, sub_label="parsing")
+    tracker.update_from_model()
 
     assert tracker == {
         "default": {"requests": 1, "inputs": 0},
