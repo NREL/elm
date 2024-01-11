@@ -104,7 +104,11 @@ class UsageTracker(UserDict):
             Top-level label to use when adding this usage information to
             another dictionary.
         response_parser : callable
-            _description_
+            A callable that takes the current usage info (in dictionary
+            format) and an LLm response as inputs, updates the usage
+            dictionary with usage info based on teh response, and
+            returns the updated dictionary. See, for example,
+            :func:`elm.ords.services.openai.usage_from_response`.
         """
         super().__init__()
         self.label = label
