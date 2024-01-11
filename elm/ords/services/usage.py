@@ -2,7 +2,7 @@
 """ELM Ordinances usage tracking utilities."""
 import time
 import logging
-from collections import deque
+from collections import UserDict, deque
 from functools import total_ordering, wraps
 
 import openai
@@ -91,3 +91,68 @@ class TimeBoundedUsageTracker:
                 self._total -= self._q.popleft().value
         except IndexError:
             pass
+
+
+class UsageTracker(UserDict):
+    """Rate or AIP usage tracker."""
+
+    def __init__(self, label, response_parser):
+        """
+
+        Parameters
+        ----------
+        label : str
+            Top-level label to use when adding this usage information to
+            another dictionary.
+        response_parser : callable
+            _description_
+        """
+        super().__init__()
+        self.label = label
+        self.response_parser = response_parser
+
+    def add_to(self, other):
+        """Add the contents of this usage information to another dict.
+
+        The contents of this dictionary are stored under the `label`
+        key that this object was initialized with.
+
+        Parameters
+        ----------
+        other : dict
+            A dictionary to add the contents of this one to.
+        """
+        other.update({self.label: self})
+
+    @property
+    def totals(self):
+        """Compute total usage across all sub-labels.
+
+        Returns
+        -------
+        dict
+            Dictionary containing usage information totaled across all
+            sub-labels.
+        """
+        totals = {}
+        for report in self.values():
+            for tracked_value, count in report.items():
+                totals[tracked_value] = totals.get(tracked_value, 0) + count
+        return totals
+
+    def update_from_model(self, response, sub_label="default"):
+        """Update usage from a model response.
+
+        Parameters
+        ----------
+        response : object
+            Model call response, which either contains usage information
+            or can be used to infer/compute usage.
+        sub_label : str, optional
+            Optional label to categorize usage under. This can be used
+            to track usage related to certain categories.
+            By default, ``"default"``.
+        """
+        self[sub_label] = self.response_parser(
+            self.get(sub_label, {}), response
+        )
