@@ -13,15 +13,15 @@ from elm.ords.utilities.exceptions import (
 )
 
 
-@pytest.mark.asyncio
-async def test_services_provider():
-    """Test that services provider works as expected"""
-
+@pytest.fixture
+def service_base_class():
+    """Base implementation of service for testing"""
     job_order = []
 
     class TestService(Service):
         NUMBER = 0
         LEN_SLEEP = 0
+        STAGGER = 0
 
         def __init__(self):
             self.running_jobs = set()
@@ -30,12 +30,21 @@ async def test_services_provider():
         def can_process(self):
             return len(self.running_jobs) < self.NUMBER
 
-        async def process(self, fut, job_id):
+        async def process(self, job_id):
             self.running_jobs.add(job_id)
             job_order.append((self.NUMBER, job_id))
-            await asyncio.sleep(self.LEN_SLEEP)
-            fut.set_result(self.NUMBER)
+            await asyncio.sleep(self.LEN_SLEEP + self.STAGGER * job_id * 0.5)
             self.running_jobs.remove(job_id)
+            return self.NUMBER
+
+    return job_order, TestService
+
+
+@pytest.mark.asyncio
+async def test_services_provider(service_base_class):
+    """Test that services provider works as expected"""
+
+    job_order, TestService = service_base_class
 
     class AlwaysThreeService(TestService):
         NUMBER = 3
@@ -80,36 +89,20 @@ async def test_services_provider():
 
 
 @pytest.mark.asyncio
-async def test_services_provider_staggered_jobs():
+async def test_services_provider_staggered_jobs(service_base_class):
     """Test that services provider works as expected with staggered jobs"""
 
-    job_order = []
-
-    class TestService(Service):
-        NUMBER = 0
-        LEN_SLEEP = 0
-
-        def __init__(self):
-            self.running_jobs = set()
-
-        @property
-        def can_process(self):
-            return len(self.running_jobs) < self.NUMBER
-
-        async def process(self, fut, job_id):
-            self.running_jobs.add(job_id)
-            job_order.append((self.NUMBER, job_id))
-            await asyncio.sleep(self.LEN_SLEEP + job_id * 0.5)
-            fut.set_result(self.NUMBER)
-            self.running_jobs.remove(job_id)
+    job_order, TestService = service_base_class
 
     class AlwaysThreeService(TestService):
         NUMBER = 3
         LEN_SLEEP = 5
+        STAGGER = 1
 
     class AlwaysTenService(TestService):
         NUMBER = 5
         LEN_SLEEP = 8
+        STAGGER = 1
 
     services = [AlwaysThreeService(), AlwaysTenService()]
     async with RunningAsyncServices(services):
@@ -142,16 +135,18 @@ async def test_services_provider_staggered_jobs():
 
 
 @pytest.mark.asyncio
-async def test_services_provider_no_submissions_allowed_at_start():
+async def test_services_provider_no_submissions_allowed_at_start(
+    service_base_class,
+):
     """Test that services provider works as expected"""
 
-    job_order = []
+    job_order, TestService = service_base_class
 
-    class AlwaysThreeService(Service):
+    class AlwaysThreeService(TestService):
         NUMBER = 3
 
         def __init__(self):
-            self.running_jobs = set()
+            super().__init__()
             self.n_requests = -1
 
         @property
@@ -159,14 +154,7 @@ async def test_services_provider_no_submissions_allowed_at_start():
             self.n_requests += 1
             if self.n_requests < 10:
                 return False
-            return len(self.running_jobs) < self.NUMBER
-
-        async def process(self, fut, job_id):
-            self.running_jobs.add(job_id)
-            job_order.append((self.NUMBER, job_id))
-            await asyncio.sleep(0)
-            fut.set_result(self.NUMBER)
-            self.running_jobs.remove(job_id)
+            return super().can_process
 
     services = [AlwaysThreeService()]
     async with RunningAsyncServices(services):
