@@ -57,9 +57,7 @@ class _RunningProvider:
                without waiting on more jobs from the queue.
 
         """
-        queue_empty = self.queue.empty()
-        no_submissions_but_still_processing = queue_empty and self.jobs
-        if not self.service.can_process or no_submissions_but_still_processing:
+        if not self.service.can_process or self._q_empty_but_still_processing:
             return
 
         while self.service.can_process:
@@ -73,6 +71,11 @@ class _RunningProvider:
 
         return
 
+    @property
+    def _q_empty_but_still_processing(self):
+        """bool: Queue empty but jobs still running (don't await queue)"""
+        return self.queue.empty() and self.jobs
+
     async def collect_responses(self):
         """Collect responses from the service.
 
@@ -82,7 +85,7 @@ class _RunningProvider:
         if not self.jobs:
             return
 
-        complete, _ = await asyncio.wait(
+        complete, __ = await asyncio.wait(
             self.jobs, return_when=asyncio.FIRST_COMPLETED
         )
 
