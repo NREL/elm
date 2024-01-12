@@ -13,16 +13,16 @@ def test_rate_limited_service():
     """Test base implementation of `RateLimitedService` class"""
 
     class TestService(RateLimitedService):
-        async def process(self, fut, *args, **kwargs):
-            fut.set_result(0)
+        async def process(self, *args, **kwargs):
+            return 0
 
-    usage_tracker = TimeBoundedUsageTracker(max_seconds=5)
-    service = TestService(rate_limit=100, usage_tracker=usage_tracker)
+    rate_tracker = TimeBoundedUsageTracker(max_seconds=5)
+    service = TestService(rate_limit=100, rate_tracker=rate_tracker)
 
     assert service.can_process
-    service.usage_tracker.add(50)
+    service.rate_tracker.add(50)
     assert service.can_process
-    service.usage_tracker.add(75)
+    service.rate_tracker.add(75)
     assert not service.can_process
     time.sleep(6)
     assert service.can_process

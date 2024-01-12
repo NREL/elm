@@ -75,24 +75,24 @@ class Service(ABC):
 class RateLimitedService(Service):
     """Abstract Base Class representing a rate-limited service (e.g. OpenAI)"""
 
-    def __init__(self, rate_limit, usage_tracker):
+    def __init__(self, rate_limit, rate_tracker):
         """
 
         Parameters
         ----------
         rate_limit : int | float
-            Max usage per duration of the usage tracker. For example,
-            if the usage tracker is set to compute the total over
+            Max usage per duration of the rate tracker. For example,
+            if the rate tracker is set to compute the total over
             minute-long intervals, this value should be the max usage
             per minute.
-        usage_tracker : `elm.ords.utilities.usage.TimeBoundedUsageTracker`
-            A UsageTracker instance. This will be used to track usage
-            per time interval and compare to `rate_limit`.
+        rate_tracker : `elm.ords.utilities.usage.TimeBoundedUsageTracker`
+            A TimeBoundedUsageTracker instance. This will be used to
+            track usage per time interval and compare to `rate_limit`.
         """
         self.rate_limit = rate_limit
-        self.usage_tracker = usage_tracker
+        self.rate_tracker = rate_tracker
 
     @property
     def can_process(self):
         """Check if usage is under the rate limit."""
-        return self.usage_tracker.total < self.rate_limit
+        return self.rate_tracker.total < self.rate_limit
