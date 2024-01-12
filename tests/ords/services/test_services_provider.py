@@ -138,7 +138,7 @@ async def test_services_provider_staggered_jobs(service_base_class):
 async def test_services_provider_no_submissions_allowed_at_start(
     service_base_class,
 ):
-    """Test that services provider works as expected"""
+    """Test that services provider works even when service is not ready."""
 
     job_order, TestService = service_base_class
 
@@ -167,6 +167,26 @@ async def test_services_provider_no_submissions_allowed_at_start(
     expected_job_order = [(3, 0), (3, 1), (3, 2), (3, 3)]
     assert out == expected_job_out, f"{out=}"
     assert job_order == expected_job_order, f"{job_order=}"
+
+
+@pytest.mark.asyncio
+async def test_services_provider_raises_error():
+    """Test that services provider raises error if service does."""
+
+    class BadService(Service):
+        @property
+        def can_process(self):
+            return True
+
+        async def process(self, *args, **kwargs):
+            raise ValueError("A test error")
+
+    services = [BadService()]
+    with pytest.raises(ValueError) as exc_info:
+        async with RunningAsyncServices(services):
+            await BadService.call()
+
+    assert "A test error" in str(exc_info)
 
 
 if __name__ == "__main__":
