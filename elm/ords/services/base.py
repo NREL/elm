@@ -56,8 +56,7 @@ class Service(ABC):
         processing calls.
         """
 
-    @abstractmethod
-    async def process(self, fut, *args, **kwargs):
+    async def process_using_futures(self, fut, *args, **kwargs):
         """Process a call to the service.
 
         Parameters
@@ -66,6 +65,25 @@ class Service(ABC):
             A future object that should get the result of the processing
             operation. If the processing function returns ``answer``,
             this method should call ``fut.set_result(answer)``.
+        **kwargs
+            Keyword arguments to be passed to the
+            underlying processing function.
+        """
+
+        try:
+            response = await self.process(*args, **kwargs)
+        except Exception as e:
+            fut.set_exception(e)
+            return
+
+        fut.set_result(response)
+
+    @abstractmethod
+    async def process(self, *args, **kwargs):
+        """Process a call to the service.
+
+        Parameters
+        ----------
         *args, **kwargs
             Positional and keyword arguments to be passed to the
             underlying processing function.
