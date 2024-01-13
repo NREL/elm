@@ -1,11 +1,18 @@
 # -*- coding: utf-8 -*-
 """Test ELM Ordinance openai services"""
+import time
 from pathlib import Path
 
+import httpx
 import pytest
-from openai.types import Completion, CompletionUsage
+import openai
 
-from elm.ords.services.openai import count_tokens, usage_from_response
+from elm.ords.services.openai import (
+    count_tokens,
+    usage_from_response,
+    OpenAIService,
+)
+from elm.ords.services.usage import UsageTracker
 
 
 TEST_MESSAGES_1 = [
@@ -35,24 +42,77 @@ def test_count_tokens(messages, model, token_count):
         ({}, {"requests": 1, "prompt_tokens": 100, "response_tokens": 10}),
         (
             {"requests": 10, "response_tokens": 100},
-            {"requests": 11, "prompt_tokens": 100, "response_tokens": 20},
+            {"requests": 11, "prompt_tokens": 100, "response_tokens": 110},
         ),
     ],
 )
-def test_usage_from_response(usage_input, expected_output):
+def test_usage_from_response(
+    usage_input, expected_output, sample_openai_response
+):
     """Test `usage_from_response` function"""
+    response = sample_openai_response()
+    assert usage_from_response(usage_input, response) == expected_output
 
-    usage = CompletionUsage(
-        completion_tokens=10, prompt_tokens=100, total_tokens=110
+
+@pytest.mark.asyncio
+async def test_openai_service(sample_openai_response, monkeypatch):
+    """Test querying OpenAI while tracking limits and usage"""
+
+    async def _test_response(*args, **kwargs):
+        if kwargs.get("bad_request"):
+            response = httpx.Response(404)
+            response.request = httpx.Request(method="test", url="test")
+            raise openai.BadRequestError(
+                "for testing", response=response, body=None
+            )
+        return sample_openai_response(kwargs=kwargs)
+
+    client = openai.AsyncOpenAI()
+    monkeypatch.setattr(
+        client.chat.completions,
+        "create",
+        _test_response,
+        raising=True,
     )
-    llm_response = Completion(
-        id="1",
-        choices=[],
-        created=0,
-        model="gpt-4",
-        object="text_completion",
-        usage=usage,
+    openai_service = OpenAIService(client)
+
+    usage_tracker = UsageTracker("my_county", usage_from_response)
+
+    message = await openai_service.process(
+        usage_tracker=usage_tracker, model="gpt-4"
     )
+    assert openai_service.rate_tracker.total == 13
+    assert message == "test_response"
+
+    assert usage_tracker == {
+        "default": {
+            "requests": 1,
+            "prompt_tokens": 100,
+            "response_tokens": 10,
+        }
+    }
+
+    message = await openai_service.process(
+        usage_tracker=usage_tracker, model="gpt-4", bad_request=True
+    )
+    assert message is None
+    assert openai_service.rate_tracker.total == 16
+    assert usage_tracker == {
+        "default": {
+            "requests": 1,
+            "prompt_tokens": 100,
+            "response_tokens": 10,
+        }
+    }
+
+    await openai_service.process(model="gpt-4")
+    assert usage_tracker == {
+        "default": {
+            "requests": 1,
+            "prompt_tokens": 100,
+            "response_tokens": 10,
+        }
+    }
 
 
 if __name__ == "__main__":
