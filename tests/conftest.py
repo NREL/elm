@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """Fixtures for use across all tests."""
 import pytest
+from openai.types import Completion, CompletionUsage, CompletionChoice
+from openai.types.chat import ChatCompletionMessage
 
 
 LOGGING_META_FILES = {"exceptions.py"}
@@ -33,3 +35,39 @@ def assert_message_was_logged(caplog):
             caplog.clear()
 
     return assert_message
+
+
+@pytest.fixture
+def sample_openai_response():
+    """Function to get sample openAI response that can be used for tests"""
+
+    def _get_response(
+        content="test_response",
+        kwargs=None,
+        completion_tokens=10,
+        prompt_tokens=100,
+        total_tokens=110,
+    ):
+        usage = CompletionUsage(
+            completion_tokens=completion_tokens,
+            prompt_tokens=prompt_tokens,
+            total_tokens=total_tokens,
+        )
+        choice = CompletionChoice(
+            finish_reason="stop",
+            index=0,
+            logprobs=None,
+            text="",
+            message=ChatCompletionMessage(content=content, role="assistant"),
+        )
+        llm_response = Completion(
+            id="1",
+            choices=[choice],
+            created=0,
+            model=(kwargs or {}).get("model", "gpt-4"),
+            object="text_completion",
+            usage=usage,
+        )
+        return llm_response
+
+    return _get_response
