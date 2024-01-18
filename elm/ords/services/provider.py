@@ -67,7 +67,6 @@ class _RunningProvider:
             )
             self.queue.task_done()
             self.jobs.add(task)
-            await asyncio.sleep(0)
 
         return
 

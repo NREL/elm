@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 from elm.ords.services.base import Service
-from elm.ords.services.provider import RunningAsyncServices
+from elm.ords.services.provider import RunningAsyncServices, _RunningProvider
 from elm.ords.utilities.exceptions import (
     ELMOrdsNotInitializedError,
     ELMOrdsValueError,
@@ -187,6 +187,48 @@ async def test_services_provider_raises_error():
             await BadService.call()
 
     assert "A test error" in str(exc_info)
+
+
+@pytest.mark.asyncio
+async def test_services_provider_submits_as_long_as_needed(monkeypatch):
+    """Test that services provider continues to submit jobs while it can."""
+
+    call_cache = []
+
+    async def collect_responses(self):
+        call_cache.append(len(self.jobs))
+        if not self.jobs:
+            return
+        complete, __ = await asyncio.wait(
+            self.jobs, return_when=asyncio.FIRST_COMPLETED
+        )
+        for job in complete:
+            self.jobs.remove(job)
+
+    monkeypatch.setattr(
+        _RunningProvider,
+        "collect_responses",
+        collect_responses,
+        raising=True,
+    )
+
+    class FastService(Service):
+        @property
+        def can_process(self):
+            return True
+
+        async def process(self, *args, **kwargs):
+            return True
+
+    services = [FastService()]
+    async with RunningAsyncServices(services):
+        producers = [
+            asyncio.create_task(FastService.call()) for _ in range(10)
+        ]
+        out = await asyncio.gather(*producers)
+
+    assert out == [True] * 10
+    assert not call_cache
 
 
 if __name__ == "__main__":
