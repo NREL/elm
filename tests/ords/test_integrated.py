@@ -44,9 +44,9 @@ async def test_openai_query(sample_openai_response, monkeypatch):
         _test_response,
         raising=True,
     )
-    rate_tracker = TimeBoundedUsageTracker(max_seconds=10)
+    rate_tracker = TimeBoundedUsageTracker(max_seconds=5)
     openai_service = OpenAIService(
-        client, rate_limit=10, rate_tracker=rate_tracker
+        client, rate_limit=3, rate_tracker=rate_tracker
     )
 
     usage_tracker = UsageTracker("my_county", usage_from_response)
@@ -63,7 +63,7 @@ async def test_openai_query(sample_openai_response, monkeypatch):
         assert len(elapsed_times) == 3
         assert elapsed_times[0] < 1
         assert elapsed_times[1] >= 4
-        assert elapsed_times[2] >= 14
+        assert elapsed_times[2] >= 9
 
         assert usage_tracker == {
             "default": {
@@ -73,7 +73,7 @@ async def test_openai_query(sample_openai_response, monkeypatch):
             }
         }
 
-        time.sleep(10)
+        time.sleep(5)
         assert openai_service.rate_tracker.total == 0
 
         start_time = time.time() - 4
@@ -81,16 +81,16 @@ async def test_openai_query(sample_openai_response, monkeypatch):
         await OpenAIService.call(model="gpt-4")
         assert len(elapsed_times) == 5
         assert elapsed_times[-2] - 4 < 1
-        assert elapsed_times[-1] - 4 > 10
+        assert elapsed_times[-1] - 4 > 5
 
-        time.sleep(11)
+        time.sleep(6)
         start_time = time.time() - 4
         assert openai_service.rate_tracker.total == 0
         message = await OpenAIService.call(
             usage_tracker=usage_tracker, model="gpt-4", bad_request=True
         )
         assert message is None
-        assert openai_service.rate_tracker.total < 10
+        assert openai_service.rate_tracker.total <= 3
         assert usage_tracker == {
             "default": {
                 "requests": 1,

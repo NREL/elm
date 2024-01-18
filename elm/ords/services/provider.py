@@ -67,8 +67,13 @@ class _RunningProvider:
             )
             self.queue.task_done()
             self.jobs.add(task)
+            await self._allow_service_to_update()
 
         return
+
+    async def _allow_service_to_update(self):
+        """Switch contexts, allowing service to update if it can process"""
+        await asyncio.sleep(0)
 
     @property
     def _q_empty_but_still_processing(self):
