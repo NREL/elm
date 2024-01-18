@@ -29,7 +29,7 @@ class TimedEntry:
             Some value to store as an entry.
         """
         self.value = value
-        self._time = time.time()
+        self._time = time.monotonic()
 
     def __eq__(self, other):
         return self._time == other
@@ -84,7 +84,7 @@ class TimeBoundedUsageTracker:
 
     def _discard_old_values(self):
         """Discard 'old' values from the queue"""
-        cutoff_time = time.time() - self.max_seconds
+        cutoff_time = time.monotonic() - self.max_seconds
         try:
             while self._q[0] < cutoff_time:
                 self._total -= self._q.popleft().value

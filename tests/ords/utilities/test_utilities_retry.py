@@ -26,10 +26,10 @@ def test_sync_retry(jitter, bounds, monkeypatch):
     def failing_function():
         raise ValueError("I'm broken")
 
-    start_time = time.time()
+    start_time = time.monotonic()
     with pytest.raises(ELMOrdsRuntimeError):
         failing_function()
-    elapsed_time = time.time() - start_time
+    elapsed_time = time.monotonic() - start_time
     assert bounds[0] <= elapsed_time < bounds[1]
 
 
@@ -46,10 +46,10 @@ async def test_async_retry(jitter, bounds, monkeypatch):
     async def failing_function():
         raise ValueError("I'm broken")
 
-    start_time = time.time()
+    start_time = time.monotonic()
     with pytest.raises(ELMOrdsRuntimeError):
         await failing_function()
-    elapsed_time = time.time() - start_time
+    elapsed_time = time.monotonic() - start_time
     assert bounds[0] <= elapsed_time < bounds[1]
 
 

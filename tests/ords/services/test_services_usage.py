@@ -29,7 +29,7 @@ def test_timed_entry():
     assert a > 10000
 
     time.sleep(1)
-    sample_time = time.time()
+    sample_time = time.monotonic()
     time.sleep(1)
     b = TimedEntry(10000)
     assert b > sample_time
