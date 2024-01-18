@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """Fixtures for use across all tests."""
+import asyncio
+
 import pytest
 from openai.types import Completion, CompletionUsage, CompletionChoice
 from openai.types.chat import ChatCompletionMessage
