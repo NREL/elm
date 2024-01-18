@@ -61,9 +61,10 @@ class _RunningProvider:
             return
 
         while self.service.can_process:
-            fut, args, kwargs = await self.queue.get()
+            fut, outer_task_name, args, kwargs = await self.queue.get()
             task = asyncio.create_task(
-                self.service.process_using_futures(fut, *args, **kwargs)
+                self.service.process_using_futures(fut, *args, **kwargs),
+                name=outer_task_name,
             )
             self.queue.task_done()
             self.jobs.add(task)

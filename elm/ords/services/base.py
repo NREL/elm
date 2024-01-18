@@ -38,7 +38,8 @@ class Service(ABC):
             A response object from the underlying service.
         """
         fut = asyncio.Future()
-        await cls._queue().put((fut, args, kwargs))
+        outer_task_name = asyncio.current_task().get_name()
+        await cls._queue().put((fut, outer_task_name, args, kwargs))
         return await fut
 
     @property
