@@ -4,6 +4,8 @@ import pytest
 from openai.types import Completion, CompletionUsage, CompletionChoice
 from openai.types.chat import ChatCompletionMessage
 
+from elm.ords.services.base import Service
+
 
 LOGGING_META_FILES = {"exceptions.py"}
 
@@ -35,6 +37,33 @@ def assert_message_was_logged(caplog):
             caplog.clear()
 
     return assert_message
+
+
+@pytest.fixture
+def service_base_class():
+    """Base implementation of service for testing"""
+    job_order = []
+
+    class TestService(Service):
+        NUMBER = 0
+        LEN_SLEEP = 0
+        STAGGER = 0
+
+        def __init__(self):
+            self.running_jobs = set()
+
+        @property
+        def can_process(self):
+            return len(self.running_jobs) < self.NUMBER
+
+        async def process(self, job_id):
+            self.running_jobs.add(job_id)
+            job_order.append((self.NUMBER, job_id))
+            await asyncio.sleep(self.LEN_SLEEP + self.STAGGER * job_id * 0.5)
+            self.running_jobs.remove(job_id)
+            return self.NUMBER
+
+    return job_order, TestService
 
 
 @pytest.fixture
