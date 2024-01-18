@@ -106,7 +106,7 @@ class UsageTracker(UserDict):
         response_parser : callable
             A callable that takes the current usage info (in dictionary
             format) and an LLm response as inputs, updates the usage
-            dictionary with usage info based on teh response, and
+            dictionary with usage info based on the response, and
             returns the updated dictionary. See, for example,
             :func:`elm.ords.services.openai.usage_from_response`.
         """

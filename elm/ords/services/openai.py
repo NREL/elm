@@ -126,7 +126,7 @@ class OpenAIService(RateLimitedService):
         Returns
         -------
         str | None
-            Chat GPT response as a string, or ``None`` if teh call
+            Chat GPT response as a string, or ``None`` if the call
             failed.
         """
         self._record_prompt_tokens(model, kwargs)

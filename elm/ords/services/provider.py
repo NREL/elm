@@ -45,7 +45,7 @@ class _RunningProvider:
 
         If the queue is non-empty, the function takes jobs from it
         iteratively and submits them until the ``can_process`` property
-        of teh service returns ``False``. A call to ``can_process`` is
+        of the service returns ``False``. A call to ``can_process`` is
         submitted between every job pulled from the queue, so enure that
         method is performant. If the queue is empty, this function does
         one of two things:
