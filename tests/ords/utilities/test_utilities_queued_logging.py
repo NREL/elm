@@ -18,6 +18,8 @@ async def test_logs_sent_to_separate_files(tmp_path, service_base_class):
     test_locations = ["a", "bc", "def", "ghij"]
     __, TestService = service_base_class
 
+    assert not logger.handlers
+
     class AlwaysThreeService(TestService):
         NUMBER = 3
         LEN_SLEEP = 5
@@ -43,6 +45,8 @@ async def test_logs_sent_to_separate_files(tmp_path, service_base_class):
             for loc in test_locations
         ]
         out = await asyncio.gather(*producers)
+
+    assert not logger.handlers
 
     log_files = list(log_dir.glob("*"))
     assert len(log_files) == len(test_locations)

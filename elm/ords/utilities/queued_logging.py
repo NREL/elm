@@ -106,18 +106,18 @@ class LogListener:
         """Add a queue handler to each logger requested by user"""
         for logger_name in self.logger_names:
             logger = logging.getLogger(logger_name)
-            logger.addHandler(LocalProcessQueueHandler(LOGGING_QUEUE))
+            logger.addHandler(self._queue_handler)
             logger.setLevel(self.level)
 
     def _remove_queue_handler_from_loggers(self):
         """Remove the queue handler from each logger requested by user"""
-        if self._listener is None:
-            return
         for logger_name in self.logger_names:
             logging.getLogger(logger_name).removeHandler(self._queue_handler)
 
     def _remove_all_handlers_from_listener(self):
         """Remove all handlers still attached to listener."""
+        if self._listener is None:
+            return
         for handler in self._listener.handlers:
             handler.close()
             self._listener.handlers.remove(handler)
