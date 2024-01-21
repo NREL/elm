@@ -26,7 +26,7 @@ def test_timed_entry():
     """Test `TimedEntry` class"""
 
     a = TimedEntry(100)
-    assert a > 10000
+    assert a <= time.monotonic()
 
     time.sleep(1)
     sample_time = time.monotonic()
