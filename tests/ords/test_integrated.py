@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """ELM Ordinance integration tests"""
 import time
+import logging
+import asyncio
 from pathlib import Path
 
 import httpx
@@ -10,6 +12,8 @@ import openai
 from elm.ords.services.usage import TimeBoundedUsageTracker, UsageTracker
 from elm.ords.services.openai import OpenAIService, usage_from_response
 from elm.ords.services.provider import RunningAsyncServices
+from elm.ords.utilities.queued_logging import LocationFileLog, LogListener
+from elm.web.google_search import PlaywrightGoogleLinkSearch
 
 
 @pytest.mark.asyncio
@@ -98,6 +102,61 @@ async def test_openai_query(sample_openai_response, monkeypatch):
                 "response_tokens": 10,
             }
         }
+
+
+@pytest.mark.asyncio
+async def test_google_search_with_logging(tmp_path):
+    """Test searching google for some counties with logging"""
+
+    assert not list(tmp_path.glob("*"))
+
+    logger = logging.getLogger("search_test")
+    test_locations = ["El Paso County, Colorado", "Decatur County, Indiana"]
+    num_requested_links = 10
+
+    async def search_single(location):
+        logger.info("This location is %r", location)
+        search_engine = PlaywrightGoogleLinkSearch()
+        return await search_engine.results(
+            f"Wind energy zoning ordinance {location}",
+            num_results=num_requested_links,
+        )
+
+    async def search_location_with_logs(
+        listener, log_dir, location, level="INFO"
+    ):
+        with LocationFileLog(
+            listener, log_dir, location=location, level=level
+        ):
+            logger.info("A generic test log")
+            return await search_single(location)
+
+    log_dir = tmp_path / "logs"
+    log_listener = LogListener(["search_test"], level="DEBUG")
+    async with log_listener as ll:
+        searchers = [
+            asyncio.create_task(
+                search_location_with_logs(ll, log_dir, loc, level="DEBUG"),
+                name=loc,
+            )
+            for loc in test_locations
+        ]
+        output = await asyncio.gather(*searchers)
+
+    expected_words = ["paso", "decatur"]
+    assert len(output) == 2
+    for query_results, expected_word in zip(output, expected_words):
+        assert len(query_results) == 1
+        assert len(query_results[0]) == num_requested_links
+        assert any(expected_word in link for link in query_results[0])
+
+    log_files = list(log_dir.glob("*"))
+    assert len(log_files) == 2
+    for fp in log_files:
+        assert (
+            fp.read_text()
+            == f"A generic test log\nThis location is {fp.stem!r}\n"
+        )
 
 
 if __name__ == "__main__":
