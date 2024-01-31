@@ -13,7 +13,7 @@ from PyPDF2 import PdfReader
 import logging
 
 from elm.base import ApiBase
-from elm.utilities.parse import is_double_col, combine_pages, clean_headers
+from elm.utilities.parse import is_multi_col, combine_pages, clean_headers
 
 
 logger = logging.getLogger(__name__)
@@ -220,7 +220,7 @@ class PDFtoTXT(ApiBase):
         out : bool
             True if more than one vertical text column
         """
-        return is_double_col(self.full)
+        return is_multi_col(self.full)
 
     def clean_poppler(self, layout=True):
         """Clean the pdf using the poppler pdftotxt utility

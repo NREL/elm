@@ -7,7 +7,7 @@ import pytest
 from elm.utilities.parse import (
     clean_headers,
     combine_pages,
-    is_double_col,
+    is_multi_col,
     format_html_tables,
     remove_blank_pages,
     replace_common_pdf_conversion_chars,
@@ -55,19 +55,19 @@ PAGES_WITH_HEADERS_AND_FOOTERS = [
 ]
 
 
-def test_is_double_col():
-    """Test the `is_double_col` heuristic function"""
+def test_is_multi_col():
+    """Test the `is_multi_col` heuristic function"""
 
-    assert not is_double_col("Some Text")
-    assert is_double_col("Some    Text")
-    assert is_double_col(
+    assert not is_multi_col("Some Text")
+    assert is_multi_col("Some    Text")
+    assert is_multi_col(
         """
         Some double    here over
         column text    multiple lines.
         given          :)
         """
     )
-    assert not is_double_col(
+    assert not is_multi_col(
         """
         Some text  with odd   spacing
         and  multiple lines but  not

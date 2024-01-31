@@ -11,7 +11,7 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-def is_double_col(text, separator="    "):
+def is_multi_col(text, separator="    "):
     """Does the text look like it has multiple vertical text columns?
 
     Parameters
@@ -24,12 +24,7 @@ def is_double_col(text, separator="    "):
     out : bool
         True if more than one vertical text column
     """
-
-    lines = text.split("\n")
-    n_cols = np.zeros(len(lines))
-    for i, line in enumerate(lines):
-        columns = line.strip().split(separator)
-        n_cols[i] = len(columns)
+    n_cols = [len(line.strip().split(separator)) for line in text.split("\n")]
     return np.median(n_cols) >= 2
 
 
