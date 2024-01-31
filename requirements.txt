@@ -1,10 +1,14 @@
 openai>=1.1.0
 aiohttp
+fake_useragent
 tiktoken
 scipy
 pandas
 numpy
+playwright
 PyPDF2
-networkx
+lxml
 matplotlib
+networkx
 nrel-rex
+tabulate
