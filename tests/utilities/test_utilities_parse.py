@@ -12,6 +12,7 @@ from elm.utilities.parse import (
     remove_blank_pages,
     replace_common_pdf_conversion_chars,
     replace_multi_dot_lines,
+    remove_empty_lines_or_page_footers,
 )
 
 SAMPLE_TABLE_TEXT = """Some text.
@@ -123,6 +124,35 @@ def test_replace_multi_dot_lines():
     assert replace_multi_dot_lines(".....") == "..."
     assert replace_multi_dot_lines("......") == "..."
     assert replace_multi_dot_lines("......\n......") == "...\n..."
+
+
+def test_remove_empty_lines_or_page_footers():
+    """Test the `remove_empty_lines_or_page_footers` function (basic exec.)"""
+    assert remove_empty_lines_or_page_footers("Hello\n   99\r!") == "Hello\n!"
+    assert remove_empty_lines_or_page_footers("Hello\n   \r!") == "Hello\n!"
+    assert remove_empty_lines_or_page_footers("\n\r") == "\n"
+
+    keep_str = "Hello\n Some text  99\r!"
+    assert remove_empty_lines_or_page_footers(keep_str) == keep_str
+
+    multi_line_str = """
+    10. To regulate and restrict the erection, construction, reconstruction,
+    alteration, repair, and use of building, structures, and land.
+
+
+
+
+                                                                         1
+    CHAPTER 1.02 ORDINANCE PROVISIONS
+    """
+
+    expected_out = """
+    10. To regulate and restrict the erection, construction, reconstruction,
+    alteration, repair, and use of building, structures, and land.
+    CHAPTER 1.02 ORDINANCE PROVISIONS
+    """
+
+    assert remove_empty_lines_or_page_footers(multi_line_str) == expected_out
 
 
 if __name__ == "__main__":

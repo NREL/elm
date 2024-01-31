@@ -279,3 +279,20 @@ def replace_multi_dot_lines(text):
         Cleaned text with only three dots max in a row.
     """
     return re.sub(r"[.]{3,}", "...", text)
+
+
+def remove_empty_lines_or_page_footers(text):
+    """Replace empty lines (potentially with page numbers only) as newlines
+
+    Parameters
+    ----------
+    text : str
+        Text possibly containing empty lines and/or lines with only page
+        numbers.
+
+    Returns
+    -------
+    str
+        Cleaned text with no empty lines.
+    """
+    return re.sub(r"[\n\r]+(?:\s*?\d*?\s*)[\n\r]+", "\n", text)
