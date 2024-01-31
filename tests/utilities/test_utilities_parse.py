@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from elm.utilities.parse import is_double_col
+from elm.utilities.parse import is_double_col, remove_blank_pages
 
 
 def test_is_double_col():
@@ -26,6 +26,16 @@ def test_is_double_col():
         double column!
         """
     )
+
+
+def test_remove_blank_pages():
+    """Test the `remove_blank_pages` function"""
+
+    assert remove_blank_pages([]) == []
+    assert remove_blank_pages([""]) == []
+    assert remove_blank_pages(["Here", ""]) == ["Here"]
+    assert remove_blank_pages(["We", "  "]) == ["We"]
+    assert remove_blank_pages(["", " Go ", "  ", "Again"]) == [" Go ", "Again"]
 
 
 if __name__ == "__main__":
