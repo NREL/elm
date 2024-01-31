@@ -346,7 +346,8 @@ class PDFtoTXT(ApiBase):
         out : str
             Clean text with all pages joined
         """
-        self.full = clean_headers(self.pages, char_thresh=char_thresh,
-                                  page_thresh=page_thresh, split_on=split_on,
-                                  iheaders=iheaders)
+        self.pages = clean_headers(self.pages, char_thresh=char_thresh,
+                                   page_thresh=page_thresh, split_on=split_on,
+                                   iheaders=iheaders)
+        self.full = combine_pages(self.pages)
         return self.full

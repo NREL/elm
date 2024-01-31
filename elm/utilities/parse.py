@@ -179,7 +179,7 @@ def clean_headers(
         ind for is_header, ind in zip(tests, iheaders) if is_header
     }
     if not header_inds_to_remove:
-        return combine_pages(pages)
+        return pages
 
     for ip, page in enumerate(pages):
         page = page.split(split_on)
@@ -194,7 +194,7 @@ def clean_headers(
             ]
         )
 
-    return combine_pages(pages)
+    return pages
 
 
 def _get_nominal_headers(pages, split_on, iheaders):
@@ -245,3 +245,37 @@ def combine_pages(pages):
         Single multi-page string
     """
     return "\n".join(pages).replace("\n•", "-").replace("•", "-")
+
+
+def replace_common_pdf_conversion_chars(text):
+    """Re-format text to remove common pdf-converter chars.
+
+    Chars affected include ``\r\n``, ``\r`` and ``\x0c``.
+
+    Parameters
+    ----------
+    text : str
+        Input text (presumably from pdf parser).
+
+    Returns
+    -------
+    str
+        Cleaned text.
+    """
+    return text.replace("\r\n", "\n").replace("\x0c", "").replace("\r", "\n")
+
+
+def replace_multi_dot_lines(text):
+    """Replace instances of three or more dots (.....) with just "..."
+
+    Parameters
+    ----------
+    text : str
+        Text possibly containing many repeated dots.
+
+    Returns
+    -------
+    str
+        Cleaned text with only three dots max in a row.
+    """
+    return re.sub(r"[.]{3,}", "...", text)

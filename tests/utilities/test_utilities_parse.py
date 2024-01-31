@@ -6,9 +6,12 @@ import pytest
 
 from elm.utilities.parse import (
     clean_headers,
+    combine_pages,
     is_double_col,
     format_html_tables,
     remove_blank_pages,
+    replace_common_pdf_conversion_chars,
+    replace_multi_dot_lines,
 )
 
 SAMPLE_TABLE_TEXT = """Some text.
@@ -93,7 +96,7 @@ def test_format_html_tables():
 
 def test_clean_headers():
     """Test the `clean_headers` function (basic execution)"""
-    out = clean_headers(PAGES_WITH_HEADERS_AND_FOOTERS)
+    out = combine_pages(clean_headers(PAGES_WITH_HEADERS_AND_FOOTERS))
 
     assert "A title page" in out
     assert len(out) > 100
@@ -101,6 +104,25 @@ def test_clean_headers():
     assert "...." not in out
     assert "Page" not in out
     assert "pp." not in out
+
+
+def test_replace_common_pdf_conversion_chars():
+    """Test the `replace_common_pdf_conversion_chars` function (basic exec.)"""
+
+    out = replace_common_pdf_conversion_chars("Hello\r\n\x0cMy name is\r")
+    assert out == "Hello\nMy name is\n"
+
+
+def test_replace_multi_dot_lines():
+    """Test the `replace_multi_dot_lines` function (basic exec.)"""
+
+    assert replace_multi_dot_lines(".") == "."
+    assert replace_multi_dot_lines("..") == ".."
+    assert replace_multi_dot_lines("...") == "..."
+    assert replace_multi_dot_lines("....") == "..."
+    assert replace_multi_dot_lines(".....") == "..."
+    assert replace_multi_dot_lines("......") == "..."
+    assert replace_multi_dot_lines("......\n......") == "...\n..."
 
 
 if __name__ == "__main__":
