@@ -12,6 +12,7 @@ from PyPDF2 import PdfReader
 import logging
 
 from elm.base import ApiBase
+from elm.utilities.parse import is_double_col
 
 
 logger = logging.getLogger(__name__)
@@ -218,12 +219,7 @@ class PDFtoTXT(ApiBase):
         out : bool
             True if more than one vertical text column
         """
-        lines = self.full.split('\n')
-        n_cols = np.zeros(len(lines))
-        for i, line in enumerate(lines):
-            columns = line.strip().split(separator)
-            n_cols[i] = len(columns)
-        return np.median(n_cols) >= 2
+        return is_double_col(self.full)
 
     def clean_poppler(self, layout=True):
         """Clean the pdf using the poppler pdftotxt utility
