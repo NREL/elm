@@ -104,3 +104,144 @@ def _replace_tables_in_text(text, matches, dfs, **kwargs):
         new_table_str = df.to_markdown(headers=df.columns, **kwargs)
         text = text.replace(table_str, new_table_str)
     return text
+
+
+def clean_headers(
+    pages,
+    char_thresh=0.6,
+    page_thresh=0.8,
+    split_on="\n",
+    iheaders=(0, 1, -2, -1),
+):
+    """Clean headers/footers that are duplicated across pages of a document.
+
+    Note that this function will update the items within the `pages`
+    input.
+
+    Parameters
+    ----------
+    pages : list
+        List of pages (as str) from document.
+    char_thresh : float
+        Fraction of characters in a given header that are similar
+        between pages to be considered for removal
+    page_thresh : float
+        Fraction of pages that share the header to be considered for
+        removal
+    split_on : str
+        Chars to split lines of a page on
+    iheaders : list | tuple
+        Integer indices to look for headers after splitting a page into
+        lines based on split_on. This needs to go from the start of the
+        page to the end.
+
+    Returns
+    -------
+    out : str
+        Clean text with all pages joined
+    """
+    logger.info("Cleaning headers")
+    headers = _get_nominal_headers(pages, split_on, iheaders)
+    tests = np.zeros((len(pages), len(headers)))
+
+    for ip, page in enumerate(pages):
+        for ih, header in zip(iheaders, headers):
+            pheader = ""
+            try:
+                pheader = page.split(split_on)[ih]
+            except IndexError:
+                pass
+
+            harr = header.replace(" ", "")
+            parr = pheader.replace(" ", "")
+
+            harr = harr.ljust(len(parr))
+            parr = parr.ljust(len(harr))
+
+            harr = np.array([*harr])
+            parr = np.array([*parr])
+            assert len(harr) == len(parr)
+
+            test = harr == parr
+            if len(test) == 0:
+                test = 1.0
+            else:
+                test = test.sum() / len(test)
+
+            tests[ip, ih] = test
+
+    logger.debug("Header tests (page, iheader): \n{}".format(tests))
+    tests = (tests > char_thresh).sum(axis=0) / len(pages)
+    tests = tests > page_thresh
+    logger.debug("Header tests (iheader,): \n{}".format(tests))
+
+    header_inds_to_remove = {
+        ind for is_header, ind in zip(tests, iheaders) if is_header
+    }
+    if not header_inds_to_remove:
+        return combine_pages(pages)
+
+    for ip, page in enumerate(pages):
+        page = page.split(split_on)
+        if len(iheaders) >= len(page):
+            continue
+        pages[ip] = split_on.join(
+            [
+                line
+                for line_ind, line in enumerate(page)
+                if line_ind not in header_inds_to_remove
+                and line_ind - len(page) not in header_inds_to_remove
+            ]
+        )
+
+    return combine_pages(pages)
+
+
+def _get_nominal_headers(pages, split_on, iheaders):
+    """Get nominal headers from a standard page.
+
+    This function aims for a "typical" page that is likely to have a
+    normal header, not the first or last.
+
+    Parameters
+    ----------
+    pages : list
+        List of pages (as str) from document.
+    split_on : str
+        Chars to split lines of a page on
+    iheaders : list | tuple
+        Integer indices to look for headers after splitting a page into
+        lines based on split_on. This needs to go from the start of the
+        page to the end.
+
+    Returns
+    -------
+    headers : list
+        List of headers where each entry is a string header
+    """
+
+    headers = [None] * len(iheaders)
+    page_lens = np.array([len(p) for p in pages])
+    median_len = np.median(page_lens)
+    ipage = np.argmin(np.abs(page_lens - median_len))
+    page = pages[ipage]
+    for i, ih in enumerate(iheaders):
+        headers[i] = page.split(split_on)[ih]
+
+    return headers
+
+
+def combine_pages(pages):
+    """Combine pages of GPT cleaned text into a single string.
+
+    Parameters
+    ----------
+    pages : list
+        List of pages (as str) from document.
+
+    Returns
+    -------
+    full : str
+        Single multi-page string
+    """
+    return "\n".join(pages).replace("\n•", "-").replace("•", "-")
