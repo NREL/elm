@@ -7,7 +7,7 @@ import openai
 from elm.base import ApiBase
 from elm.ords.services.base import RateLimitedService
 from elm.ords.services.usage import TimeBoundedUsageTracker
-from elm.ords.utilities.retry import async_retry_with_exponential_backoff
+from elm.utilities.retry import async_retry_with_exponential_backoff
 
 
 logger = logging.getLogger(__name__)

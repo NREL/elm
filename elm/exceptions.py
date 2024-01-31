@@ -4,3 +4,7 @@
 
 class ELMError(Exception):
     """Generic ELM Error."""
+
+
+class ELMRuntimeError(ELMError, RuntimeError):
+    """ELM RuntimeError."""

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""ELM Ordinances usage tracking utilities."""
+"""ELM retry utilities."""
 import time
 import random
 import asyncio
@@ -8,7 +8,7 @@ from functools import wraps
 
 import openai
 
-from elm.ords.utilities.exceptions import ELMOrdsRuntimeError
+from elm.exceptions import ELMRuntimeError
 
 
 logger = logging.getLogger(__name__)
@@ -49,7 +49,7 @@ def retry_with_exponential_backoff(
         limit failures by a batch of submissions arriving simultaneously
         to a service. By default, ``True``.
     max_retries : int, optional
-        Max number of retries before raising an `ELMOrdsRuntimeError`.
+        Max number of retries before raising an `ELMRuntimeError`.
         By default, ``3``.
     errors : tuple, optional
         The error class(es) to signal a retry. Other errors will be
@@ -119,7 +119,7 @@ def async_retry_with_exponential_backoff(
         limit failures by a batch of submissions arriving simultaneously
         to a service. By default, ``True``.
     max_retries : int, optional
-        Max number of retries before raising an `ELMOrdsRuntimeError`.
+        Max number of retries before raising an `ELMRuntimeError`.
         By default, ``3``.
     errors : tuple, optional
         The error class(es) to signal a retry. Other errors will be
@@ -159,7 +159,7 @@ def _handle_retries(num_retries, max_retries, error):
     num_retries += 1
     if num_retries > max_retries:
         msg = f"Maximum number of retries ({max_retries}) exceeded"
-        raise ELMOrdsRuntimeError(msg) from error
+        raise ELMRuntimeError(msg) from error
     return num_retries
 
 
