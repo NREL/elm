@@ -16,6 +16,9 @@ def is_multi_col(text, separator="    "):
 
     Parameters
     ----------
+    text : str
+        Input text, which may or may not contain multiple vertical
+        columns.
     separator : str
         Heuristic split string to look for spaces between columns
 
