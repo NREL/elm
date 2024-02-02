@@ -4,6 +4,7 @@ import io
 import re
 import logging
 
+import html2text
 import numpy as np
 import pandas as pd
 
@@ -46,6 +47,29 @@ def remove_blank_pages(pages):
         List of strings with content, or empty list.
     """
     return [page for page in pages if any(page.strip())]
+
+
+def html_to_text(html, ignore_links=True):
+    """Call to `HTML2Text` class with basic args.
+
+    Parameters
+    ----------
+    html : str
+        HTML text extracted from the web.
+    ignore_links : bool, optional
+        Option to ignore links in HTML when parsing.
+        By default, ``True``.
+
+    Returns
+    -------
+    str
+        Text extracted from the input HTML.
+    """
+    h = html2text.HTML2Text()
+    h.ignore_links = ignore_links
+    h.ignore_images = True
+    h.bypass_tables = True
+    return h.handle(html)
 
 
 def format_html_tables(text, **kwargs):

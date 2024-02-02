@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta name="format-detection" content="telephone=no" />
+	<title>Chapter 20.14 WIND ENERGY SYSTEMS</title>
+	<link href="../../css/body.css" rel="stylesheet" type="text/css" />
+    
+    
+  </head>
+  <body>
+    <!--BeginNoIndex-->
+    <div id="navTop">
+      <a href="/WA/WhatcomCounty">
+        <img src="../images/toc.gif" alt="Home" border="0" />
+      </a>
+      <a href="../WhatcomCounty20/WhatcomCounty2013.html">
+        <img src="../images/prev.gif" alt="Previous" border="0" />
+      </a>
+      <a href="../WhatcomCounty20/WhatcomCounty2015.html">
+        <img src="../images/next.gif" alt="Next" border="0" />
+      </a>
+    </div>
+    <!--EndNoIndex-->
+    <div id="mainContent">
+      <h2 class="CH"><a name="20.14"></a>Chapter 20.14<br />WIND ENERGY SYSTEMS</h2>
+            <p class="ctoc">Sections:</p>
+
+            <p class="CiteTOC"><a href="#20.14.010">20.14.010&nbsp;&nbsp;&nbsp;&nbsp;Purpose.</a></p>
+
+            <p class="CiteTOC"><a href="#20.14.030">20.14.030&nbsp;&nbsp;&nbsp;&nbsp;Applicability.</a></p>
+
+            <p class="CiteTOC"><a href="#20.14.040">20.14.040&nbsp;&nbsp;&nbsp;&nbsp;Regulatory framework.</a></p>
+
+            <p class="CiteTOC"><a href="#20.14.050">20.14.050&nbsp;&nbsp;&nbsp;&nbsp;General requirements for SWES and WES.</a></p>
+
+            <p class="CiteTOC"><a href="#20.14.060">20.14.060&nbsp;&nbsp;&nbsp;&nbsp;Sound levels, modeling and measurement.</a></p>
+
+            <p class="CiteTOC"><a href="#20.14.070">20.14.070&nbsp;&nbsp;&nbsp;&nbsp;Safety.</a></p>
+
+            <p class="CiteTOC"><a href="#20.14.100">20.14.100&nbsp;&nbsp;&nbsp;&nbsp;Abandonment, insurance, and decommissioning for WES.</a></p>
+
+            <p class="CiteTOC"><a href="#20.14.110">20.14.110&nbsp;&nbsp;&nbsp;&nbsp;Federal, state and local requirements.</a></p>
+
+      <h3 class="Cite" id="20.14.010"><a name="20.14.010">20.14.010</a> Purpose.</h3>
+            <p class="P1">The purpose of this chapter is to regulate the installation and operation of wind energy conversion systems in Whatcom County for private landowners, subject to reasonable restrictions. (Ord. 2023-042 &sect;&nbsp;1 (Exh. A), 2023; Ord. 2012-041 &sect;&nbsp;1 (Exh. A), 2012; Ord. 2008-043 &sect;&nbsp;1, 2008).</p>
+
+      <h3 class="Cite" id="20.14.030"><a name="20.14.030">20.14.030</a> Applicability.</h3>
+            <p class="P1">(1)&nbsp;The requirements set forth in this chapter shall govern the siting of wind energy conversion systems used to generate mechanical or electrical energy to perform work, and which may be connected to the utility grid pursuant to Chapter <a href="//www.codepublishing.com/cgi-bin/rcw.pl?cite=80.60" target="_blank" rel="noopener noreferrer">80.60</a> RCW (Net Metering of Electricity), and serve as an independent source of energy, or serve as part of a hybrid system. </p>
+
+            <p class="P1">(2)&nbsp;The requirements of this chapter shall apply to all small wind energy systems (SWES) and wind energy systems (WES) proposed after October 10, 2008 (the effective date of the ordinance codified in this chapter). Any SWES/WES for which a required permit has been properly issued prior to the effective date of the ordinance codified in this chapter shall not be required to meet the requirements of this chapter; provided, however, that any such pre-existing SWES/WES that is not producing energy for a continuous period of 12 months shall meet the requirements of this chapter prior to recommencing production of energy. No modification that increases the height of the system or increases the system output more than 25 percent shall be allowed without full compliance with this chapter. (Ord. 2023-042 &sect;&nbsp;1 (Exh. A), 2023; Ord. 2012-041 &sect;&nbsp;1 (Exh. A), 2012; Ord. 2008-043 &sect;&nbsp;1, 2008).</p>
+
+      <h3 class="Cite" id="20.14.040"><a name="20.14.040">20.14.040</a> Regulatory framework.</h3>
+            <p class="list"><a name="20.14.041" class="bold">.041</a>&nbsp;Permits and Zoning.</p>
+
+      <table class="header1" style="border:1px solid black; margin-left: 0.0pt; width: 480.1922pt" cellspacing="0" summary="">
+     <thead>
+        <tr>
+          <th style="background-color: #B2B2B2;border: 1px solid black; vertical-align: bottom; width: 200.3419pt">
+                        <p class="CellHeading">System Type</p>
+
+          </th>
+          <th style="background-color: #B2B2B2;border: 1px solid black; vertical-align: bottom; width: 102.7095pt">
+                        <p class="CellHeading">Zones Allowed In</p>
+
+          </th>
+          <th style="background-color: #B2B2B2;border: 1px solid black; vertical-align: bottom; width: 102.7095pt">
+                        <p class="CellHeading">Required Permit</p>
+
+          </th>
+        </tr>
+     </thead>
+     <tbody>
+        <tr>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody">Meteorological tower</p>
+
+          </td>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody">All districts</p>
+
+          </td>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody" style="white-space:nowrap">Permitted</p>
+
+          </td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody" style="white-space:nowrap">SWES</p>
+
+          </td>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody">&nbsp;</p>
+
+          </td>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody">&nbsp;</p>
+
+          </td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody">&nbsp;&bull;&nbsp;with a total height of 200 feet or less</p>
+
+          </td>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody">All districts</p>
+
+          </td>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody" style="white-space:nowrap">Permitted</p>
+
+          </td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody">&nbsp;&bull;&nbsp;with a total height greater than 200 feet</p>
+
+          </td>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody">All districts</p>
+
+          </td>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody">Administrative use permit<span class="super">2</span></p>
+
+          </td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody" style="white-space:nowrap">WES</p>
+
+          </td>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody">&nbsp;</p>
+
+          </td>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody">&nbsp;</p>
+
+          </td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody">&nbsp;</p>
+
+          </td>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody">Heavy Impact Industrial, Light Impact Industrial</p>
+
+          </td>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody">Administrative use permit<span class="super">2</span></p>
+
+          </td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody">&nbsp;</p>
+
+          </td>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody">Agriculture, Rural Forestry, and Commercial Forestry</p>
+
+          </td>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody">Conditional use permit<span class="super">3</span></p>
+
+          </td>
+        </tr>
+      </tbody>
+</table>
+            <p class="footnote"><span class="super">1</span>&nbsp;&nbsp;&nbsp;&nbsp;SWES, WES and meteorological towers are required to be in compliance with WCC Title <a href="../WhatcomCounty15/WhatcomCounty15.html#15">15</a>, Buildings and Construction, and acquire the necessary building permits.</p>
+
+            <p class="footnote"><span class="super">2</span>&nbsp;&nbsp;&nbsp;&nbsp;Administrative use permit, WCC <a href="../WhatcomCounty22/WhatcomCounty2205.html#22.05.028">22.05.028</a>.</p>
+
+            <p class="footnote"><span class="super">3</span>&nbsp;&nbsp;&nbsp;&nbsp;Conditional use permit, WCC <a href="../WhatcomCounty22/WhatcomCounty2205.html#22.05.026">22.05.026</a>.</p>
+
+            <p class="list"><a name="20.14.042" class="bold">.042</a>&nbsp;Principal or Accessory Use.</p>
+
+            <p class="P1">A SWES/WES may be considered either as a principal or accessory use. A different existing use or an existing structure on the same lot shall not preclude the installation of a SWES/WES or a part of such facility on such lot. Any SWES/WES that is constructed and installed in accordance with the provisions of this chapter shall not be deemed to constitute the expansion of a nonconforming use or structure. (Ord. 2023-042 &sect;&nbsp;1 (Exh. A), 2023; Ord. 2012-041 &sect;&nbsp;1 (Exh. A), 2012; Ord. 2011-013 &sect;&nbsp;2 Exh. B, 2011; Ord. 2008-043 &sect;&nbsp;1, 2008).</p>
+
+      <h3 class="Cite" id="20.14.050"><a name="20.14.050">20.14.050</a> General requirements for SWES and WES.</h3>
+            <p class="list"><a name="20.14.051" class="bold">.051</a>&nbsp;Visual Appearance &ndash; Lighting &ndash; Power Lines.</p>
+
+            <p class="P1">(1)&nbsp;Wind turbines shall be painted a nonreflective, nonobtrusive color such as the manufacturer&rsquo;s default color option or a color that conforms to the environment and architecture of the community, unless Federal Aviation Administration (FAA) standards require otherwise. The director may require a photo of a SWES/WES, of the same model as that proposed in the landowner&rsquo;s application, adjacent to a building or some other object illustrating scale (e.g., manufacturer&rsquo;s photo).</p>
+
+            <p class="P1">(2)&nbsp;No SWES/WES shall be artificially lighted, except to the extent required by the Federal Aviation Administration (FAA) or other applicable authority.</p>
+
+            <p class="P1">(3)&nbsp;No SWES/WES shall be used for displaying any advertising except for reasonable identification of the manufacturer or operator of the wind turbine.</p>
+
+            <p class="P1">(4)&nbsp;Electrical controls, control wiring, and power lines shall be wireless or underground, except where SWES/WES wiring is brought together for connection to the transmission or distribution network adjacent to that network, and except that in the Agricultural Zone the minimum installation depth for electrical controls, control wiring, and power lines is 48 inches below finish grade.</p>
+
+            <p class="P1">(5)&nbsp;The road access to the proposed site must be rated to carry an axle load sufficient to bear the weight of all materials, vehicles, and equipment delivered to the site.</p>
+
+            <p class="P1">(6)&nbsp;The compatibility of the foundation, tower, and generating unit (including rotor and rotor-related equipment) shall be certified in writing by a professional engineer licensed in Washington State. The engineer shall certify compliance with established engineering practices and compliance with all applicable adopted codes and regulations. For all SWES/WES, the manufacturer&rsquo;s engineer or another qualified engineer shall certify that the turbine, foundation, and tower design of the SWES/WES are compatible and within accepted professional standards, given local design criteria per WCC Title <a href="../WhatcomCounty15/WhatcomCounty15.html#15">15</a>.</p>
+
+            <p class="P1">(7)&nbsp;The electrical system design shall be certified in writing by an electrical engineer licensed in Washington State unless waived by the building official. All SWES/WES electrical systems shall comply with requirements per the Washington State Department of Labor and Industries and the current adopted edition of the National Electrical Code when and where applicable.</p>
+
+            <p class="P1">(8)&nbsp;All SWES/WES shall meet requirements per the applicable sections of WCC <a href="../WhatcomCounty20/WhatcomCounty2080.html#20.80.630">20.80.630</a>, et seq. (stormwater and drainage) for erosion control and stormwater management.</p>
+
+            <p class="list"><a name="20.14.052" class="bold">.052</a>&nbsp;Setback Requirements.</p>
+
+            <p class="P1">The following setback requirements shall apply to SWES/WES and meteorological towers. All setbacks are measured from the property lines of the property on which the project is located:</p>
+
+            <p class="P1">(1)&nbsp;Setbacks. Setbacks from property lines shall be as shown in the following table, measured to the outer edge of the base of the SWES/WES structure towers. Guy cables and other accessory support structures may be located within setback areas.</p>
+
+      <table class="header1" style="border:1px solid black; margin-left: 0.0pt; text-align: center; width: 224.07739999999998pt" cellspacing="0" summary="">
+     <thead>
+        <tr>
+          <th style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-top: 1px solid #000000; vertical-align: top; width: 73.166pt">
+                        <p class="CellHeadingL">System Size</p>
+
+          </th>
+          <th style="border-left: 1px solid #000000; border-right: 1px solid #000000; border-top: 1px solid #000000; vertical-align: top; width: 150.9114pt">
+                        <p class="CellHeadingL">Setback Requirement</p>
+
+          </th>
+        </tr>
+     </thead>
+     <tbody>
+        <tr>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody" style="white-space:nowrap">SWES</p>
+
+          </td>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody">1 times total height of SWES structure</p>
+
+          </td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody" style="white-space:nowrap">WES</p>
+
+          </td>
+          <td style="border: 1px solid black; vertical-align: top">
+                        <p class="CellBody">1,000 feet from a property line of any property in other than the HII district. If the neighboring property is in an HII district the setback is 1 times the total height.<span class="Superscript">1</span></p>
+
+          </td>
+        </tr>
+      </tbody>
+</table>
+            <p class="Footnote"><span class="Superscript">1</span> A reduction in setbacks may be approved if appropriate easements from neighboring property owners or appropriate mitigation acceptable to neighboring property owners is approved by the zoning administrator or hearing examiner and recorded against the applicable deed(s).</p>
+
+            <p class="P1">(2)&nbsp;Setbacks from Communication and Electrical Lines. Each SWES/WES shall be set back a distance no less than one times its total height, from any existing above-ground power line or telephone line.</p>
+
+            <p class="P1">(3)&nbsp;Setback from Other WES. A WES may not be placed such that it substantially disturbs the wind flow into another WES. A new WES may not be placed such that another nonparticipating WES falls within an egg-shaped exclusion zone around the new WES defined by an axis along the primary wind direction. In the upwind direction the exclusion zone shall have a semi-circular shape with a radius three times the rotor diameter of the new WES. In the downwind direction the exclusion zone shall have a semi-elliptical shape extending eight times the rotor diameter of the new WES along the axis downwind and extending three times the rotor diameter of the new WES in a direction perpendicular to the axis. In this way the new WES will be at least three of its rotor diameters behind, three to the side of, and eight in front of a pre-existing WES.</p>
+
+            <p class="P1">(4)&nbsp;For WES located within 1,000 feet of existing structures, permit applicants shall provide additional analysis of safety risks, including estimate of range for &ldquo;ice throw&rdquo; from spinning blades. </p>
+
+            <p class="list"><a name="20.14.053" class="bold">.053</a>&nbsp;Height Limits.</p>
+
+            <p class="P1">SWES with a total height taller than 200 feet must obtain an administrative use permit, except within the AG, CF and HII Zones. All SWES with a total height greater than 200 feet must provide in writing that the height requested is the minimum height necessary for the SWES to operate efficiently, and provide approved justification for the proposed height and analysis according to recognized industry standards. (Ord. 2023-042 &sect;&nbsp;1 (Exh. A), 2023; Ord. 2012-041 &sect;&nbsp;1 (Exh. A), 2012; Ord. 2008-043 &sect;&nbsp;1, 2008).</p>
+
+      <h3 class="Cite" id="20.14.060"><a name="20.14.060">20.14.060</a> Sound levels, modeling and measurement.</h3>
+            <p class="P1">(1)&nbsp;During normal operation, the SWES/WES shall comply with the sound requirements of the zoning district in which it is located. The facility shall maintain sound levels at project boundaries that are under the maximum levels for the adjacent receiving properties based on the receiving properties&rsquo; environmental designation for noise abatement in accordance with state regulations. The facility shall at all times comply with applicable noise control regulations adopted by the Washington Department of Ecology or such other state agency with jurisdiction. The maximum sound level may be exceeded during short-term events, such as utility outages and storms.</p>
+
+            <p class="P1">(2)&nbsp;WES proponents shall provide a report by a qualified independent acoustical consultant approved by Whatcom County PDS and in accordance with standard industry best practices, that models the sound transmission of the proposed WES at the project property lines and indicates that the WES, when operated properly, will conform to the sound performance requirements of this chapter. </p>
+
+            <p class="P1">(3)&nbsp;Noise Complaints.</p>
+
+            <p class="P2">(a)&nbsp;If two or more complaints from different households are received within a two-week period regarding a particular WES located within one mile of the complainant&rsquo;s properties, a sound measurement will be conducted by a qualified consultant approved by Whatcom County. The cost of the sound measurement shall be paid initially by the county. Measurements shall be conducted where the complaints were documented. If an evaluation shows that the WES is operating outside of its permitted sound performance standards, the operator will have 30 days to adjust the system(s) or terminate operations, and the owner/operator shall reimburse the county for the expense of sound measurement. If the WES is shown to be in compliance, the complainant shall reimburse the county for the cost of measurement. </p>
+
+            <p class="P2">(b)&nbsp;At the discretion of Whatcom County PDS, multiple complaints may be compiled for three months at a time and then a sound study conducted at all of the locations. No WES project shall be required to conduct more than two sound measurements at any one adjacent property per year unless the WES project has expanded and/or proven to be in violation of the sound performance standards. (Ord. 2023-042 &sect;&nbsp;1 (Exh. A), 2023; Ord. 2012-041 &sect;&nbsp;1 (Exh. A), 2012; Ord. 2008-043 &sect;&nbsp;1, 2008).</p>
+
+      <h3 class="Cite" id="20.14.070"><a name="20.14.070">20.14.070</a> Safety.</h3>
+            <p class="list"><a name="20.14.071" class="bold">.071</a>&nbsp;General Provisions for SWES/WES.</p>
+
+            <p class="P1">(1)&nbsp;Wind turbine towers shall not provide step bolts or a ladder readily accessible to the public; any access bolts or ladders shall be a minimum height of 10 feet above ground level. </p>
+
+            <p class="P1">(2)&nbsp;All electrical equipment shall be safely and appropriately enclosed from unintentional access by means such as barrier fencing, equipment cabinetry or similar approved barriers. All access doors to wind turbine towers and electrical equipment shall remain locked except when access is necessary. </p>
+
+            <p class="P1">(3)&nbsp;Appropriate warning signage (e.g., electrical hazards) shall be placed on wind turbine towers, electrical equipment, and SWES/WES. </p>
+
+            <p class="P1">(4)&nbsp;Any SWES/WES found to be unsafe by the building official shall be repaired by the landowner and/or project owner to meet federal, state and local safety standards, according to the regulatory authority of the building official and applicable provisions per WCC Title <a href="../WhatcomCounty15/WhatcomCounty15.html#15">15</a>.</p>
+
+            <p class="list"><a name="20.14.072" class="bold">.072</a>&nbsp;Blade Tip Clearance.</p>
+
+            <p class="P1">(1)&nbsp;The blade tip of any SWES shall, at its lowest point, have ground clearance of no less than 20 feet, as measured at the lowest point of the arc of the blades. </p>
+
+            <p class="P1">(2)&nbsp;WES shall, at its lowest point, have ground clearance of no less than 30 feet, as measured at the lowest point of the arc of the blades.</p>
+
+            <p class="list"><a name="20.14.073" class="bold">.073</a>&nbsp;Over-Speed Controls.</p>
+
+            <p class="P1">All SWES/WES shall be equipped with over-speed controls to limit rotation of blades to speed below the designed limits of the system. No changes or alterations from the certified design shall be permitted unless accompanied by a licensed professional engineer&rsquo;s statement of certification.</p>
+
+            <p class="list"><a name="20.14.074" class="bold">.074</a>&nbsp;Flicker Analysis for WES.</p>
+
+            <p class="P1">A flicker analysis is required for all WES. The analysis shall include the duration and location of flicker potential for all buildings and for roadways within a one-mile radius of each turbine within a project. The applicant shall provide a site map identifying the locations of shadow flicker that may be caused by the project and the expected durations of the flicker at these locations from sunrise to sunset over the course of a year. The analysis shall account for topography but not for obstacles such as accessory structures and trees. Flicker at any building shall not exceed 30 hours per year within the analysis area. Flicker in excess of the limits established in this chapter shall be grounds for the director to order operational adjustments, which may include mitigation measures requiring cessation of operation during periods when flicker affects any building, for all noncompliant WES.</p>
+
+            <p class="list"><a name="20.14.075" class="bold">.075</a>&nbsp;Wildlife Protection for WES.</p>
+
+            <p class="P1">(1)&nbsp;Prior to permit approval, the applicant shall ensure compliance with Chapter <a href="../WhatcomCounty16/WhatcomCounty1616.html#16.16">16.16</a> WCC (Critical Areas), including potential impacts to birds and bats, and providing documentation of compliance with Washington Department of Fish and Wildlife&rsquo;s &ldquo;Wind Power Guidelines&rdquo; for project siting and operation to minimize take of listed species, migratory birds, raptors, and bats.</p>
+
+            <p class="P1">(2)&nbsp;The applicant shall assess and monitor proximate bird and bat habitats for activity prior to construction, and modify construction timing and activities to avoid impacts to these species. </p>
+
+            <p class="P2">(a)&nbsp;At a minimum, one raptor nest survey during breeding season within one mile of the project site should be conducted to determine the location and species of active nests potentially disturbed by construction activities, and to identify active and potentially active nest sites with the highest likelihood of impacts from the operation of the wind plant. A larger survey area (e.g., a two-mile buffer) is recommended if there is some likelihood of the occurrence of nesting state and/or federally threatened and endangered raptor species (e.g., ferruginous hawk, bald eagle, golden eagle).</p>
+
+            <p class="P2">(b)&nbsp; A minimum of one full season of use surveys is recommended to estimate the use of the project area by birds and bats. This data should be used to refine impact analyses and help determine project design.</p>
+
+            <p class="P1">(3)&nbsp;Following project start-up, the applicant shall monitor the project for a minimum of one year to estimate bird and bat fatality rates using standard protocol. The applicant shall report bird fatalities observed for the life of the project to WDFW and USFWS on a quarterly basis. Additional monitoring may be required by the county. (Ord. 2023-042 &sect;&nbsp;1 (Exh. A), 2023; Ord. 2012-041 &sect;&nbsp;1 (Exh. A), 2012; Ord. 2008-043 &sect;&nbsp;1, 2008). </p>
+
+      <h3 class="Cite" id="20.14.100"><a name="20.14.100">20.14.100</a> Abandonment, insurance, and decommissioning for WES.</h3>
+            <p class="list"><a name="20.14.101" class="bold">.101</a>&nbsp;Abandonment. </p>
+
+            <p class="P1">Absent notice of a proposed date of decommissioning, a WES project shall be considered abandoned when the project fails to operate for more than one year without the written approval of the director. The director shall determine in his/her decision what proportion of the project is inoperable for the project to be considered abandoned and shall notify the property owner. Within 120 days of receipt of notice of abandonment or within 120 days of providing notice of termination of operations to the county, the owner of a wind energy system must comply with the removal requirements in WCC <a href="../WhatcomCounty20/WhatcomCounty2014.html#20.14.102">20.14.102</a>. If the property owner/project owner fails to do so, the county shall have the authority to enter the property and physically remove the WES. Financial surety funds shall be used to pay for removal and restoration.</p>
+
+            <p class="list"><a name="20.14.102" class="bold">.102</a>&nbsp;Removal Requirements. </p>
+
+            <p class="P1">When a SWES or a WES is scheduled to be decommissioned, the project owner/property owner shall notify the county by certified mail of the proposed date of discontinued operations and plans for removal. Within 120 days of receipt of notice of abandonment or within 120 days of providing notice of termination of operations, the owner of a wind energy system must:</p>
+
+            <p class="P1">(1)&nbsp;Decommission any SWES, including removal of wind turbine, tower, and above-ground cabling and electrical components. Foundations and underground cabling need not be removed. </p>
+
+            <p class="P1">(2)&nbsp;Decommission any WES, including removal of wind turbines, tower, and above-ground cabling and electrical components, removal of all below-ground project elements to a depth of 36 inches, access roads, and any other associated facilities, unless the property owner requests in writing that the access roads or other facilities be retained.</p>
+
+            <p class="P1">(3)&nbsp;Remove all hazardous material from the property and dispose of the hazardous material in accordance with federal, state, and local law.</p>
+
+            <p class="P1">(4)&nbsp;In addition to removing the wind turbine generator, the owner shall restore the site by planting native or other approved vegetation to minimize erosion.</p>
+
+            <p class="list"><a name="20.14.103" class="bold">.103</a>&nbsp;Insurance.</p>
+
+            <p class="P1">For WES, proof of continuous liability insurance shall be submitted to Whatcom County indicating coverage for potential damages or injury to landowners, occupants, or other third parties. The required insurance is $2,000,000 aggregate and $1,000,000 per occurrence. Whatcom County shall be named on the liability policy as additional insured. The insurance carrier shall be instructed to notify all applicable governmental authorities of any delinquency in payment of premiums. The liability policy shall be endorsed to notify the county of any cancellation 30 days in advance. Failure to provide such insurances shall be considered abandonment and full and sufficient grounds for termination of the permit and disposal of the equipment and appurtenances as stated herein.</p>
+
+            <p class="list"><a name="20.14.104" class="bold">.104</a>&nbsp;Financial Surety. </p>
+
+            <p class="P1">(1)&nbsp;As a condition of WES permit approval, the applicant shall be required to provide a form of surety (i.e., post a bond, or establish an escrow account or other means) at the amount of 150 percent of the estimated full cost of project decommissioning, less the approved, documented salvage value of any applicable project materials and equipment, naming Whatcom County as the beneficiary, with 50 percent due prior to final project approval, 25 percent due within 12 months of the date of final project approval, and 25 percent due within 24 months of the date of final project approval, to cover costs of WES removal in the event the county must remove the facility. Nothing shall prevent the county from seeking reimbursement from the WES project owner. The project owner is responsible to the county for any costs related to decommissioning that exceed the amount of financial surety.</p>
+
+            <p class="P1">(2)&nbsp;As part of the decommissioning plan, the applicant shall submit a fully inclusive estimate of the costs associated with removal, accounting for reasonable salvage value of any applicable project materials and equipment, prepared by a qualified professional. The decommissioning plan shall provide that the decommissioning funds shall be reevaluated every five years from the date of substantial completion of the WES to ensure sufficient funds for decommissioning and, upon mutual agreement by the applicant and the county at that time, the amount of decommissioning funds shall be adjusted accordingly.</p>
+
+            <p class="P1">(3)&nbsp;Prior to permit issuance, the applicant shall provide the county with a copy of the financial surety device or another approved mechanism.</p>
+
+            <p class="list"><a name="20.14.105" class="bold">.105</a>&nbsp;Decommissioning Plan.</p>
+
+            <p class="P1">As part of the permit approval process, a decommissioning plan shall be provided that outlines the anticipated means and cost of removing WES at the end of their serviceable life or upon becoming a discontinued use. The cost estimates shall be made by a competent party, such as a professional engineer, a licensed contractor capable of decommissioning, or a person, firm, partnership, corporation, or other entity with suitable expertise or experience with decommissioning, as determined by the building official. The plan shall also identify financial surety to pay for the decommissioning and removal of the WES and accessory facilities. The plan shall also address road maintenance during and after the decommissioning. (Ord. 2023-042 &sect;&nbsp;1 (Exh. A), 2023; Ord. 2023-018 &sect;&nbsp;1 (Exh. A), 2023; Ord. 2012-041 &sect;&nbsp;1 (Exh. A), 2012).</p>
+
+      <h3 class="Cite" id="20.14.110"><a name="20.14.110">20.14.110</a> Federal, state and local requirements.</h3>
+            <p class="P1">(1)&nbsp;SWES/WES shall comply with all current adopted Whatcom County codes and ordinances, including but not limited to WCC Titles <a href="../WhatcomCounty15/WhatcomCounty15.html#15">15</a>, <a href="../WhatcomCounty16/WhatcomCounty16.html#16">16</a> and <a href="../WhatcomCounty23/WhatcomCounty23.html#23">23</a>.</p>
+
+            <p class="P1">(2)&nbsp;SWES/WES must comply with regulations of the Federal Aviation Administration (FAA), along with the requirements of WCC <a href="../WhatcomCounty20/WhatcomCounty2080.html#20.80.675">20.80.675</a> (Height limitations surrounding airports). If necessary, an applicant may be required to submit the following information for analysis of airspace obstructions in relation to WCC <a href="../WhatcomCounty20/WhatcomCounty2080.html#20.80.675">20.80.675</a>: mean sea level (MSL) of adjacent airports; MSL of proposed site; Euclidean distance from adjacent airports to proposed site; total elevation/height of SWES/WES structure.</p>
+
+            <p class="P1">(3)&nbsp;All SWES/WES electrical systems shall comply with requirements per the Washington State Department of Labor and Industries and the current adopted edition of the National Electrical Code (NEC) when and where applicable.</p>
+
+            <p class="P1">(4)&nbsp;All SWES/WES with the intention to tie to their respective utility provider&rsquo;s grid system shall meet the requirements of Chapter <a href="//www.codepublishing.com/cgi-bin/rcw.pl?cite=80.60" target="_blank" rel="noopener noreferrer">80.60</a> RCW, Net Metering of Electricity. (Ord. 2023-042 &sect;&nbsp;1 (Exh. A), 2023; Ord. 2012-041 &sect;&nbsp;1 (Exh. A), 2012; Ord. 2008-043 &sect;&nbsp;1, 2008. Formerly 20.14.080).</p>
+
+    </div>
+    <!--BeginNoIndex-->
+    <div id="navBottom">
+      <a href="/WA/WhatcomCounty">
+        <img src="../images/toc.gif" alt="Home" border="0" />
+      </a>
+      <a href="../WhatcomCounty20/WhatcomCounty2013.html">
+        <img src="../images/prev.gif" alt="Previous" border="0" />
+      </a>
+      <a href="../WhatcomCounty20/WhatcomCounty2015.html">
+        <img src="../images/next.gif" alt="Next" border="0" />
+      </a>
+    </div>
+    <iframe src="../disclaimer.html" id="pgFooter" frameborder="0"></iframe>
+    <!--EndNoIndex-->
+  </body>
+</html>

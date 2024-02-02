@@ -4,11 +4,13 @@ from pathlib import Path
 
 import pytest
 
+from elm import TEST_DATA_DIR
 from elm.utilities.parse import (
     clean_headers,
     combine_pages,
     is_multi_col,
     format_html_tables,
+    html_to_text,
     remove_blank_pages,
     replace_common_pdf_conversion_chars,
     replace_multi_dot_lines,
@@ -153,6 +155,24 @@ def test_remove_empty_lines_or_page_footers():
     """
 
     assert remove_empty_lines_or_page_footers(multi_line_str) == expected_out
+
+
+def test_html_to_text():
+    """Test Document class for sample HTML file"""
+    doc_path = Path(TEST_DATA_DIR) / "Whatcom.txt"
+
+    with open(doc_path, "r", encoding="utf-8") as fh:
+        og_text = fh.read()
+
+    out = html_to_text(og_text)
+
+    for tag in ["<p class", "<html xml", "<a href"]:
+        assert tag in og_text
+        assert tag not in out
+
+    for tag in ["<table", "<tr", "<th", "</table>", "</tr>", "</th>"]:
+        assert tag in og_text
+        assert tag in out
 
 
 if __name__ == "__main__":
