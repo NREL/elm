@@ -19,7 +19,7 @@ from elm.utilities.parse import (
 class BaseDocument(ABC):
     """Base ELM web document representation."""
 
-    def __init__(self, pages, source=None):
+    def __init__(self, pages, metadata=None):
         """
 
         Parameters
@@ -27,13 +27,12 @@ class BaseDocument(ABC):
         pages : iterable
             Iterable of strings, where each string is a page of a
             document.
-        source : str, optional
-            Optional string to identify the source for the document.
-            Has no effect on parsing - for documentation purposes only.
+        metadata : dict, optional
+            Optional dict containing metadata for the document.
             By default, ``None``.
         """
         self.pages = remove_blank_pages(pages)
-        self.source = source
+        self.metadata = metadata or {}
 
     @cached_property
     def raw_pages(self):
@@ -80,7 +79,7 @@ class PDFDocument(BaseDocument):
     def __init__(
         self,
         pages,
-        source=None,
+        metadata=None,
         percent_raw_pages_to_keep=25,
         max_raw_pages=18,
         num_end_pages_to_keep=2,
@@ -93,9 +92,9 @@ class PDFDocument(BaseDocument):
         pages : iterable
             Iterable of strings, where each string is a page of a
             document.
-        source : str, optional
-            Optional string to identify the source for the document.
-            Has no effect on parsing - for documentation purposes only.
+        metadata : str, optional
+            metadata : dict, optional
+            Optional dict containing metadata for the document.
             By default, ``None``.
         percent_raw_pages_to_keep : int, optional
             Percent of "raw" pages to keep. Useful for extracting info
@@ -115,7 +114,7 @@ class PDFDocument(BaseDocument):
             to the :func:`~elm.utilities.parse.clean_headers`
             function. By default, ``None``.
         """
-        super().__init__(pages, source)
+        super().__init__(pages, metadata=metadata)
         self.percent_raw_pages_to_keep = percent_raw_pages_to_keep
         self.max_raw_pages = min(len(self.pages), max_raw_pages)
         self.num_end_pages_to_keep = num_end_pages_to_keep
@@ -167,7 +166,7 @@ class HTMLDocument(BaseDocument):
     def __init__(
         self,
         pages,
-        source=None,
+        metadata=None,
         html_table_to_markdown_kwargs=None,
         ignore_html_links=True,
     ):
@@ -178,9 +177,8 @@ class HTMLDocument(BaseDocument):
         pages : iterable
             Iterable of strings, where each string is a page of a
             document.
-        source : str, optional
-            Optional string to identify the source for the document.
-            Has no effect on parsing - for documentation purposes only.
+        metadata : dict, optional
+            Optional dict containing metadata for the document.
             By default, ``None``.
         html_table_to_markdown_kwargs : dict, optional
             Optional dictionary of keyword-value pair arguments to pass
@@ -190,7 +188,7 @@ class HTMLDocument(BaseDocument):
             Option to ignore link in HTML text during parsing.
             By default, ``True``.
         """
-        super().__init__(pages, source)
+        super().__init__(pages, metadata=metadata)
         self.html_table_to_markdown_kwargs = deepcopy(
             self.HTML_TABLE_TO_MARKDOWN_KWARGS
         )

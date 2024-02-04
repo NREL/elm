@@ -16,7 +16,7 @@ def test_basic_document(doc_type):
     doc = doc_type([""])
     assert doc.text == ""
     assert doc.raw_pages == []
-    assert doc.source is None
+    assert doc.metadata == {}
     if doc_type is PDFDocument:
         assert doc.num_raw_pages_to_keep == 0
         assert doc._last_page_index == 0
