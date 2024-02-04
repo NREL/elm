@@ -195,5 +195,16 @@ def test_read_pdf(fn, physical):
     assert all(t == p for t, p in zip(truth, pages))
 
 
+def test_read_pdf_bad_file():
+    """Test the `read_pdf` function with bad file input"""
+    doc_path = Path(TEST_DATA_DIR) / "gpt4.txt"
+
+    with open(doc_path, "rb") as fh:
+        file_bytes = fh.read()
+
+    pages = read_pdf(file_bytes)
+    assert not pages
+
+
 if __name__ == "__main__":
     pytest.main(["-q", "--show-capture=all", Path(__file__), "-rapP"])
