@@ -3,6 +3,7 @@
 from pathlib import Path
 
 import pytest
+import pdftotext
 
 from elm import TEST_DATA_DIR
 from elm.utilities.parse import (
@@ -11,6 +12,7 @@ from elm.utilities.parse import (
     is_multi_col,
     format_html_tables,
     html_to_text,
+    read_pdf,
     remove_blank_pages,
     replace_common_pdf_conversion_chars,
     replace_multi_dot_lines,
@@ -173,6 +175,24 @@ def test_html_to_text():
     for tag in ["<table", "<tr", "<th", "</table>", "</tr>", "</th>"]:
         assert tag in og_text
         assert tag in out
+
+
+@pytest.mark.parametrize(
+    "fn, physical", [("tc.pdf", False), ("GPT-4.pdf", True)]
+)
+def test_read_pdf(fn, physical):
+    """Test the `read_pdf` function (basic execution)"""
+    doc_path = Path(TEST_DATA_DIR) / fn
+
+    with open(doc_path, "rb") as fh:
+        file_bytes = fh.read()
+
+    pages = read_pdf(file_bytes)
+
+    with open(doc_path, "rb") as fh:
+        truth = pdftotext.PDF(fh, physical=physical)
+
+    assert all(t == p for t, p in zip(truth, pages))
 
 
 if __name__ == "__main__":

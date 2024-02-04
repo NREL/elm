@@ -5,6 +5,7 @@ import re
 import logging
 
 import html2text
+import pdftotext
 import numpy as np
 import pandas as pd
 
@@ -318,3 +319,39 @@ def remove_empty_lines_or_page_footers(text):
         Cleaned text with no empty lines.
     """
     return re.sub(r"[\n\r]+(?:\s*?\d*?\s*)[\n\r]+", "\n", text)
+
+
+def read_pdf(pdf_bytes):
+    """Read PDF contents from bytes.
+
+    This method will automatically try to detect multi-column format
+    and load the text without a physical layout in that case.
+
+    Parameters
+    ----------
+    pdf_bytes : bytes
+        Bytes corresponding to a PDF file.
+
+    Returns
+    -------
+    iterable
+        Iterable containing pages of the PDF document. This iterable
+        may be empty if there was an error reading the PDF file.
+    """
+    try:
+        pages = _load_pdf_possibly_multi_col(pdf_bytes)
+    except pdftotext.Error as e:
+        logger.error("Failed to decode PDF content!")
+        logger.exception(e)
+        pages = []
+
+    return pages
+
+
+def _load_pdf_possibly_multi_col(pdf_bytes):
+    """Load PDF, which may be multi-column"""
+    pdf_bytes = io.BytesIO(pdf_bytes)
+    pages = pdftotext.PDF(pdf_bytes, physical=True)
+    if is_multi_col(combine_pages(pages)):
+        pages = pdftotext.PDF(pdf_bytes, physical=False)
+    return pages
