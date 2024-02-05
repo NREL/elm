@@ -14,6 +14,9 @@ logger = logging.getLogger(__name__)
 class Service(ABC):
     """Abstract base class for a Service that can be queued to run."""
 
+    MAX_CONCURRENT_JOBS = 10_000
+    """Max number of concurrent job submissions."""
+
     @classmethod
     def _queue(cls):
         """Get queue for class."""

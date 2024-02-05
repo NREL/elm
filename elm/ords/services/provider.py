@@ -60,7 +60,7 @@ class _RunningProvider:
         if not self.service.can_process or self._q_empty_but_still_processing:
             return
 
-        while self.service.can_process:
+        while self.service.can_process and self._can_fit_jobs:
             fut, outer_task_name, args, kwargs = await self.queue.get()
             task = asyncio.create_task(
                 self.service.process_using_futures(fut, *args, **kwargs),
@@ -80,6 +80,11 @@ class _RunningProvider:
     def _q_empty_but_still_processing(self):
         """bool: Queue empty but jobs still running (don't await queue)"""
         return self.queue.empty() and self.jobs
+
+    @property
+    def _can_fit_jobs(self):
+        """bool: Job tracker not full"""
+        return len(self.jobs) < self.service.MAX_CONCURRENT_JOBS
 
     async def collect_responses(self):
         """Collect responses from the service.
