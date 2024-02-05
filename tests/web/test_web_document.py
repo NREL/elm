@@ -20,6 +20,8 @@ def test_basic_document(doc_type):
     if doc_type is PDFDocument:
         assert doc.num_raw_pages_to_keep == 0
         assert doc._last_page_index == 0
+    assert doc.WRITE_KWARGS
+    assert doc.FILE_EXTENSION
 
 
 def test_pdf_doc():

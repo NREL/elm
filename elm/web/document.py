@@ -64,6 +64,18 @@ class BaseDocument(ABC):
             "This document does not implement a pages cleaning function"
         )
 
+    @property
+    @abstractmethod
+    def WRITE_KWARGS(self):
+        """dict: Dict of kwargs to pass to `open` when writing this doc."""
+        raise NotImplementedError
+
+    @property
+    @abstractmethod
+    def FILE_EXTENSION(self):
+        """str: Cleaned document file extension."""
+        raise NotImplementedError
+
 
 class PDFDocument(BaseDocument):
     """ELM web PDF document"""
@@ -75,6 +87,8 @@ class PDFDocument(BaseDocument):
         "iheaders": [0, 1, 3, -3, -2, -1],
     }
     """Default :func:`~elm.utilities.parse.clean_headers` arguments"""
+    WRITE_KWARGS = {"mode": "wb"}
+    FILE_EXTENSION = "pdf"
 
     def __init__(
         self,
@@ -162,6 +176,8 @@ class HTMLDocument(BaseDocument):
         "tablefmt": "psql",
     }
     """Default :func:`~elm.utilities.parse.format_html_tables` arguments"""
+    WRITE_KWARGS = {"mode": "w", "encoding": "utf-8"}
+    FILE_EXTENSION = "txt"
 
     def __init__(
         self,
