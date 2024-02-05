@@ -222,7 +222,7 @@ async def test_async_file_loader_with_temp_cache(monkeypatch):
         assert doc.metadata["source"] == "Whatcom"
         cached_fp = doc.metadata["cache_fn"]
         assert cached_fp.exists()
-        assert cached_fp.read_text() == doc.text
+        assert cached_fp.read_text(encoding="utf-8") == doc.text
 
 
 if __name__ == "__main__":
