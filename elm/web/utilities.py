@@ -2,6 +2,7 @@
 """ELM Web Scraping utilities."""
 import uuid
 import hashlib
+from pathlib import Path
 
 from slugify import slugify
 
@@ -80,3 +81,36 @@ def _shorten_using_sha(fn):
 
     out = hashlib.sha256(bytes(fn[64:], encoding="utf-8")).hexdigest()
     return f"{fn[:64]}{out}"
+
+
+def write_url_doc_to_file(doc, file_content, out_dir, make_name_unique=False):
+    """Write a file pulled from URL to disk.
+
+    Parameters
+    ----------
+    doc : elm.web.document.Document
+        Document containing meta information about the file. Must have a
+        "source" key in the `metadata` dict containing the URL, which
+        will be converted to a file name using
+        :func:`compute_fn_from_url`.
+    file_content : str | bytes
+        File content, typically string text for HTML files and bytes
+        for PDF file.
+    out_dir : path-like
+        Path to directory where file should be stored.
+    make_name_unique : bool, optional
+        Option to make file name unique by adding a UUID at the end of
+        the file name. By default, ``False``.
+
+    Returns
+    -------
+    Path
+        Path to output file.
+    """
+    out_fn = compute_fn_from_url(
+        url=doc.metadata["source"], make_unique=make_name_unique
+    )
+    out_fp = Path(out_dir) / f"{out_fn}.{doc.FILE_EXTENSION}"
+    with open(out_fp, **doc.WRITE_KWARGS) as fh:
+        fh.write(file_content)
+    return out_fp

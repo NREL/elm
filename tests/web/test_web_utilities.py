@@ -4,7 +4,12 @@ from pathlib import Path
 
 import pytest
 
-from elm.web.utilities import clean_search_query, compute_fn_from_url
+from elm.web.document import HTMLDocument
+from elm.web.utilities import (
+    clean_search_query,
+    compute_fn_from_url,
+    write_url_doc_to_file,
+)
 
 
 @pytest.mark.parametrize(
@@ -68,6 +73,21 @@ def test_compute_fn_from_url_make_unique():
 
     for fn in [test_1, test_2, test_3, test_4]:
         assert "-" not in fn
+
+
+def test_write_url_doc_to_file(tmp_path):
+    """Test basic execution of `write_url_doc_to_file`"""
+
+    doc = HTMLDocument(["test"])
+    doc.metadata["source"] = "http://www.example.com/?=%20test"
+    out_fp = write_url_doc_to_file(doc, doc.text, tmp_path)
+
+    text_files = list(tmp_path.glob("*.txt"))
+    assert len(text_files) == 1
+    with open(text_files[0], "r") as fh:
+        assert fh.read().startswith("test")
+
+    assert out_fp.name == "examplecom20test.txt"
 
 
 if __name__ == "__main__":
