@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 """ELM Web Scraping utilities."""
+import uuid
+import hashlib
+
+from slugify import slugify
 
 
 def clean_search_query(query):
@@ -35,3 +39,44 @@ def clean_search_query(query):
     query = query[first_quote_pos + 1 : last_ind]
 
     return query.strip()
+
+
+def compute_fn_from_url(url, make_unique=False):
+    """Compute a unique file name from URL string.
+
+    File name will always be 128 characters or less, unless the
+    `make_unique` argument is set to true. In that case, the max
+    length is 164 (a UUID is tagged onto the filename).
+
+    Parameters
+    ----------
+    url : str
+        Input URL to convert into filename.
+    make_unique : bool, optional
+        Option to add a UUID at the end of the file name to make it
+        unique. By default, ``False``.
+
+    Returns
+    -------
+    str
+        Valid filename representation of the URL.
+    """
+    url = url.replace("https", "").replace("http", "").replace("www", "")
+    url = slugify(url)
+    url = url.replace("-", "").replace("_", "")
+
+    url = _shorten_using_sha(url)
+
+    if make_unique:
+        url = f"{url}{uuid.uuid4()}".replace("-", "")
+
+    return url
+
+
+def _shorten_using_sha(fn):
+    """Reduces FN to 128 characters"""
+    if len(fn) <= 128:
+        return fn
+
+    out = hashlib.sha256(bytes(fn[64:], encoding="utf-8")).hexdigest()
+    return f"{fn[:64]}{out}"

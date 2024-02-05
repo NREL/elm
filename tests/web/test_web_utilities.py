@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from elm.web.utilities import clean_search_query
+from elm.web.utilities import clean_search_query, compute_fn_from_url
 
 
 @pytest.mark.parametrize(
@@ -24,6 +24,50 @@ def test_clean_search_query(query, expected_out):
     """Test cleaning google web search query"""
 
     assert clean_search_query(query) == expected_out
+
+
+@pytest.mark.parametrize(
+    "url, expected_out",
+    [
+        ("http://www.example.com/?=%20test", "examplecom20test"),
+        ("https://www.example.com/?=%20test", "examplecom20test"),
+        ("www.example.com/?=%20test", "examplecom20test"),
+        ("example.com/?=%20test-again", "examplecom20testagain"),
+        (
+            "example.com/?=%20test" + "a" * 200,
+            "examplecom20test"
+            + "a" * 48
+            + "e03013400c0bddd83e6d7d14ce28c3ec"
+            + "d8afd02a789651f54d7f4273dc0528eb",
+        ),
+    ],
+)
+def test_compute_fn_from_url(url, expected_out):
+    """Test computing filename from url"""
+
+    out = compute_fn_from_url(url)
+    assert out == expected_out
+    assert len(out) <= 128
+
+
+def test_compute_fn_from_url_make_unique():
+    """Test computing filename from url and making it unique"""
+
+    test_url = "http://www.example.com/?=%20test"
+    test_1 = compute_fn_from_url(test_url)
+    test_2 = compute_fn_from_url(test_url)
+    test_3 = compute_fn_from_url(test_url, make_unique=True)
+    test_4 = compute_fn_from_url(test_url, make_unique=True)
+
+    assert test_1 == test_2
+    assert test_1 != test_3
+    assert test_1 != test_4
+    assert test_2 != test_3
+    assert test_2 != test_4
+    assert test_3 != test_4
+
+    for fn in [test_1, test_2, test_3, test_4]:
+        assert "-" not in fn
 
 
 if __name__ == "__main__":
