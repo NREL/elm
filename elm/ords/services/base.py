@@ -50,16 +50,6 @@ class Service(ABC):
         """str: Service name used to pull the correct queue object."""
         return self.__class__.__name__
 
-    @property
-    @abstractmethod
-    def can_process(self):
-        """Check if process function can be called.
-
-        This should be a fast-running method that returns a boolean
-        indicating wether or not the service can accept more
-        processing calls.
-        """
-
     async def process_using_futures(self, fut, *args, **kwargs):
         """Process a call to the service.
 
@@ -81,6 +71,22 @@ class Service(ABC):
             return
 
         fut.set_result(response)
+
+    def acquire_resources(self):
+        """Use this method to allocate resources, if needed"""
+
+    def release_resources(self):
+        """Use this method to clean up resources, if needed"""
+
+    @property
+    @abstractmethod
+    def can_process(self):
+        """Check if process function can be called.
+
+        This should be a fast-running method that returns a boolean
+        indicating wether or not the service can accept more
+        processing calls.
+        """
 
     @abstractmethod
     async def process(self, *args, **kwargs):

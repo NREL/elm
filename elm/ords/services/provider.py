@@ -136,6 +136,7 @@ class RunningAsyncServices:
         for service in self.services:
             logger.debug("Initializing Service: %s", service.name)
             queue = initialize_service_queue(service.name)
+            service.acquire_resources()
             task = asyncio.create_task(_RunningProvider(service, queue).run())
             self.__providers.append(task)
 
@@ -143,6 +144,7 @@ class RunningAsyncServices:
         try:
             for service in self.services:
                 await get_service_queue(service.name).join()
+                service.release_resources()
         finally:
             self._reset_providers()
             for service in self.services:

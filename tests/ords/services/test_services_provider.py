@@ -248,5 +248,39 @@ async def test_services_provider_not_exceed_max_jobs(monkeypatch):
     assert call_cache == [5, 5]
 
 
+@pytest.mark.asyncio
+async def test_services_provider_acquire_and_release_service_resources():
+    """Test that services provider doesn't exceed max concurrent job count."""
+
+    call_cache = []
+
+    class FastResourceService(Service):
+
+        @property
+        def can_process(self):
+            return True
+
+        async def process(self, *args, **kwargs):
+            return True
+
+        def acquire_resources(self):
+            call_cache.append("acquired")
+
+        def release_resources(self):
+            call_cache.append("released")
+
+    services = [FastResourceService()]
+    assert not call_cache
+    async with RunningAsyncServices(services):
+        assert call_cache == ["acquired"]
+        producers = [
+            asyncio.create_task(FastResourceService.call()) for _ in range(10)
+        ]
+        out = await asyncio.gather(*producers)
+
+    assert out == [True] * 10
+    assert call_cache == ["acquired", "released"]
+
+
 if __name__ == "__main__":
     pytest.main(["-q", "--show-capture=all", Path(__file__), "-rapP"])
