@@ -161,11 +161,15 @@ class AsyncFileLoader:
             Document instance containing text, if the fetch was
             successful.
         """
+        doc, raw_content = await self._fetch_doc_with_url_in_metadata(url)
+        doc = await self._cache_doc(doc, raw_content)
+        return doc
+
+    async def _fetch_doc_with_url_in_metadata(self, url):
+        """Fetch doc contents and add URL to metadata"""
         doc, raw_content = await self._fetch_doc(url)
         doc.metadata["source"] = url
-        if self.file_cache_coroutine:
-            await self.file_cache_coroutine(doc, raw_content)
-        return doc
+        return doc, raw_content
 
     async def _fetch_doc(self, url):
         """Fetch a doc by trying pdf read, then HTML read, then PDF OCR"""
@@ -203,3 +207,13 @@ class AsyncFileLoader:
         """Fetch content from URL with several retry attempts"""
         async with session.get(url, **self.get_kwargs) as response:
             return await response.read()
+
+    async def _cache_doc(self, doc, raw_content):
+        """Cache doc if user provided a coroutine"""
+        if not self.file_cache_coroutine:
+            return doc
+
+        cache_fn = await self.file_cache_coroutine(doc, raw_content)
+        if cache_fn is not None:
+            doc.metadata["cache_fn"] = cache_fn
+        return doc
