@@ -3,6 +3,7 @@
 import io
 import re
 import logging
+from warnings import warn
 
 import html2text
 import pdftotext
@@ -355,3 +356,73 @@ def _load_pdf_possibly_multi_col(pdf_bytes):
     if is_multi_col(combine_pages(pages)):
         pages = pdftotext.PDF(pdf_bytes, physical=False)
     return pages
+
+
+def read_pdf_ocr(pdf_bytes):  # pragma: no cover
+    """Read PDF contents from bytes using Optical Character recognition (OCR).
+
+    This method attempt to read the PDF document using OCR. This is one
+    of the only ways to parse a scanned PDF document. To use this
+    function, you will need to install the `pytesseract` and `pdf2image`
+    Modules. Installation guides here:
+
+        - `pytesseract`:
+        https://github.com/madmaze/pytesseract?tab=readme-ov-file#installation
+        - `pdf2image`:
+        https://github.com/Belval/pdf2image?tab=readme-ov-file#how-to-install
+
+    Windows users may also need to apply the fix described in this
+    answer before they can use pytesseract: http://tinyurl.com/v9xr4vrj
+
+    Parameters
+    ----------
+    pdf_bytes : bytes
+        Bytes corresponding to a PDF file.
+
+    Returns
+    -------
+    iterable
+        Iterable containing pages of the PDF document. This iterable
+        may be empty if there was an error reading the PDF file.
+    """
+    try:
+        pages = _load_pdf_with_pytesseract(pdf_bytes)
+    except Exception as e:
+        logger.error("Failed to decode PDF content!")
+        logger.exception(e)
+        pages = []
+
+    return pages
+
+
+def _load_pdf_with_pytesseract(pdf_bytes):  # pragma: no cover
+    """Load PDF bytes using Optical Character recognition (OCR)"""
+
+    try:
+        import pytesseract
+    except ImportError:
+        msg = (
+            "Module `pytesseract` not found. Please follow these instructions "
+            "to install: https://github.com/madmaze/pytesseract?"
+            "tab=readme-ov-file#installation"
+        )
+        logger.warning(msg)
+        warn(msg)
+        return []
+
+    try:
+        from pdf2image import convert_from_bytes
+    except ImportError:
+        msg = (
+            "Module `pdf2image` not found. Please follow these instructions "
+            "to install: https://github.com/Belval/pdf2image?"
+            "tab=readme-ov-file#how-to-install"
+        )
+        logger.warning(msg)
+        warn(msg)
+        return []
+
+    return [
+        str(pytesseract.image_to_string(page_data).encode("utf-8"))
+        for page_data in convert_from_bytes(bytes(pdf_bytes))
+    ]
