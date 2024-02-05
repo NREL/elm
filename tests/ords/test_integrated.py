@@ -4,16 +4,50 @@ import time
 import logging
 import asyncio
 from pathlib import Path
+from contextlib import asynccontextmanager
 
+import aiohttp
 import httpx
 import pytest
 import openai
 
+import elm.web.html_pw
+from elm import TEST_DATA_DIR
 from elm.ords.services.usage import TimeBoundedUsageTracker, UsageTracker
 from elm.ords.services.openai import OpenAIService, usage_from_response
+from elm.ords.services.temp_file_cache import TempFileCache
 from elm.ords.services.provider import RunningAsyncServices
 from elm.ords.utilities.queued_logging import LocationFileLog, LogListener
 from elm.web.google_search import PlaywrightGoogleLinkSearch
+from elm.web.file_loader import AsyncFileLoader
+from elm.web.document import HTMLDocument
+
+
+WHATCOM_DOC_PATH = Path(TEST_DATA_DIR) / "Whatcom.txt"
+
+
+class MockResponse:
+    def __init__(self, read_return):
+        self.read_return = read_return
+
+    async def read(self):
+        return self.read_return
+
+
+@asynccontextmanager
+async def patched_get(session, url, *args, **kwargs):
+    if url == "Whatcom":
+        with open(WHATCOM_DOC_PATH, "rb") as fh:
+            content = fh.read()
+
+    yield MockResponse(content)
+
+
+async def patched_get_html(url, *args, **kwargs):
+    with open(WHATCOM_DOC_PATH, "r", encoding="utf-8") as fh:
+        content = fh.read()
+
+    return content
 
 
 @pytest.mark.asyncio
@@ -157,6 +191,38 @@ async def test_google_search_with_logging(tmp_path):
             fp.read_text()
             == f"A generic test log\nThis location is {fp.stem!r}\n"
         )
+
+
+@pytest.mark.asyncio
+async def test_async_file_loader_with_temp_cache(monkeypatch):
+    """Test `AsyncFileLoader` with a `TempFileCache` service"""
+
+    monkeypatch.setattr(
+        aiohttp.ClientSession,
+        "get",
+        patched_get,
+        raising=True,
+    )
+    monkeypatch.setattr(
+        elm.web.html_pw,
+        "_load_html",
+        patched_get_html,
+        raising=True,
+    )
+
+    with open(WHATCOM_DOC_PATH, "r", encoding="utf-8") as fh:
+        content = fh.read()
+
+    truth = HTMLDocument([content])
+
+    async with RunningAsyncServices([TempFileCache()]):
+        loader = AsyncFileLoader(file_cache_coroutine=TempFileCache.call)
+        doc = await loader.fetch(url="Whatcom")
+        assert doc.text == truth.text
+        assert doc.metadata["source"] == "Whatcom"
+        cached_fp = doc.metadata["cache_fn"]
+        assert cached_fp.exists()
+        assert cached_fp.read_text() == doc.text
 
 
 if __name__ == "__main__":
