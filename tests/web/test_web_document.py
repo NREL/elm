@@ -9,6 +9,11 @@ from elm import TEST_DATA_DIR
 from elm.web.document import PDFDocument, HTMLDocument
 
 
+class TestSplitter:
+    def split_text(self, text):
+        return text.split("\n")
+
+
 @pytest.mark.parametrize("doc_type", [PDFDocument, HTMLDocument])
 def test_basic_document(doc_type):
     """Test basic properties of the `Document` class"""
@@ -72,6 +77,18 @@ def test_html_doc():
     assert expected_table in doc.text
 
     assert doc.raw_pages == [og_text]
+
+
+def test_html_doc_with_splitter():
+    """Test Document class for sample HTML file with a text splitter"""
+    doc_path = Path(TEST_DATA_DIR) / "Whatcom.txt"
+
+    with open(doc_path, "r", encoding="utf-8") as fh:
+        og_text = fh.read()
+
+    doc = HTMLDocument([og_text], text_splitter=TestSplitter())
+
+    assert len(doc.raw_pages) == og_text.count("\n") + 1
 
 
 if __name__ == "__main__":

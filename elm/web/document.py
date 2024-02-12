@@ -185,6 +185,7 @@ class HTMLDocument(BaseDocument):
         metadata=None,
         html_table_to_markdown_kwargs=None,
         ignore_html_links=True,
+        text_splitter=None,
     ):
         """
 
@@ -203,6 +204,14 @@ class HTMLDocument(BaseDocument):
         ignore_html_links : bool, optional
             Option to ignore link in HTML text during parsing.
             By default, ``True``.
+        text_splitter : obj, optional
+            Instance of an object that implements a `split_text` method.
+            The method should take text as input (str) and return a list
+            of text chunks. The raw pages will be passed through this
+            splitter to create raw pages for this document. Langchain's
+            text splitters should work for this input.
+            By default, ``None``, which means the original pages input
+            becomes the raw pages attribute.
         """
         super().__init__(pages, metadata=metadata)
         self.html_table_to_markdown_kwargs = deepcopy(
@@ -212,6 +221,7 @@ class HTMLDocument(BaseDocument):
             html_table_to_markdown_kwargs or {}
         )
         self.ignore_html_links = ignore_html_links
+        self.text_splitter = text_splitter
 
     def _cleaned_text(self):
         """Compute cleaned text from document"""
@@ -222,4 +232,6 @@ class HTMLDocument(BaseDocument):
 
     def _raw_pages(self):
         """Get raw pages from document"""
-        return self.pages
+        if self.text_splitter is None:
+            return self.pages
+        return self.text_splitter.split_text("\n\n".join(self.pages))
