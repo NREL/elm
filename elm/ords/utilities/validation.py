@@ -337,13 +337,13 @@ class ValidationWithMemory:
             `num_to_recall-1` text chunks before it.
             ``False`` otherwise.
         """
-        logger.debug(f"Checking {key!r} for ind {ind}")
+        logger.debug("Checking %r for ind %d", key, ind)
         mem_text = zip(self._inverted_mem(ind), self._inverted_text(ind))
         for step, (mem, text) in enumerate(mem_text):
-            logger.debug(f"Mem at ind {step} is {mem}")
+            logger.debug("Mem at ind %d is %s", step, mem)
             check = mem.get(key)
             if check is None:
-                # logger.debug(f"{text=}")
+                # logger.debug("text=%s", text)
                 content = await self.slc.call(
                     sys_msg=prompt.format(key=key), content=text
                 )
@@ -367,14 +367,14 @@ def _add_json_instructions_if_needed(system_message):
 def _heuristic_check_for_county_and_state(doc, county, state):
     """Check if county and state names are in doc"""
     if not any(county.lower() in t.lower() for t in doc.pages):
-        logger.debug(f"    - False, did not find {county!r} in text")
+        logger.debug("    - False, did not find %r in text", county)
         return False
 
     if not any(state.lower() in t.lower() for t in doc.pages):
-        logger.debug(f"    - False, did not find {state!r} in text")
+        logger.debug("    - False, did not find %r in text", state)
         return False
 
-    logger.debug(f"    - True, found {county}, {state} in text")
+    logger.debug("    - True, found %s, %s in text", county, state)
     return True
 
 
