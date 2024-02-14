@@ -16,11 +16,8 @@ logger = logging.getLogger(__name__)
 _JSON_INSTRUCTIONS = "Return your answer in JSON format"
 
 
-class Validator(ABC):
-    """Document validation base class."""
-
-    SYSTEM_MESSAGE = None
-    """LLM system message describing validation task. """
+class StructuredLLMCaller:
+    """Class to support structured (JSON) LLM calling functionality."""
 
     def __init__(self, llm_service, usage_tracker=None, **kwargs):
         """
@@ -46,18 +43,40 @@ class Validator(ABC):
         self.llm_service = llm_service
         self.usage_tracker = usage_tracker
         self.kwargs = kwargs
-        self._add_json_instructions_if_needed()
 
-    def _add_json_instructions_if_needed(self):
-        """Add JSON instruction to system message if needed."""
-        if _JSON_INSTRUCTIONS.casefold() not in self.SYSTEM_MESSAGE.casefold():
-            logger.debug(
-                "JSON instructions not found in system message. Adding..."
-            )
-            self.SYSTEM_MESSAGE = (
-                f"{self.SYSTEM_MESSAGE} {_JSON_INSTRUCTIONS}."
-            )
-            logger.debug("New system message:\n%s", self.SYSTEM_MESSAGE)
+    async def call(self, sys_msg, content):
+        """Call LLM service for validation."""
+        sys_msg = _add_json_instructions_if_needed(sys_msg)
+
+        logger.debug("Submitting API call for validation")
+        response = await self.llm_service.call(
+            usage_tracker=self.usage_tracker,
+            usage_sub_label="location_validation",
+            messages=[
+                {"role": "system", "content": sys_msg},
+                {"role": "user", "content": content},
+            ],
+            **self.kwargs,
+        )
+        return llm_response_as_json(response) if response else {}
+
+
+class FixedMessageValidator(ABC):
+    """Validation base class using a static system prompt."""
+
+    SYSTEM_MESSAGE = None
+    """LLM system message describing validation task. """
+
+    def __init__(self, structured_llm_caller):
+        """
+
+        Parameters
+        ----------
+        structured_llm_caller : StructuredLLMCaller
+            StructuredLLMCaller instance. Used for structured validation
+            queries.
+        """
+        self.slc = structured_llm_caller
 
     async def check(self, content, **fmt_kwargs):
         """Check if the content passes the validation.
@@ -80,22 +99,8 @@ class Validator(ABC):
         if not content:
             return False
         sys_msg = self.SYSTEM_MESSAGE.format(**fmt_kwargs)
-        out = await self._call_llm(sys_msg, content)
+        out = await self.slc.call(sys_msg, content)
         return self._parse_output(out)
-
-    async def _call_llm(self, sys_msg, content):
-        """Call LLM service for validation."""
-        logger.debug("Submitting API call for validation")
-        response = await self.llm_service.call(
-            usage_tracker=self.usage_tracker,
-            usage_sub_label="location_validation",
-            messages=[
-                {"role": "system", "content": sys_msg},
-                {"role": "user", "content": content},
-            ],
-            **self.kwargs,
-        )
-        return llm_response_as_json(response) if response else {}
 
     @abstractmethod
     def _parse_output(self, props):
@@ -103,7 +108,7 @@ class Validator(ABC):
         raise NotImplementedError
 
 
-class URLValidator(Validator):
+class URLValidator(FixedMessageValidator):
 
     SYSTEM_MESSAGE = (
         "You extract structured data from a URL. Return your "
@@ -125,7 +130,7 @@ class URLValidator(Validator):
         return all(props.get(var) for var in check_vars)
 
 
-class CountyJurisdictionValidator(Validator):
+class CountyJurisdictionValidator(FixedMessageValidator):
 
     SYSTEM_MESSAGE = (
         "You extract structured data from legal text. Return "
@@ -155,7 +160,7 @@ class CountyJurisdictionValidator(Validator):
         return not any(props.get(var) for var in check_vars)
 
 
-class CountyNameValidator(Validator):
+class CountyNameValidator(FixedMessageValidator):
 
     SYSTEM_MESSAGE = (
         "You extract structured data from legal text. Return "
@@ -188,23 +193,22 @@ class CountyValidator:
     Combines the logic of several validators into a single class.
     """
 
-    def __init__(self, score_thresh=0.8, **kwargs):
+    def __init__(self, structured_llm_caller, score_thresh=0.8):
         """
 
         Parameters
         ----------
+        structured_llm_caller : StructuredLLMCaller
+            StructuredLLMCaller instance. Used for structured validation
+            queries.
         score_thresh : float, optional
             Score threshold to exceed when voting on content from raw
             pages. By default, ``0.8``.
-        **kwargs
-            Keyword arguments to pass to the internal `Validator`
-            instances.
-
         """
         self.score_thresh = score_thresh
-        self.cn_validator = CountyNameValidator(**kwargs)
-        self.cj_validator = CountyJurisdictionValidator(**kwargs)
-        self.url_validator = URLValidator(**kwargs)
+        self.cn_validator = CountyNameValidator(structured_llm_caller)
+        self.cj_validator = CountyJurisdictionValidator(structured_llm_caller)
+        self.url_validator = URLValidator(structured_llm_caller)
 
     async def check(self, doc, county, state):
         """Check if the document belongs to the county.
@@ -259,6 +263,105 @@ class CountyValidator:
             county=county,
             state=state,
         )
+
+
+class ValidationWithMemory:
+    """Validate a set of text chunks by sometimes looking at previous chunks"""
+
+    def __init__(self, structured_llm_caller, text_chunks, num_to_recall=2):
+        """
+
+        Parameters
+        ----------
+        structured_llm_caller : StructuredLLMCaller
+            StructuredLLMCaller instance. Used for structured validation
+            queries.
+        text_chunks : list of str
+            List of strings, each of which represent a chunk of text.
+            The order of the strings should be the order of the text
+            chunks. This validator may refer to previous text chunks to
+            answer validation questions.
+        num_to_recall : int, optional
+            Number of chunks to check for each validation call. This
+            includes the original chunk! For example, if
+            `num_to_recall=2`, the validator will first check the chunk
+            at the requested index, and then the previous chunk as well.
+            By default, ``2``.
+        """
+        self.slc = structured_llm_caller
+        self.text_chunks = text_chunks
+        self.num_to_recall = num_to_recall
+        self.memory = [{} for _ in text_chunks]
+
+    def _inverted_mem(self, starting_ind):
+        """Inverted memory."""
+        inverted_mem = self.memory[: starting_ind + 1 :][::-1]
+        yield from inverted_mem[: self.num_to_recall]
+
+    def _inverted_text(self, starting_ind):
+        """Inverted text chunks"""
+        inverted_text = self.text_chunks[: starting_ind + 1 :][::-1]
+        yield from inverted_text[: self.num_to_recall]
+
+    async def parse_from_ind(self, ind, prompt, key):
+        """Validate a chunk of text.
+
+        Validation occurs by querying the LLM using the input prompt and
+        parsing the `key` from teh response JSON. The prompt should
+        request that the key be a boolean output. If the key retrieved
+        from the LLM response is False, a number of previous text chunks
+        are checked as well, using the same prompt. This can be helpful
+        in cases where the answer to the validation prompt (e.g. does
+        this text pertain to a large WECS?) is only found in a previous
+        text chunk.
+
+        Parameters
+        ----------
+        ind : int
+            Positive integer corresponding to the chunk index.
+            Must be less than `len(text_chunks)`.
+        prompt : str
+            Input LLM system prompt that describes the validation
+            question. This should request a JSON output from the LLM.
+            It should also take `key` as a formatting input.
+        key : str
+            A key expected in the JSON output of the LLM containing the
+            response for the validation question. This string will also
+            be used to format the system prompt before it is passed to
+            the LLM.
+
+        Returns
+        -------
+        bool
+            ``True`` if the LLM returned ``True`` for this text chunk or
+            `num_to_recall-1` text chunks before it.
+            ``False`` otherwise.
+        """
+        logger.debug(f"Checking {key!r} for ind {ind}")
+        mem_text = zip(self._inverted_mem(ind), self._inverted_text(ind))
+        for step, (mem, text) in enumerate(mem_text):
+            logger.debug(f"Mem at ind {step} is {mem}")
+            check = mem.get(key)
+            if check is None:
+                # logger.debug(f"{text=}")
+                content = await self.slc.call(
+                    sys_msg=prompt.format(key=key), content=text
+                )
+                check = mem[key] = content.get(key, False)
+            if check:
+                return check
+        return False
+
+
+def _add_json_instructions_if_needed(system_message):
+    """Add JSON instruction to system message if needed."""
+    if _JSON_INSTRUCTIONS.casefold() not in system_message.casefold():
+        logger.debug(
+            "JSON instructions not found in system message. Adding..."
+        )
+        system_message = f"{system_message} {_JSON_INSTRUCTIONS}."
+        logger.debug("New system message:\n%s", system_message)
+    return system_message
 
 
 def _heuristic_check_for_county_and_state(doc, county, state):

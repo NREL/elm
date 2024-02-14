@@ -15,19 +15,17 @@ from elm.ords.services.openai import OpenAIService
 from elm.ords.services.provider import RunningAsyncServices
 from elm.utilities.parse import read_pdf
 from elm.ords.utilities.validation import (
+    StructuredLLMCaller,
     CountyValidator,
     CountyNameValidator,
     CountyJurisdictionValidator,
     URLValidator,
+    ValidationWithMemory,
     _validator_check_for_doc,
 )
 
 
-pytestmark = pytest.mark.skipif(
-    os.getenv("AZURE_OPENAI_API_KEY") is None,
-    reason="requires Azure OpenAI key",
-)
-
+SHOULD_SKIP = os.getenv("AZURE_OPENAI_API_KEY") is None
 TESTING_TEXT_SPLITTER = RecursiveCharacterTextSplitter(
     RTS_SEPARATORS,
     chunk_size=3000,
@@ -46,6 +44,19 @@ def oai_async_azure_client():
     )
 
 
+@pytest.fixture()
+def structured_llm_caller():
+    """StructuredLLMCaller instance for testing"""
+    return StructuredLLMCaller(
+        llm_service=OpenAIService,
+        model="gpt-4",
+        temperature=0,
+        seed=42,
+        timeout=30,
+    )
+
+
+@pytest.mark.skipif(SHOULD_SKIP, reason="requires Azure OpenAI key")
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "county,state,url,truth",
@@ -98,22 +109,17 @@ def oai_async_azure_client():
     ],
 )
 async def test_url_matches_county(
-    oai_async_azure_client, county, state, url, truth
+    oai_async_azure_client, structured_llm_caller, county, state, url, truth
 ):
     """Test the URL validator class (basic execution)"""
-    url_validator = URLValidator(
-        llm_service=OpenAIService,
-        model="gpt-4",
-        temperature=0,
-        seed=42,
-        timeout=30,
-    )
+    url_validator = URLValidator(structured_llm_caller)
     services = [OpenAIService(oai_async_azure_client, rate_limit=50_000)]
     async with RunningAsyncServices(services):
         out = await url_validator.check(url, county=county, state=state)
         assert out == truth
 
 
+@pytest.mark.skipif(SHOULD_SKIP, reason="requires Azure OpenAI key")
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "county,doc_fp,truth",
@@ -146,7 +152,7 @@ async def test_url_matches_county(
     ],
 )
 async def test_doc_matches_county_jurisdiction(
-    oai_async_azure_client, county, doc_fp, truth
+    oai_async_azure_client, structured_llm_caller, county, doc_fp, truth
 ):
     """Test the `CountyJurisdictionValidator` class (basic execution)"""
     if doc_fp.suffix == ".pdf":
@@ -158,13 +164,7 @@ async def test_doc_matches_county_jurisdiction(
             text = fh.read()
             doc = HTMLDocument([text], text_splitter=TESTING_TEXT_SPLITTER)
 
-    cj_validator = CountyJurisdictionValidator(
-        llm_service=OpenAIService,
-        model="gpt-4",
-        temperature=0,
-        seed=42,
-        timeout=30,
-    )
+    cj_validator = CountyJurisdictionValidator(structured_llm_caller)
     services = [OpenAIService(oai_async_azure_client, rate_limit=100_000)]
     async with RunningAsyncServices(services):
         out = await _validator_check_for_doc(
@@ -173,6 +173,7 @@ async def test_doc_matches_county_jurisdiction(
         assert out == truth
 
 
+@pytest.mark.skipif(SHOULD_SKIP, reason="requires Azure OpenAI key")
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "county,state,doc_fp,truth",
@@ -198,7 +199,7 @@ async def test_doc_matches_county_jurisdiction(
     ],
 )
 async def test_doc_matches_county_name(
-    oai_async_azure_client, county, state, doc_fp, truth
+    oai_async_azure_client, structured_llm_caller, county, state, doc_fp, truth
 ):
     """Test the `CountyNameValidator` class (basic execution)"""
     if doc_fp.suffix == ".pdf":
@@ -210,13 +211,7 @@ async def test_doc_matches_county_name(
             text = fh.read()
             doc = HTMLDocument([text], text_splitter=TESTING_TEXT_SPLITTER)
 
-    cn_validator = CountyNameValidator(
-        llm_service=OpenAIService,
-        model="gpt-4",
-        temperature=0,
-        seed=42,
-        timeout=30,
-    )
+    cn_validator = CountyNameValidator(structured_llm_caller)
     services = [OpenAIService(oai_async_azure_client, rate_limit=100_000)]
     async with RunningAsyncServices(services):
         out = await _validator_check_for_doc(
@@ -225,6 +220,7 @@ async def test_doc_matches_county_name(
         assert out == truth
 
 
+@pytest.mark.skipif(SHOULD_SKIP, reason="requires Azure OpenAI key")
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "county,state,doc_fp,url,truth",
@@ -260,7 +256,13 @@ async def test_doc_matches_county_name(
     ],
 )
 async def test_doc_matches_county(
-    oai_async_azure_client, county, state, doc_fp, url, truth
+    oai_async_azure_client,
+    structured_llm_caller,
+    county,
+    state,
+    doc_fp,
+    url,
+    truth,
 ):
     """Test the `CountyValidator` class (basic execution)"""
     if doc_fp.suffix == ".pdf":
@@ -274,17 +276,58 @@ async def test_doc_matches_county(
 
     doc.metadata["source"] = url
 
-    county_validator = CountyValidator(
-        llm_service=OpenAIService,
-        model="gpt-4",
-        temperature=0,
-        seed=42,
-        timeout=30,
-    )
+    county_validator = CountyValidator(structured_llm_caller)
     services = [OpenAIService(oai_async_azure_client, rate_limit=100_000)]
     async with RunningAsyncServices(services):
         out = await county_validator.check(doc=doc, county=county, state=state)
         assert out == truth
+
+
+@pytest.mark.asyncio
+async def test_validation_with_mem():
+    """Test the `ValidationWithMemory` class (basic execution)"""
+
+    sys_messages = []
+    test_prompt = "Looking for key {key!r}"
+
+    class MockStructuredLLMCaller:
+        async def call(self, sys_msg, content):
+            sys_messages.append(sys_msg)
+            return {"test": True} if content == 0 else {}
+
+    text_chunks = list(range(7))
+    validator = ValidationWithMemory(MockStructuredLLMCaller(), text_chunks, 3)
+
+    out = await validator.parse_from_ind(0, test_prompt, key="test")
+    assert out
+    assert sys_messages == ["Looking for key 'test'"]
+    assert validator.memory == [{"test": True}, {}, {}, {}, {}, {}, {}]
+
+    out = await validator.parse_from_ind(2, test_prompt, key="test")
+    assert out
+    assert sys_messages == ["Looking for key 'test'"] * 3
+    assert validator.memory == [
+        {"test": True},
+        {"test": False},
+        {"test": False},
+        {},
+        {},
+        {},
+        {},
+    ]
+
+    out = await validator.parse_from_ind(6, test_prompt, key="test")
+    assert not out
+    assert sys_messages == ["Looking for key 'test'"] * 6
+    assert validator.memory == [
+        {"test": True},
+        {"test": False},
+        {"test": False},
+        {},
+        {"test": False},
+        {"test": False},
+        {"test": False},
+    ]
 
 
 if __name__ == "__main__":
