@@ -96,3 +96,34 @@ def _add_json_instructions_if_needed(system_message):
         system_message = f"{system_message} {_JSON_INSTRUCTIONS}."
         logger.debug("New system message:\n%s", system_message)
     return system_message
+
+
+def merge_overlapping_texts(text_chunks, n=300):
+    """Merge chunks fo text by removing any overlap.
+
+    Parameters
+    ----------
+    text_chunks : iterable of str
+        Iterable containing text chunks which may or may not contain
+        consecutive overlapping portions.
+    n : int, optional
+        Number of characters to check at the beginning of each message
+        for overlap with the previous message. By default, ``100``.
+
+    Returns
+    -------
+    str
+        Merged text.
+    """
+    if not text_chunks:
+        return ""
+
+    out_text = text_chunks[0]
+    for next_text in text_chunks[1:]:
+        start_ind = out_text[-2 * n :].find(next_text[:n])
+        if start_ind == -1:
+            out_text = "\n".join([out_text, next_text])
+            continue
+        start_ind = 2 * n - start_ind
+        out_text = "".join([out_text, next_text[start_ind:]])
+    return out_text
