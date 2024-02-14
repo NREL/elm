@@ -1,0 +1,15 @@
+RTS_SEPARATORS = [
+    "Setbacks",
+    "CHAPTER ",
+    "SECTION ",
+    "\r\n\r\n",
+    "\r\n",
+    "Chapter ",
+    "Section ",
+    "\n\n",
+    "\n",
+    "section ",
+    "chapter ",
+    " ",
+    "",
+]

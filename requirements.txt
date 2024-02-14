@@ -2,6 +2,7 @@ openai>=1.1.0
 aiohttp
 fake_useragent
 html2text
+langchain
 lxml
 matplotlib
 networkx
