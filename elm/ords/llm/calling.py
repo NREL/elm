@@ -37,14 +37,14 @@ class StructuredLLMCaller:
         self.usage_tracker = usage_tracker
         self.kwargs = kwargs
 
-    async def call(self, sys_msg, content):
+    async def call(self, sys_msg, content, usage_sub_label="default"):
         """Call LLM service for validation."""
         sys_msg = _add_json_instructions_if_needed(sys_msg)
 
         logger.debug("Submitting API call for validation")
         response = await self.llm_service.call(
             usage_tracker=self.usage_tracker,
-            usage_sub_label="location_validation",
+            usage_sub_label=usage_sub_label,
             messages=[
                 {"role": "system", "content": sys_msg},
                 {"role": "user", "content": content},

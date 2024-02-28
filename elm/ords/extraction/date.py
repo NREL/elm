@@ -61,6 +61,7 @@ class DateExtractor:
             response = await self.slc.call(
                 sys_msg=self.SYSTEM_MESSAGE,
                 content=f"Please extract the date for this ordinance:\n{text}",
+                usage_sub_label="date_extraction",
             )
             if not response:
                 continue

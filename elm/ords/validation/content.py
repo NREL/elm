@@ -125,7 +125,9 @@ class ValidationWithMemory:
             if check is None:
                 # logger.debug("text=%s", text)
                 content = await self.slc.call(
-                    sys_msg=prompt.format(key=key), content=text
+                    sys_msg=prompt.format(key=key),
+                    content=text,
+                    usage_sub_label="document_content_validation",
                 )
                 check = mem[key] = content.get(key, False)
             if check:

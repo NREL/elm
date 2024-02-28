@@ -50,7 +50,9 @@ class FixedMessageValidator(ABC):
         if not content:
             return False
         sys_msg = self.SYSTEM_MESSAGE.format(**fmt_kwargs)
-        out = await self.slc.call(sys_msg, content)
+        out = await self.slc.call(
+            sys_msg, content, usage_sub_label="document_location_validation"
+        )
         return self._parse_output(out)
 
     @abstractmethod

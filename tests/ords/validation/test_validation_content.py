@@ -18,7 +18,7 @@ async def test_validation_with_mem():
     test_prompt = "Looking for key {key!r}"
 
     class MockStructuredLLMCaller:
-        async def call(self, sys_msg, content):
+        async def call(self, sys_msg, content, *__, **___):
             sys_messages.append(sys_msg)
             return {"test": True} if content == 0 else {}
 
