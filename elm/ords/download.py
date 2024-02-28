@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """ELM Ordinance county file downloading logic"""
 import asyncio
+import logging
 from itertools import zip_longest, chain
 
-from elm.ords.extraction.date import DateExtractor
-from elm.ords.extraction.ordinance import OrdinanceExtractor
+from elm.ords.extraction import extract_ordinance_info
 from elm.ords.services.temp_file_cache import TempFileCache
 from elm.ords.validation.location import CountyValidator
 from elm.web.document import PDFDocument
@@ -12,29 +12,13 @@ from elm.web.file_loader import AsyncFileLoader
 from elm.web.google_search import PlaywrightGoogleLinkSearch
 
 
+logger = logging.getLogger(__name__)
 QUESTION_TEMPLATES = [
     '0. "wind energy conversion system zoning ordinances {location}"',
     '1. "{location} wind WECS zoning ordinance"',
     '2. "Where can I find the legal text for commercial wind energy conversion system zoning ordinances in {location}?"',
     '3. "What is the specific legal information regarding zoning ordinances for commercial wind energy conversion systems in {location}?"',
 ]
-
-
-def _empty_result():
-    """Make an empty result."""
-    return {
-        "year": None,
-        "sources": "",
-        "ord_text": "",
-        "source_documents": [],
-    }
-
-
-def _sorting_key(in_tuple):
-    """All text sorting key"""
-    doc, date, __ = in_tuple
-    year, month, day = date
-    return year, isinstance(doc, PDFDocument), -1 * len(doc.text), month, day
 
 
 async def _search_single(location, question, num_results=10):
@@ -58,7 +42,7 @@ async def _find_urls(location, num_results=10):
     return await asyncio.gather(*searchers)
 
 
-def _down_select_urls(search_results):
+def _down_select_urls(search_results, num_urls=5):
     """Select the top 5 URLs."""
     all_urls = chain.from_iterable(
         zip_longest(*[results[0] for results in search_results])
@@ -68,7 +52,7 @@ def _down_select_urls(search_results):
         if not url:
             continue
         urls.add(url)
-        if len(urls) == 5:
+        if len(urls) == num_urls:
             break
     return urls
 
@@ -104,33 +88,31 @@ async def _down_select_docs_correct_location(
 
 async def _check_docs_for_ords(docs, llm_caller, text_splitter):
     """Check documents to see if they contain ordinance info."""
-    date_extractor = DateExtractor(llm_caller)
-    all_texts = []
+    ord_docs = []
     for doc in docs:
-        chunks = text_splitter.split_text(doc.text)
-        extractor = OrdinanceExtractor(llm_caller, chunks)
-        contains_ord_info = await extractor.parse()
-        if contains_ord_info:
-            date = await date_extractor.parse(doc)
-            all_texts.append((doc, date, extractor.ordinance_text))
-    return all_texts
+        doc = await extract_ordinance_info(doc, llm_caller, text_splitter)
+        if doc.metadata["contains_ord_info"]:
+            ord_docs.append(doc)
+    return ord_docs
 
 
-def _parse_all_texts(all_texts):
+def _parse_all_ord_docs(all_ord_docs):
     """Parse a list of documents and get the result for the best match."""
-    if not all_texts:
-        return _empty_result()
+    if not all_ord_docs:
+        return None
 
-    doc, date, ord_text = sorted(all_texts, key=_sorting_key)[-1]
-    return {
-        "sources": doc.metadata["source"],
-        "year": date[0],
-        "ord_text": ord_text,
-        "source_documents": [doc],
-    }
+    return sorted(all_ord_docs, key=_ord_doc_sorting_key)[-1]
 
 
-async def download_county_ordinance(location, llm_caller, text_splitter):
+def _ord_doc_sorting_key(doc):
+    """All text sorting key"""
+    year, month, day = doc.metadata.get("date", (-1, -1, -1))
+    return year, isinstance(doc, PDFDocument), -1 * len(doc.text), month, day
+
+
+async def download_county_ordinance(
+    location, llm_caller, text_splitter, num_urls=5
+):
     """Download the ordinance document for a single county.
 
     Parameters
@@ -145,16 +127,18 @@ async def download_county_ordinance(location, llm_caller, text_splitter):
         The method should take text as input (str) and return a list
         of text chunks. Langchain's text splitters should work for this
         input.
+    num_urls : int, optional
+        Number of unique Google search result URL's to check for
+        ordinance document. By default, ``5``.
 
     Returns
     -------
-    dict
-        Dictionary containing the source url, year, ordinance text
-        excerpt, and Document instance for the downloaded document.
-        These fields may be null if a document was not found.
+    elm.web.document.BaseDocument | None
+        Document instance for the downloaded document, or ``None`` if no
+        document was found.
     """
     urls = await _find_urls(location.full_name, num_results=10)
-    urls = _down_select_urls(urls)
+    urls = _down_select_urls(urls, num_urls=num_urls)
     docs = await _load_docs(urls, text_splitter)
     docs = await _down_select_docs_correct_location(
         docs,
@@ -163,5 +147,10 @@ async def download_county_ordinance(location, llm_caller, text_splitter):
         county=location.name,
         state=location.state,
     )
-    all_texts = await _check_docs_for_ords(docs, llm_caller, text_splitter)
-    return _parse_all_texts(all_texts)
+    docs = await _check_docs_for_ords(docs, llm_caller, text_splitter)
+    logger.info(
+        "Found %d potential ordinance documents for %s",
+        len(docs),
+        location.full_name,
+    )
+    return _parse_all_ord_docs(docs)
