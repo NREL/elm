@@ -4,8 +4,10 @@
 These are primarily used to validate that a legal document applies to a
 particular technology (e.g. Large Wind Energy Conversion Systems).
 """
+import asyncio
 import logging
 
+from elm import ApiBase
 from elm.ords.validation.content import (
     ValidationWithMemory,
     possibly_mentions_wind,
@@ -16,8 +18,23 @@ from elm.ords.utilities.parsing import merge_overlapping_texts
 logger = logging.getLogger(__name__)
 
 
+RESTRICTIONS = """- buildings / structures / residences
+- property lines / parcels / subdivisions
+- roads / rights-of-way
+- railroads
+- overhead electrical transmission wires
+- bodies of water including wetlands, lakes, reservoirs, streams, and rivers
+- natural, wildlife, and environmental conservation areas
+- noise restrictions
+- shadow flicker restrictions
+- density restrictions
+- turbine height restrictions
+- minimum/maximum lot size
+"""
+
+
 class OrdinanceValidator(ValidationWithMemory):
-    """Check document text for wind ordinances. """
+    """Check document text for wind ordinances."""
 
     IS_LEGAL_TEXT_PROMPT = (
         "You extract structured data from text. Return your answer in JSON "
@@ -45,38 +62,26 @@ class OrdinanceValidator(ValidationWithMemory):
         "text excerpt provides enough quantitative info to compute setbacks "
         "or other geospatial siting requirements for a wind turbine/tower "
         "and False otherwise. Geospatial siting is impacted by any of the "
-        "following:\n"
-        "- buildings / structures / residences\n"
-        "- property lines / parcels / subdivisions\n"
-        "- roads / rights-of-way\n"
-        "- railroads\n"
-        "- overhead electrical transmission wires\n"
-        "- bodies of water including wetlands, lakes, reservoirs, streams, "
-        "and rivers\n"
-        "- natural, wildlife, and environmental conservation areas\n"
-        "- noise restrictions\n"
-        "- shadow flicker restrictions\n"
-        "- density restrictions\n"
-        "- turbine height restrictions\n"
-        "- minimum/maximum lot size"
+        f"following:\n{RESTRICTIONS}"
     )
 
     IS_UTILITY_SCALE_PROMPT = (
         "You are a legal scholar that reads ordinance text and determines "
-        "wether it applies to large wind energy systems. Wind energy systems "
-        "(WES) may also be referred to as wind turbines, wind energy "
+        "wether it applies to large wind energy systems. Large wind energy "
+        "systems (WES) may also be referred to as wind turbines, wind energy "
         "conversion systems (WECS), wind energy facilities (WEF), wind energy "
         "turbines (WET), large wind energy turbines (LWET), utility-scale "
         "wind energy turbines (UWET), commercial wind energy systems, or "
-        "similar. Your client is a wind developer that does not care about "
-        "ordinances related to private, micro, small, or medium sized wind "
-        "energy systems. Return your answer in JSON format (not markdown). "
-        "Your JSON file must include exactly two keys. The first key is "
-        "'summary' which contains a string that summarizes the types of wind "
-        "energy systems the text applies to (if any). The second key is "
-        "'{key}', which is a boolean that is set to True if any part of the "
-        "text excerpt is applicable to the type of wind energy conversion "
-        "systems that the client is interested in and False otherwise."
+        "similar. Your client is a commercial wind developer that does not "
+        "care about ordinances related to private, micro, small, or medium "
+        "sized wind energy systems. Ignore any text related to such systems. "
+        "Return your answer in JSON format (not markdown). Your JSON file "
+        "must include exactly two keys. The first key is 'summary' which "
+        "contains a string that summarizes the types of wind energy systems "
+        "the text applies to (if any). The second key is '{key}', which is a "
+        "boolean that is set to True if any part of the text excerpt is "
+        "applicable to the large wind energy conversion systems that the "
+        "client is interested in and False otherwise."
     )
 
     def __init__(self, structured_llm_caller, text_chunks, num_to_recall=2):
@@ -191,3 +196,133 @@ class OrdinanceValidator(ValidationWithMemory):
             self._wind_mention_mem[-1] = False
 
         return bool(self._ordinance_chunks)
+
+
+class OrdinanceExtractor:
+    """Extract succinct ordinance text from input"""
+
+    SYSTEM_MESSAGE = (
+        "You extract one or more direct excerpts from a given text based on "
+        "the user's request. Maintain all original formatting and characters "
+        "without any paraphrasing. If the relevant text is inside of a "
+        "space-delimited table, return the entire table with the original "
+        "space-delimited formatting. Never paraphrase! Only return portions "
+        "of the original text directly."
+    )
+    MODEL_INSTRUCTIONS_RESTRICTIONS = (
+        "Extract only text related to the restrictions of large wind energy "
+        f"systems with respect to any of the following:\n{RESTRICTIONS}"
+        "Include section headers (if any) for the text excerpts. Also include "
+        "any text that defines what kind of large wind energy conversion "
+        "system the restriction applies to. If there is no text related to "
+        "siting restrictions of large wind systems, simply say: "
+        '"No relevant text."'
+    )
+    MODEL_INSTRUCTIONS_SIZE = (
+        "Extract only text pertaining to large wind energy systems. Large "
+        "wind energy systems (WES) may also be referred to as wind turbines, "
+        "wind energy conversion systems (WECS), wind energy facilities (WEF), "
+        "wind energy turbines (WET), large wind energy turbines (LWET), "
+        "utility-scale wind energy turbines (UWET), or similar. Do not "
+        "return any text that only applies to private, micro, small, or "
+        "medium sized wind energy systems. Include section headers (if any) "
+        "for the text excerpts. Also include any text that defines what kind "
+        "of large wind energy conversion system the restriction applies to. "
+        "If there is no text pertaining to large wind systems, simply say: "
+        '"No relevant text."'
+    )
+
+    def __init__(self, llm_caller):
+        """
+
+        Parameters
+        ----------
+        llm_caller : elm.ords.llm.LLMCaller
+            LLM Caller instance used to extract ordinance info with.
+        """
+        self.llm_caller = llm_caller
+
+    async def _process(self, text_chunks, instructions, valid_chunk):
+        """Perform extraction processing."""
+        logger.info(
+            "Extracting ordinance text from %d text chunks asynchronously...",
+            len(text_chunks),
+        )
+        outer_task_name = asyncio.current_task().get_name()
+        summaries = [
+            asyncio.create_task(
+                self.llm_caller.call(
+                    sys_msg=self.SYSTEM_MESSAGE,
+                    content=f"Text:\n{chunk}\n{instructions}",
+                    usage_sub_label="document_ordinance_summary",
+                ),
+                name=outer_task_name,
+            )
+            for chunk in text_chunks
+        ]
+        summary_chunks = await asyncio.gather(*summaries)
+        summary_chunks = [
+            chunk for chunk in summary_chunks if valid_chunk(chunk)
+        ]
+
+        text_summary = "\n".join(summary_chunks)
+        logger.debug(
+            "Final summary contains %d tokens",
+            ApiBase.count_tokens(
+                text_summary,
+                model=self.llm_caller.kwargs.get("model", "gpt-4"),
+            ),
+        )
+        return text_summary
+
+    async def check_for_restrictions(self, text_chunks):
+        """Extract restriction ordinance text from input text chunks.
+
+        Parameters
+        ----------
+        text_chunks : list of str
+            List of strings, each of which represent a chunk of text.
+            The order of the strings should be the order of the text
+            chunks.
+
+        Returns
+        -------
+        str
+            Ordinance text extracted from text chunks.
+        """
+        return await self._process(
+            text_chunks=text_chunks,
+            instructions=self.MODEL_INSTRUCTIONS_RESTRICTIONS,
+            valid_chunk=_valid_chunk_not_short,
+        )
+
+    async def check_for_correct_size(self, text_chunks):
+        """Extract ordinance text from input text chunks for large WES.
+
+        Parameters
+        ----------
+        text_chunks : list of str
+            List of strings, each of which represent a chunk of text.
+            The order of the strings should be the order of the text
+            chunks.
+
+        Returns
+        -------
+        str
+            Ordinance text extracted from text chunks.
+        """
+        return await self._process(
+            text_chunks=text_chunks,
+            instructions=self.MODEL_INSTRUCTIONS_SIZE,
+            valid_chunk=_valid_chunk,
+        )
+
+
+def _valid_chunk(chunk):
+    """True if chunk has content."""
+    return chunk and "no relevant text" not in chunk.lower()
+
+
+def _valid_chunk_not_short(chunk):
+    """True if chunk has content and is not too short."""
+    return _valid_chunk(chunk) and len(chunk) > 20

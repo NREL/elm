@@ -4,7 +4,7 @@ import asyncio
 import logging
 from itertools import zip_longest, chain
 
-from elm.ords.extraction import extract_ordinance_info
+from elm.ords.extraction import check_for_ordinance_info
 from elm.ords.services.temp_file_cache import TempFileCache
 from elm.ords.validation.location import CountyValidator
 from elm.web.document import PDFDocument
@@ -90,7 +90,7 @@ async def _check_docs_for_ords(docs, llm_caller, text_splitter):
     """Check documents to see if they contain ordinance info."""
     ord_docs = []
     for doc in docs:
-        doc = await extract_ordinance_info(doc, llm_caller, text_splitter)
+        doc = await check_for_ordinance_info(doc, llm_caller, text_splitter)
         if doc.metadata["contains_ord_info"]:
             ord_docs.append(doc)
     return ord_docs
