@@ -119,7 +119,7 @@ async def download_county_ordinance(
     ----------
     location : elm.ords.utilities.location.Location
         Location objects representing the county.
-    llm_caller : StructuredLLMCaller
+    llm_caller : elm.ords.llm.StructuredLLMCaller
         StructuredLLMCaller instance used for validation and checking
         the contents of the document.
     text_splitter : obj, optional

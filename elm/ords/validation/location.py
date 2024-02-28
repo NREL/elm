@@ -23,7 +23,7 @@ class FixedMessageValidator(ABC):
 
         Parameters
         ----------
-        structured_llm_caller : StructuredLLMCaller
+        structured_llm_caller : elm.ords.llm.StructuredLLMCaller
             StructuredLLMCaller instance. Used for structured validation
             queries.
         """
@@ -149,7 +149,7 @@ class CountyValidator:
 
         Parameters
         ----------
-        structured_llm_caller : StructuredLLMCaller
+        structured_llm_caller : elm.ords.llm.StructuredLLMCaller
             StructuredLLMCaller instance. Used for structured validation
             queries.
         score_thresh : float, optional

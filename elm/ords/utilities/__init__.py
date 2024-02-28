@@ -1,4 +1,4 @@
-from .parsing import llm_response_as_json, StructuredLLMCaller
+from .parsing import llm_response_as_json, merge_overlapping_texts
 
 RTS_SEPARATORS = [
     "Setbacks",

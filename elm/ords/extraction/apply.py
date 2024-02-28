@@ -15,7 +15,7 @@ async def extract_ordinance_info(doc, llm_caller, text_splitter):
         ``"contains_ord_info"`` key, it will not be processed. To force
         a document to be processed by this function, remove that key
         from the documents metadata.
-    llm_caller : StructuredLLMCaller
+    llm_caller : elm.ords.llm.StructuredLLMCaller
         StructuredLLMCaller instance used for validation and checking
         the contents of the document.
     text_splitter : obj, optional

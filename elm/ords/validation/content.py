@@ -53,7 +53,7 @@ class ValidationWithMemory:
 
         Parameters
         ----------
-        structured_llm_caller : StructuredLLMCaller
+        structured_llm_caller : elm.ords.llm.StructuredLLMCaller
             StructuredLLMCaller instance. Used for structured validation
             queries.
         text_chunks : list of str

@@ -11,9 +11,10 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from elm import TEST_DATA_DIR, ApiBase
 from elm.web.document import PDFDocument, HTMLDocument
 from elm.utilities.parse import read_pdf
+from elm.ords.llm import StructuredLLMCaller
 from elm.ords.services.openai import OpenAIService
 from elm.ords.services.provider import RunningAsyncServices
-from elm.ords.utilities import RTS_SEPARATORS, StructuredLLMCaller
+from elm.ords.utilities import RTS_SEPARATORS
 from elm.ords.validation.location import (
     CountyValidator,
     CountyNameValidator,
