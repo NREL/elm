@@ -1,1 +1,1 @@
-from .apply import extract_ordinance_info
+from .apply import check_for_ordinance_info

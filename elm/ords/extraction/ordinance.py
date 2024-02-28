@@ -16,7 +16,9 @@ from elm.ords.utilities.parsing import merge_overlapping_texts
 logger = logging.getLogger(__name__)
 
 
-class OrdinanceExtractor(ValidationWithMemory):
+class OrdinanceValidator(ValidationWithMemory):
+    """Check document text for wind ordinances. """
+
     IS_LEGAL_TEXT_PROMPT = (
         "You extract structured data from text. Return your answer in JSON "
         "format (not markdown). Your JSON file must include exactly three "

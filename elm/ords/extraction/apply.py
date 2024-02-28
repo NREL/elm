@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """ELM Ordinance function to apply ordinance extraction on a document """
 from elm.ords.extraction.date import DateExtractor
-from elm.ords.extraction.ordinance import OrdinanceExtractor
+from elm.ords.extraction.ordinance import OrdinanceValidator
 
 
-async def extract_ordinance_info(doc, llm_caller, text_splitter):
+async def check_for_ordinance_info(doc, llm_caller, text_splitter):
     """Parse a single document for ordinance information.
 
     Parameters
@@ -42,7 +42,7 @@ async def extract_ordinance_info(doc, llm_caller, text_splitter):
         return doc
 
     chunks = text_splitter.split_text(doc.text)
-    extractor = OrdinanceExtractor(llm_caller, chunks)
+    extractor = OrdinanceValidator(llm_caller, chunks)
     doc.metadata["contains_ord_info"] = await extractor.parse()
     if doc.metadata["contains_ord_info"]:
         doc.metadata["date"] = await DateExtractor(llm_caller).parse(doc)
