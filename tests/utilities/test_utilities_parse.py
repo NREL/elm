@@ -15,6 +15,7 @@ from elm.utilities.parse import (
     read_pdf,
     remove_blank_pages,
     replace_common_pdf_conversion_chars,
+    replace_excessive_newlines,
     replace_multi_dot_lines,
     remove_empty_lines_or_page_footers,
 )
@@ -116,6 +117,16 @@ def test_replace_common_pdf_conversion_chars():
 
     out = replace_common_pdf_conversion_chars("Hello\r\n\x0cMy name is\r")
     assert out == "Hello\nMy name is\n"
+
+
+def test_replace_excessive_newlines():
+    """Test the `replace_excessive_newlines` function (basic exec.)"""
+
+    assert replace_excessive_newlines("\n") == "\n"
+    assert replace_excessive_newlines("\n\n") == "\n\n"
+    assert replace_excessive_newlines("\n\n\n") == "\n\n"
+    assert replace_excessive_newlines("\n\n\n\n") == "\n\n"
+    assert replace_excessive_newlines("\n\n\n \n \n\n\n") == "\n\n \n \n\n"
 
 
 def test_replace_multi_dot_lines():

@@ -305,6 +305,22 @@ def replace_multi_dot_lines(text):
     return re.sub(r"[.]{3,}", "...", text)
 
 
+def replace_excessive_newlines(text):
+    """Replace instances of three or more newlines with "\n\n"
+
+    Parameters
+    ----------
+    text : str
+        Text possibly containing many repeated newline characters.
+
+    Returns
+    -------
+    str
+        Cleaned text with only a maximum of two newlines in a row.
+    """
+    return re.sub(r"[\n]{3,}", "\n\n", text)
+
+
 def remove_empty_lines_or_page_footers(text):
     """Replace empty lines (potentially with page numbers only) as newlines
 
