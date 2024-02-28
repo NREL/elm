@@ -87,7 +87,7 @@ class ValidationWithMemory:
         """Validate a chunk of text.
 
         Validation occurs by querying the LLM using the input prompt and
-        parsing the `key` from teh response JSON. The prompt should
+        parsing the `key` from the response JSON. The prompt should
         request that the key be a boolean output. If the key retrieved
         from the LLM response is False, a number of previous text chunks
         are checked as well, using the same prompt. This can be helpful

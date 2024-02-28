@@ -13,7 +13,7 @@ def clean_search_query(query):
     Some search tools (e.g., Google) will fail to return results if the
     query has a leading digit: 1. "LangCh..."
 
-    This function will take all teh text after the first double quote
+    This function will take all the text after the first double quote
     (") if a digit is detected at the beginning of the string.
 
     Parameters
