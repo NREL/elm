@@ -4,6 +4,7 @@ import asyncio
 import logging
 from itertools import zip_longest, chain
 
+from elm.ords.llm import StructuredLLMCaller
 from elm.ords.extraction import check_for_ordinance_info
 from elm.ords.services.temp_file_cache import TempFileCache
 from elm.ords.validation.location import CountyValidator
@@ -67,9 +68,10 @@ async def _load_docs(urls, text_splitter):
 
 
 async def _down_select_docs_correct_location(
-    docs, llm_caller, location, county, state
+    docs, location, county, state, **kwargs
 ):
     """Remove all documents not pertaining to the location."""
+    llm_caller = StructuredLLMCaller(**kwargs)
     county_validator = CountyValidator(llm_caller)
     searchers = [
         asyncio.create_task(
@@ -86,11 +88,11 @@ async def _down_select_docs_correct_location(
     )
 
 
-async def _check_docs_for_ords(docs, llm_caller, text_splitter):
+async def _check_docs_for_ords(docs, text_splitter, **kwargs):
     """Check documents to see if they contain ordinance info."""
     ord_docs = []
     for doc in docs:
-        doc = await check_for_ordinance_info(doc, llm_caller, text_splitter)
+        doc = await check_for_ordinance_info(doc, text_splitter, **kwargs)
         if doc.metadata["contains_ord_info"]:
             ord_docs.append(doc)
     return ord_docs
@@ -111,7 +113,7 @@ def _ord_doc_sorting_key(doc):
 
 
 async def download_county_ordinance(
-    location, text_splitter, num_urls=5, pw_init_kwargs=None
+    location, text_splitter, num_urls=5, pw_init_kwargs=None, **kwargs
 ):
     """Download the ordinance document for a single county.
 
@@ -119,9 +121,6 @@ async def download_county_ordinance(
     ----------
     location : elm.ords.utilities.location.Location
         Location objects representing the county.
-    llm_caller : elm.ords.llm.StructuredLLMCaller
-        StructuredLLMCaller instance used for validation and checking
-        the contents of the document.
     text_splitter : obj, optional
         Instance of an object that implements a `split_text` method.
         The method should take text as input (str) and return a list
@@ -134,6 +133,9 @@ async def download_county_ordinance(
         Dictionary of keyword-argument pairs to initialize
         :cls:`elm.web.google_search.PlaywrightGoogleLinkSearch` with.
         By default, ``None``.
+    **kwargs
+        Keyword-value pairs used to initialize an
+        `elm.ords.llm.LLMCaller` instance.
 
     Returns
     -------
@@ -148,12 +150,12 @@ async def download_county_ordinance(
     docs = await _load_docs(urls, text_splitter)
     docs = await _down_select_docs_correct_location(
         docs,
-        llm_caller,
-        location.full_name,
+        location=location.full_name,
         county=location.name,
         state=location.state,
+        **kwargs
     )
-    docs = await _check_docs_for_ords(docs, llm_caller, text_splitter)
+    docs = await _check_docs_for_ords(docs, text_splitter, **kwargs)
     logger.info(
         "Found %d potential ordinance documents for %s",
         len(docs),
