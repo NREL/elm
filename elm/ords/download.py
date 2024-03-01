@@ -21,20 +21,20 @@ QUESTION_TEMPLATES = [
 ]
 
 
-async def _search_single(location, question, num_results=10):
+async def _search_single(location, question, num_results=10, **kwargs):
     """Perform a single google search."""
-    search_engine = PlaywrightGoogleLinkSearch()
+    search_engine = PlaywrightGoogleLinkSearch(**kwargs)
     return await search_engine.results(
         question.format(location=location),
         num_results=num_results,
     )
 
 
-async def _find_urls(location, num_results=10):
+async def _find_urls(location, num_results=10, **kwargs):
     """Parse google search output for URLs."""
     searchers = [
         asyncio.create_task(
-            _search_single(location, q, num_results=num_results),
+            _search_single(location, q, num_results=num_results, **kwargs),
             name=location,
         )
         for q in QUESTION_TEMPLATES
@@ -111,7 +111,7 @@ def _ord_doc_sorting_key(doc):
 
 
 async def download_county_ordinance(
-    location, llm_caller, text_splitter, num_urls=5
+    location, text_splitter, num_urls=5, pw_init_kwargs=None
 ):
     """Download the ordinance document for a single county.
 
@@ -130,6 +130,10 @@ async def download_county_ordinance(
     num_urls : int, optional
         Number of unique Google search result URL's to check for
         ordinance document. By default, ``5``.
+    pw_init_kwargs : dict, optional
+        Dictionary of keyword-argument pairs to initialize
+        :cls:`elm.web.google_search.PlaywrightGoogleLinkSearch` with.
+        By default, ``None``.
 
     Returns
     -------
@@ -137,7 +141,9 @@ async def download_county_ordinance(
         Document instance for the downloaded document, or ``None`` if no
         document was found.
     """
-    urls = await _find_urls(location.full_name, num_results=10)
+    urls = await _find_urls(
+        location.full_name, num_results=10, **(pw_init_kwargs or {})
+    )
     urls = _down_select_urls(urls, num_urls=num_urls)
     docs = await _load_docs(urls, text_splitter)
     docs = await _down_select_docs_correct_location(
