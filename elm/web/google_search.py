@@ -2,7 +2,6 @@
 """ELM Web Scraping - Google search."""
 import asyncio
 import logging
-from concurrent.futures import ThreadPoolExecutor
 
 from playwright.async_api import (
     async_playwright,
@@ -122,11 +121,13 @@ async def _close_autofill_suggestions(page):
     """Google autofill suggestions often get in way of search button.
 
     We get around this by closing the suggestion dropdown before
-    looking for the search button. Easiest way to close the dropdown
-    is to click on the "Google" logo, which will always be visible
-    and have no effect otherwise on the running code.
+    looking for the search button. Looking for the "Google Search"
+    button doesn't work because it is sometimes obscured by the dropdown
+    menu. Clicking the "Google" logo can also fail when they add
+    seasonal links/images (e.g. holiday logos). Current solutions is to
+    look for a specific div at the top of the page.
     """
-    await page.get_by_role("img", name="Google").click()
+    await page.locator("#gb").click()
 
 
 async def _extract_links(page, num_results):
