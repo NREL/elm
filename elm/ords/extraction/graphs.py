@@ -3,16 +3,24 @@
 import networkx as nx
 
 
-SECTION_PROMPT = (
+_SECTION_PROMPT = (
     'The value of the "section" key should be a string representing the '
     "title of the section (including numerical labels), if it's given, "
     "and `null` otherwise."
 )
-COMMENT_PROMPT = (
+_COMMENT_PROMPT = (
     'The value of the "comment" key should be a one-sentence explanation '
     "of how you determined the value, if you think it is necessary "
     "(`null` otherwise)."
 )
+
+
+def _setup_graph_no_nodes(**kwargs):
+    return nx.DiGraph(
+        SECTION_PROMPT=_SECTION_PROMPT,
+        COMMENT_PROMPT=_COMMENT_PROMPT,
+        **kwargs
+    )
 
 
 def llm_response_starts_with_yes(response):
@@ -63,12 +71,21 @@ def llm_response_does_not_start_with_no(response):
     return not llm_response_starts_with_no(response)
 
 
-def setup_graph_wes_types():
+def setup_graph_wes_types(**kwargs):
     """Setup Graph to get the largest turbine size in the ordinance text.
 
-    This Graph can be used to initialize an `elm.tree.DecisionTree`.
+    Parameters
+    ----------
+    **kwargs
+        Keyword-value pairs to add to graph.
+
+    Returns
+    -------
+    nx.DiGraph
+        Graph instance that can be used to initialize an
+        `elm.tree.DecisionTree`.
     """
-    G = nx.DiGraph()
+    G = _setup_graph_no_nodes(**kwargs)
 
     G.add_node(
         "init",
@@ -107,12 +124,21 @@ def setup_graph_wes_types():
     return G
 
 
-def setup_base_graph():
+def setup_base_graph(**kwargs):
     """Setup Graph to get setback ordinance text for a particular feature.
 
-    This Graph can be used to initialize an `elm.tree.DecisionTree`.
+    Parameters
+    ----------
+    **kwargs
+        Keyword-value pairs to add to graph.
+
+    Returns
+    -------
+    nx.DiGraph
+        Graph instance that can be used to initialize an
+        `elm.tree.DecisionTree`.
     """
-    G = nx.DiGraph()
+    G = _setup_graph_no_nodes(**kwargs)
 
     G.add_node(
         "init",
@@ -141,13 +167,22 @@ def setup_base_graph():
     return G
 
 
-def setup_participating_owner():
+def setup_participating_owner(**kwargs):
     """Setup Graph to check for participating vs non-participating owner
     setbacks for a feature.
 
-    This Graph can be used to initialize an `elm.tree.DecisionTree`.
+    Parameters
+    ----------
+    **kwargs
+        Keyword-value pairs to add to graph.
+
+    Returns
+    -------
+    nx.DiGraph
+        Graph instance that can be used to initialize an
+        `elm.tree.DecisionTree`.
     """
-    G = nx.DiGraph()
+    G = _setup_graph_no_nodes(**kwargs)
 
     G.add_node(
         "init",
@@ -190,12 +225,21 @@ def setup_participating_owner():
     return G
 
 
-def setup_multiplier():
+def setup_multiplier(**kwargs):
     """Setup Graph to extract a setbacks multiplier values for a feature.
 
-    This Graph can be used to initialize an `elm.tree.DecisionTree`.
+    Parameters
+    ----------
+    **kwargs
+        Keyword-value pairs to add to graph.
+
+    Returns
+    -------
+    nx.DiGraph
+        Graph instance that can be used to initialize an
+        `elm.tree.DecisionTree`.
     """
-    G = nx.DiGraph()
+    G = _setup_graph_no_nodes(**kwargs)
 
     G.add_node(
         "init",
@@ -325,14 +369,23 @@ def setup_multiplier():
     return G
 
 
-def setup_conditional():
+def setup_conditional(**kwargs):
     """Setup Graph to extract min/max setback values (after mult) for a
     feature. These are typically given within the context of
     'the greater of' or 'the lesser of' clauses.
 
-    This Graph can be used to initialize an `elm.tree.DecisionTree`.
+    Parameters
+    ----------
+    **kwargs
+        Keyword-value pairs to add to graph.
+
+    Returns
+    -------
+    nx.DiGraph
+        Graph instance that can be used to initialize an
+        `elm.tree.DecisionTree`.
     """
-    G = nx.DiGraph()
+    G = _setup_graph_no_nodes(**kwargs)
 
     G.add_node(
         "init",
@@ -380,12 +433,21 @@ def setup_conditional():
     return G
 
 
-def setup_graph_extra_restriction():
+def setup_graph_extra_restriction(**kwargs):
     """Setup Graph to extract non-setback ordinance values from text.
 
-    This Graph can be used to initialize an `elm.tree.DecisionTree`.
+    Parameters
+    ----------
+    **kwargs
+        Keyword-value pairs to add to graph.
+
+    Returns
+    -------
+    nx.DiGraph
+        Graph instance that can be used to initialize an
+        `elm.tree.DecisionTree`.
     """
-    G = nx.DiGraph()
+    G = _setup_graph_no_nodes(**kwargs)
 
     G.add_node(
         "init",
