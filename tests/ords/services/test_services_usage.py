@@ -89,7 +89,8 @@ def test_usage_tracker():
 
     output = {"some": "value"}
     tracker.add_to(output)
-    assert output == {"some": "value", "test": tracker}
+    expected_out = {**tracker, "tracker_totals": tracker.totals}
+    assert output == {"some": "value", "test": expected_out}
 
 
 if __name__ == "__main__":

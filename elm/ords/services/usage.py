@@ -125,7 +125,7 @@ class UsageTracker(UserDict):
         other : dict
             A dictionary to add the contents of this one to.
         """
-        other.update({self.label: self})
+        other.update({self.label: {**self, "tracker_totals": self.totals}})
 
     @property
     def totals(self):
