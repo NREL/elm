@@ -15,7 +15,7 @@ import elm.web.html_pw
 from elm import TEST_DATA_DIR
 from elm.ords.services.usage import TimeBoundedUsageTracker, UsageTracker
 from elm.ords.services.openai import OpenAIService, usage_from_response
-from elm.ords.services.temp_file_cache import TempFileCache
+from elm.ords.services.threaded import TempFileCache
 from elm.ords.services.provider import RunningAsyncServices
 from elm.ords.utilities.queued_logging import LocationFileLog, LogListener
 from elm.web.google_search import PlaywrightGoogleLinkSearch
