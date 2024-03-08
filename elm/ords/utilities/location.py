@@ -47,3 +47,23 @@ class County(Location):
         """str: Full county name in format '{name} County, {state}'"""
         loc_id = "Parish" if self.is_parish else "County"
         return f"{self.name} {loc_id}, {self.state}"
+
+    def __repr__(self):
+        return f"County({self.name}, {self.state}, is_parish={self.is_parish})"
+
+    def __str__(self):
+        return self.full_name
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return (
+                self.name.casefold() == other.name.casefold()
+                and self.state.casefold() == other.state.casefold()
+                and self.is_parish == other.is_parish
+            )
+        if isinstance(other, str):
+            return (
+                self.full_name.casefold() == other.casefold()
+                or f"{self.name}, {self.state}".casefold() == other.casefold()
+            )
+        return False
