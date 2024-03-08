@@ -6,7 +6,7 @@ from itertools import zip_longest, chain
 
 from elm.ords.llm import StructuredLLMCaller
 from elm.ords.extraction import check_for_ordinance_info
-from elm.ords.services.temp_file_cache import TempFileCache
+from elm.ords.services.threaded import TempFileCache
 from elm.ords.validation.location import CountyValidator
 from elm.web.document import PDFDocument
 from elm.web.file_loader import AsyncFileLoader
