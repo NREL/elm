@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 init_logger(__name__, log_level='DEBUG')
 init_logger('elm', log_level='INFO')
 
+
 class ResearchOutputs():
     """Class to handle publications portion of the NREL researcher hub."""
     BASE_URL = "https://research-hub.nrel.gov/en/publications/?page=0"
@@ -24,8 +25,8 @@ class ResearchOutputs():
         self.all_links = []
         for p in range(0, n_pages):
             url = url + f"?page={p}"
-            page = urlopen(url)
-            html = page.read().decode("utf-8")
+            with urlopen(url) as page:
+                html = page.read().decode("utf-8")
             self.soup = BeautifulSoup(html, "html.parser")
 
             self.target = self.soup.find('ul', {'class': 'list-results'})
@@ -151,8 +152,8 @@ class ResearchOutputs():
                                                   'url', 'fn', 'doi',
                                                   'pdf_url', 'category'))
         for link in self.all_links[:10]:  # quantity control here #
-            page = urlopen(link)
-            html = page.read().decode("utf-8")
+            with urlopen(link) as page:
+                html = page.read().decode("utf-8")
             meta_soup = BeautifulSoup(html, "html.parser")
 
             title = meta_soup.find('h1').text
@@ -202,8 +203,8 @@ class ResearchOutputs():
             fn = os.path.basename(pub) + '.txt'
             out_fp = os.path.join(out_dir, fn)
             if not os.path.exists(out_fp):
-                page = urlopen(pub)
-                html = page.read().decode("utf-8")
+                with urlopen(pub) as page:
+                    html = page.read().decode("utf-8")
                 soup = BeautifulSoup(html, "html.parser")
 
                 title = soup.find('h1').text
@@ -236,8 +237,8 @@ class ResearcherProfiles():
         self.profile_links = []
         for p in range(0, n_pages):
             url_base = url + f"?page={p}"
-            page = urlopen(url_base)
-            html = page.read().decode("utf-8")
+            with urlopen(url_base) as page:
+                html = page.read().decode("utf-8")
             soup = BeautifulSoup(html, "html.parser")
 
             target = soup.find('ul', {'class': 'grid-results'})
@@ -258,11 +259,11 @@ class ResearcherProfiles():
         profiles_meta = pd.DataFrame(columns=('title', 'nrel_id',
                                               'email', 'url', 'fn',
                                               'category'
-                                              )
+                                            )
                                     )
         for link in url_list[:10]:  # quantity control here #
-            page = urlopen(link)
-            html = page.read().decode("utf-8")
+            with urlopen(link) as page:
+                html = page.read().decode("utf-8")
             meta_soup = BeautifulSoup(html, "html.parser")
 
             title = meta_soup.find('h1').text
@@ -442,8 +443,8 @@ class ResearcherProfiles():
         text (str): string containing all publications for a given researcher.
         """
         pubs_url = profile_url + '/publications/'
-        page = urlopen(pubs_url)
-        html = page.read().decode("utf-8")
+        with urlopen(pubs_url) as page:
+            html = page.read().decode("utf-8")
         pubs_soup = BeautifulSoup(html, "html.parser")
 
         r = pubs_soup.find('h1').text
@@ -478,8 +479,8 @@ class ResearcherProfiles():
         text (str): string containing similar researchers.
         """
         sim_url = profile_url + '/similar/'
-        sim_page = urlopen(sim_url)
-        sim_html = sim_page.read().decode("utf-8")
+        with urlopen(sim_url) as sim_page:
+            sim_html = sim_page.read().decode("utf-8")
         sim_soup = BeautifulSoup(sim_html, "html.parser")
 
         r = sim_soup.find('h1').text
@@ -519,8 +520,8 @@ class ResearcherProfiles():
             f = os.path.basename(prof) + '.txt'
             txt_fp = os.path.join(out_dir, f)
             if not os.path.exists(txt_fp):
-                page = urlopen(prof)
-                html = page.read().decode("utf-8")
+                with urlopen(prof) as page:
+                    html = page.read().decode("utf-8")
                 prof_soup = BeautifulSoup(html, "html.parser")
 
                 r = prof_soup.find('h1').text
