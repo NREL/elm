@@ -79,11 +79,11 @@ def get_wizard():
 if __name__ == '__main__':
     wizard = get_wizard()
 
-    msg = """Hello!\nI am the Energy Wizard - Research Hub edition. I have access
-    to the NREL Research Hub which includes researcher profiles as well as NREL
-    Publications.Note that each question you ask is independent. I am not fully 
-    conversational yet like ChatGPT is. Here are some examples of questions you
-    can ask me:
+    msg = """Hello!\nI am the Energy Wizard - Research Hub edition. I have
+    access to the NREL Research Hub which includes researcher profiles as
+    well as NREL Publications.Note that each question you ask is independent.
+    I am not fully conversational yet like ChatGPT is. Here are some examples
+    of questions you can ask me:
     \n - What is 'insert researcher name' position at NREL?
     \n - Which publication has 'researcher name' contributed to?
     \n - Can you summarize 'publication name'?
