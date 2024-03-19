@@ -259,8 +259,7 @@ class ResearcherProfiles():
         profiles_meta = pd.DataFrame(columns=('title', 'nrel_id',
                                               'email', 'url', 'fn',
                                               'category'
-                                              )
-                                    )
+                                              ))
         for link in url_list[:10]:  # quantity control here #
             with urlopen(link) as page:
                 html = page.read().decode("utf-8")
