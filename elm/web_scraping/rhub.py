@@ -260,7 +260,7 @@ class ResearcherProfiles():
                                               'email', 'url', 'fn',
                                               'category'
                                               )
-        )
+                                    )
         for link in url_list[:10]:  # quantity control here #
             with urlopen(link) as page:
                 html = page.read().decode("utf-8")
