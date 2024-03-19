@@ -7,31 +7,12 @@ import logging
 from urllib.request import urlopen
 import pandas as pd
 from bs4 import BeautifulSoup
-import openai
 from rex import init_logger
-
-from elm.embed import ChunkAndEmbed
 
 # initialize logger
 logger = logging.getLogger(__name__)
 init_logger(__name__, log_level='DEBUG')
 init_logger('elm', log_level='INFO')
-
-# set openAI variables
-openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
-openai.api_key = os.getenv("AZURE_OPENAI_API_KEY")
-openai.api_type = 'azure'
-openai.api_version = '2023-03-15-preview'
-
-ChunkAndEmbed.EMBEDDING_MODEL = 'text-embedding-ada-002-2'
-ChunkAndEmbed.EMBEDDING_URL = ('https://stratus-embeddings-south-central.'
-                               'openai.azure.com/openai/deployments/'
-                               'text-embedding-ada-002-2/embeddings?'
-                               f'api-version={openai.api_version}')
-ChunkAndEmbed.HEADERS = {"Content-Type": "application/json",
-                         "Authorization": f"Bearer {openai.api_key}",
-                         "api-key": f"{openai.api_key}"}
-
 
 class ResearchOutputs():
     """Class to handle publications portion of the NREL researcher hub."""
