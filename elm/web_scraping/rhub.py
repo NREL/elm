@@ -229,8 +229,8 @@ class ResearchOutputs():
                 target = soup.find('h2', string='Abstract')
                 if target:
                     abstract = target.find_next_siblings()[0].text
-                    full_txt = (f'The report titled {title} can be 
-                                summarized as follows: {abstract}')
+                    full_txt = (f'The report titled {title} can be '
+                                f'summarized as follows: {abstract}')
                     with open(out_fp, "w") as text_file:
                         text_file.write(full_txt)
                     logger.info('Processing {}/{}: {}'.format(i + 1,
