@@ -6,12 +6,10 @@ import os.path
 import logging
 from urllib.request import urlopen
 import pandas as pd
-import time
 from bs4 import BeautifulSoup
 import openai
 from rex import init_logger
 
-#from elm.pdf import PDFtoTXT
 from elm.embed import ChunkAndEmbed
 
 # initialize logger
@@ -38,7 +36,8 @@ class ResearchOutputs():
     """Class to handle publications portion of the NREL researcher hub."""
     BASE_URL = "https://research-hub.nrel.gov/en/publications/?page=0"
 
-    def __init__(self, url, n_pages=1, txt_dir = './ew_txt'):
+
+    def __init__(self, url, n_pages=1, txt_dir='./ew_txt'):
 
         self.text_dir = txt_dir
         self.all_links = []
@@ -49,11 +48,11 @@ class ResearchOutputs():
             self.soup = BeautifulSoup(html, "html.parser")
 
             self.target = self.soup.find('ul', {'class': 'list-results'})
-            self.docs = self.target.find_all('a',  {'class': 'link'})
+            self.docs = self.target.find_all('a', {'class': 'link'})
 
-            page_links = [d['href'] for d in self.docs if '/publications/' in d['href']]
+            page_links = [d['href'] for d in self.docs if 
+                          '/publications/' in d['href']]
             self.all_links.extend(page_links)
-
 
     def _scrape_authors(self, soup_inst):
         """Scrape the names of authors associated with given publication.
@@ -74,7 +73,8 @@ class ResearchOutputs():
         return authors
 
     def _scrape_links(self, soup_inst):
-        """Scrape the links under 'Access to Document' header for a publication.
+        """Scrape the links under 'Access to Document' header 
+        for a publication.
 
         Parameters
         ----------
@@ -85,10 +85,10 @@ class ResearchOutputs():
         Returns
         -------
         doi link (str)
-        pdf link (str): link to pdf if it exists 
+        pdf link (str): link to pdf if it exists
         """
 
-        doi_target = soup_inst.find('ul', {'class':'dois'})
+        doi_target = soup_inst.find('ul', {'class': 'dois'})
         if doi_target:
             doi = doi_target.find('a')['href']
         else:
@@ -117,7 +117,8 @@ class ResearchOutputs():
         category (str)
         """
 
-        category = soup_inst.find('span', {'class': 'type_classification'}).text
+        category = soup_inst.find('span', 
+                                  {'class': 'type_classification'}).text
 
         return category
 
@@ -157,24 +158,25 @@ class ResearchOutputs():
         return nrel_id
 
     def build_meta(self):
-        """Build a meta dataframe containing relevant information for 
-        publications.
+        """Build a meta dataframe containing relevant information
+         for publications.
 
         Returns
         -------
         pd.DataFrame
         """
-        publications_meta = pd.DataFrame(columns = ('title', 'nrel_id', 'authors',
-                                       'year', 'url', 'fn',  'doi',
-                                       'pdf_url', 'category'))
-        for l in self.all_links[:10]:#### quantity control here ####
-            page = urlopen(l)
+        publications_meta = pd.DataFrame(columns=('title', 'nrel_id',
+                                                    'authors','year',
+                                                    'url', 'fn', 'doi',
+                                                    'pdf_url', 'category'))
+        for link in self.all_links[:10]:  # quantity control here #
+            page = urlopen(link)
             html = page.read().decode("utf-8")
             meta_soup = BeautifulSoup(html, "html.parser")
 
             title = meta_soup.find('h1').text
             nrel_id = self._scrape_id(meta_soup)
-            fn = os.path.basename(l) + '.txt'
+            fn = os.path.basename(link) + '.txt'
             authors = self._scrape_authors(meta_soup)
             doi = self._scrape_links(meta_soup)[0]
             pdf_url = self._scrape_links(meta_soup)[1]
@@ -185,7 +187,7 @@ class ResearchOutputs():
                        'nrel_id': nrel_id,
                         'year': year,
                         'authors': authors,
-                        'url': l,
+                        'url': link,
                         'fn': fn,
                         'doi': doi,
                         'pdf_url': pdf_url,
@@ -213,7 +215,7 @@ class ResearchOutputs():
         Text file containing abstract
         """
         os.makedirs(out_dir, exist_ok=True)
-        url_list = self.all_links[:10]  #### quantity control here ####
+        url_list = self.all_links[:10]  # quantity control here #
 
         for i, pub in enumerate(url_list):
             fn = os.path.basename(pub) + '.txt'
@@ -224,13 +226,16 @@ class ResearchOutputs():
                 soup = BeautifulSoup(html, "html.parser")
 
                 title = soup.find('h1').text
-                target = soup.find('h2',string='Abstract')
+                target = soup.find('h2', string='Abstract')
                 if target:
                     abstract = target.find_next_siblings()[0].text
-                    full_txt = f'The report titled {title} can be summarized as follows: {abstract}'
+                    full_txt = (f'The report titled {title} can be 
+                                summarized as follows: {abstract}')
                     with open(out_fp, "w") as text_file:
                         text_file.write(full_txt)
-                    logger.info('Processing {}/{}: {}'.format(i+1, len(url_list), pub))
+                    logger.info('Processing {}/{}: {}'.format(i + 1,
+                                                              len(url_list),
+                                                              pub))
                 else:
                     logger.info('Abstract not found for {}'.format(pub))
             else:
@@ -240,10 +245,12 @@ class ResearchOutputs():
 
 
 class ResearcherProfiles():
-    """Class to handle researcher profiles portion of the NREL researcher hub."""
+    """
+    Class to handle researcher profiles portion of the NREL researcher hub.
+    """
     BASE_URL = "https://research-hub.nrel.gov/en/persons/?page=0"
 
-    def __init__(self, url, n_pages = 1, txt_dir = './ew_txt'):
+    def __init__(self, url, n_pages=1, txt_dir='./ew_txt'):
         self.text_dir = txt_dir
         self.profile_links = []
         for p in range(0, n_pages):
@@ -253,13 +260,13 @@ class ResearcherProfiles():
             soup = BeautifulSoup(html, "html.parser")
 
             target = soup.find('ul', {'class': 'grid-results'})
-            docs = target.find_all('a',  {'class': 'link'})
+            docs = target.find_all('a', {'class': 'link'})
 
             page_links = [d['href'] for d in docs if '/persons/' in d['href']]
             self.profile_links.extend(page_links)
 
     def build_meta(self):
-        """Build a meta dataframe containing relevant information for 
+        """Build a meta dataframe containing relevant information for
         researchers.
 
         Returns
@@ -267,26 +274,29 @@ class ResearcherProfiles():
         pd.DataFrame
         """
         url_list = self.profile_links
-        profiles_meta = pd.DataFrame(columns = ('title', 'nrel_id',
-                                                'email', 'url', 'fn', 'category'))
-        for l in url_list[:10]:#### quantity control here ####
-            page = urlopen(l)
+        profiles_meta = pd.DataFrame(columns=('title', 'nrel_id',
+                                                'email', 'url', 'fn',
+                                                'category'))
+        for link in url_list[:10]:  # quantity control here #
+            page = urlopen(link)
             html = page.read().decode("utf-8")
             meta_soup = BeautifulSoup(html, "html.parser")
 
             title = meta_soup.find('h1').text
             email_target = meta_soup.find('a', {'class': 'email'})
             if email_target:
-                email = meta_soup.find('a', {'class': 'email'}).text.replace('nrelgov', '@nrel.gov')
+                email = meta_soup.find('a',
+                                       {'class': 'email'}
+                                       ).text.replace('nrelgov','@nrel.gov')
             else:
                 email = ''
-            id = os.path.basename(l)
-            fn = os.path.basename(l) + '.txt'
+            id = os.path.basename(link)
+            fn = os.path.basename(link) + '.txt'
 
             new_row = {'title': title,
                        'nrel_id': id,
                        'email': email,
-                        'url': l,
+                        'url': link,
                         'fn': fn,
                         'category': 'Researcher Profile'
             }
@@ -317,10 +327,10 @@ class ResearcherProfiles():
         if soup_inst.find('span', {'class': 'job-title'}):
             j = soup_inst.find('span', {'class': 'job-title'}).text
             intro = (f'The following is brief biography for {r} '
-                        f'who is a {j} at the National Renewable Energy Laboratory:\n')
+                    f'who is a {j} at the National Renewable Energy Laboratory:\n')
         else:
-            intro = f'The following is brief biography for {r}'\
-                        'who works for the National Renewable Energy Laboratory:\n'
+            intro = (f'The following is brief biography for {r}'
+                     f'who works for the National Renewable Energy Laboratory:\n')
 
         return intro
 
@@ -340,12 +350,12 @@ class ResearcherProfiles():
         -------
         bio (str): string containing text from profile.
         """
-        target = soup_inst.find('h3', string = "Personal Profile")
+        target = soup_inst.find('h3', string="Personal Profile")
 
-        bio =''
+        bio = ''
         if target:
             for sib in target.find_next_siblings():
-                if sib.name=="h3":
+                if sib.name == "h3":
                     break
                 bio = bio + sib.text
 
@@ -355,7 +365,8 @@ class ResearcherProfiles():
         """
         Description
         ----------
-        Scrapes sections such as 'Professional Experience' and 'Research Interests'
+        Scrapes sections such as 'Professional Experience' and
+        'Research Interests'
 
         Parameters
         ----------
@@ -363,14 +374,15 @@ class ResearcherProfiles():
             Active beautiful soup instance for the url associated with a
             given researcher.
         heading: str
-            Section to scrape. Should be 'Professional Experience' or 'Research Interests'
+            Section to scrape. Should be 'Professional Experience' or
+            'Research Interests'
 
         Returns
         -------
-        text (str): string containing contents from the provided section. 
+        text (str): string containing contents from the provided section.
         """
         r = soup_inst.find('h1').text
-        target = soup_inst.find('h3', string = heading)
+        target = soup_inst.find('h3', string=heading)
 
         exp_list = []
 
@@ -390,7 +402,8 @@ class ResearcherProfiles():
         """
         Description
         ----------
-        Scrapes and reformats 'Education/Academic Qualification' section for each researcher.
+        Scrapes and reformats 'Education/Academic Qualification'
+        section for each researcher.
 
         Parameters
         ----------
@@ -400,10 +413,11 @@ class ResearcherProfiles():
 
         Returns
         -------
-        full_text (str): string containing researchers education (level, focus, and institution).
+        full_text (str): string containing researchers education
+        (level, focus, and institution).
         """
         r = soup_inst.find('h1').text
-        target = soup_inst.find('h3', string = 'Education/Academic Qualification')
+        target = soup_inst.find('h3', string='Education/Academic Qualification')
 
         full_text = ''
         if target:
@@ -511,7 +525,7 @@ class ResearcherProfiles():
         Text file containing information from the profile.
         """
         os.makedirs(out_dir, exist_ok=True)
-        url_list = self.profile_links[:10] #### quantity control here ####
+        url_list = self.profile_links[:10]  # quantity control here #
 
         for i, prof in enumerate(url_list):
             f = os.path.basename(prof) + '.txt'
@@ -537,8 +551,11 @@ class ResearcherProfiles():
 
                 with open(txt_fp, "w") as text_file:
                     text_file.write(full_txt)
-                logger.info('Profile {}/{}: {} saved to {}'.format(i+1, len(url_list), r, txt_fp))
+                logger.info('Profile {}/{}: {} saved to {}'.format(i + 1, 
+                                                                   len(url_list),
+                                                                   r, txt_fp))
 
             else:
-                logger.info('Profile {}/{} already exists.'.format(i+1, len(url_list)))
+                logger.info('Profile {}/{} already exists.'.format(i+1, 
+                                                                   len(url_list)))
         return logger.info('Finished processing profiles')

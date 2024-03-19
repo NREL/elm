@@ -54,7 +54,7 @@ if __name__ == '__main__':
     meta = pd.concat([profiles_meta, pubs_meta], axis=0, ignore_index=True)
     meta = meta.drop_duplicates(subset=['nrel_id'])
     meta['fp'] = TXT_DIR + meta['fn']
-    meta.to_csv('./meta.csv', index = False)
+    meta.to_csv('./meta.csv', index=False)
 
     missing = []
     for i, row in meta.iterrows():
@@ -75,7 +75,7 @@ if __name__ == '__main__':
 
         if not os.path.exists(embed_fp):
             logger.info('Embedding {}/{}: "{}"'
-                        .format(i+1, len(meta), row['title']))
+                        .format(i + 1, len(meta), row['title']))
             tag = f"Title: {row['title']}\nAuthors: {row['authors']}"
             obj = ChunkAndEmbed(text, tag=tag, tokens_per_chunk=500, overlap=1)
             embeddings = asyncio.run(obj.run_async(rate_limit=3e4))
