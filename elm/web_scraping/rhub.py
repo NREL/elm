@@ -36,7 +36,6 @@ class ResearchOutputs():
     """Class to handle publications portion of the NREL researcher hub."""
     BASE_URL = "https://research-hub.nrel.gov/en/publications/?page=0"
 
-
     def __init__(self, url, n_pages=1, txt_dir='./ew_txt'):
 
         self.text_dir = txt_dir
@@ -50,7 +49,7 @@ class ResearchOutputs():
             self.target = self.soup.find('ul', {'class': 'list-results'})
             self.docs = self.target.find_all('a', {'class': 'link'})
 
-            page_links = [d['href'] for d in self.docs if 
+            page_links = [d['href'] for d in self.docs if
                           '/publications/' in d['href']]
             self.all_links.extend(page_links)
 
@@ -73,7 +72,7 @@ class ResearchOutputs():
         return authors
 
     def _scrape_links(self, soup_inst):
-        """Scrape the links under 'Access to Document' header 
+        """Scrape the links under 'Access to Document' header
         for a publication.
 
         Parameters
@@ -117,7 +116,7 @@ class ResearchOutputs():
         category (str)
         """
 
-        category = soup_inst.find('span', 
+        category = soup_inst.find('span',
                                   {'class': 'type_classification'}).text
 
         return category
@@ -166,9 +165,9 @@ class ResearchOutputs():
         pd.DataFrame
         """
         publications_meta = pd.DataFrame(columns=('title', 'nrel_id',
-                                                    'authors','year',
-                                                    'url', 'fn', 'doi',
-                                                    'pdf_url', 'category'))
+                                                  'authors', 'year',
+                                                  'url', 'fn', 'doi',
+                                                  'pdf_url', 'category'))
         for link in self.all_links[:10]:  # quantity control here #
             page = urlopen(link)
             html = page.read().decode("utf-8")
@@ -185,14 +184,14 @@ class ResearchOutputs():
 
             new_row = {'title': title,
                        'nrel_id': nrel_id,
-                        'year': year,
-                        'authors': authors,
-                        'url': link,
-                        'fn': fn,
-                        'doi': doi,
-                        'pdf_url': pdf_url,
-                        'category': category
-            }
+                       'year': year,
+                       'authors': authors,
+                       'url': link,
+                       'fn': fn,
+                       'doi': doi,
+                       'pdf_url': pdf_url,
+                       'category': category
+                       }
 
             publications_meta.loc[len(publications_meta)] = new_row
 
@@ -276,7 +275,9 @@ class ResearcherProfiles():
         url_list = self.profile_links
         profiles_meta = pd.DataFrame(columns=('title', 'nrel_id',
                                                 'email', 'url', 'fn',
-                                                'category'))
+                                                'category'
+                                                )
+                                    )
         for link in url_list[:10]:  # quantity control here #
             page = urlopen(link)
             html = page.read().decode("utf-8")
@@ -287,7 +288,7 @@ class ResearcherProfiles():
             if email_target:
                 email = meta_soup.find('a',
                                        {'class': 'email'}
-                                       ).text.replace('nrelgov','@nrel.gov')
+                                       ).text.replace('nrelgov', '@nrel.gov')
             else:
                 email = ''
             id = os.path.basename(link)
@@ -296,10 +297,10 @@ class ResearcherProfiles():
             new_row = {'title': title,
                        'nrel_id': id,
                        'email': email,
-                        'url': link,
-                        'fn': fn,
-                        'category': 'Researcher Profile'
-            }
+                       'url': link,
+                       'fn': fn,
+                       'category': 'Researcher Profile'
+                        }
 
             profiles_meta.loc[len(profiles_meta)] = new_row
 
@@ -327,10 +328,12 @@ class ResearcherProfiles():
         if soup_inst.find('span', {'class': 'job-title'}):
             j = soup_inst.find('span', {'class': 'job-title'}).text
             intro = (f'The following is brief biography for {r} '
-                    f'who is a {j} at the National Renewable Energy Laboratory:\n')
+                     f'who is a {j} at the National Renewable Energy '
+                     f'Laboratory:\n')
         else:
             intro = (f'The following is brief biography for {r}'
-                     f'who works for the National Renewable Energy Laboratory:\n')
+                     f'who works for the National Renewable Energy '
+                     f'Laboratory:\n')
 
         return intro
 
@@ -417,7 +420,8 @@ class ResearcherProfiles():
         (level, focus, and institution).
         """
         r = soup_inst.find('h1').text
-        target = soup_inst.find('h3', string='Education/Academic Qualification')
+        target = soup_inst.find('h3',
+                                string='Education/Academic Qualification')
 
         full_text = ''
         if target:
@@ -428,7 +432,8 @@ class ResearcherProfiles():
                     deg = t.split(',')[1]
                     inst = t.split(',')[2]
 
-                    text = f"{r} received a {level} degree in {deg} from the {inst}. "
+                    text = (f"{r} received a {level} degree in {deg} "
+                            f"from the {inst}. ")
                 elif len(t.split(',')) == 2:
                     level = t.split(',')[0]
                     inst = t.split(',')[1]
@@ -468,7 +473,8 @@ class ResearcherProfiles():
                 pubs.append(p.text)
 
             pubs = ', '.join(pubs)
-            text = f'{r} has contributed to the following publications: {pubs}.'
+            text = (f'{r} has contributed to the following '
+                    f'publications: {pubs}.')
         else:
             text = ''
 
@@ -546,16 +552,16 @@ class ResearcherProfiles():
                 similar = self._scrape_similar(prof)
 
                 full_txt = (intro + bio + '\n' + exp + '\n' +
-                        interests + '\n' + edu + '\n' +
-                        pubs + '\n' + similar)
+                            interests + '\n' + edu + '\n' +
+                            pubs + '\n' + similar)
 
                 with open(txt_fp, "w") as text_file:
                     text_file.write(full_txt)
-                logger.info('Profile {}/{}: {} saved to {}'.format(i + 1, 
-                                                                   len(url_list),
-                                                                   r, txt_fp))
+                logger.info('Profile {}/{}: {} saved to '
+                            '{}'.format(i + 1, len(url_list),
+                            r, txt_fp))
 
             else:
-                logger.info('Profile {}/{} already exists.'.format(i+1, 
-                                                                   len(url_list)))
+                logger.info('Profile {}/{} already '
+                            'exists.'.format(i + 1, len(url_list)))
         return logger.info('Finished processing profiles')
