@@ -1,0 +1,10 @@
+The following is brief biography for Aliza Abraham who is a Postdoctoral Researcher-Mechanical Engineering at the National Renewable Energy Laboratory:
+Aliza Abraham is interested in understanding the complex interactions between atmospheric flow and wind turbines. Her research particularly focuses on characterizing the turbine wake in order to mitigate its detrimental effects on downstream turbines. She has experience conducting laboratory experiments, field measurements, and numerical simulations. At NREL, Aliza is working on analyzing data coming out of the American WAKE experimeNt (AWAKEN) field campaign. 
+
+Aliza Abraham's Research Interests includes the following:
+Wind turbine wake behavior
+Atmospheric flow characterization
+Field data analysis 
+Aliza Abraham received a Master degree in  Mechanical Engineering from the  Massachusetts Institute of Technology. Aliza Abraham received a Bachelor degree in  Mechanical Engineering from the  Northwestern University. Aliza Abraham received a PhD degree in  Mechanical Engineering from the  University of Minnesota Twin Cities. 
+Aliza Abraham has contributed to the following publications: Investigation of Wind Plant Wake Effects at the AWAKEN Field Campaign.
+Aliza Abraham has worked on projects with Stefano Letizia, Nicholas Hamilton, Nicola Bodini, Patrick Moriarty, Julie Lundquist, Paula Doubrawa, Matthew Churchfield, Eliot Quon, Shreyas Bidadi, Caroline Draxl, Regis Thedin, David Jager.

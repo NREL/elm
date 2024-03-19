@@ -32,6 +32,7 @@ ChunkAndEmbed.HEADERS = {"Content-Type": "application/json",
                          "Authorization": f"Bearer {openai.api_key}",
                          "api-key": f"{openai.api_key}"}
 
+
 class ResearchOutputs():
     """Class to handle publications portion of the NREL researcher hub."""
     BASE_URL = "https://research-hub.nrel.gov/en/publications/?page=0"
@@ -274,9 +275,9 @@ class ResearcherProfiles():
         """
         url_list = self.profile_links
         profiles_meta = pd.DataFrame(columns=('title', 'nrel_id',
-                                                'email', 'url', 'fn',
-                                                'category'
-                                                )
+                                              'email', 'url', 'fn',
+                                              'category'
+                                              )
                                     )
         for link in url_list[:10]:  # quantity control here #
             page = urlopen(link)
@@ -300,7 +301,7 @@ class ResearcherProfiles():
                        'url': link,
                        'fn': fn,
                        'category': 'Researcher Profile'
-                        }
+                       }
 
             profiles_meta.loc[len(profiles_meta)] = new_row
 
@@ -551,15 +552,15 @@ class ResearcherProfiles():
                 pubs = self._scrape_publications(prof)
                 similar = self._scrape_similar(prof)
 
-                full_txt = (intro + bio + '\n' + exp + '\n' +
-                            interests + '\n' + edu + '\n' +
-                            pubs + '\n' + similar)
+                full_txt = (intro + bio + '\n' + exp + '\n'
+                            + interests + '\n' + edu + '\n'
+                            + pubs + '\n' + similar)
 
                 with open(txt_fp, "w") as text_file:
                     text_file.write(full_txt)
                 logger.info('Profile {}/{}: {} saved to '
                             '{}'.format(i + 1, len(url_list),
-                            r, txt_fp))
+                                        r, txt_fp))
 
             else:
                 logger.info('Profile {}/{} already '

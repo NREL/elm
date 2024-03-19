@@ -1,0 +1,11 @@
+The following is brief biography for Michael Abbondanza who is a IT Professional I-Cyber Security Analyst at the National Renewable Energy Laboratory:
+Michael Abbondanza is a research technician with NREL's Energy Security and Resilience Center. He provides support to use and operation of NREL's cyber range in order to maintain scalability and reliability for researchers conducting cybersecurity-related experiments. 
+
+Michael Abbondanza's Research Interests includes the following:
+Cybersecurity
+Distributed systems
+Internet of Things
+System development and architecture 
+
+
+Michael Abbondanza has worked on projects with Brian Howard, Richard Macwan, Anthony Wallace, Jennifer Guerra, Dane Christensen, Shane McFly.
