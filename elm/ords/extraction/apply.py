@@ -214,7 +214,7 @@ async def _extract_with_ngram_check(
         )
         if ngram_frac >= ngram_fraction_threshold:
             logger.debug(
-                "Document extraction passed ngram check on attempt %d ",
+                "Document extraction passed ngram check on attempt %d "
                 "with score %.2f",
                 attempt + 1,
                 ngram_frac,
