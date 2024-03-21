@@ -25,7 +25,7 @@ class Location(ABC):
 class County(Location):
     """Class representing a county"""
 
-    def __init__(self, name, state, is_parish=False):
+    def __init__(self, name, state, fips=None, is_parish=False):
         """
 
         Parameters
@@ -34,12 +34,15 @@ class County(Location):
             Name of the county.
         state : str
             State containing the county.
+        fips : int | str, optional
+            Optional county FIPS code. By default, ``None``.
         is_parish : bool, optional
             Flag indicating wether or not this county is classified as
             a parish. By default, ``False``.
         """
         super().__init__(name)
         self.state = state
+        self.fips = fips
         self.is_parish = is_parish
 
     @property
