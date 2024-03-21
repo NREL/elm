@@ -60,12 +60,14 @@ def _down_select_urls(search_results, num_urls=5):
     return urls
 
 
-async def _load_docs(urls, text_splitter):
+async def _load_docs(urls, text_splitter, **kwargs):
     """Load a document for each input URL."""
-    file_loader = AsyncFileLoader(
-        html_read_kwargs={"text_splitter": text_splitter},
-        file_cache_coroutine=TempFileCache.call,
-    )
+    loader_kwargs = {
+        "html_read_kwargs": {"text_splitter": text_splitter},
+        "file_cache_coroutine": TempFileCache.call,
+    }
+    loader_kwargs.update(kwargs)
+    file_loader = AsyncFileLoader(**loader_kwargs)
     return await file_loader.fetch_all(*urls)
 
 
@@ -115,7 +117,7 @@ def _ord_doc_sorting_key(doc):
 
 
 async def download_county_ordinance(
-    location, text_splitter, num_urls=5, pw_init_kwargs=None, **kwargs
+    location, text_splitter, num_urls=5, file_loader_kwargs=None, **kwargs
 ):
     """Download the ordinance document for a single county.
 
@@ -131,10 +133,12 @@ async def download_county_ordinance(
     num_urls : int, optional
         Number of unique Google search result URL's to check for
         ordinance document. By default, ``5``.
-    pw_init_kwargs : dict, optional
+    file_loader_kwargs : dict, optional
         Dictionary of keyword-argument pairs to initialize
-        :cls:`elm.web.google_search.PlaywrightGoogleLinkSearch` with.
-        By default, ``None``.
+        :cls:`elm.web.file_loader.AsyncFileLoader` with. The
+        "pw_launch_kwargs" key in these will also be used to initialize
+        the :cls:`elm.web.google_search.PlaywrightGoogleLinkSearch` used
+        for the google URL search. By default, ``None``.
     **kwargs
         Keyword-value pairs used to initialize an
         `elm.ords.llm.LLMCaller` instance.
@@ -145,11 +149,13 @@ async def download_county_ordinance(
         Document instance for the downloaded document, or ``None`` if no
         document was found.
     """
+    file_loader_kwargs = file_loader_kwargs or {}
+    pw_launch_kwargs = file_loader_kwargs.get("pw_launch_kwargs", {})
     urls = await _find_urls(
-        location.full_name, num_results=10, **(pw_init_kwargs or {})
+        location.full_name, num_results=10, **pw_launch_kwargs
     )
     urls = _down_select_urls(urls, num_urls=num_urls)
-    docs = await _load_docs(urls, text_splitter)
+    docs = await _load_docs(urls, text_splitter, **file_loader_kwargs)
     docs = await _down_select_docs_correct_location(
         docs,
         location=location.full_name,
