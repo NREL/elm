@@ -83,7 +83,7 @@ class LogListener:
         ----------
         logger_names : iterable
             An iterable of string, where each string is a logger name.
-            The logger corresponding ot each of the names will be
+            The logger corresponding to each of the names will be
             equipped with a logging queue handler.
         level : str, optional
             Log level to set for each logger. By default, ``"INFO"``.
