@@ -139,7 +139,12 @@ class UsageTracker(UserDict):
         """
         totals = {}
         for report in self.values():
-            for tracked_value, count in report.items():
+            try:
+                sub_label_report = report.items()
+            except AttributeError:
+                continue
+
+            for tracked_value, count in sub_label_report:
                 totals[tracked_value] = totals.get(tracked_value, 0) + count
         return totals
 
