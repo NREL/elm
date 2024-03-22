@@ -36,18 +36,19 @@ setup(
     license="BSD 3-Clause",
     zip_safe=False,
     keywords="elm",
-    python_requires='>=3.8',
+    python_requires='>=3.9',
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Science/Research",
         "License :: OSI Approved :: BSD License",
         "Natural Language :: English",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
     ],
     install_requires=install_requires,
     extras_require={
         "dev": install_requires + test_requires,
     },
+    entry_points={"console_scripts": ["elm=elm.cli:main"]}
 )
