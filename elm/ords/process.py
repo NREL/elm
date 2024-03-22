@@ -459,11 +459,14 @@ def _record_total_time(fp, seconds_elapsed):
         with open(fp, "r") as fh:
             usage_info = json.load(fh)
 
+    total_time_str = str(timedelta(seconds=seconds_elapsed))
     usage_info["total_time_seconds"] = seconds_elapsed
-    usage_info["total_time"] = str(timedelta(seconds=seconds_elapsed))
+    usage_info["total_time"] = total_time_str
 
     with open(fp, "w") as fh:
         json.dump(usage_info, fh, indent=4)
+
+    logger.info("Total processing time: %s", total_time_str)
 
 
 def _docs_to_db(docs):
