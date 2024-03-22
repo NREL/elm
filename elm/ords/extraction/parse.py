@@ -12,6 +12,7 @@ from elm.ords.utilities import llm_response_as_json
 from elm.ords.extraction.tree import AsyncDecisionTree
 from elm.ords.extraction.features import SetbackFeatures
 from elm.ords.extraction.graphs import (
+    EXTRACT_ORIGINAL_TEXT_PROMPT,
     setup_graph_wes_types,
     setup_base_graph,
     setup_multiplier,
@@ -239,7 +240,7 @@ class StructuredOrdinanceParser(BaseLLMCaller):
         dtree_participating_out = await self._run_setback_graph(
             setup_participating_owner,
             text,
-            base_messages=base_messages,
+            base_messages=deepcopy(base_messages),
             **feature_kwargs,
         )
         outer_task_name = asyncio.current_task().get_name()
@@ -264,7 +265,16 @@ class StructuredOrdinanceParser(BaseLLMCaller):
         if not sub_text:
             return output
 
+        feature = feature_kwargs["feature"]
+        feature = f"{key} {feature}"
+        feature_kwargs["feature"] = feature
+
+        base_messages = deepcopy(base_messages)
+        base_messages[-2]["content"] = EXTRACT_ORIGINAL_TEXT_PROMPT.format(
+            feature=feature, wes_type=feature_kwargs["wes_type"]
+        )
         base_messages[-1]["content"] = sub_text
+
         values = await self._extract_setback_values(
             sub_text,
             base_messages=base_messages,
