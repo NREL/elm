@@ -72,15 +72,15 @@ def _found_ord(messages):
 
 async def _run_async_tree(tree, response_as_json=True):
     """Run Async Decision Tree and return output as dict."""
-    response = await tree.async_run()
-    if not response_as_json:
-        return response
-
     try:
-        out = llm_response_as_json(response)
+        response = await tree.async_run()
     except RuntimeError:
-        out = {}
-    return out
+        response = None
+
+    if response_as_json:
+        return llm_response_as_json(response) if response else {}
+
+    return response
 
 
 async def _run_async_tree_with_bm(tree, base_messages):
