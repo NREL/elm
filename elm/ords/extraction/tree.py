@@ -123,7 +123,7 @@ class AsyncDecisionTree(DecisionTree):
                 )
                 logger.error(msg, last_message)
                 logger.exception(e)
-                raise RuntimeError(msg) from e
+                raise RuntimeError(msg % last_message) from e
             if out in self.graph:
                 node0 = out
             else:
