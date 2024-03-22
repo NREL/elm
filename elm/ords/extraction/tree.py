@@ -82,9 +82,10 @@ class AsyncDecisionTree(DecisionTree):
             Next node or LLM response if at a leaf node.
         """
         prompt = self._prepare_graph_call(node0)
-        logger.debug(f"Chat GPT prompt:\n{prompt}")
         out = await self.chat_llm_caller.call(prompt, usage_sub_label="dtree")
-        logger.debug(f"Chat GPT response:\n{out}")
+        logger.debug(
+            "Chat GPT prompt:\n%s\nChat GPT response:\n%s", prompt, out
+        )
         return self._parse_graph_output(node0, out)
 
     async def async_run(self, node0="init"):
