@@ -335,7 +335,7 @@ async def download_docs_for_county_with_logging(
         the document's ``metadata`` attribute.
     """
     with LocationFileLog(
-        listener, log_dir, county=county.full_name, level=level
+        listener, log_dir, location=county.full_name, level=level
     ):
         task = asyncio.create_task(
             download_doc_for_county(
