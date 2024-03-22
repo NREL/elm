@@ -70,10 +70,14 @@ def _found_ord(messages):
     return llm_response_starts_with_yes(messages[2].get("content", ""))
 
 
-async def _run_async_tree(tree):
+async def _run_async_tree(tree, response_as_json=True):
     """Run Async Decision Tree and return output as dict."""
+    response = await tree.async_run()
+    if not response_as_json:
+        return response
+
     try:
-        out = llm_response_as_json(await tree.async_run())
+        out = llm_response_as_json(response)
     except RuntimeError:
         out = {}
     return out
@@ -224,7 +228,7 @@ class StructuredOrdinanceParser(BaseLLMCaller):
             chat_llm_caller=self._init_chat_llm_caller(system_message),
             **feature_kwargs,
         )
-        await _run_async_tree(tree)
+        await _run_async_tree(tree, response_as_json=False)
         return deepcopy(tree.chat_llm_caller.messages)
 
     async def _extract_setback_values_for_p_or_np(
