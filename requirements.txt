@@ -8,6 +8,7 @@ lxml
 matplotlib
 networkx
 nrel-rex
+nltk
 numpy
 pandas
 pdftotext
