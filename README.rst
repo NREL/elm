@@ -33,6 +33,9 @@ Installing ELM
 
 .. inclusion-install
 
+NOTE: If you are installing ELM to run ordinance scraping and extraction,
+see the `ordinance-specific installation instructions <https://github.com/NREL/elm/blob/main/elm/ords/README.md>`_.
+
 Option #1 (basic usage):
 
 #. ``pip install NREL-elm``
