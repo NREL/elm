@@ -140,6 +140,7 @@ class DataBaseWizard(ApiBase):
                    'Please only return the SQL query with no commentary or preface.'
                    .format(self.database_describe, query))
         out = super().chat(e_query, temperature=0)
+        print(out)
         return out
 
     def run_sql(self, sql):

@@ -27,6 +27,7 @@ DataBaseWizard.HEADERS = {"Content-Type": "application/json",
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
+
 if __name__ == '__main__':
     wizard = DataBaseWizard(model = model, connection_string = conn_string)
 
@@ -46,6 +47,17 @@ if __name__ == '__main__':
 
     if "messages" not in st.session_state:
         st.session_state.messages = []
+    else:
+        if st.button('Clear Chat'):
+            # Clearing Messages
+            st.session_state.messages = []
+            for message in st.session_state.messages:
+                with st.chat_message(message["role"]):
+                    st.markdown(message["content"])
+
+            # Clearing Wizard
+            wizard.clear()
+            wizard = DataBaseWizard(model = model, connection_string = conn_string)
 
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
@@ -75,3 +87,4 @@ if __name__ == '__main__':
 
         #st.session_state.messages.append({"role": "assistant",
         #                                  "content": full_response})
+            
