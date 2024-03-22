@@ -13,6 +13,10 @@ _COMMENT_PROMPT = (
     "of how you determined the value, if you think it is necessary "
     "(`null` otherwise)."
 )
+EXTRACT_ORIGINAL_TEXT_PROMPT = (
+    "Can you extract the raw text with original formatting "
+    "that states how close I can site {wes_type} to {feature}? "
+)
 
 
 def _setup_graph_no_nodes(**kwargs):
@@ -156,13 +160,7 @@ def setup_base_graph(**kwargs):
     G.add_edge(
         "init", "get_text", condition=llm_response_does_not_start_with_no
     )
-    G.add_node(
-        "get_text",
-        prompt=(
-            "Can you extract the raw text with original formatting "
-            "that states how close I can site {wes_type} to {feature}? "
-        ),
-    )
+    G.add_node("get_text", prompt=EXTRACT_ORIGINAL_TEXT_PROMPT)
 
     return G
 
