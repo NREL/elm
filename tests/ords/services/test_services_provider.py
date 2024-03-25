@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=missing-class-docstring,missing-function-docstring
-# pylint: unused-argument
+# pylint: disable=unused-argument
 """Test Service Provider"""
 import asyncio
 from pathlib import Path
