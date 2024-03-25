@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-# pytest: disable=missing-class-docstring,missing-function-docstring
-# pytest: unused-argument
+# pylint: disable=missing-class-docstring,missing-function-docstring
+# pylint: unused-argument
 """ELM Ordinance integration tests"""
 import time
 import logging

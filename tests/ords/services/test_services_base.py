@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# pytest: unused-argument
+# pylint: unused-argument
 """Test ELM Ordinances Base Services"""
 import time
 from pathlib import Path

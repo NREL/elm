@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-# pytest: disable=missing-class-docstring,missing-function-docstring
-# pytest: unused-argument
+# pylint: disable=missing-class-docstring,missing-function-docstring
+# pylint: unused-argument
 """Test Service Provider"""
 import asyncio
 from pathlib import Path

@@ -35,6 +35,7 @@ class MockResponse:
 
 @asynccontextmanager
 async def patched_get(session, url, *args, **kwargs):
+    """Patched implementation for get that reads from disk."""
     if url == "gpt-4":
         with open(GPT4_DOC_PATH, "rb") as fh:
             content = fh.read()
@@ -46,6 +47,7 @@ async def patched_get(session, url, *args, **kwargs):
 
 
 async def patched_get_html(url, *args, **kwargs):
+    """Patched implementation for html get that reads from disk."""
     with open(WHATCOM_DOC_PATH, "r", encoding="utf-8") as fh:
         content = fh.read()
 
