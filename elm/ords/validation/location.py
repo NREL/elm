@@ -62,6 +62,7 @@ class FixedMessageValidator(ABC):
 
 
 class URLValidator(FixedMessageValidator):
+    """Validator that checks wether a URL matches a county."""
 
     SYSTEM_MESSAGE = (
         "You extract structured data from a URL. Return your "
@@ -84,6 +85,7 @@ class URLValidator(FixedMessageValidator):
 
 
 class CountyJurisdictionValidator(FixedMessageValidator):
+    """Validator that checks wether text applies at the county level."""
 
     SYSTEM_MESSAGE = (
         "You extract structured data from legal text. Return "
@@ -114,6 +116,7 @@ class CountyJurisdictionValidator(FixedMessageValidator):
 
 
 class CountyNameValidator(FixedMessageValidator):
+    """Validator that checks wether text applies to a particular county."""
 
     SYSTEM_MESSAGE = (
         "You extract structured data from legal text. Return "

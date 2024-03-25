@@ -27,7 +27,7 @@ async def test_basic_search_query(queries, num_results):
     for results in out:
         assert len(results) == min(
             num_results,
-            elm.web.google_search.PlaywrightGoogleLinkSearch.EXPECTED_RESULTS_PER_PAGE,
+            search_engine.EXPECTED_RESULTS_PER_PAGE,
         )
         assert all(link.startswith("http") for link in results)
 

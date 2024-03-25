@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=consider-using-with
 """ELM Ordinance Threaded services"""
 import json
 import shutil

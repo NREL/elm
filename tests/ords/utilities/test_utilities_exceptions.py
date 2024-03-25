@@ -4,7 +4,6 @@
 Most exception logic + tests pulled from GAPs
 (https://github.com/NREL/gaps)
 """
-import asyncio
 from pathlib import Path
 
 import pytest

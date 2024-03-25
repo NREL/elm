@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=unused-argument
 """ELM Web file loading tests"""
 import asyncio
 import filecmp
@@ -21,10 +22,14 @@ WHATCOM_DOC_PATH = Path(TEST_DATA_DIR) / "Whatcom.txt"
 
 
 class MockResponse:
+    """Mock web response for tests."""
+
     def __init__(self, read_return):
+        """Store the desired read response."""
         self.read_return = read_return
 
     async def read(self):
+        """Return what class was initialized with."""
         return self.read_return
 
 

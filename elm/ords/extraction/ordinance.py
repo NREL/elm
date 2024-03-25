@@ -132,7 +132,7 @@ class OrdinanceValidator(ValidationWithMemory):
         text = [
             self.text_chunks[ind]
             for ind in sorted(inds_to_grab)
-            if ind >= 0 and ind < len(self.text_chunks)
+            if 0 <= ind < len(self.text_chunks)
         ]
         return merge_overlapping_texts(text)
 
@@ -157,7 +157,8 @@ class OrdinanceValidator(ValidationWithMemory):
                 if not self.is_legal_text:
                     return False
 
-                if not any(self._wind_mention_mem[-self.num_to_recall :]):
+                # fmt: off
+                if not any(self._wind_mention_mem[-self.num_to_recall:]):
                     continue
 
             logger.debug("Processing text at ind %d", ind)

@@ -21,14 +21,18 @@ async def test_logs_sent_to_separate_files(tmp_path, service_base_class):
     assert not logger.handlers
 
     class AlwaysThreeService(TestService):
+        """Test service that returns ``3``."""
+
         NUMBER = 3
         LEN_SLEEP = 5
 
     async def process_single(val):
+        """Call `AlwaysThreeService`."""
         logger.info(f"This location is {val!r}")
         return await AlwaysThreeService.call(len(val))
 
     async def process_location_with_logs(listener, log_dir, location):
+        """Process location and record logs for tests."""
         with LocationFileLog(listener, log_dir, location=location):
             logger.info("A generic test log")
             return await process_single(location)
@@ -44,7 +48,7 @@ async def test_logs_sent_to_separate_files(tmp_path, service_base_class):
             )
             for loc in test_locations
         ]
-        out = await asyncio.gather(*producers)
+        await asyncio.gather(*producers)
 
     assert not logger.handlers
 

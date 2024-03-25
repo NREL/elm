@@ -5,7 +5,6 @@ ELM PDF to text parser
 """
 import os
 import subprocess
-import numpy as np
 import requests
 import tempfile
 import copy

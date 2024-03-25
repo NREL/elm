@@ -159,11 +159,13 @@ class PDFDocument(BaseDocument):
         text = remove_empty_lines_or_page_footers(text)
         return text
 
+    # pylint: disable=unnecessary-comprehension
+    # fmt: off
     def _raw_pages(self):
         """Get raw pages from document"""
-        raw_pages = [page for page in self.pages[: self.num_raw_pages_to_keep]]
+        raw_pages = [page for page in self.pages[:self.num_raw_pages_to_keep]]
         if self._last_page_index:
-            raw_pages += [page for page in self.pages[self._last_page_index :]]
+            raw_pages += [page for page in self.pages[self._last_page_index:]]
         return raw_pages
 
 

@@ -37,9 +37,9 @@ def clean_search_query(query):
         return query.strip()
 
     last_ind = -1 if query.endswith('"') else None
-    query = query[first_quote_pos + 1 : last_ind]
 
-    return query.strip()
+    # fmt: off
+    return query[first_quote_pos + 1:last_ind].strip()
 
 
 def compute_fn_from_url(url, make_unique=False):

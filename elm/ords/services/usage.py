@@ -3,7 +3,7 @@
 import time
 import logging
 from collections import UserDict, deque
-from functools import total_ordering, wraps
+from functools import total_ordering
 
 
 logger = logging.getLogger(__name__)

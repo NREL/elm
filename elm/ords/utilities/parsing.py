@@ -28,7 +28,7 @@ def llm_response_as_json(content):
     content = content.replace("True", "true").replace("False", "false")
     try:
         content = json.loads(content)
-    except json.decoder.JSONDecodeError as e:
+    except json.decoder.JSONDecodeError:
         logger.error(
             "LLM returned improperly formatted JSON. "
             "This is likely due to the completion running out of tokens. "
@@ -41,6 +41,7 @@ def llm_response_as_json(content):
     return content
 
 
+# fmt: off
 def merge_overlapping_texts(text_chunks, n=300):
     """Merge chunks fo text by removing any overlap.
 
@@ -63,7 +64,7 @@ def merge_overlapping_texts(text_chunks, n=300):
 
     out_text = text_chunks[0]
     for next_text in text_chunks[1:]:
-        start_ind = out_text[-2 * n :].find(next_text[:n])
+        start_ind = out_text[-2 * n:].find(next_text[:n])
         if start_ind == -1:
             out_text = "\n".join([out_text, next_text])
             continue

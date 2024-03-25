@@ -10,7 +10,10 @@ from elm.web.document import PDFDocument, HTMLDocument
 
 
 class TestSplitter:
+    """Splitter class for testing purposes."""
+
     def split_text(self, text):
+        """Split text on newlines."""
         return text.split("\n")
 
 
@@ -47,6 +50,7 @@ def test_pdf_doc():
     assert doc.num_raw_pages_to_keep == 7
     assert doc._last_page_index == -2
 
+    # pylint: disable=unnecessary-comprehension
     all_pages = [page for page in pdf]
     expected_raw_pages = all_pages[:7] + all_pages[-2:]
     assert doc.raw_pages == expected_raw_pages

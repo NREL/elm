@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """Test ELM Ordinances TempFileCache Services"""
-import time
 from pathlib import Path
 
 import pytest

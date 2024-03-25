@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pytest: unused-argument
 """Test ELM Ordinances Base Services"""
 import time
 from pathlib import Path
@@ -13,7 +14,10 @@ def test_rate_limited_service():
     """Test base implementation of `RateLimitedService` class"""
 
     class TestService(RateLimitedService):
+        """Simple service implementation for tests."""
+
         async def process(self, *args, **kwargs):
+            """Always return 0."""
             return 0
 
     rate_tracker = TimeBoundedUsageTracker(max_seconds=5)

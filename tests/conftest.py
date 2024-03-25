@@ -47,18 +47,23 @@ def service_base_class():
     job_order = []
 
     class TestService(Service):
+        """Basic service implementation for testing."""
+
         NUMBER = 0
         LEN_SLEEP = 0
         STAGGER = 0
 
         def __init__(self):
+            """Initialize service."""
             self.running_jobs = set()
 
         @property
         def can_process(self):
+            """True if number of running jobs less that the class number."""
             return len(self.running_jobs) < self.NUMBER
 
         async def process(self, job_id):
+            """Mock processing of input."""
             self.running_jobs.add(job_id)
             job_order.append((self.NUMBER, job_id))
             await asyncio.sleep(self.LEN_SLEEP + self.STAGGER * job_id * 0.5)

@@ -73,15 +73,17 @@ class ValidationWithMemory:
         self.num_to_recall = num_to_recall
         self.memory = [{} for _ in text_chunks]
 
+    # fmt: off
     def _inverted_mem(self, starting_ind):
         """Inverted memory."""
-        inverted_mem = self.memory[: starting_ind + 1 :][::-1]
-        yield from inverted_mem[: self.num_to_recall]
+        inverted_mem = self.memory[:starting_ind + 1:][::-1]
+        yield from inverted_mem[:self.num_to_recall]
 
+    # fmt: off
     def _inverted_text(self, starting_ind):
         """Inverted text chunks"""
-        inverted_text = self.text_chunks[: starting_ind + 1 :][::-1]
-        yield from inverted_text[: self.num_to_recall]
+        inverted_text = self.text_chunks[:starting_ind + 1:][::-1]
+        yield from inverted_text[:self.num_to_recall]
 
     async def parse_from_ind(self, ind, prompt, key):
         """Validate a chunk of text.

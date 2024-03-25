@@ -121,7 +121,8 @@ class StructuredOrdinanceParser(BaseLLMCaller):
         text : str
             Ordinance text which may or may not contain setbacks for one
             or more features (property lines, structure, roads, etc.).
-            Text can also contain other supported regulations (noise, shadow-flicker, etc,) which will be extracted as well.
+            Text can also contain other supported regulations (noise,
+            shadow-flicker, etc,) which will be extracted as well.
 
         Returns
         -------

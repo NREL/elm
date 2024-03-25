@@ -113,7 +113,7 @@ def format_html_tables(text, **kwargs):
 
 def _find_html_table_matches(text):
     """Find HTML table matches in the text"""
-    return re.findall("<table>[\s\S]*?</table>", text)
+    return re.findall(r"<table>[\s\S]*?</table>", text)
 
 
 def _find_dfs(text):

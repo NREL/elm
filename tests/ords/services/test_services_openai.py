@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pytest: unused-argument
 """Test ELM Ordinance openai services"""
 import time
 from pathlib import Path

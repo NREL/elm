@@ -2,7 +2,6 @@
 """Test ELM Ordinance retry utilities"""
 import time
 import random
-import asyncio
 from pathlib import Path
 
 import pytest

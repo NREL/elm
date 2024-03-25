@@ -42,8 +42,8 @@ def test_county_websites():
 
     websites = county_websites()
     assert len(websites) == len(load_all_county_info())
-    assert type(websites) == dict
-    assert all(type(key) == tuple for key in websites)
+    assert isinstance(websites, dict)
+    assert all(isinstance(key, tuple) for key in websites)
     assert all(len(key) == 2 for key in websites)
 
     # Spot checks:
@@ -79,7 +79,7 @@ def test_load_counties_from_fp_bad_input(tmp_path):
         load_counties_from_fp(test_county_fp)
 
     expected_msg = (
-        "The following required columns were not found in the county " "input:"
+        "The following required columns were not found in the county input:"
     )
     assert expected_msg in str(err)
     assert "County" in str(err)

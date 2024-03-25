@@ -59,7 +59,7 @@ class SetbackFeatures:
 
     def _validate_descriptions(self):
         """Ensure all features have at least one description."""
-        features_missing_descriptors = {}
+        features_missing_descriptors = set()
         for feature, descriptions in self.DEFAULT_FEATURE_DESCRIPTIONS.items():
             if len(descriptions) < 1:
                 features_missing_descriptors.add(feature)
