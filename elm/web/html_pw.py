@@ -50,19 +50,9 @@ async def _intercept_route(route):  # pragma: no cover
     Source: https://scrapfly.io/blog/how-to-block-resources-in-playwright/
     """
     if route.request.resource_type in BLOCK_RESOURCE_TYPES:
-        logger.debug(
-            "Blocking background resource %s blocked type %s",
-            route.request,
-            route.request.resource_type,
-        )
         return await route.abort()
 
     if any(key in route.request.url for key in BLOCK_RESOURCE_NAMES):
-        logger.debug(
-            "Blocking background resource %s blocked name %s",
-            route.request,
-            route.request.url,
-        )
         return await route.abort()
 
     return await route.continue_()
