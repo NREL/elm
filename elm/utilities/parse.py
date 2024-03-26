@@ -337,7 +337,7 @@ def remove_empty_lines_or_page_footers(text):
     return re.sub(r"[\n\r]+(?:\s*?\d*?\s*)[\n\r]+", "\n", text)
 
 
-def read_pdf(pdf_bytes):
+def read_pdf(pdf_bytes, verbose=True):
     """Read PDF contents from bytes.
 
     This method will automatically try to detect multi-column format
@@ -347,6 +347,8 @@ def read_pdf(pdf_bytes):
     ----------
     pdf_bytes : bytes
         Bytes corresponding to a PDF file.
+    verbose : bool, optional
+        Option to log errors during parsing. By default, ``True``.
 
     Returns
     -------
@@ -359,8 +361,9 @@ def read_pdf(pdf_bytes):
     try:
         pages = _load_pdf_possibly_multi_col(pdf_bytes)
     except pdftotext.Error as e:
-        logger.error("Failed to decode PDF content!")
-        logger.exception(e)
+        if verbose:
+            logger.error("Failed to decode PDF content!")
+            logger.exception(e)
         pages = []
 
     return pages
@@ -377,7 +380,7 @@ def _load_pdf_possibly_multi_col(pdf_bytes):
     return pages
 
 
-def read_pdf_ocr(pdf_bytes):  # pragma: no cover
+def read_pdf_ocr(pdf_bytes, verbose=True):  # pragma: no cover
     """Read PDF contents from bytes using Optical Character recognition (OCR).
 
     This method attempt to read the PDF document using OCR. This is one
@@ -397,6 +400,8 @@ def read_pdf_ocr(pdf_bytes):  # pragma: no cover
     ----------
     pdf_bytes : bytes
         Bytes corresponding to a PDF file.
+    verbose : bool, optional
+        Option to log errors during parsing. By default, ``True``.
 
     Returns
     -------
@@ -407,8 +412,9 @@ def read_pdf_ocr(pdf_bytes):  # pragma: no cover
     try:
         pages = _load_pdf_with_pytesseract(pdf_bytes)
     except Exception as e:
-        logger.error("Failed to decode PDF content!")
-        logger.exception(e)
+        if verbose:
+            logger.error("Failed to decode PDF content!")
+            logger.exception(e)
         pages = []
 
     return pages
