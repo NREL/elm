@@ -74,6 +74,7 @@ async def process_counties_with_openai(
     text_splitter_chunk_size=3000,
     text_splitter_chunk_overlap=300,
     num_urls_to_check_per_county=5,
+    max_num_concurrent_browsers=10,
     file_loader_kwargs=None,
     pytesseract_exe_fp=None,
     td_kwargs=None,
@@ -130,6 +131,12 @@ async def process_counties_with_openai(
     num_urls_to_check_per_county : int, optional
         Number of unique Google search result URL's to check for
         ordinance document. By default, ``5``.
+    max_num_concurrent_browsers : int, optional
+        Number of unique concurrent browser instances to open when
+        performing Google search. Setting this number too high on a
+        machine with limited processing can lead to increased timeouts
+        and therefore decreased quality of Google search results.
+        By default, ``10``.
     pytesseract_exe_fp : path-like, optional
         Path to pytesseract executable. If this option is specified, OCR
         parsing for PDf files will be enabled via pytesseract.
@@ -206,6 +213,12 @@ async def process_counties_with_openai(
         PDFLoader(**(ppe_kwargs or {})),
     ]
 
+    browser_semaphore = (
+        asyncio.Semaphore(max_num_concurrent_browsers)
+        if max_num_concurrent_browsers
+        else None
+    )
+
     async with log_listener as ll, RunningAsyncServices(services):
         tasks = []
         trackers = []
@@ -224,6 +237,7 @@ async def process_counties_with_openai(
                     text_splitter,
                     num_urls=num_urls_to_check_per_county,
                     file_loader_kwargs=file_loader_kwargs,
+                    browser_semaphore=browser_semaphore,
                     level=log_level,
                     llm_service=OpenAIService,
                     usage_tracker=usage_tracker,
@@ -293,6 +307,7 @@ async def download_docs_for_county_with_logging(
     text_splitter,
     num_urls=5,
     file_loader_kwargs=None,
+    browser_semaphore=None,
     level="INFO",
     **kwargs,
 ):
@@ -321,6 +336,10 @@ async def download_docs_for_county_with_logging(
         "pw_launch_kwargs" key in these will also be used to initialize
         the :class:`elm.web.google_search.PlaywrightGoogleLinkSearch`
         used for the google URL search. By default, ``None``.
+    browser_semaphore : asyncio.Semaphore, optional
+        Semaphore instance that can be used to limit the number of
+        playwright browsers open concurrently. If ``None``, no limits
+        are applied. By default, ``None``.
     level : str, optional
         Log level to set for retrieval logger. By default, ``"INFO"``.
     **kwargs
@@ -343,6 +362,7 @@ async def download_docs_for_county_with_logging(
                 text_splitter,
                 num_urls=num_urls,
                 file_loader_kwargs=file_loader_kwargs,
+                browser_semaphore=browser_semaphore,
                 **kwargs,
             ),
             name=county.full_name,
@@ -352,7 +372,12 @@ async def download_docs_for_county_with_logging(
 
 
 async def download_doc_for_county(
-    county, text_splitter, num_urls=5, file_loader_kwargs=None, **kwargs
+    county,
+    text_splitter,
+    num_urls=5,
+    file_loader_kwargs=None,
+    browser_semaphore=None,
+    **kwargs,
 ):
     """Download and parse ordinance document for a single county.
 
@@ -374,6 +399,10 @@ async def download_doc_for_county(
         "pw_launch_kwargs" key in these will also be used to initialize
         the :class:`elm.web.google_search.PlaywrightGoogleLinkSearch`
         used for the google URL search. By default, ``None``.
+    browser_semaphore : asyncio.Semaphore, optional
+        Semaphore instance that can be used to limit the number of
+        playwright browsers open concurrently. If ``None``, no limits
+        are applied. By default, ``None``.
     **kwargs
         Keyword-value pairs used to initialize an
         `elm.ords.llm.LLMCaller` instance.
@@ -391,6 +420,7 @@ async def download_doc_for_county(
         text_splitter,
         num_urls=num_urls,
         file_loader_kwargs=file_loader_kwargs,
+        browser_semaphore=browser_semaphore,
         **kwargs,
     )
     if doc is None:
