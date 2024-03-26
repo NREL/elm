@@ -34,6 +34,11 @@ class BaseDocument(ABC):
         self.pages = remove_blank_pages(pages)
         self.metadata = metadata or {}
 
+    @property
+    def empty(self):
+        """bool: ``True`` if the document contains no pages."""
+        return not self.pages
+
     @cached_property
     def raw_pages(self):
         """list: List of (a limited count of) raw pages"""
