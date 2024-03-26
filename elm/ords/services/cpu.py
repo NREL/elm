@@ -77,10 +77,20 @@ def _read_pdf(pdf_bytes, **kwargs):
     return PDFDocument(pages, **kwargs)
 
 
-def _read_pdf_ocr(pdf_bytes, **kwargs):
+def _read_pdf_ocr(pdf_bytes, tesseract_cmd, **kwargs):
     """Utility function that mimics `_read_pdf`."""
+    if tesseract_cmd:
+        _configure_pytesseract(tesseract_cmd)
+
     pages = read_pdf_ocr(pdf_bytes)
     return PDFDocument(pages, **kwargs)
+
+
+def _configure_pytesseract(tesseract_cmd):
+    """Set the tesseract_cmd"""
+    import pytesseract
+
+    pytesseract.pytesseract.tesseract_cmd = tesseract_cmd
 
 
 async def read_pdf_doc(pdf_bytes, **kwargs):
@@ -122,4 +132,11 @@ async def read_pdf_doc_ocr(pdf_bytes, **kwargs):
     elm.web.document.PDFDocument
         PDFDocument instances with pages loaded as text.
     """
-    return await PDFLoader.call(_read_pdf_ocr, pdf_bytes, **kwargs)
+    import pytesseract
+
+    return await PDFLoader.call(
+        _read_pdf_ocr,
+        pdf_bytes,
+        tesseract_cmd=pytesseract.pytesseract.tesseract_cmd,
+        **kwargs
+    )
