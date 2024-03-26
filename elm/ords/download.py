@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """ELM Ordinance county file downloading logic"""
+import pprint
 import asyncio
 import logging
 from itertools import zip_longest, chain
@@ -68,7 +69,18 @@ async def _load_docs(urls, text_splitter, **kwargs):
     }
     loader_kwargs.update(kwargs)
     file_loader = AsyncFileLoader(**loader_kwargs)
-    return await file_loader.fetch_all(*urls)
+    docs = await file_loader.fetch_all(*urls)
+
+    logger.debug(
+        "Loaded the following number of pages for docs: %s",
+        pprint.PrettyPrinter().pformat(
+            {
+                doc.metadata.get("source", "Unknown"): len(doc.pages)
+                for doc in docs
+            }
+        ),
+    )
+    return [doc for doc in docs if not doc.empty]
 
 
 async def _down_select_docs_correct_location(
