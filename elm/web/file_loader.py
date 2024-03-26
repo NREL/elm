@@ -10,6 +10,7 @@ from elm.utilities.parse import read_pdf
 from elm.web.document import PDFDocument, HTMLDocument
 from elm.web.html_pw import load_html_with_pw
 from elm.utilities.retry import async_retry_with_exponential_backoff
+from elm.exceptions import ELMRuntimeError
 
 
 logger = logging.getLogger(__name__)
@@ -175,7 +176,10 @@ class AsyncFileLoader:
         """Fetch a doc by trying pdf read, then HTML read, then PDF OCR"""
 
         async with aiohttp.ClientSession() as session:
-            url_bytes = await self._fetch_content_with_retry(url, session)
+            try:
+                url_bytes = await self._fetch_content_with_retry(url, session)
+            except ELMRuntimeError:
+                return PDFDocument(pages=[]), None
 
         doc = await self.pdf_read_coroutine(url_bytes, **self.pdf_read_kwargs)
         if doc.pages:
@@ -210,6 +214,9 @@ class AsyncFileLoader:
 
     async def _cache_doc(self, doc, raw_content):
         """Cache doc if user provided a coroutine"""
+        if doc.empty or not raw_content:
+            return doc
+
         if not self.file_cache_coroutine:
             return doc
 
