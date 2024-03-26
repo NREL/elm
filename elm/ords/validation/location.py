@@ -23,7 +23,7 @@ class FixedMessageValidator(ABC):
 
         Parameters
         ----------
-        structured_llm_caller : elm.ords.llm.StructuredLLMCaller
+        structured_llm_caller : :class:`elm.ords.llm.StructuredLLMCaller`
             StructuredLLMCaller instance. Used for structured validation
             queries.
         """
@@ -154,7 +154,7 @@ class CountyValidator:
 
         Parameters
         ----------
-        structured_llm_caller : elm.ords.llm.StructuredLLMCaller
+        structured_llm_caller : :class:`elm.ords.llm.StructuredLLMCaller`
             StructuredLLMCaller instance. Used for structured validation
             queries.
         score_thresh : float, optional
@@ -171,14 +171,14 @@ class CountyValidator:
 
         Parameters
         ----------
-        doc : elm.web.document.BaseDocument
+        doc : :class:`elm.web.document.BaseDocument`
             Document instance. Should contain a "source" key in the
             metadata that contains a URL (used for the URL validation
             check). Raw content will be parsed for county name and
             correct jurisdiction.
         county : str
             County that document should belong to.
-        state : _type_
+        state : str
             State corresponding to `county` input.
 
         Returns
@@ -187,6 +187,10 @@ class CountyValidator:
             `True` if the doc contents pertain to the input county.
             `False` otherwise.
         """
+        source = doc.metadata.get("source")
+        logger.debug(
+            "Validating document from source: %s", source or "Unknown"
+        )
         logger.debug("Checking for correct for jurisdiction...")
         jurisdiction_is_county = await _validator_check_for_doc(
             validator=self.cj_validator,
@@ -197,21 +201,29 @@ class CountyValidator:
         if not jurisdiction_is_county:
             return False
 
-        logger.debug("Checking URL for county name...")
+        logger.debug(
+            "Checking URL (%s) for county name...", source or "Unknown"
+        )
         url_is_county = await self.url_validator.check(
-            doc.metadata.get("source"), county=county, state=state
+            source, county=county, state=state
         )
         if url_is_county:
             return True
 
-        logger.debug("Checking text for county name (heuristic)...")
+        logger.debug(
+            "Checking text for county name (heuristic; URL: %s)...",
+            source or "Unknown",
+        )
         correct_county_heuristic = _heuristic_check_for_county_and_state(
             doc, county, state
         )
         if correct_county_heuristic:
             return True
 
-        logger.debug("Checking text for county name (LLM)...")
+        logger.debug(
+            "Checking text for county name (LLM; URL: %s)...",
+            source or "Unknown",
+        )
         return await _validator_check_for_doc(
             validator=self.cn_validator,
             doc=doc,
@@ -245,7 +257,15 @@ async def _validator_check_for_doc(validator, doc, score_thresh=0.8, **kwargs):
         for text in doc.raw_pages
     ]
     out = await asyncio.gather(*validation_checks)
-    return _weighted_vote(out, doc) > score_thresh
+    score = _weighted_vote(out, doc)
+    logger.debug(
+        "%s score is %.2f for doc from source %s (Pass: %s)",
+        validator.__class__.__name__,
+        score,
+        doc.metadata.get("source", "Unknown"),
+        str(score > score_thresh),
+    )
+    return score > score_thresh
 
 
 def _weighted_vote(out, doc):
