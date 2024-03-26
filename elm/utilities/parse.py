@@ -451,6 +451,11 @@ def _load_pdf_with_pytesseract(pdf_bytes):  # pragma: no cover
         warn(msg)
         return []
 
+    logger.debug(
+        "Loading PDF with `tesseract_cmd` as %s",
+        pytesseract.pytesseract.tesseract_cmd,
+    )
+
     return [
         str(pytesseract.image_to_string(page_data).encode("utf-8"))
         for page_data in convert_from_bytes(bytes(pdf_bytes))
