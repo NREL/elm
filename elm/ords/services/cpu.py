@@ -92,7 +92,7 @@ async def read_pdf_doc(pdf_bytes, **kwargs):
         Bytes containing PDF file.
     **kwargs
         Keyword-value arguments to pass to
-        :cls:`elm.web.document.PDFDocument` initializer.
+        :class:`elm.web.document.PDFDocument` initializer.
 
     Returns
     -------
@@ -115,7 +115,7 @@ async def read_pdf_doc_ocr(pdf_bytes, **kwargs):
         Bytes containing PDF file.
     **kwargs
         Keyword-value arguments to pass to
-        :cls:`elm.web.document.PDFDocument` initializer.
+        :class:`elm.web.document.PDFDocument` initializer.
 
     Returns
     -------

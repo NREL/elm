@@ -135,10 +135,10 @@ async def download_county_ordinance(
         ordinance document. By default, ``5``.
     file_loader_kwargs : dict, optional
         Dictionary of keyword-argument pairs to initialize
-        :cls:`elm.web.file_loader.AsyncFileLoader` with. The
+        :class:`elm.web.file_loader.AsyncFileLoader` with. The
         "pw_launch_kwargs" key in these will also be used to initialize
-        the :cls:`elm.web.google_search.PlaywrightGoogleLinkSearch` used
-        for the google URL search. By default, ``None``.
+        the :class:`elm.web.google_search.PlaywrightGoogleLinkSearch`
+        used for the google URL search. By default, ``None``.
     **kwargs
         Keyword-value pairs used to initialize an
         `elm.ords.llm.LLMCaller` instance.

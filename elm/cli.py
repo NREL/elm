@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# fmt: off
 """ELM Ordinances CLI."""
 import sys
 import json
@@ -20,9 +21,9 @@ def main(ctx):
 
 @main.command()
 @click.option("--config", "-c", required=True, type=click.Path(exists=True),
-              help=("Path to ordinance configuration JSON file. This file "
-                    "should contain all the arguments to pass to "
-                    "elm.ords.process.process_counties_with_openai"))
+              help="Path to ordinance configuration JSON file. This file "
+                   "should contain any/all the arguments to pass to "
+                   ":func:`elm.ords.process.process_counties_with_openai`.")
 @click.option("-v", "--verbose", is_flag=True,
               help="Flag to show logging on the terminal. Default is not "
                    "to show any logs on the terminal.")

@@ -176,7 +176,7 @@ class LocationFileLog:
 
         Parameters
         ----------
-        listener : :cls:`~elm.ords.utilities.queued_logging.LoggingListener`
+        listener : :class:`~elm.ords.utilities.queued_logging.LoggingListener`
             A listener instance. The file handler will be added to this
             listener.
         log_dir : path-like

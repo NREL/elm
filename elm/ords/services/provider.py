@@ -22,9 +22,9 @@ class _RunningProvider:
 
         Parameters
         ----------
-        service : :cls:`elm.ords.services.base.Service`
+        service : :class:`elm.ords.services.base.Service`
             An instance of a single async service to run.
-        queue : :cls:`asyncio.Queue`
+        queue : :class:`asyncio.Queue`
             Queue object for the running service.
         """
         self.service = service

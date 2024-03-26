@@ -157,7 +157,7 @@ class AsyncFileLoader:
 
         Returns
         -------
-        elm.web.document.Document
+        :class:`elm.web.document.Document`
             Document instance containing text, if the fetch was
             successful.
         """

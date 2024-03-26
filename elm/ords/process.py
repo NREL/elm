@@ -302,7 +302,7 @@ async def download_docs_for_county_with_logging(
     ----------
     listener : elm.ords.utilities.queued_logging.LogListener
         Active ``LogListener`` instance that can be passed to
-        :cls:`elm.ords.utilities.queued_logging.LocationFileLog`.
+        :class:`elm.ords.utilities.queued_logging.LocationFileLog`.
     log_dir : path-like
         Path to output directory to contain log file.
     county : elm.ords.utilities.location.Location
@@ -317,10 +317,10 @@ async def download_docs_for_county_with_logging(
         ordinance document. By default, ``5``.
     file_loader_kwargs : dict, optional
         Dictionary of keyword-argument pairs to initialize
-        :cls:`elm.web.file_loader.AsyncFileLoader` with. The
+        :class:`elm.web.file_loader.AsyncFileLoader` with. The
         "pw_launch_kwargs" key in these will also be used to initialize
-        the :cls:`elm.web.google_search.PlaywrightGoogleLinkSearch` used
-        for the google URL search. By default, ``None``.
+        the :class:`elm.web.google_search.PlaywrightGoogleLinkSearch`
+        used for the google URL search. By default, ``None``.
     level : str, optional
         Log level to set for retrieval logger. By default, ``"INFO"``.
     **kwargs
@@ -370,10 +370,10 @@ async def download_doc_for_county(
         ordinance document. By default, ``5``.
     file_loader_kwargs : dict, optional
         Dictionary of keyword-argument pairs to initialize
-        :cls:`elm.web.file_loader.AsyncFileLoader` with. The
+        :class:`elm.web.file_loader.AsyncFileLoader` with. The
         "pw_launch_kwargs" key in these will also be used to initialize
-        the :cls:`elm.web.google_search.PlaywrightGoogleLinkSearch` used
-        for the google URL search. By default, ``None``.
+        the :class:`elm.web.google_search.PlaywrightGoogleLinkSearch`
+        used for the google URL search. By default, ``None``.
     **kwargs
         Keyword-value pairs used to initialize an
         `elm.ords.llm.LLMCaller` instance.

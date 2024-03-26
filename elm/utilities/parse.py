@@ -273,7 +273,7 @@ def combine_pages(pages):
 def replace_common_pdf_conversion_chars(text):
     """Re-format text to remove common pdf-converter chars.
 
-    Chars affected include ``\r\n``, ``\r`` and ``\x0c``.
+    Chars affected include ``\\r\\n``, ``\\r`` and ``\\x0c``.
 
     Parameters
     ----------
@@ -305,7 +305,7 @@ def replace_multi_dot_lines(text):
 
 
 def replace_excessive_newlines(text):
-    """Replace instances of three or more newlines with "\n\n"
+    """Replace instances of three or more newlines with ``\\n\\n``
 
     Parameters
     ----------
@@ -386,9 +386,9 @@ def read_pdf_ocr(pdf_bytes):  # pragma: no cover
     Modules. Installation guides here:
 
         - `pytesseract`:
-        https://github.com/madmaze/pytesseract?tab=readme-ov-file#installation
+         https://github.com/madmaze/pytesseract?tab=readme-ov-file#installation
         - `pdf2image`:
-        https://github.com/Belval/pdf2image?tab=readme-ov-file#how-to-install
+         https://github.com/Belval/pdf2image?tab=readme-ov-file#how-to-install
 
     Windows users may also need to apply the fix described in this
     answer before they can use pytesseract: http://tinyurl.com/v9xr4vrj
