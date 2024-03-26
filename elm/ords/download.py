@@ -4,6 +4,7 @@ import pprint
 import asyncio
 import logging
 from itertools import zip_longest, chain
+from contextlib import AsyncExitStack
 
 from elm.ords.llm import StructuredLLMCaller
 from elm.ords.extraction import check_for_ordinance_info
@@ -25,20 +26,28 @@ QUESTION_TEMPLATES = [
 ]
 
 
-async def _search_single(location, question, num_results=10, **kwargs):
+async def _search_single(
+    location, question, browser_sem, num_results=10, **kwargs
+):
     """Perform a single google search."""
+    if browser_sem is None:
+        browser_sem = AsyncExitStack()
+
     search_engine = PlaywrightGoogleLinkSearch(**kwargs)
-    return await search_engine.results(
-        question.format(location=location),
-        num_results=num_results,
-    )
+    async with browser_sem:
+        return await search_engine.results(
+            question.format(location=location),
+            num_results=num_results,
+        )
 
 
-async def _find_urls(location, num_results=10, **kwargs):
+async def _find_urls(location, num_results=10, browser_sem=None, **kwargs):
     """Parse google search output for URLs."""
     searchers = [
         asyncio.create_task(
-            _search_single(location, q, num_results=num_results, **kwargs),
+            _search_single(
+                location, q, browser_sem, num_results=num_results, **kwargs
+            ),
             name=location,
         )
         for q in QUESTION_TEMPLATES
@@ -61,11 +70,12 @@ def _down_select_urls(search_results, num_urls=5):
     return urls
 
 
-async def _load_docs(urls, text_splitter, **kwargs):
+async def _load_docs(urls, text_splitter, browser_semaphore=None, **kwargs):
     """Load a document for each input URL."""
     loader_kwargs = {
         "html_read_kwargs": {"text_splitter": text_splitter},
         "file_cache_coroutine": TempFileCache.call,
+        "browser_semaphore": browser_semaphore,
     }
     loader_kwargs.update(kwargs)
     file_loader = AsyncFileLoader(**loader_kwargs)
@@ -129,7 +139,12 @@ def _ord_doc_sorting_key(doc):
 
 
 async def download_county_ordinance(
-    location, text_splitter, num_urls=5, file_loader_kwargs=None, **kwargs
+    location,
+    text_splitter,
+    num_urls=5,
+    file_loader_kwargs=None,
+    browser_semaphore=None,
+    **kwargs
 ):
     """Download the ordinance document for a single county.
 
@@ -151,6 +166,10 @@ async def download_county_ordinance(
         "pw_launch_kwargs" key in these will also be used to initialize
         the :class:`elm.web.google_search.PlaywrightGoogleLinkSearch`
         used for the google URL search. By default, ``None``.
+    browser_semaphore : asyncio.Semaphore, optional
+        Semaphore instance that can be used to limit the number of
+        playwright browsers open concurrently. If ``None``, no limits
+        are applied. By default, ``None``.
     **kwargs
         Keyword-value pairs used to initialize an
         `elm.ords.llm.LLMCaller` instance.
@@ -164,10 +183,16 @@ async def download_county_ordinance(
     file_loader_kwargs = file_loader_kwargs or {}
     pw_launch_kwargs = file_loader_kwargs.get("pw_launch_kwargs", {})
     urls = await _find_urls(
-        location.full_name, num_results=10, **pw_launch_kwargs
+        location.full_name,
+        num_results=10,
+        browser_sem=browser_semaphore,
+        **pw_launch_kwargs
     )
     urls = _down_select_urls(urls, num_urls=num_urls)
-    docs = await _load_docs(urls, text_splitter, **file_loader_kwargs)
+    logger.debug("Downloading documents for URLS: \n\t-%s", "\n\t-".join(urls))
+    docs = await _load_docs(
+        urls, text_splitter, browser_semaphore, **file_loader_kwargs
+    )
     docs = await _down_select_docs_correct_location(
         docs,
         location=location.full_name,
