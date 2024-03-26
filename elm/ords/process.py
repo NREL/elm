@@ -448,6 +448,7 @@ def _setup_pytesseract(exe_fp):
     """Set the pytesseract command."""
     import pytesseract
 
+    logger.debug("Setting `tesseract_cmd` to %s", exe_fp)
     pytesseract.pytesseract.tesseract_cmd = exe_fp
 
 
