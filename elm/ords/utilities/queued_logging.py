@@ -14,6 +14,29 @@ from logging.handlers import QueueHandler, QueueListener
 LOGGING_QUEUE = SimpleQueue()
 
 
+class NoLocationFilter(logging.Filter):
+    """Filter that catches all records without a location attribute."""
+
+    def filter(self, record):
+        """Filter logging record.
+
+        Parameters
+        ----------
+        record : logging.LogRecord
+            Log record containing the log message + default attributes.
+            If the ``location`` attribute is missing or is a string in
+            the form "Task-XX", the filter returns ``True`` (i.e. record
+            is emitted).
+
+        Returns
+        -------
+        bool
+            If the record's ``location`` attribute is "missing".
+        """
+        record_location = getattr(record, "location", None)
+        return record_location is None or "Task-" in record_location
+
+
 class LocationFilter(logging.Filter):
     """Filter down to logs from a coroutine processing a specific location."""
 
