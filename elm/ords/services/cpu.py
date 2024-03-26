@@ -73,7 +73,7 @@ class PDFLoader(ProcessPoolService):
 
 def _read_pdf(pdf_bytes, **kwargs):
     """Utility function so that pdftotext.PDF doesn't have to be pickled."""
-    pages = read_pdf(pdf_bytes)
+    pages = read_pdf(pdf_bytes, verbose=False)
     return PDFDocument(pages, **kwargs)
 
 
@@ -82,7 +82,7 @@ def _read_pdf_ocr(pdf_bytes, tesseract_cmd, **kwargs):
     if tesseract_cmd:
         _configure_pytesseract(tesseract_cmd)
 
-    pages = read_pdf_ocr(pdf_bytes)
+    pages = read_pdf_ocr(pdf_bytes, verbose=True)
     return PDFDocument(pages, **kwargs)
 
 
