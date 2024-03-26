@@ -56,6 +56,7 @@ class AsyncFileLoader:
         html_read_coroutine=None,
         pdf_ocr_read_coroutine=None,
         file_cache_coroutine=None,
+        browser_semaphore=None,
     ):
         """
 
@@ -107,6 +108,10 @@ class AsyncFileLoader:
             argument and the file content to be written as the second
             argument. If this method is not provided, no document
             caching is performed. By default, ``None``.
+        browser_semaphore : asyncio.Semaphore, optional
+            Semaphore instance that can be used to limit the number of
+            playwright browsers open concurrently. If ``None``, no
+            limits are applied. By default, ``None``.
         """
         self.pw_launch_kwargs = pw_launch_kwargs or {}
         self.pdf_read_kwargs = pdf_read_kwargs or {}
@@ -120,6 +125,7 @@ class AsyncFileLoader:
         self.html_read_coroutine = html_read_coroutine or _read_html_doc
         self.pdf_ocr_read_coroutine = pdf_ocr_read_coroutine
         self.file_cache_coroutine = file_cache_coroutine
+        self.browser_semaphore = browser_semaphore
 
     def _header_from_template(self, header_template):
         """Compile header from user or default template"""
@@ -185,7 +191,9 @@ class AsyncFileLoader:
         if doc.pages:
             return doc, url_bytes
 
-        text = await load_html_with_pw(url, **self.pw_launch_kwargs)
+        text = await load_html_with_pw(
+            url, self.browser_semaphore, **self.pw_launch_kwargs
+        )
         doc = await self.html_read_coroutine(text, **self.html_read_kwargs)
         if doc.pages:
             return doc, doc.text

@@ -4,6 +4,7 @@
 We use Playwright so that javascript text is rendered before we scrape.
 """
 import logging
+from contextlib import AsyncExitStack
 
 from playwright.async_api import async_playwright
 from playwright.async_api import Error as PlaywrightError
@@ -58,13 +59,19 @@ async def _intercept_route(route):  # pragma: no cover
     return await route.continue_()
 
 
-async def load_html_with_pw(url, **pw_launch_kwargs):  # pragma: no cover
+async def load_html_with_pw(  # pragma: no cover
+    url, browser_semaphore=None, **pw_launch_kwargs
+):
     """Extract HTML from URL using Playwright.
 
     Parameters
     ----------
     url : str
         URL to pull HTML for.
+    browser_semaphore : asyncio.Semaphore, optional
+        Semaphore instance that can be used to limit the number of
+        playwright browsers open concurrently. If ``None``, no limits
+        are applied. By default, ``None``.
     **pw_launch_kwargs
         Keyword-value argument pairs to pass to
         :meth:`async_playwright.chromium.launch`.
@@ -75,15 +82,18 @@ async def load_html_with_pw(url, **pw_launch_kwargs):  # pragma: no cover
         HTML from page.
     """
     try:
-        text = await _load_html(url, **pw_launch_kwargs)
+        text = await _load_html(url, browser_semaphore, **pw_launch_kwargs)
     except (PlaywrightError, PlaywrightTimeoutError):
         text = ""
     return text
 
 
-async def _load_html(url, **pw_launch_kwargs):  # pragma: no cover
+async def _load_html(  # pragma: no cover
+    url, browser_sem=None, **pw_launch_kwargs
+):
     """Load html using playwright"""
-    async with async_playwright() as p:
+    sem = AsyncExitStack() if browser_sem is None else browser_sem
+    async with async_playwright() as p, sem:
         browser = await p.chromium.launch(**pw_launch_kwargs)
         page = await browser.new_page()
         await page.route("**/*", _intercept_route)
