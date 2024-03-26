@@ -249,7 +249,11 @@ def _get_nominal_headers(pages, split_on, iheaders):
     ipage = np.argmin(np.abs(page_lens - median_len))
     page = pages[ipage]
     for i, ih in enumerate(iheaders):
-        headers[i] = page.split(split_on)[ih]
+        try:
+            header = page.split(split_on)[ih]
+        except IndexError:
+            header = ""
+        headers[i] = header
 
     return headers
 
