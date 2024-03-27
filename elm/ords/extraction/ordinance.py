@@ -211,25 +211,27 @@ class OrdinanceExtractor:
         "of the original text directly."
     )
     MODEL_INSTRUCTIONS_RESTRICTIONS = (
-        "Extract only text related to the restrictions of large wind energy "
-        f"systems with respect to any of the following:\n{RESTRICTIONS}"
+        "Extract one or more direct text excerpts related to the restrictions "
+        "of large wind energy systems with respect to any of the following:\n"
+        f"{RESTRICTIONS}"
         "Include section headers (if any) for the text excerpts. Also include "
-        "any text that defines what kind of large wind energy conversion "
-        "system the restriction applies to. If there is no text related to "
-        "siting restrictions of large wind systems, simply say: "
+        "any text excerpts that define what kind of large wind energy "
+        "conversion system the restriction applies to. If there is no text "
+        "related to siting restrictions of large wind systems, simply say: "
         '"No relevant text."'
     )
     MODEL_INSTRUCTIONS_SIZE = (
-        "Extract only text pertaining to large wind energy systems. Large "
-        "wind energy systems (WES) may also be referred to as wind turbines, "
-        "wind energy conversion systems (WECS), wind energy facilities (WEF), "
-        "wind energy turbines (WET), large wind energy turbines (LWET), "
-        "utility-scale wind energy turbines (UWET), or similar. Do not "
-        "return any text that only applies to private, micro, small, or "
-        "medium sized wind energy systems. Include section headers (if any) "
-        "for the text excerpts. Also include any text that defines what kind "
-        "of large wind energy conversion system the restriction applies to. "
-        "If there is no text pertaining to large wind systems, simply say: "
+        "Extract one or more direct text excerpts pertaining to large wind "
+        "energy systems. Large wind energy systems (WES) may also be referred "
+        "to as wind turbines, wind energy conversion systems (WECS), wind "
+        "energy facilities (WEF), wind energy turbines (WET), large wind "
+        "energy turbines (LWET), utility-scale wind energy turbines (UWET), "
+        "or similar. Do not return any text excerpts that only apply to "
+        "private, micro, small, or medium sized wind energy systems. Include "
+        "section headers (if any) for the text excerpts. Also include any "
+        "text excerpts that define what kind of large wind energy conversion "
+        "system the restriction applies to. If there is no text pertaining to "
+        "large wind systems, simply say: "
         '"No relevant text."'
     )
 
