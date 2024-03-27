@@ -8,6 +8,8 @@ import asyncio
 import logging
 from abc import ABC, abstractmethod
 
+from elm.ords.extraction.ngrams import convert_text_to_sentence_ngrams
+
 
 logger = logging.getLogger(__name__)
 
@@ -217,6 +219,10 @@ class CountyValidator:
         correct_county_heuristic = _heuristic_check_for_county_and_state(
             doc, county, state
         )
+        logger.debug(
+            "Found county name in text (heuristic): %s",
+            correct_county_heuristic,
+        )
         if correct_county_heuristic:
             return True
 
@@ -235,16 +241,13 @@ class CountyValidator:
 
 def _heuristic_check_for_county_and_state(doc, county, state):
     """Check if county and state names are in doc"""
-    if not any(county.lower() in t.lower() for t in doc.pages):
-        logger.debug("    - False, did not find %r in text", county)
-        return False
-
-    if not any(state.lower() in t.lower() for t in doc.pages):
-        logger.debug("    - False, did not find %r in text", state)
-        return False
-
-    logger.debug("    - True, found %s, %s in text", county, state)
-    return True
+    return any(
+        any(
+            (county.lower() in fg and state.lower() in fg)
+            for fg in convert_text_to_sentence_ngrams(t.lower(), 5)
+        )
+        for t in doc.pages
+    )
 
 
 async def _validator_check_for_doc(validator, doc, score_thresh=0.8, **kwargs):
