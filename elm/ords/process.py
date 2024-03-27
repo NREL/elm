@@ -26,6 +26,7 @@ from elm.ords.services.threaded import (
     TempFileCache,
     FileMover,
     CleanedFileWriter,
+    OrdDBFileWriter,
     UsageUpdater,
 )
 from elm.ords.services.cpu import PDFLoader, read_pdf_doc, read_pdf_doc_ocr
@@ -82,6 +83,7 @@ async def process_counties_with_openai(
     ppe_kwargs=None,
     log_dir=None,
     clean_dir=None,
+    county_dbs_dir=None,
     log_level="INFO",
 ):
     """Download and extract ordinances for a list of counties.
@@ -166,6 +168,11 @@ async def process_counties_with_openai(
         directory will be created if it does not exist. By default,
         ``None``, which creates a ``clean`` folder in the output
         directory for the cleaned ordinance text files.
+    county_dbs_dir : path-like, optional
+        Path to directory for individual county ordinance database
+        outputs. This directory will be created if it does not exist.
+        By default, ``None``, which creates a ``county_dbs`` folder in
+        the output directory.
     log_level : str, optional
         Log level to set for county retrieval and parsing loggers.
         By default, ``"INFO"``.
@@ -209,6 +216,7 @@ async def process_counties_with_openai(
         TempFileCache(td_kwargs=td_kwargs, tpe_kwargs=tpe_kwargs),
         FileMover(out_dir, tpe_kwargs=tpe_kwargs),
         CleanedFileWriter(clean_dir, tpe_kwargs=tpe_kwargs),
+        OrdDBFileWriter(county_dbs_dir, tpe_kwargs=tpe_kwargs),
         UsageUpdater(out_dir / "usage.json", tpe_kwargs=tpe_kwargs),
         PDFLoader(**(ppe_kwargs or {})),
     ]
@@ -256,15 +264,18 @@ async def process_counties_with_openai(
     return db
 
 
-def _setup_folders(out_dir, log_dir=None, clean_dir=None):
+def _setup_folders(out_dir, log_dir=None, clean_dir=None, county_dbs_dir=None):
     """Setup output directory folders."""
     out_dir = Path(out_dir)
     log_dir = Path(log_dir) if log_dir else out_dir / "logs"
     clean_dir = Path(clean_dir) if clean_dir else out_dir / "clean"
+    county_dbs_dir = (
+        Path(county_dbs_dir) if county_dbs_dir else out_dir / "county_dbs"
+    )
 
-    for folder in [out_dir, log_dir, clean_dir]:
+    for folder in [out_dir, log_dir, clean_dir, county_dbs_dir]:
         folder.mkdir(exist_ok=True, parents=True)
-    return out_dir, log_dir, clean_dir
+    return out_dir, log_dir, clean_dir, county_dbs_dir
 
 
 def _load_counties_to_process(county_fp):
@@ -431,7 +442,6 @@ async def download_doc_for_county(
     doc.metadata["location_name"] = county.full_name
     await _record_usage(**kwargs)
 
-    doc = await _move_file_to_out_dir(doc)
     doc = await extract_ordinance_text_with_ngram_validation(
         doc, text_splitter, **kwargs
     )
@@ -439,6 +449,11 @@ async def download_doc_for_county(
 
     doc = await _write_cleaned_text(doc)
     doc = await extract_ordinance_values(doc, **kwargs)
+
+    if _doc_contains_ord_values(doc):
+        doc = await _move_file_to_out_dir(doc)
+        doc = await _write_ord_db(doc)
+
     await _record_time_and_usage(start_time, **kwargs)
     return doc
 
@@ -471,6 +486,13 @@ async def _write_cleaned_text(doc):
     """Write cleaned text to `clean_dir`."""
     out_fp = await CleanedFileWriter.call(doc)
     doc.metadata["cleaned_fp"] = out_fp
+    return doc
+
+
+async def _write_ord_db(doc):
+    """Write cleaned text to `county_dbs_dir`."""
+    out_fp = await OrdDBFileWriter.call(doc)
+    doc.metadata["ord_db_fp"] = out_fp
     return doc
 
 
