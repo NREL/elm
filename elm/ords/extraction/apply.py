@@ -167,11 +167,11 @@ async def extract_ordinance_text_with_ngram_validation(
         ``"cleaned_ordinance_text"`` key that will contain the cleaned
         ordinance text.
     """
-    if "ordinance_text" not in doc.metadata:
+    if not doc.metadata.get("ordinance_text"):
         msg = (
-            "Input document has no 'ordinance_text' key in metadata. "
-            "Please run `check_for_ordinance_info` prior to calling this "
-            "method."
+            "Input document has no 'ordinance_text' key or string does not "
+            "contain information. Please run `check_for_ordinance_info` "
+            "prior to calling this method."
         )
         logger.warning(msg)
         warn(msg, UserWarning)
@@ -263,11 +263,11 @@ async def extract_ordinance_values(doc, **kwargs):
         particular, the metadata will contain an ``"ordinance_values"``
         key that will contain the DataFame with ordinance values.
     """
-    if "cleaned_ordinance_text" not in doc.metadata:
+    if not doc.metadata.get("cleaned_ordinance_text"):
         msg = (
-            "Input document has no 'cleaned_ordinance_text' key in metadata. "
-            "Please run `extract_ordinance_text` prior to calling this "
-            "method."
+            "Input document has no 'cleaned_ordinance_text' key or string "
+            "does not contain info. Please run `extract_ordinance_text` "
+            "prior to calling this method."
         )
         logger.warning(msg)
         warn(msg, UserWarning)
