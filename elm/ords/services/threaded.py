@@ -31,7 +31,7 @@ def _move_file(doc, out_dir):
 
 
 def _write_cleaned_file(doc, out_dir):
-    """Move a file from a temp directory to an output directory."""
+    """Write cleaned ordinance text to directory."""
     cleaned_text = doc.metadata.get("cleaned_ordinance_text")
     location_name = doc.metadata.get("location_name")
 
@@ -44,9 +44,23 @@ def _write_cleaned_file(doc, out_dir):
     return out_fp
 
 
+def _write_ord_db(doc, out_dir):
+    """Write parsed ordinance database to directory."""
+    ord_db = doc.metadata.get("ordinance_values")
+    location_name = doc.metadata.get("location_name")
+
+    if ord_db is None or location_name is None:
+        return
+
+    out_fp = Path(out_dir) / f"{location_name} Ordinances.csv"
+    ord_db.to_csv(out_fp, index=False)
+    return out_fp
+
+
 _PROCESSING_FUNCTIONS = {
     "move": _move_file,
     "write_clean": _write_cleaned_file,
+    "write_db": _write_ord_db,
 }
 
 
@@ -210,6 +224,12 @@ class CleanedFileWriter(StoreFileOnDisk):
     """Service that writes cleaned text to a file"""
 
     _PROCESS = "write_clean"
+
+
+class OrdDBFileWriter(StoreFileOnDisk):
+    """Service that writes cleaned text to a file"""
+
+    _PROCESS = "write_db"
 
 
 class UsageUpdater(ThreadedService):
