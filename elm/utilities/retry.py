@@ -74,9 +74,10 @@ def retry_with_exponential_backoff(
                 except errors as e:
                     num_retries = _handle_retries(num_retries, max_retries, e)
                     delay = _compute_delay(delay, exponential_base, jitter)
-                    logger.debug(
-                        f"Error: {e}.\nRetrying in {delay:.2f} seconds."
+                    logger.info(
+                        "Error: %s. Retrying in %.2f seconds.", str(e), delay
                     )
+                    kwargs = _double_timeout(**kwargs)
                     time.sleep(delay)
 
         return wrapper
@@ -144,9 +145,10 @@ def async_retry_with_exponential_backoff(
                 except errors as e:
                     num_retries = _handle_retries(num_retries, max_retries, e)
                     delay = _compute_delay(delay, exponential_base, jitter)
-                    logger.debug(
-                        f"Error: {e}.\nRetrying in {delay:.2f} seconds."
+                    logger.info(
+                        "Error: %s. Retrying in %.2f seconds.", str(e), delay
                     )
+                    kwargs = _double_timeout(**kwargs)
                     await asyncio.sleep(delay)
 
         return wrapper
@@ -166,3 +168,19 @@ def _handle_retries(num_retries, max_retries, error):
 def _compute_delay(delay, exponential_base, jitter):
     """Compute the next delay time"""
     return delay * exponential_base * (1 + jitter * random.random())
+
+
+def _double_timeout(**kwargs):
+    """Double timeout parameter if it exists in kwargs."""
+    if "timeout" not in kwargs:
+        return kwargs
+
+    prev_timeout = kwargs["timeout"]
+    logger.info(
+        "Detected 'timeout' key in kwargs. Doubling this input from "
+        "%.2f to %.2f for next iteration.",
+        prev_timeout,
+        prev_timeout * 2,
+    )
+    kwargs["timeout"] = prev_timeout * 2
+    return kwargs
