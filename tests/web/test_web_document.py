@@ -43,9 +43,12 @@ def test_pdf_doc():
     doc = PDFDocument(pdf)
 
     assert 0 < len(doc.text) < len(og_text)
-    for phrase in ["\r\n", "9/13/23, 11:23 AM"]:
-        assert phrase in og_text
-        assert phrase not in doc.text
+
+    assert "9/13/23, 11:23 AM" in og_text
+    assert "9/13/23, 11:23 AM" not in doc.text
+
+    assert "\r\n" in og_text or "\n\n" in og_text
+    assert "\r\n" not in doc.text and "\n\n" not in doc.text
 
     assert doc.num_raw_pages_to_keep == 7
     assert doc._last_page_index == -2
