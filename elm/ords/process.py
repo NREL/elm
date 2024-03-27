@@ -65,6 +65,15 @@ OUT_COLS = [
     "comment",
 ]
 
+CHECK_COLS = [
+    "fixed_value",
+    "mult_value",
+    "adder",
+    "min_dist",
+    "max_dist",
+    "value",
+]
+
 
 async def process_counties_with_openai(
     out_dir,
@@ -596,14 +605,33 @@ def _record_total_time(fp, seconds_elapsed):
     logger.info("Total processing time: %s", total_time_str)
 
 
+def _doc_contains_ord_values(doc):
+    """Check if doc contains any scraped ordinance values."""
+    if doc is None:
+        return False
+
+    if "ordinance_values" not in doc.metadata:
+        return False
+
+    ord_vals = doc.metadata["ordinance_values"]
+    if ord_vals.empty:
+        return False
+
+    check_cols = [col for col in CHECK_COLS if col in ord_vals]
+    if not check_cols:
+        return False
+
+    return not ord_vals[check_cols].isna().values.all()
+
+
 def _docs_to_db(docs):
     """Convert list of docs to output database."""
     db = []
     for doc in docs:
-        if doc is None:
+        if doc is None or isinstance(doc, Exception):
             continue
 
-        if "ordinance_values" not in doc.metadata:
+        if not _doc_contains_ord_values(doc):
             continue
 
         results = _db_results(doc)
