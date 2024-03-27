@@ -624,7 +624,7 @@ def _db_results(doc):
     if results is None:
         return None
 
-    results["source"] = doc.metadata.get("sources")
+    results["source"] = doc.metadata.get("source")
     year = doc.metadata.get("date", (None, None, None))[0]
     results["ord_year"] = year if year is not None and year > 0 else None
     results["last_updated"] = datetime.now().strftime("%m/%d/%Y")
