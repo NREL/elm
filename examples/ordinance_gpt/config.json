@@ -1,0 +1,25 @@
+{
+    "out_dir": ".",
+    "county_fp": "counties.csv",
+    "model": "gpt-4",
+    "azure_api_key": "<ADD AZURE OPENAI API KEY HERE>",
+    "azure_version": "<ADD AZURE OPENAI VERSION HERE>",
+    "azure_endpoint": "<ADD AZURE OPENAI ENDPOINT HERE>",
+    "llm_call_kwargs":{
+        "temperature": 0,
+        "seed": 42,
+        "timeout": 300
+    },
+    "llm_service_rate_limit": 50000,
+    "td_kwargs": {
+        "dir": "."
+    },
+    "tpe_kwargs": {
+        "max_workers": 10
+    },
+    "ppe_kwargs": {
+        "max_workers": 4
+    },
+    "pytesseract_exe_fp": "<Add tesseract.exe PATH HERE OR REMOVE THIS KEY>",
+    "log_level": "INFO"
+}
