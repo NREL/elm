@@ -203,37 +203,68 @@ async def _extract_with_ngram_check(
     """Extract ordinance info from doc and validate using ngrams."""
     from elm.ords.extraction.ngrams import sentence_ngram_containment
 
+    source = doc.metadata.get("source", "Unknown")
+    og_text = doc.metadata["ordinance_text"]
+    if not og_text:
+        msg = (
+            "Document missing original ordinance text! No extraction "
+            "performed (Document source: %s)",
+            source,
+        )
+        logger.warning(msg)
+        warn(msg, UserWarning)
+        return doc
+
+    best_score = 0
+    best_summary = ""
     for attempt in range(num_tries):
         doc = await extract_ordinance_text_with_llm(
             doc, text_splitter, extractor
         )
+        cleaned_text = doc.metadata["cleaned_ordinance_text"]
+        if not cleaned_text:
+            logger.debug(
+                "No cleaned text found after extraction on attempt %d "
+                "for document with source %s. Retrying...",
+                attempt,
+                source,
+            )
+            continue
+
         ngram_frac = sentence_ngram_containment(
-            original=doc.metadata["ordinance_text"],
-            test=doc.metadata["cleaned_ordinance_text"],
-            n=n,
+            original=og_text, test=cleaned_text, n=n
         )
         if ngram_frac >= ngram_fraction_threshold:
             logger.debug(
                 "Document extraction passed ngram check on attempt %d "
-                "with score %.2f",
+                "with score %.2f (Document source: %s)",
                 attempt + 1,
                 ngram_frac,
+                source,
             )
             break
+
+        if ngram_frac > best_score:
+            best_score = ngram_frac
+            best_summary = cleaned_text
+
         logger.debug(
             "Document extraction failed ngram check on attempt %d "
-            "with score %.2f. Retrying...",
+            "with score %.2f (Document source: %s). Retrying...",
             attempt + 1,
             ngram_frac,
+            source,
         )
     else:
+        doc.metadata["cleaned_ordinance_text"] = best_summary
         msg = (
             f"Ngram check failed after {num_tries}. LLM hallucination in "
             "cleaned ordinance text is extremely likely! Proceed with "
-            "caution!!"
+            f"caution!! (Document source: {best_score})"
         )
         logger.warning(msg)
         warn(msg, UserWarning)
+
     return doc
 
 
