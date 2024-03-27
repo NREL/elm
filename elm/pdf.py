@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
+# fmt: off
 """
 ELM PDF to text parser
 """
 import os
 import subprocess
-import numpy as np
 import requests
 import tempfile
 import copy
@@ -12,6 +12,7 @@ from PyPDF2 import PdfReader
 import logging
 
 from elm.base import ApiBase
+from elm.utilities.parse import is_multi_col, combine_pages, clean_headers
 
 
 logger = logging.getLogger(__name__)
@@ -49,7 +50,7 @@ class PDFtoTXT(ApiBase):
         self.fp = fp
         self.raw_pages = self.load_pdf(page_range)
         self.pages = self.raw_pages
-        self.full = self.combine_pages(self.raw_pages)
+        self.full = combine_pages(self.raw_pages)
 
     def load_pdf(self, page_range):
         """Basic load of pdf to text strings
@@ -148,7 +149,7 @@ class PDFtoTXT(ApiBase):
         logger.info('Finished cleaning PDF.')
 
         self.pages = clean_pages
-        self.full = self.combine_pages(self.pages)
+        self.full = combine_pages(self.pages)
         self.validate_clean()
 
         return clean_pages
@@ -200,7 +201,7 @@ class PDFtoTXT(ApiBase):
         logger.info('Finished cleaning PDF.')
 
         self.pages = clean_pages
-        self.full = self.combine_pages(self.pages)
+        self.full = combine_pages(self.pages)
         self.validate_clean()
 
         return clean_pages
@@ -218,12 +219,7 @@ class PDFtoTXT(ApiBase):
         out : bool
             True if more than one vertical text column
         """
-        lines = self.full.split('\n')
-        n_cols = np.zeros(len(lines))
-        for i, line in enumerate(lines):
-            columns = line.strip().split(separator)
-            n_cols[i] = len(columns)
-        return np.median(n_cols) >= 2
+        return is_multi_col(self.full, separator=separator)
 
     def clean_poppler(self, layout=True):
         """Clean the pdf using the poppler pdftotxt utility
@@ -283,7 +279,7 @@ class PDFtoTXT(ApiBase):
         for i in remove[::-1]:
             _ = self.pages.pop(i)
 
-        self.full = self.combine_pages(self.pages)
+        self.full = combine_pages(self.pages)
 
         return self.full
 
@@ -325,55 +321,6 @@ class PDFtoTXT(ApiBase):
                             .format(i + 1, len(self.raw_pages), perc,
                                     len(raw_words)))
 
-    @staticmethod
-    def combine_pages(pages):
-        """Combine pages of GPT cleaned text into a single string.
-
-        Parameters
-        ----------
-        pages : list
-            List of clean text strings where each list entry is a page from the
-            PDF
-
-        Returns
-        -------
-        full : str
-            Single multi-page string
-        """
-        full = '\n'.join(pages)
-        full = full.replace('\n•', '-')
-        full = full.replace('•', '-')
-        return full
-
-    def _get_nominal_headers(self, split_on, iheaders):
-        """Get nominal headers from a standard page. Aim for a "typical" page
-        that is likely to have a normal header, not the first or last.
-
-        Parameters
-        ----------
-        split_on : str
-            Chars to split lines of a page on
-        iheaders : list | tuple
-            Integer indices to look for headers after splitting a page into
-            lines based on split_on. This needs to go from the start of the
-            page to the end.
-
-        Returns
-        -------
-        headers : list
-            List of headers where each entry is a string header
-        """
-
-        headers = [None] * len(iheaders)
-        page_lens = np.array([len(p) for p in self.pages])
-        median_len = np.median(page_lens)
-        ipage = np.argmin(np.abs(page_lens - median_len))
-        page = self.pages[ipage]
-        for i, ih in enumerate(iheaders):
-            headers[i] = page.split(split_on)[ih]
-
-        return headers
-
     def clean_headers(self, char_thresh=0.6, page_thresh=0.8, split_on='\n',
                       iheaders=(0, 1, -2, -1)):
         """Clean headers/footers that are duplicated across pages
@@ -398,49 +345,8 @@ class PDFtoTXT(ApiBase):
         out : str
             Clean text with all pages joined
         """
-        logger.info('Cleaning headers')
-        headers = self._get_nominal_headers(split_on, iheaders)
-        tests = np.zeros((len(self.pages), len(headers)))
-
-        for ip, page in enumerate(self.pages):
-            for ih, header in zip(iheaders, headers):
-                pheader = ''
-                try:
-                    pheader = page.split(split_on)[ih]
-                except IndexError:
-                    pass
-
-                harr = header.replace(' ', '')
-                parr = pheader.replace(' ', '')
-
-                harr = harr.ljust(len(parr))
-                parr = parr.ljust(len(harr))
-
-                harr = np.array([*harr])
-                parr = np.array([*parr])
-                assert len(harr) == len(parr)
-
-                test = harr == parr
-                if len(test) == 0:
-                    test = 1.0
-                else:
-                    test = test.sum() / len(test)
-
-                tests[ip, ih] = test
-
-        logger.debug('Header tests (page, iheader): \n{}'.format(tests))
-        tests = (tests > char_thresh).sum(axis=0) / len(self.pages)
-        tests = (tests > page_thresh)
-        logger.debug('Header tests (iheader,): \n{}'.format(tests))
-
-        for ip, page in enumerate(self.pages):
-            page = page.split(split_on)
-            for i, iheader in enumerate(iheaders):
-                if tests[i] and len(page) > np.abs(iheader):
-                    _ = page.pop(iheader)
-
-            page = split_on.join(page)
-            self.pages[ip] = page
-
-        self.full = self.combine_pages(self.pages)
+        self.pages = clean_headers(self.pages, char_thresh=char_thresh,
+                                   page_thresh=page_thresh, split_on=split_on,
+                                   iheaders=iheaders)
+        self.full = combine_pages(self.pages)
         return self.full
