@@ -36,8 +36,11 @@ from elm.ords.utilities import (
     load_counties_from_fp,
 )
 from elm.ords.utilities.location import County
-from elm.ords.utilities.queued_logging import LocationFileLog, LogListener
-
+from elm.ords.utilities.queued_logging import (
+    LocationFileLog,
+    LogListener,
+    NoLocationFilter,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -184,9 +187,65 @@ async def process_counties_with_openai(
         be stored in the output directory under "wind_db.csv".
     """
     start_time = time.time()
-    out_dir, log_dir, clean_dir = _setup_folders(
+    log_listener = LogListener(["elm"], level=log_level)
+    out_dir, log_dir, clean_dir, county_dbs_dir = _setup_folders(
         out_dir, log_dir=log_dir, clean_dir=clean_dir
     )
+    async with log_listener as ll:
+        _setup_main_logging(log_dir, log_level, ll)
+        db = await _process_with_logs(
+            out_dir,
+            log_dir,
+            clean_dir,
+            county_dbs_dir,
+            ll,
+            county_fp=county_fp,
+            model=model,
+            azure_api_key=azure_api_key,
+            azure_version=azure_version,
+            azure_endpoint=azure_endpoint,
+            llm_call_kwargs=llm_call_kwargs,
+            llm_service_rate_limit=llm_service_rate_limit,
+            text_splitter_chunk_size=text_splitter_chunk_size,
+            text_splitter_chunk_overlap=text_splitter_chunk_overlap,
+            num_urls_to_check_per_county=num_urls_to_check_per_county,
+            max_num_concurrent_browsers=max_num_concurrent_browsers,
+            file_loader_kwargs=file_loader_kwargs,
+            pytesseract_exe_fp=pytesseract_exe_fp,
+            td_kwargs=td_kwargs,
+            tpe_kwargs=tpe_kwargs,
+            ppe_kwargs=ppe_kwargs,
+            log_level=log_level,
+        )
+    _record_total_time(out_dir / "usage.json", time.time() - start_time)
+    return db
+
+
+async def _process_with_logs(
+    out_dir,
+    log_dir,
+    clean_dir,
+    county_dbs_dir,
+    log_listener,
+    county_fp=None,
+    model="gpt-4",
+    azure_api_key=None,
+    azure_version=None,
+    azure_endpoint=None,
+    llm_call_kwargs=None,
+    llm_service_rate_limit=4000,
+    text_splitter_chunk_size=3000,
+    text_splitter_chunk_overlap=300,
+    num_urls_to_check_per_county=5,
+    max_num_concurrent_browsers=10,
+    file_loader_kwargs=None,
+    pytesseract_exe_fp=None,
+    td_kwargs=None,
+    tpe_kwargs=None,
+    ppe_kwargs=None,
+    log_level="INFO",
+):
+    """Process counties with logging enabled."""
     counties = _load_counties_to_process(county_fp)
     azure_api_key, azure_version, azure_endpoint = _validate_api_params(
         azure_api_key, azure_version, azure_endpoint
@@ -209,7 +268,6 @@ async def process_counties_with_openai(
         api_version=azure_version,
         azure_endpoint=azure_endpoint,
     )
-    log_listener = LogListener(["elm"], level=log_level)
 
     services = [
         OpenAIService(client, rate_limit=llm_service_rate_limit),
@@ -227,7 +285,7 @@ async def process_counties_with_openai(
         else None
     )
 
-    async with log_listener as ll, RunningAsyncServices(services):
+    async with RunningAsyncServices(services):
         tasks = []
         trackers = []
         for __, row in counties.iterrows():
@@ -239,7 +297,7 @@ async def process_counties_with_openai(
             trackers.append(usage_tracker)
             task = asyncio.create_task(
                 download_docs_for_county_with_logging(
-                    ll,
+                    log_listener,
                     log_dir,
                     location,
                     text_splitter,
@@ -259,9 +317,15 @@ async def process_counties_with_openai(
 
     db = _docs_to_db(docs)
     db.to_csv(out_dir / "wind_db.csv", index=False)
-
-    _record_total_time(out_dir / "usage.json", time.time() - start_time)
     return db
+
+
+def _setup_main_logging(log_dir, level, listener):
+    """Setup main logger for catching exceptions during execution."""
+    handler = logging.FileHandler(log_dir / "main.log", encoding="utf-8")
+    handler.setLevel(level)
+    handler.addFilter(NoLocationFilter())
+    listener.addHandler(handler)
 
 
 def _setup_folders(out_dir, log_dir=None, clean_dir=None, county_dbs_dir=None):
@@ -378,7 +442,17 @@ async def download_docs_for_county_with_logging(
             ),
             name=county.full_name,
         )
-        doc, *__ = await asyncio.gather(task)
+        try:
+            doc, *__ = await asyncio.gather(task)
+        except KeyboardInterrupt:
+            raise
+        except Exception as e:
+            logger.error(
+                "Encountered error while processing %s:", county.full_name
+            )
+            logger.exception(e)
+            doc = None
+
         return doc
 
 
