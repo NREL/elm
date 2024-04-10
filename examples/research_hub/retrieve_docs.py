@@ -39,20 +39,68 @@ ChunkAndEmbed.HEADERS = {"Content-Type": "application/json",
 
 
 def is_technical_report(row):
+    """
+    Description
+    ----------
+    Determines if a row in meta dataframe is a technical
+    report and has a pdf url.
+
+    Parameters
+    ----------
+    row: index
+        Row of dataframe
+
+    Returns
+    ----------
+    True or False
+    """
     return (row['category'] == 'Technical Report'
             and row['pdf_url'].endswith('.pdf'))
 
+
 def get_filename(row):
+    """
+    Description
+    ----------
+    Creates filename for a row of dataframe. Determined
+    by entry category and whether or not a pdf exists.
+
+    Parameters
+    ----------
+    row: index
+        Row of dataframe
+
+    Returns
+    ----------
+    filename: str
+    """
     if is_technical_report(row):
         return os.path.basename(row['pdf_url'])
     else:
         return os.path.basename(row['url']) + '_abstract.txt'
 
+
 def get_filepath(row):
+    """
+    Description
+    ----------
+    Creates file path for a row of dataframe. Determined
+    by entry category and whether or not a pdf exists.
+
+    Parameters
+    ----------
+    row: index
+        Row of dataframe
+
+    Returns
+    ----------
+    file path: str
+    """
     if is_technical_report(row):
         return PDF_DIR + row['fn']
     else:
         return TXT_DIR + row['fn']
+
 
 PDF_DIR = './pdfs/'
 TXT_DIR = './txt/'
@@ -71,18 +119,6 @@ if __name__ == '__main__':
 
     profiles_meta = rp.build_meta()
     pubs_meta = pubs.build_meta()
-
-    # pubs_meta['fn'] = pubs_meta.apply(lambda row:
-    #                                   os.path.basename(row['pdf_url'])
-    #                                   if row['category'] == 'Technical Report'
-    #                                   and row['pdf_url'].endswith('.pdf')
-    #                                   else os.path.basename(row['url'])
-    #                                   + '_abstract.txt', axis=1)
-    # pubs_meta['fp'] = pubs_meta.apply(lambda row:
-    #                                   PDF_DIR + row['fn']
-    #                                   if row['category'] == 'Technical Report'
-    #                                   and row['pdf_url'].endswith('.pdf')
-    #                                   else TXT_DIR + row['fn'], axis=1)
 
     pubs_meta['fn'] = pubs_meta.apply(get_filename, axis=1)
     pubs_meta['fp'] = pubs_meta.apply(get_filepath, axis=1)
