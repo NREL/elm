@@ -208,7 +208,7 @@ class ResearchOutputs():
             else:
                 logger.info('{} has already been downloaded'.format(fn))
         elif not pdf_url.endswith('.pdf'):
-            parent_url = soup_inst.find(property= "og:url")['content']
+            parent_url = soup_inst.find(property="og:url")['content']
             fn = os.path.basename(parent_url) + '_abstract.txt'
             logger.info('No PDF file for {}. Processing abstract.'.format(fn))
             self.scrape_abstract(txt_dir, fn, soup_inst)
@@ -262,7 +262,7 @@ class ResearchOutputs():
         os.makedirs(txt_dir, exist_ok=True)
         url_list = self.all_links[:20]  # quantity control here #
 
-        for i, pub in enumerate(url_list):
+        for pub in url_list:
             with urlopen(pub) as page:
                 html = page.read().decode("utf-8")
             pubs_soup = BeautifulSoup(html, "html.parser")
@@ -276,7 +276,7 @@ class ResearchOutputs():
                 self.scrape_abstract(txt_dir, fn, pubs_soup)
 
         return logger.info('Finished processing publications')
-  
+
 
 class ResearcherProfiles():
     """

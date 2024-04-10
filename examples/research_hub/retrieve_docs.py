@@ -55,12 +55,14 @@ if __name__ == '__main__':
     profiles_meta = rp.build_meta()
     pubs_meta = pubs.build_meta()
 
-    pubs_meta['fn'] = pubs_meta.apply(lambda row: os.path.basename(row['pdf_url'])
+    pubs_meta['fn'] = pubs_meta.apply(lambda row:
+                                      os.path.basename(row['pdf_url'])
                                       if row['category'] == 'Technical Report'
                                       and row['pdf_url'].endswith('.pdf')
-                                      else os.path.basename(row['url']) +
-                                      '_abstract.txt', axis=1)
-    pubs_meta['fp'] = pubs_meta.apply(lambda row: PDF_DIR + row['fn']
+                                      else os.path.basename(row['url'])
+                                      + '_abstract.txt', axis=1)
+    pubs_meta['fp'] = pubs_meta.apply(lambda row:
+                                      PDF_DIR + row['fn']
                                       if row['category'] == 'Technical Report'
                                       and row['pdf_url'].endswith('.pdf')
                                       else TXT_DIR + row['fn'], axis=1)
@@ -94,7 +96,7 @@ if __name__ == '__main__':
                 with open(txt_fp, 'r') as f:
                     text = f.read()
             except UnicodeDecodeError as e:
-                with open(txt_fp, 'r',  encoding='cp1252') as f:
+                with open(txt_fp, 'r', encoding='cp1252') as f:
                     text = f.read()
             except Exception as e:
                 logger.info(f'Could not open {txt_fp}.')
@@ -105,13 +107,13 @@ if __name__ == '__main__':
                 if pdf_obj.is_double_col():
                     text = pdf_obj.clean_poppler(layout=False)
                 text = pdf_obj.clean_headers(char_thresh=0.6, page_thresh=0.8,
-                                            split_on='\n',
-                                            iheaders=[0, 1, 3, -3, -2, -1])
+                                             split_on='\n',
+                                             iheaders=[0, 1, 3, -3, -2, -1])
                 with open(txt_fp, 'w') as f:
                     f.write(text)
                 logger.info(f'Saved: {txt_fp}')
             except Exception as e:
-                logger.info('Failed to convert {} to text.'\
+                logger.info('Failed to convert {} to text. '
                             'With error: {}.'.format(fp, e))
                 continue
 
