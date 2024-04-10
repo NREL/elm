@@ -1,6 +1,6 @@
-*****************
-The Energy Wizard: Research Hub
-*****************
+**************
+The Energy Wizard
+**************
 
 This example demonstrates how to scrape publication abstracts and researcher profiles,
 chunk, embed, and then run a streamlit app that interfaces an LLM with the text
