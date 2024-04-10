@@ -75,11 +75,8 @@ if __name__ == '__main__':
 
     logger.info('Meta file saved to {}/meta.csv'.format(os.getcwd()))
 
-    missing = []
-    for i, row in meta.iterrows():
-        if not os.path.exists(row['fp']):
-            missing.append(i)
-    meta = meta.drop(missing, axis=0)
+    missing = ~meta['fp'].apply(os.path.exists)
+    meta = meta[~missing]
 
     for i, row in meta.iterrows():
         fp = row['fp']
@@ -101,8 +98,8 @@ if __name__ == '__main__':
             if pdf_obj.is_double_col():
                 text = pdf_obj.clean_poppler(layout=False)
             text = pdf_obj.clean_headers(char_thresh=0.6, page_thresh=0.8,
-                                            split_on='\n',
-                                            iheaders=[0, 1, 3, -3, -2, -1])
+                                         split_on='\n',
+                                         iheaders=[0, 1, 3, -3, -2, -1])
             with open(txt_fp, 'w') as f:
                 f.write(text)
             logger.info(f'Saved: {txt_fp}')
