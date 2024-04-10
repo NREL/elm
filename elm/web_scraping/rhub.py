@@ -5,11 +5,11 @@ import os
 import os.path
 import logging
 from urllib.request import urlopen
+import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 from rex import init_logger
 
-# initialize logger
 logger = logging.getLogger(__name__)
 init_logger(__name__, log_level='DEBUG')
 init_logger('elm', log_level='INFO')
@@ -149,16 +149,15 @@ class ResearchOutputs():
         """
         publications_meta = pd.DataFrame(columns=('title', 'nrel_id',
                                                   'authors', 'year',
-                                                  'url', 'fn', 'doi',
+                                                  'url', 'doi',
                                                   'pdf_url', 'category'))
-        for link in self.all_links[:10]:  # quantity control here #
+        for link in self.all_links[:20]:  # quantity control here #
             with urlopen(link) as page:
                 html = page.read().decode("utf-8")
             meta_soup = BeautifulSoup(html, "html.parser")
 
             title = meta_soup.find('h1').text
             nrel_id = self._scrape_id(meta_soup)
-            fn = os.path.basename(link) + '.txt'
             authors = self._scrape_authors(meta_soup)
             doi = self._scrape_links(meta_soup)[0]
             pdf_url = self._scrape_links(meta_soup)[1]
@@ -170,7 +169,6 @@ class ResearchOutputs():
                        'year': year,
                        'authors': authors,
                        'url': link,
-                       'fn': fn,
                        'doi': doi,
                        'pdf_url': pdf_url,
                        'category': category
@@ -180,51 +178,105 @@ class ResearchOutputs():
 
         return publications_meta
 
-    # Scrape Abstracts for associated projects
-    def scrape_abstracts(self, out_dir):
+    def download_pdf(self, pdf_dir, txt_dir, soup_inst):
         """
         Description
         ----------
-        Scrapes abstract for each publication listed.
+        Downloads a pdf for a given link
+
+        Parameters
+        ----------
+        out_dir: str
+            Directory where the .pdf files should be saved.
+        soup_inst : obj
+            Active beautiful soup instance used to locate pdf url.
+        """
+        pdf_target = soup_inst.find('ul', {'class': 'links'})
+        if pdf_target:
+            pdf_url = pdf_target.find('a')['href']
+
+        fn = os.path.basename(pdf_url)
+        fp_out = os.path.join(pdf_dir, fn)
+
+        if pdf_url and pdf_url.endswith('.pdf'):
+            if not os.path.exists(fp_out):
+                session = requests.Session()
+                response = session.get(pdf_url)
+                with open(fp_out, 'wb') as f_pdf:
+                    f_pdf.write(response.content)
+                logger.info('Downloaded {}'.format(fn))
+            else:
+                logger.info('{} has already been downloaded'.format(fn))
+        elif not pdf_url.endswith('.pdf'):
+            parent_url = soup_inst.find(property= "og:url")['content']
+            fn = os.path.basename(parent_url) + '_abstract.txt'
+            logger.info('No PDF file for {}. Processing abstract.'.format(fn))
+            self.scrape_abstract(txt_dir, fn, soup_inst)
+
+    def scrape_abstract(self, out_dir, fn, soup_inst):
+        """
+        Description
+        ----------
+        Scrapes abstract for a provided publication
 
         Parameters
         ----------
         out_dir: str
             Directory where the .txt files should be saved.
-
-        Returns
-        ---------
-        Text file containing abstract
+        fn: str
+            File name for saving the file.
+        soup_inst : obj
+            Active beautiful soup instance used for scraping.
         """
-        os.makedirs(out_dir, exist_ok=True)
-        url_list = self.all_links[:10]  # quantity control here #
+        out_fp = os.path.join(out_dir, fn)
+        if not os.path.exists(out_fp):
+            title = soup_inst.find('h1').text
+            target = soup_inst.find('h2', string='Abstract')
+            if target:
+                abstract = target.find_next_siblings()[0].text
+                full_txt = (f'The report titled {title} can be '
+                            f'summarized as follows: {abstract}')
+                with open(out_fp, "w") as text_file:
+                    text_file.write(full_txt)
+            else:
+                logger.info('Abstract not found for {}'.format(fn))
+        else:
+            logger.info('{} has already been processed.'.format(out_fp))
+
+    def scrape_publications(self, pdf_dir, txt_dir):
+        """
+        Description
+        ----------
+        Downloads pdfs for all Technical Reports and scrapes abstracts
+        for all other publications listed.
+
+        Parameters
+        ----------
+        pdf_dir: str
+            Directory where the .pdf files should be saved.
+        txt_dir: str
+            Directory where the .txt files should be saved.
+        """
+
+        os.makedirs(pdf_dir, exist_ok=True)
+        os.makedirs(txt_dir, exist_ok=True)
+        url_list = self.all_links[:20]  # quantity control here #
 
         for i, pub in enumerate(url_list):
-            fn = os.path.basename(pub) + '.txt'
-            out_fp = os.path.join(out_dir, fn)
-            if not os.path.exists(out_fp):
-                with urlopen(pub) as page:
-                    html = page.read().decode("utf-8")
-                soup = BeautifulSoup(html, "html.parser")
+            with urlopen(pub) as page:
+                html = page.read().decode("utf-8")
+            pubs_soup = BeautifulSoup(html, "html.parser")
 
-                title = soup.find('h1').text
-                target = soup.find('h2', string='Abstract')
-                if target:
-                    abstract = target.find_next_siblings()[0].text
-                    full_txt = (f'The report titled {title} can be '
-                                f'summarized as follows: {abstract}')
-                    with open(out_fp, "w") as text_file:
-                        text_file.write(full_txt)
-                    logger.info('Processing {}/{}: {}'.format(i + 1,
-                                                              len(url_list),
-                                                              pub))
-                else:
-                    logger.info('Abstract not found for {}'.format(pub))
+            category = self._scrape_category(pubs_soup)
+
+            if category == 'Technical Report':
+                self.download_pdf(pdf_dir, txt_dir, pubs_soup)
             else:
-                logger.info('{} has already been processed.'.format(out_fp))
+                fn = os.path.basename(pub) + '_abstract.txt'
+                self.scrape_abstract(txt_dir, fn, pubs_soup)
 
-        return logger.info('Finished processing abstracts')
-
+        return logger.info('Finished processing publications')
+  
 
 class ResearcherProfiles():
     """
@@ -260,7 +312,7 @@ class ResearcherProfiles():
                                               'email', 'url', 'fn',
                                               'category'
                                               ))
-        for link in url_list[:10]:  # quantity control here #
+        for link in url_list[:20]:  # quantity control here #
             with urlopen(link) as page:
                 html = page.read().decode("utf-8")
             meta_soup = BeautifulSoup(html, "html.parser")
@@ -409,10 +461,10 @@ class ResearcherProfiles():
         if target:
             for sib in target.find_next_siblings():
                 t = sib.text
-                if len(t.split(',')) == 3:
+                if len(t.split(',')) >= 3:
                     level = t.split(',')[0]
                     deg = t.split(',')[1]
-                    inst = t.split(',')[2]
+                    inst = ','.join(t.split(',')[2:])
 
                     text = (f"{r} received a {level} degree in {deg} "
                             f"from the {inst}. ")
@@ -513,7 +565,7 @@ class ResearcherProfiles():
         Text file containing information from the profile.
         """
         os.makedirs(out_dir, exist_ok=True)
-        url_list = self.profile_links[:10]  # quantity control here #
+        url_list = self.profile_links[:20]  # quantity control here #
 
         for i, prof in enumerate(url_list):
             f = os.path.basename(prof) + '.txt'
