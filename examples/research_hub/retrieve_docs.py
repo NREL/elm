@@ -37,6 +37,23 @@ ChunkAndEmbed.HEADERS = {"Content-Type": "application/json",
                          "Authorization": f"Bearer {openai.api_key}",
                          "api-key": f"{openai.api_key}"}
 
+
+def is_technical_report(row):
+    return (row['category'] == 'Technical Report'
+            and row['pdf_url'].endswith('.pdf'))
+
+def get_filename(row):
+    if is_technical_report(row):
+        return os.path.basename(row['pdf_url'])
+    else:
+        return os.path.basename(row['url']) + '_abstract.txt'
+
+def get_filepath(row):
+    if is_technical_report(row):
+        return PDF_DIR + row['fn']
+    else:
+        return TXT_DIR + row['fn']
+
 PDF_DIR = './pdfs/'
 TXT_DIR = './txt/'
 EMBED_DIR = './embed/'
@@ -55,17 +72,20 @@ if __name__ == '__main__':
     profiles_meta = rp.build_meta()
     pubs_meta = pubs.build_meta()
 
-    pubs_meta['fn'] = pubs_meta.apply(lambda row:
-                                      os.path.basename(row['pdf_url'])
-                                      if row['category'] == 'Technical Report'
-                                      and row['pdf_url'].endswith('.pdf')
-                                      else os.path.basename(row['url'])
-                                      + '_abstract.txt', axis=1)
-    pubs_meta['fp'] = pubs_meta.apply(lambda row:
-                                      PDF_DIR + row['fn']
-                                      if row['category'] == 'Technical Report'
-                                      and row['pdf_url'].endswith('.pdf')
-                                      else TXT_DIR + row['fn'], axis=1)
+    # pubs_meta['fn'] = pubs_meta.apply(lambda row:
+    #                                   os.path.basename(row['pdf_url'])
+    #                                   if row['category'] == 'Technical Report'
+    #                                   and row['pdf_url'].endswith('.pdf')
+    #                                   else os.path.basename(row['url'])
+    #                                   + '_abstract.txt', axis=1)
+    # pubs_meta['fp'] = pubs_meta.apply(lambda row:
+    #                                   PDF_DIR + row['fn']
+    #                                   if row['category'] == 'Technical Report'
+    #                                   and row['pdf_url'].endswith('.pdf')
+    #                                   else TXT_DIR + row['fn'], axis=1)
+
+    pubs_meta['fn'] = pubs_meta.apply(get_filename, axis=1)
+    pubs_meta['fp'] = pubs_meta.apply(get_filepath, axis=1)
 
     profiles_meta['fp'] = TXT_DIR + profiles_meta['fn']
 
@@ -74,6 +94,8 @@ if __name__ == '__main__':
     meta.to_csv('./meta.csv', index=False)
 
     logger.info('Meta file saved to {}/meta.csv'.format(os.getcwd()))
+
+    breakpoint()
 
     missing = []
     for i, row in meta.iterrows():
