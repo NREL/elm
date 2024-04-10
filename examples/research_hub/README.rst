@@ -1,5 +1,5 @@
 *****************
-The Energy Wizard - Research Hub
+The Energy Wizard: Research Hub
 *****************
 
 This example demonstrates how to scrape publication abstracts and researcher profiles,
