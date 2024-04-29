@@ -13,7 +13,9 @@ Then, install `pdftotext`:
 
     $ pip install pytesseract pdf2image
 
-At this point, you can install ELM per the [front-page README](https://github.com/NREL/elm/blob/main/README.rst) instructions.
+At this point, you can install ELM per the [front-page README](https://github.com/NREL/elm/blob/main/README.rst) instructions, e.g.:
+
+    $ pip install -e .
 
 After ELM installs successfully, you must instantiate the playwright module, which is used for web scraping.
 To do so, simply run:
