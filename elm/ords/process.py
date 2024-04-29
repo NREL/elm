@@ -533,9 +533,18 @@ async def download_doc_for_county(
     doc = await _write_cleaned_text(doc)
     doc = await extract_ordinance_values(doc, **kwargs)
 
-    if _doc_contains_ord_values(doc):
+    ord_count = _num_ords_in_doc(doc)
+    if ord_count > 0:
         doc = await _move_file_to_out_dir(doc)
         doc = await _write_ord_db(doc)
+        logger.info(
+            "%d ordinance value(s) found for %s. Outputs are here: '%s'",
+            ord_count,
+            county.full_name,
+            doc.metadata["ord_db_fp"],
+        )
+    else:
+        logger.info("No ordinances found for %s.", county.full_name)
 
     await _record_time_and_usage(start_time, **kwargs)
     return doc
@@ -605,23 +614,23 @@ def _record_total_time(fp, seconds_elapsed):
     logger.info("Total processing time: %s", total_time_str)
 
 
-def _doc_contains_ord_values(doc):
+def _num_ords_in_doc(doc):
     """Check if doc contains any scraped ordinance values."""
     if doc is None:
-        return False
+        return 0
 
     if "ordinance_values" not in doc.metadata:
-        return False
+        return 0
 
     ord_vals = doc.metadata["ordinance_values"]
     if ord_vals.empty:
-        return False
+        return 0
 
     check_cols = [col for col in CHECK_COLS if col in ord_vals]
     if not check_cols:
-        return False
+        return 0
 
-    return not ord_vals[check_cols].isna().values.all()
+    return (~ord_vals[check_cols].isna()).values.sum(axis=1).sum()
 
 
 def _docs_to_db(docs):
@@ -631,7 +640,7 @@ def _docs_to_db(docs):
         if doc is None or isinstance(doc, Exception):
             continue
 
-        if not _doc_contains_ord_values(doc):
+        if _num_ords_in_doc(doc) == 0:
             continue
 
         results = _db_results(doc)
