@@ -47,3 +47,9 @@ Source Ordinance Documents
 
 The ordinance documents downloaded using (an older version of) this example code can be downloaded `here
 <https://app.box.com/s/a8oi8jotb9vnu55rzdul7e291jnn7hmq>`_.
+
+Debugging
+=========
+Not sure why things aren't working? No error messages? Make sure you run the CLI call with a ``-v`` flag for "verbose" logging (e.g., ``$ elm ords -c config.json -v``)
+
+Errors on import statements? Trouble importing ``pdftotext`` with cryptic error messages like ``symbol not found in flat namespace``? Follow the `ordinance-specific install instructions <https://github.com/NREL/elm/blob/main/elm/ords/README.md>`_ *exactly*.
