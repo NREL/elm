@@ -76,6 +76,10 @@ async def _run_async_tree(tree, response_as_json=True):
     try:
         response = await tree.async_run()
     except RuntimeError:
+        logger.error(
+            "    - NOTE: This is not necessarily an error and may just mean "
+            "that the text does not have the requested data."
+        )
         response = None
 
     if response_as_json:
