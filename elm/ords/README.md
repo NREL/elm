@@ -22,4 +22,6 @@ To do so, simply run:
 
     $ playwright install
 
-Now you are ready to run ordinance retrieval and extraction. See the [example](https://github.com/NREL/elm/blob/main/examples/ordinance_gpt/README.rst) to get started.
+Now you are ready to run ordinance retrieval and extraction. See the [example](https://github.com/NREL/elm/blob/main/examples/ordinance_gpt/README.rst) to get started. If you get additional import errors, just install additional packages as necessary, e.g.:
+
+    $ pip install beautifulsoup4 html5lib
