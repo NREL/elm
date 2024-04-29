@@ -95,6 +95,7 @@ async def process_counties_with_openai(
     ppe_kwargs=None,
     log_dir=None,
     clean_dir=None,
+    county_ords_dir=None,
     county_dbs_dir=None,
     log_level="INFO",
 ):
@@ -180,6 +181,11 @@ async def process_counties_with_openai(
         directory will be created if it does not exist. By default,
         ``None``, which creates a ``clean`` folder in the output
         directory for the cleaned ordinance text files.
+    county_ords_dir : path-like, optional
+        Path to directory for individual county ordinance file outputs.
+        This directory will be created if it does not exist.
+        By default, ``None``, which creates a ``county_ord_files``
+        folder in the output directory.
     county_dbs_dir : path-like, optional
         Path to directory for individual county ordinance database
         outputs. This directory will be created if it does not exist.
@@ -197,15 +203,21 @@ async def process_counties_with_openai(
     """
     start_time = time.time()
     log_listener = LogListener(["elm"], level=log_level)
-    out_dir, log_dir, clean_dir, county_dbs_dir = _setup_folders(
-        out_dir, log_dir=log_dir, clean_dir=clean_dir
+    dirs = _setup_folders(
+        out_dir,
+        log_dir=log_dir,
+        clean_dir=clean_dir,
+        cod=county_ords_dir,
+        cdd=county_dbs_dir,
     )
+    out_dir, log_dir, clean_dir, county_ords_dir, county_dbs_dir = dirs
     async with log_listener as ll:
         _setup_main_logging(log_dir, log_level, ll)
         db = await _process_with_logs(
             out_dir,
             log_dir,
             clean_dir,
+            county_ords_dir,
             county_dbs_dir,
             ll,
             county_fp=county_fp,
@@ -234,6 +246,7 @@ async def _process_with_logs(
     out_dir,
     log_dir,
     clean_dir,
+    county_ords_dir,
     county_dbs_dir,
     log_listener,
     county_fp=None,
@@ -281,7 +294,7 @@ async def _process_with_logs(
     services = [
         OpenAIService(client, rate_limit=llm_service_rate_limit),
         TempFileCache(td_kwargs=td_kwargs, tpe_kwargs=tpe_kwargs),
-        FileMover(out_dir, tpe_kwargs=tpe_kwargs),
+        FileMover(county_ords_dir, tpe_kwargs=tpe_kwargs),
         CleanedFileWriter(clean_dir, tpe_kwargs=tpe_kwargs),
         OrdDBFileWriter(county_dbs_dir, tpe_kwargs=tpe_kwargs),
         UsageUpdater(out_dir / "usage.json", tpe_kwargs=tpe_kwargs),
@@ -337,18 +350,25 @@ def _setup_main_logging(log_dir, level, listener):
     listener.addHandler(handler)
 
 
-def _setup_folders(out_dir, log_dir=None, clean_dir=None, county_dbs_dir=None):
+def _setup_folders(
+    out_dir,
+    log_dir=None,
+    clean_dir=None,
+    cod=None,
+    cdd=None,
+):
     """Setup output directory folders."""
     out_dir = Path(out_dir)
-    log_dir = Path(log_dir) if log_dir else out_dir / "logs"
-    clean_dir = Path(clean_dir) if clean_dir else out_dir / "clean"
-    county_dbs_dir = (
-        Path(county_dbs_dir) if county_dbs_dir else out_dir / "county_dbs"
-    )
-
-    for folder in [out_dir, log_dir, clean_dir, county_dbs_dir]:
+    out_folders = [
+        out_dir,
+        Path(log_dir) if log_dir else out_dir / "logs",
+        Path(clean_dir) if clean_dir else out_dir / "clean",
+        Path(cod) if cod else out_dir / "county_ord_files",
+        Path(cdd) if cdd else out_dir / "county_dbs",
+    ]
+    for folder in out_folders:
         folder.mkdir(exist_ok=True, parents=True)
-    return out_dir, log_dir, clean_dir, county_dbs_dir
+    return out_folders
 
 
 def _load_counties_to_process(county_fp):
