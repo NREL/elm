@@ -21,7 +21,7 @@ file for reference.
 
 Once you have set up the county CSV, you can fill out the
 `template JSON config <https://github.com/NREL/elm/blob/main/examples/ordinance_gpt/config.json>`_.
-See the documentation for the `"process_counties_with_openai" function <https://github.com/NREL/elm/blob/main/elm/ords/process.py>`_
+See the documentation for the `"process_counties_with_openai" function <https://github.com/NREL/elm/blob/42e9ed69dce8d818bb4fb02b3e041dda370a539f/elm/ords/process.py#L78>`_
 for an explanation of all the allowed inputs to the configuration file.
 Some notable inputs here are the ``azure*`` keys, which should be configured to match your Azure OpenAI API
 deployment (unless it's defined in your environment with the ``AZURE_OPENAI_API_KEY``, ``AZURE_OPENAI_VERSION``,
@@ -62,7 +62,7 @@ Extending this functionality to other technologies is possible but requires deep
 We recommend you start out by examining the decision tree queries in `graphs.py <https://github.com/NREL/elm/blob/main/elm/ords/extraction/graphs.py>`_
 as well as how they are applied in `parse.py <https://github.com/NREL/elm/blob/main/elm/ords/extraction/parse.py>`_. Once you
 have a firm understanding of these two modules, look through the
-`document validation routines <https://github.com/NREL/elm/blob/main/elm/ords/validation>` to get a better sense of how to
+`document validation routines <https://github.com/NREL/elm/blob/main/elm/ords/validation>`_ to get a better sense of how to
 adjust the web-scraping portion of the code to your technology. When you have set up the validation and parsing for your
-technology, put it all together by adjusting the `"process_counties_with_openai" function <https://github.com/NREL/elm/blob/main/elm/ords/process.py>`_
+technology, put it all together by adjusting the `"process_counties_with_openai" function <https://github.com/NREL/elm/blob/42e9ed69dce8d818bb4fb02b3e041dda370a539f/elm/ords/process.py#L78>`_
 to call your new routines.
