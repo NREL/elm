@@ -126,14 +126,20 @@ class DecisionTree:
         out : str
             Next node or LLM response if at a leaf node.
         """
+        prompt = self._prepare_graph_call(node0)
+        out = self.api.chat(prompt)
+        return self._parse_graph_output(node0, out)
 
+    def _prepare_graph_call(self, node0):
+        """Prepare a graph call for given node."""
         prompt = self.graph.nodes[node0]['prompt']
         txt_fmt = {k: v for k, v in self.graph.graph.items() if k != 'api'}
         prompt = prompt.format(**txt_fmt)
-
         self._history.append(node0)
-        out = self.api.chat(prompt)
+        return prompt
 
+    def _parse_graph_output(self, node0, out):
+        """Parse graph output for given node and LLM call output. """
         successors = list(self.graph.successors(node0))
         edges = [self.graph.edges[(node0, node1)] for node1 in successors]
         conditions = [edge.get('condition', None) for edge in edges]
