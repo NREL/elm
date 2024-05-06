@@ -164,7 +164,7 @@ class EnergyWizard(ApiBase):
         if convo:
             # [1:] to not include the system role in the semantic search
             query = [f"{msg['role'].upper()}: {msg['content']}"
-                     for msg in self.messages[1:] if msg['role'] == 'user']
+                     for msg in self.messages[1:]]
 
             query = '\n\n'.join(query)
 
