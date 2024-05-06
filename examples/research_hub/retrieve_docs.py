@@ -14,8 +14,8 @@ from rex import init_logger
 
 from elm.pdf import PDFtoTXT
 from elm.embed import ChunkAndEmbed
-from elm.web_scraping.rhub import ResearcherProfiles
-from elm.web_scraping.rhub import ResearchOutputs
+from elm.web.rhub import ResearcherProfiles
+from elm.web.rhub import ResearchOutputs
 
 # initialize logger
 logger = logging.getLogger(__name__)
