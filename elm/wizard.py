@@ -411,14 +411,14 @@ class EnergyWizardPostgres(EnergyWizardBase):
 
         db_user = os.getenv("EWIZ_DB_USER")
         db_password = os.getenv('EWIZ_DB_PASSWORD')
-        assert db_user is not None, "Must set user for postgreSQL database!"
-        assert db_password is not None, "Must set user for postgreSQL database!"
+        assert db_user is not None, "Must set user for postgres database!"
+        assert db_password is not None, "Must set user for postgres database!"
 
         self.conn = psycopg2.connect(user=db_user,
-                        password=db_password,
-                        host=db_host,
-                        port=db_port,
-                        database=db_name)
+                                     password=db_password,
+                                     host=db_host,
+                                     port=db_port,
+                                     database=db_name)
 
         self.cursor = self.conn.cursor()
 
@@ -450,7 +450,7 @@ class EnergyWizardPostgres(EnergyWizardBase):
 
         self.cursor.execute("SELECT ewiz_kb.id, "
                             "ewiz_kb.chunks, "
-                            "ewiz_kb.embedding <=> %s::vector as similarity_score "
+                            "ewiz_kb.embedding <=> %s::vector as score "
                             "FROM ewiz_schema.ewiz_kb "
                             "ORDER BY embedding <=> %s::vector LIMIT %s;",
                             (query_embedding, query_embedding, limit,), )
@@ -483,8 +483,8 @@ class EnergyWizardPostgres(EnergyWizardBase):
         placeholders = ', '.join(['%s'] * len(ids))
 
         sql_query = ("SELECT ewiz_kb.metadata "
-                    "FROM ewiz_schema.ewiz_kb "
-                    "WHERE ewiz_kb.id IN (" + placeholders + ")")
+                     "FROM ewiz_schema.ewiz_kb "
+                     "WHERE ewiz_kb.id IN (" + placeholders + ")")
 
         self.cursor.execute(sql_query, ids)
 
