@@ -17,3 +17,5 @@ python-slugify
 scipy
 tabulate
 tiktoken
+psycopg2
+boto3

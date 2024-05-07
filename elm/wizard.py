@@ -4,6 +4,8 @@ ELM energy wizard
 """
 from abc import ABC, abstractmethod
 import copy
+import os
+import psycopg2
 import numpy as np
 
 from elm.base import ApiBase
@@ -380,12 +382,16 @@ class EnergyWizard(EnergyWizardBase):
 class EnergyWizardPostgres(EnergyWizardBase):
     """Interface to ask OpenAI LLMs about energy research.
 
-    This class is for execution with a postgres vector database
-    TODO: slater describe the vector DB here
+    This class is for execution with a postgres vector database.
+    Connecting to the database requires the use of the psycopg2
+    python package, environment variables storing the db user and
+    password, and the specification of other connection paremeters
+    such as host, port, and name. The database has the following
+    columns: id, embedding, chunks, and metadata.
     """
 
-    def __init__(self, model=None, token_budget=3500,
-                 vector_db_args=None):
+    def __init__(self, db_host, db_port, db_name,
+                 model=None, token_budget=3500):
         """
         Parameters
         ----------
@@ -395,10 +401,26 @@ class EnergyWizardPostgres(EnergyWizardBase):
             Number of tokens that can be embedded in the prompt. Note that the
             default budget for GPT-3.5-Turbo is 4096, but you want to subtract
             some tokens to account for the response budget.
-        vector_db_args :
-            TODO: slater implement required vector database stuff here and set
-            self.cursor and whatnot
+        db_host : str
+            Host url for postgres database.
+        db_port : str
+            Port for postres database. ex: '5432'
+        db_name : str
+            Postgres database name.
         """
+
+        db_user = os.getenv("EWIZ_DB_USER")
+        db_password = os.getenv('EWIZ_DB_PASSWORD')
+        assert db_user is not None, "Must set user for postgreSQL database!"
+        assert db_password is not None, "Must set user for postgreSQL database!"
+
+        self.conn = psycopg2.connect(user=db_user,
+                        password=db_password,
+                        host=db_host,
+                        port=db_port,
+                        database=db_name)
+
+        self.cursor = self.conn.cursor()
 
         super().__init__(model, token_budget=token_budget)
 
@@ -419,22 +441,35 @@ class EnergyWizardPostgres(EnergyWizardBase):
             1D array of related strings
         score : np.ndarray
             1D array of float scores of strings
-        idx : np.ndarray
-            1D array of indices in the text corpus corresponding to the
+        ids : np.ndarray
+            1D array of IDs in the text corpus corresponding to the
             ranked strings/scores outputs.
         """
 
-        # TODO: Slater implement vector db query here
+        query_embedding = self.get_aws_embedding(query)
+
+        self.cursor.execute("SELECT ewiz_kb.id, "
+                            "ewiz_kb.chunks, "
+                            "ewiz_kb.embedding <=> %s::vector as similarity_score "
+                            "FROM ewiz_schema.ewiz_kb "
+                            "ORDER BY embedding <=> %s::vector LIMIT %s;",
+                            (query_embedding, query_embedding, limit,), )
+
+        result = self.cursor.fetchall()
+
+        strings = [s[1] for s in result]
+        scores = [s[2] for s in result]
+        best = [s[0] for s in result]
 
         return strings, scores, best
 
-    def make_ref_list(self, idx):
+    def make_ref_list(self, ids):
         """Make a reference list
 
         Parameters
         ----------
         used_index : np.ndarray
-            Indices of the used text from the text corpus
+            IDs of the used text from the text corpus
 
         Returns
         -------
@@ -443,6 +478,16 @@ class EnergyWizardPostgres(EnergyWizardBase):
             ["{ref_title} ({ref_url})"]
         """
         # TODO: Slater implement vector db-to-meta-data query here to get
-        # information about the results (e.g., links and titles and whatnot)
+        # metadata is not stored in db at the moment, query will be updated
+
+        placeholders = ', '.join(['%s'] * len(ids))
+
+        sql_query = ("SELECT ewiz_kb.metadata "
+                    "FROM ewiz_schema.ewiz_kb "
+                    "WHERE ewiz_kb.id IN (" + placeholders + ")")
+
+        self.cursor.execute(sql_query, ids)
+
+        ref_list = self.cursor.fetchall()
 
         return ref_list
