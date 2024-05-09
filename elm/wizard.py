@@ -433,10 +433,10 @@ class EnergyWizardPostgres(EnergyWizardBase):
         assert secret_key is not None, ("Must set AWS_SECRET_ACCESS_KEY!")
         assert session_token is not None, "Must set AWS_SESSION_TOKEN!"
         self._aws_client = boto3.client(service_name='bedrock-runtime',
-                                    region_name='us-west-2',
-                                    aws_access_key_id=access_key,
-                                    aws_secret_access_key=secret_key,
-                                    aws_session_token=session_token)
+                                        region_name='us-west-2',
+                                        aws_access_key_id=access_key,
+                                        aws_secret_access_key=secret_key,
+                                        aws_session_token=session_token)
 
         super().__init__(model, token_budget=token_budget)
 

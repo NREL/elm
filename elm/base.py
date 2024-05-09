@@ -4,7 +4,6 @@ ELM abstract class for API calls
 """
 from abc import ABC
 import os
-import json
 import numpy as np
 import asyncio
 import aiohttp
