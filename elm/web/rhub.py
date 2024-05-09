@@ -11,8 +11,6 @@ from bs4 import BeautifulSoup
 from rex import init_logger
 
 logger = logging.getLogger(__name__)
-init_logger(__name__, log_level='DEBUG')
-init_logger('elm', log_level='INFO')
 
 
 class ResearchOutputs():
@@ -20,6 +18,19 @@ class ResearchOutputs():
     BASE_URL = "https://research-hub.nrel.gov/en/publications/?page=0"
 
     def __init__(self, url, n_pages=1, txt_dir='./ew_txt'):
+        """
+        Parameters
+        ----------
+        url : str
+            Research hub publications URL, most likely
+            https://research-hub.nrel.gov/en/publications/
+        n_pages : int
+            Number of pages to get from the API. Typical response has 50
+            entries per page. Default of 1 ensures that this class doesnt hang
+            on a million responses.
+        txt_dir : str
+            File directory where you would like to save output .txt files.
+        """
 
         self.text_dir = txt_dir
         self.all_links = []
@@ -41,13 +52,14 @@ class ResearchOutputs():
 
         Parameters
         ----------
-        soup_inst : obj
+        soup_inst : bs4.BeautifulSoup
             Active beautiful soup instance for the url associated with a
             given publication.
 
         Returns
         -------
-        author names (str): all authors that contributed to publication
+        author names : list 
+            List of all authors (strings) that contributed to publication.
         """
 
         authors = soup_inst.find('p', {'class': 'relations persons'}).text
@@ -60,7 +72,7 @@ class ResearchOutputs():
 
         Parameters
         ----------
-        soup_inst : obj
+        soup_inst : bs4.BeautifulSoup
             Active beautiful soup instance for the url associated with a
             given publication.
 
@@ -90,7 +102,7 @@ class ResearchOutputs():
 
         Parameters
         ----------
-        soup_inst : obj
+        soup_inst : bs4.BeautifulSoup
             Active beautiful soup instance for the url associated with a
             given publication.
 
@@ -109,7 +121,7 @@ class ResearchOutputs():
 
         Parameters
         ----------
-        soup_inst : obj
+        soup_inst : bs4.BeautifulSoup
             Active beautiful soup instance for the url associated with a
             given publication.
 
@@ -126,7 +138,7 @@ class ResearchOutputs():
 
         Parameters
         ----------
-        soup_inst : obj
+        soup_inst : bs4.BeautifulSoup
             Active beautiful soup instance for the url associated with a
             given publication.
 
@@ -179,16 +191,13 @@ class ResearchOutputs():
         return publications_meta
 
     def download_pdf(self, pdf_dir, txt_dir, soup_inst):
-        """
-        Description
-        ----------
-        Downloads a pdf for a given link
+        """Downloads a pdf for a given link
 
         Parameters
         ----------
         out_dir: str
             Directory where the .pdf files should be saved.
-        soup_inst : obj
+        soup_inst : bs4.BeautifulSoup
             Active beautiful soup instance used to locate pdf url.
         """
         pdf_target = soup_inst.find('ul', {'class': 'links'})
@@ -225,7 +234,7 @@ class ResearchOutputs():
             Directory where the .txt files should be saved.
         fn: str
             File name for saving the file.
-        soup_inst : obj
+        soup_inst : bs4.BeautifulSoup
             Active beautiful soup instance used for scraping.
         """
         out_fp = os.path.join(out_dir, fn)
@@ -285,6 +294,20 @@ class ResearcherProfiles():
     BASE_URL = "https://research-hub.nrel.gov/en/persons/?page=0"
 
     def __init__(self, url, n_pages=1, txt_dir='./ew_txt'):
+        """
+        Parameters
+        ----------
+        url : str
+            Research hub profiles URL, most likely
+            https://research-hub.nrel.gov/en/persons/
+        n_pages : int
+            Number of pages to get from the API. Typical response has 50
+            entries per page. Default of 1 ensures that this class doesnt hang
+            on a million responses.
+        txt_dir : str
+            File directory where you would like to save output .txt files.
+        """
+
         self.text_dir = txt_dir
         self.profile_links = []
         for p in range(0, n_pages):
@@ -348,7 +371,7 @@ class ResearcherProfiles():
 
         Parameters
         ----------
-        soup_inst : obj
+        soup_inst : bs4.BeautifulSoup
             Active beautiful soup instance for the url associated with a
             given researcher.
 
@@ -379,7 +402,7 @@ class ResearcherProfiles():
 
         Parameters
         ----------
-        soup_inst : obj
+        soup_inst : bs4.BeautifulSoup
             Active beautiful soup instance for the url associated with a
             given researcher.
 
@@ -407,7 +430,7 @@ class ResearcherProfiles():
 
         Parameters
         ----------
-        soup_inst : obj
+        soup_inst : bs4.BeautifulSoup
             Active beautiful soup instance for the url associated with a
             given researcher.
         heading: str
@@ -444,7 +467,7 @@ class ResearcherProfiles():
 
         Parameters
         ----------
-        soup_inst : obj
+        soup_inst : bs4.BeautifulSoup
             Active beautiful soup instance for the url associated with a
             given researcher.
 

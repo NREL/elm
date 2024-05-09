@@ -4,7 +4,7 @@ The Energy Wizard - Research Hub
 
 This example demonstrates how to scrape publication abstracts and researcher profiles,
 chunk, embed, and then run a streamlit app that interfaces an LLM with the text
-corpus.
+corpus. It is intended for use with the [NREL Research Hub](https://research-hub.nrel.gov/) only. 
 
 Notes:
 
