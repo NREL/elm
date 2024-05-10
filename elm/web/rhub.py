@@ -8,7 +8,6 @@ from urllib.request import urlopen
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
-from rex import init_logger
 
 logger = logging.getLogger(__name__)
 
@@ -36,8 +35,6 @@ class ResearchOutputs():
         self.all_links = []
         for p in range(0, n_pages):
             url = url + f"?page={p}"
-            #with urlopen(url) as page:
-             #   html = page.read().decode("utf-8")
             html = self.html_response(url)
             self.soup = BeautifulSoup(html, "html.parser")
 
@@ -77,7 +74,7 @@ class ResearchOutputs():
 
         Returns
         -------
-        authors : list 
+        authors : list
             List of all authors (strings) that contributed to publication.
         """
 
