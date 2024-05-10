@@ -17,6 +17,7 @@ class MockClass:
         """Mock for ResearchOutputs.html_response()"""
         return TEXT
 
+
 def test_rhub(mocker):
     """Test to ensure correct response from research hub."""
     mocker.patch.object(elm.web.rhub.ResearchOutputs,
