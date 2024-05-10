@@ -1,0 +1,4216 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="nexus-font-support">
+
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="google" content="nositelinkssearchbox"/>
+    <title>
+                Find NREL Research Outputs
+             &mdash; National Renewable Energy Laboratory</title>
+    
+    <meta name="robots" content="noindex, nofollow" />
+    
+
+<meta property="og:site_name" content="National Renewable Energy Laboratory">
+
+
+
+<meta property="og:url" content="https://research-hub.nrel.gov/en/publications/">
+<meta property="og:locale" content="en_US">
+
+
+    <meta property="og:type" content="website">
+
+
+
+    
+        <meta property="og:image" content="https://research-hub.nrel.gov/skin/headerImage/">
+    
+
+
+
+
+
+    <link rel="stylesheet" href="/assets/application-5dc5d140de7893a8255374a716047ad3.css" />
+    
+    
+        <link rel="shortcut icon" href="/skin/favIcon/"/>
+    
+    <link href="/skin/css/" rel="stylesheet"/>
+    
+    <script src="/skin/script/" type="text/javascript"></script>
+    <script type="text/javascript" src="/assets/application-66de6f9660526dc07b3a98335d9d00e6.js" ></script>
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="/assets/html5shiv.min-ca5300beead9a4a9d2c9c584a9016410.js" ></script>
+    <script type="text/javascript" src="/assets/respond.min-678d372b349e434d9923e1b591f14a1e.js" ></script>
+    <![endif]-->
+    
+            
+            
+        
+    <!-- Google Analytics: No account ID (UA) found --><!-- Global site tag (gtag.js) - Google Analytics -->
+<script src="https://www.googletagmanager.com/gtag/js?id=G-HFDNVE0DSC" async=""></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HFDNVE0DSC', {'cookie_domain' : document.location.hostname, 'anonymize_ip': true });
+</script>
+    <script src="//assets.adobedtm.com/4a848ae9611a/ea83f870454d/launch-af020409b299.min.js" async=""></script>
+    
+    <!-- Pendo: Disabled -->
+</head>
+
+<body class="">
+<div id="aria-polite" aria-live="polite"></div>
+
+<div id="aria-assertive" aria-live="assertive"></div>
+
+<nav aria-label="Skip to main content" class="skip-content">
+    <ul>
+        <li>
+            <a href="#main-navigation" class="sr-only sr-only-focusable">Skip to main navigation</a>
+        </li>
+        
+            <li>
+                <a href="#main-search" class="sr-only sr-only-focusable">Skip to search</a>
+            </li>
+        
+        <li>
+            <a href="#main-content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+            
+        </li>
+    </ul>
+</nav>
+
+
+
+
+
+
+
+    <header class="header" id="page-header">
+        <div class="primary  ">
+            <div class="container">
+                
+                <a href="/en/" class="logo">
+                    
+                        <span class="sr-only">National Renewable Energy Laboratory Hub Home</span>
+                        <img src="/skin/headerImage/" alt="National Renewable Energy Laboratory Logo"/>
+                    
+                </a>
+                
+                
+                
+            </div>
+        </div>
+        
+        
+            <div class="subMenu">
+                <div class="secondary">
+                    <div class="container">
+                        <nav id="main-navigation" aria-label="Main navigation" class="content-navigation ">
+                            <ul class="has-overflow-navigation" data-value="More" role="menubar">
+                                <li class="" role="none">
+                                    <a href="/en/" role="menuitem" tabindex="-1">Hub Home</a>
+                                </li>
+
+                                
+                                    <li class="" role="none">
+                                        <a class="portal_link" tabindex="-1" role="menuitem" href="/en/persons/"><span>Researcher Profiles</span></a>
+                                    </li>
+                                
+                                    <li class="selected" role="none">
+                                        <a class="portal_link" tabindex="0" role="menuitem" href="/en/publications/"><span>Research Output</span></a>
+                                    </li>
+                                
+                                    <li class="" role="none">
+                                        <a class="portal_link" tabindex="-1" role="menuitem" href="/en/organisations/"><span>Research Organizations</span></a>
+                                    </li>
+                                
+                                    <li class="" role="none">
+                                        <a class="portal_link" tabindex="-1" role="menuitem" href="/en/prizes/"><span>Awards &amp; Honors</span></a>
+                                    </li>
+                                
+                                    <li class="" role="none">
+                                        <a class="portal_link" tabindex="-1" role="menuitem" href="/en/activities/"><span>Activities</span></a>
+                                    </li>
+                                
+                            </ul>
+                        </nav>
+                        
+                    </div>
+                </div>
+            </div>
+        
+    </header>
+
+    <main id="page-content">
+        
+            <div class="page-section page-section-publications page-section-publications-index">
+                <div class="page-section-header page-section-header-publications page-section-header-publications-index content-search-header">
+                  <div class="container">
+                    <section aria-labelledby="search-description">
+                        <div class="header">
+                            <i class="icon icon-publications" aria-hidden="true"></i>
+                            <h1 class="title" id="search-description">
+                                Find NREL Research Outputs
+                            </h1>
+                        </div>
+                        
+
+
+<div class="search-bar-wrapper" itemscope itemtype="http://schema.org/WebSite">
+    <meta itemprop="url" content="https://research-hub.nrel.gov/en/publications/"/>
+
+    <div class="global-search-wrapper">
+        <form id="main-search" action="/en/publications/" method="get" class="search-form" itemprop="potentialAction" itemscope itemtype="http://schema.org/SearchAction">
+            <meta itemprop="target" content="/en/publications/"/>
+
+            <div class="global-search ">
+                <div class="field-button-wrapper">
+                    <div class="search-field">
+                        
+                        <label class="sr-only" for="global-search-input">Search by expertise, name, or affiliation</label>
+                        <input type="text" id="global-search-input" itemprop="query-input" class="search-field" value="" name="search"
+                                autocomplete="off"  autofocus="autofocus" />
+                    </div>
+
+                    
+                        
+
+
+
+
+    <div class="advanced-SearchBox-Container hidden ">
+        <div id="search-as-headline" class="advanced-search-header">
+            
+                Search As:
+            
+        </div>
+        <ul class="advanced-search-list" aria-labelledby="search-as-headline">
+
+            <li class="concepts-suggestion" data-value="RelatedConcepts">
+                <a class="linkValConcept">
+                    <output id="RelatedConcepts" class="advanced-search-label"></output>
+                    <span>
+                        
+                            Concept
+                        
+                    </span>
+                </a>
+
+                
+                    <span class="tooltip-container">
+                        <button type="button"
+                                aria-expanded="false"
+                                aria-describedby="tooltip_relatedconcepts"
+                                aria-label="Search as concept, help">
+                            <i class="icon icon-info-circled align-right" aria-hidden="true"></i>
+                        </button>
+                        <span class="tooltip-popup align-right" role="tooltip" id="tooltip_relatedconcepts">Search across key concepts extracted from titles and abstracts</span>
+                    </span>
+                
+            </li>
+
+            <li class="index-suggestion" data-value="PartOfNameOrTitle">
+                <a class="linkValIndex">
+                    <output id="PartOfNameOrTitle" class="advanced-search-label"></output>
+                    <output class="advanced-search-message">
+                        
+                            Matching Text
+                        
+                    </output>
+                </a>
+
+                
+                    <span class="tooltip-container">
+                        <button type="button"
+                                aria-expanded="false"
+                                aria-describedby="tooltip_partofnameortitle"
+                                aria-label="Search as matching text, help">
+                            <i class="icon icon-info-circled" aria-hidden="true"></i>
+                        </button>
+                        <span class="tooltip-popup align-right" role="tooltip" id="tooltip_partofnameortitle">Search across indexed text content in Pure, such as names, titles, descriptions etc.</span>
+                    </span>
+                
+            </li>
+        </ul>
+    </div>
+
+
+    <script>
+
+        $(document).ready(function () {
+            $("input.search-field").bind('keyup', function () {
+                displayInput();
+                populateInput();
+            });
+            navigation();
+            runToolTips();
+        });
+
+        //Sets the width of the searchcontainer so it follows the width of the input
+        $(window).resize(function () {
+            $(".advanced-SearchBox-Container").width($('.field-button-wrapper').width());
+        });
+
+        /*Removes the popup if there is a click outside the container*/
+        $(document).mouseup(function (e) {
+            var container = $('.advanced-SearchBox-Container');
+            if (!container.is(e.target) // if the target of the click isn't the container
+                && container.has(e.target).length === 0) // ... nor a descendant of the container
+            {
+                container.addClass('hidden');
+                resetSearchSelection();
+            }
+        });
+
+
+        function populateInput() {
+            $('.search-bar-wrapper input.search-field').each(function () {
+                var inputValue = $(this);
+                if (inputValue) {
+                    $('.advanced-search-label').each(function () {
+                        var lblText = $(this);
+                        var urlParams = {};
+                        
+
+                        if (false) {
+                            urlParams["improvedLayoutOrganisationUuid"] = "null";
+                        }
+
+                        //id of class
+                        var searchBy = $(this).attr('id');
+                        var familyUrl = $('.search-bar-wrapper ul[role="listbox"] a[role="option"].selected').attr('href');
+
+                        if (familyUrl == undefined) {
+                            familyUrl = '';
+                        }
+
+                        if (searchBy == 'CopyPaste') {
+                            urlParams["text"] = inputValue.val();
+                        } else {
+                            urlParams["search"] = inputValue.val();
+                            urlParams["searchBy"] = searchBy;
+                        }
+
+
+                        var paramsAsString = jQuery.param(urlParams);
+
+                        var indexOfParamStart = familyUrl.indexOf('?');
+                        if (indexOfParamStart > -1) {
+                            familyUrl = familyUrl.slice(0, indexOfParamStart);
+                        }
+
+                        var newUrl = familyUrl + "?" + paramsAsString;
+                        if (searchBy == 'PartOfNameOrTitle') {
+                            $('.linkValIndex').prop("href", newUrl);
+                        }
+                        if (searchBy == 'RelatedConcepts') {
+                            $('.linkValConcept').prop("href", newUrl);
+                        }
+
+                        //hides the popup if input field is empty
+                        if (inputValue.val().length == 0) {
+                            $(".advanced-SearchBox-Container").addClass("hidden");
+                        }
+                    });
+
+                }
+            });
+        }
+
+        function displayInput() {
+            $('.search-bar-wrapper input.search-field').each(function () {
+                var selected = $('.search-bar-wrapper ul.dropdown-menu li.selected').find('a').attr('href');
+                if (selected == undefined) {
+                    selected = 'searchAll';
+                }
+
+                var typingTimer,
+                    doneTypingInterval = 1000,
+                    $input = $(this);
+
+                $input.on('keyup', function () {
+                    clearTimeout(typingTimer);
+                    typingTimer = setTimeout(doneTyping, doneTypingInterval);
+                });
+
+                $input.on('keydown', function () {
+                    clearTimeout(typingTimer);
+                });
+
+                function doneTyping() {
+                    var searchOptionAmount = $('.advanced-search-list li').length;
+                    addToAriaLive("polite", searchOptionAmount + " Search suggestions are available, use TAB key to navigate");
+                }
+
+
+                if ($input.val().length != 0) {
+                    $(".advanced-SearchBox-Container.hidden").removeClass("hidden");
+
+                } else {
+                    $(".advanced-SearchBox-Container").addClass("hidden");
+                    resetSearchSelection();
+                }
+            });
+        }
+
+        function navigation() {
+
+            $(".advanced-search-list li").mouseover(function () {
+                $("li").removeClass("select");
+                $(this).addClass("select");
+            });
+
+            $('.improvedLayout-search-bar-container input.search-field').on('keydown', function (e) {
+                if (e.which === $.ui.keyCode.ENTER) {
+                    var url = $('.advanced-SearchBox-Container').find('.select a').attr('href');
+                    if (url === undefined) {
+                        $('#normalSearch').click();
+                    } else {
+                        window.location.href = url;
+                    }
+                }
+            });
+        }
+
+        function subStringText(val, limit) {
+            if (val.length > limit) {
+                var dots = "...";
+                val = val.substring(0, limit) + dots;
+
+            }
+            return val
+        }
+
+        var resetSearchSelection = function () {
+            var select = $(".advanced-search-list li.select");
+            select.removeClass('select');
+        };
+
+    </script>
+
+                    
+
+                    <div class="search-submit">
+                        <button id="normalSearch" type="submit" value="false" name="isCopyPasteSearch" aria-label="Search" >
+                            <i class="icon icon-magnifying-glass" aria-hidden="true"></i>
+                        </button>
+                    </div>
+
+
+                </div>
+            </div>
+
+            
+        </form>
+
+        <nav aria-label="Search navigation">
+            <ul class="search-menu flex">
+                
+                    <li class="filter-toggle">
+                        <button data-showtext="Show Filters" data-hidetext="Hide Filters"
+                                onclick="toggleFilters(this);">Show Filters</button>
+                    </li>
+                
+                <li>
+                    <a aria-label="Go to advanced search" href="/en/searchAll/advanced/">
+                        Advanced Search</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<script>
+
+
+    $(function () {
+        var searchForm = $(".search-form");
+        var searchField = $(".search-field", searchForm);
+
+        searchForm.on("click", ".dropdown-menu a:not(.direct-link)", function (e) {
+            e.preventDefault();
+            var text = $(this).text();
+            var href = $(this).attr("href");
+            if (href) {
+                searchForm.find(".selected-text").text(text);
+                searchForm.attr("action", href);
+                searchForm.find(".dropdown-menu > .selected").removeClass("selected");
+                searchField.focus();
+                $(this).parent("li").addClass("selected");
+            }
+
+            $(this).parents(".dropdown-container").removeClass("open");
+        });
+    });
+
+</script>
+
+                        
+                    </section>
+                  </div>
+                    
+                </div>
+                <div id="main-content" class="page-section-content page-section-content-publications page-section-content-publications-index">
+                    
+                        <div class="container">
+                            
+        
+
+
+
+
+
+
+
+
+    <div class="search-filters">
+        <a class="search-all-content"
+           href="/en/searchAll/index/?search=">
+            <i class="icon icon-right-open-mini" aria-hidden="true"></i> Search in All Content
+        </a>
+
+        <h2>Filters for Research Output</h2>
+        
+
+
+
+
+
+<section id="searchfilters" aria-label="Search filters" class="search-facets" data-show-more-text="Show More"
+         data-show-less-text="Show Less"
+         data-list-expanded-text="list expanded, go back to see new options" data-list-collapsed-text="list collapsed"
+         data-list-filter-options="filter options"
+         data-facet-url="/en/publications/action--facet/?page=1">
+
+    
+        
+        
+            <div class="filter-group" data-contributor-name="keywordFilters">
+            </div>
+        
+    
+        
+        
+            <div class="filter-group" data-contributor-name="type">
+            </div>
+        
+    
+        
+        
+            <div class="filter-group" data-contributor-name="openAccess">
+            </div>
+        
+    
+        
+        
+            <div class="filter-group" data-contributor-name="language">
+            </div>
+        
+    
+        
+        
+            <div class="filter-group" data-contributor-name="publicationYear">
+            </div>
+        
+    
+        
+        
+            <div class="filter-group" data-contributor-name="author">
+            </div>
+        
+    
+        
+        
+            <div class="filter-group" data-contributor-name="andConceptIds">
+            </div>
+        
+    
+        
+        
+            <div class="filter-group" data-contributor-name="organisation">
+            </div>
+        
+    
+        
+        
+            <div class="filter-group" data-contributor-name="externalOrganisation">
+            </div>
+        
+    
+</section>
+
+<div style="display: none;" role="dialog" id="filter-popup" aria-modal="true">
+    <button onclick="closePopup();" onkeydown="closePopupKey(event);" class="close-filter">
+        Close
+    </button>
+</div>
+
+<div style="display: none;" id="filter-popup-bgoverlay"></div>
+<div style="display: none">
+    "Research Units"
+</div>
+<script>
+    $(function () {
+        var filters = $(".search-facets"),
+            facetUrl = filters.data('facet-url'),
+            showmoretxt = $('#searchfilters').data('show-more-text'),
+            showlesstxt = $('#searchfilters').data('show-less-text'),
+            showAllFilterOptions = $('#searchfilters').data('list-filter-options'),
+            minimumForPopupfilter = 20;
+
+        $(document).ready(function () {
+            $(".filter-group").each(function () {
+                fetchFilterData($(this));
+            });
+        });
+
+        var fetchFilterData = function (filter) {
+            var contributorName = filter.data("contributor-name");
+            var url = facetUrl + (facetUrl.indexOf('?') != -1 ? '&' : '?') + 'searchFacet=' + contributorName;
+            
+            if (url) {
+                $.ajax({
+                    type: "GET",
+                    url: url
+                }).done(function (data) {
+                    if (data) {
+                        // PURESUPPORT-47621: remove filters with no real filter available
+                        var noOptionsAvailableFilter = !data.includes('class="badges');
+                        
+                        if (noOptionsAvailableFilter) {
+                            filter.remove();
+                        } else {
+
+                            $(data).find("div").each(function () {
+                               var familyName = $(this).find('legend').text(),
+                                   trimmedFamilyName = $.trim(familyName);
+
+                                $(filter).append(this);
+                                if ($(this).find("li").length > 5 && $(this).find("li").length <= minimumForPopupfilter) {
+                                    $(this).append("<button onclick='showmoreFilter(this);' class='btn-search-filter-show-more' aria-label='" + showmoretxt + ' ' + trimmedFamilyName + ' ' + showAllFilterOptions + "'>" + showmoretxt + "<i class='icon icon-down-open-mini' aria-hidden='true'></i></button>").append("<button onclick='showlessFilter(this);' class='btn-search-filter-show-less' aria-label='" + showlesstxt + ' ' + trimmedFamilyName + ' ' + showAllFilterOptions + "'>" + showlesstxt + "<i class='icon icon-down-open-mini' aria-hidden='true'></i></button>");
+                                }
+                                if ($(this).find("li").length > minimumForPopupfilter) {
+                                    $(this).append("<button onclick='showallFilter(this);' class='btn-search-filter-popup' aria-label='" + showmoretxt + ' ' + trimmedFamilyName + ' ' + showAllFilterOptions + "'>" + showmoretxt + "<i class='icon icon-down-open-mini' aria-hidden='true'></i></button>");
+                                }
+
+                                // Activate link on SPACE since it has role="checkbox"
+                                keyboardActivation($(this));
+                            });
+                        }
+                        alignHeight();
+                    }
+                });
+            }
+        };
+
+        $(document).on('keydown', function (e) {
+            if (e.which === $.ui.keyCode.ESCAPE && $("#filter-popup-bgoverlay").length > 0) {
+                closePopup();
+            }
+        });
+
+        $("#filter-popup").on('keydown', function (e) {
+            if (e.which === $.ui.keyCode.ESCAPE) {
+                closePopup();
+            }
+            else if (e.shiftKey && e.which === $.ui.keyCode.TAB) {
+                if($(document.activeElement).is('.close-filter')) {
+                    e.preventDefault();
+                    $('#filter-popup').find('li').last().find('a').focus();
+                }
+            }
+            else if (e.which === $.ui.keyCode.TAB) {
+                if ($(document.activeElement).is('a') && $(document.activeElement).parent('li').next().length <= 0) {
+                    $("#filter-popup .close-filter").focus();
+                    return false;
+                } 
+            }
+        });
+    });
+
+    function ariaLiveMessage(btn) {
+        var filterListName = $(btn).closest('.filter-group').find('legend').text(),
+            filterStatus = $(btn).hasClass('btn-search-filter-show-more') ? $('#searchfilters').attr('data-list-expanded-text') : $('#searchfilters').attr('data-list-collapsed-text');
+        addToAriaLive("assertive", filterListName + filterStatus);
+    }
+
+    function showmoreFilter(btn) {
+        $(btn).prev("fieldset").find("li:hidden").show();
+        $(btn).hide();
+        $(btn).next('.btn-search-filter-show-less').show();
+        $(btn).next('button').focus();
+        ariaLiveMessage(btn);
+        alignHeight();
+    }
+
+    function showlessFilter(btn) {
+        $(btn).prev().prev("fieldset").find("li:nth-child(n+6)").hide();
+        $(btn).hide();
+        $(btn).prev('.btn-search-filter-show-more').show();
+        $(btn).prev('button').focus();
+        ariaLiveMessage(btn);
+        alignHeight();
+
+    }
+
+    function showallFilter(btn) {
+        $(btn).attr('data-remember-focus', '');
+        $(btn).parent(".filter-wrap").clone().addClass("popup").appendTo($("#filter-popup"));
+        $("#filter-popup-bgoverlay").show();
+        $("#filter-popup").show();
+        $("#filter-popup li:first-child a").focus();
+
+        keyboardActivation("#filter-popup");
+    }
+
+    function keyboardActivation(container) {
+        $(container).find('a').on('keypress', function (e) {
+            if (e.which === $.ui.keyCode.SPACE) {
+                window.location = $(this).attr('href');
+                e.preventDefault();
+            }
+        });
+    }
+
+    function closePopupKey(e) {
+        if (e.which === $.ui.keyCode.TAB) {
+            return false;
+            if (e.shiftKey) {
+                $('#filter-popup li:last-child a').focus();
+                return false;
+            } else {
+                $('#filter-popup li:first-child a').focus();
+            }
+        } else if (e.which === $.ui.keyCode.ENTER || e.which === $.ui.keyCode.SPACE) {
+            closePopup();
+        }
+    }
+
+    function closePopup() {
+        $("#filter-popup-bgoverlay").hide();
+        $("#filter-popup .filter-wrap").remove();
+        $("#filter-popup").hide();
+        $("[data-remember-focus]").focus().removeAttr('data-remember-focus');
+        addToAriaLive("assertive", "Filter popup closed");
+    }
+
+    function alignHeight() {
+        var height = 0;
+        height = $("#searchfilters").height() + (($(".page-section-content-persons-index").length > 0) ? 115 : 30);
+        $(".search-filters").closest(".container").css("min-height", height);
+    }
+</script>
+
+    </div>
+
+    <div class="portal-search-results">
+        
+        
+        <div class="search-facet-refinement">
+            <div class="search-facet-result">
+                
+            </div>
+
+            <div class="current-selected-search-facets">
+                <div class="search-concept-result-wrapper underline">
+                    
+
+
+    <table class="selected-filters-and-concepts">
+        
+        
+        <tr class="selected-filters">
+            <td>
+                <span class="selected-search-facets-title">
+                    Search concepts 
+                </span>
+                <br>
+                <ul class="badges extracted">
+                    
+                    
+                        
+                        
+                        
+                    
+                </ul>
+            </td>
+        </tr>
+        <tr class="excracted">
+            <td class="selected-filter-name" style="vertical-align: middle">
+                <span class="selected-search-facets-title">
+                    Selected Filters 
+                </span>
+                <div class="selected-concepts-section-filters clear-all">
+                    
+                    <a href="/en/publications/?page=1&amp;showAdvanced=false&amp;allConcepts=true&amp;inferConcepts=true&amp;originalSearch=&amp;improvedLayoutOrganisationUuid=" class="remove">
+                        Clear all
+                    </a>
+                </div>
+                <div class="badges search_filters" data-filters-applied="Filters applied,">
+                    
+                    
+                        
+                        
+                        
+                        
+                                
+                                
+                        
+
+                    
+                        
+                        
+                        
+                        
+                                
+                                
+                        
+
+                    
+                        
+                        
+                        
+                        
+                                
+                                
+                        
+
+                    
+                        
+                        
+                        
+                        
+                                
+                                
+                        
+
+                    
+                        
+                        
+                        
+                        
+                                
+                                
+                        
+
+                    
+                        
+                        
+                        
+                        
+                                
+                                
+                        
+
+                    
+                        
+                        
+                        
+                        
+                                
+                                
+                        
+
+                    
+                        
+                        
+                        
+                        
+                                
+                                
+                        
+
+                    
+                        
+                        
+                        
+                        
+                                
+                                
+                        
+
+                    
+
+                </div>
+            </td>
+        </tr>
+
+    </table>
+
+
+<script>
+
+    if(true){
+        $(document).ready(function () {
+
+            $('.last_checked_item').on('click', function() {
+               return false;
+            });
+
+            $("div.search-concept-fadein").fadeIn();
+            $options.on('click', 'a.remove', function (e) {
+                $(this).addClass('being-removed');
+            });
+            $hideEmptyfilters();
+            $selectCheckBox();
+            $IE11Styling();
+        });
+        var $options = $('.badges.extracted'),
+            items = $options.find('li.filter').sort(sortFilters);
+
+        function sortFilters(aName, bName) {
+            return ((aName.className > bName.className) ? -1 : ((aName.className == bName.className) ? 2 : 1));
+        }
+
+        $options.html(items);
+        $('li.concept-filters').not('.someClass').children('.sort-concept').css("display", "none");
+        $('.concept-filters').last().addClass("someClass").after("<br/>");
+
+        var $hideEmptyfilters = function () {
+            var size = $(".search-concept-result-wrapper tr").each(function () {
+                if($(this).find(".concept-badge-small").length == 0){
+                    $(this).css("display", "none");
+                }
+            });
+            if (size == 0) {
+                $(".selected-filter-name").css("display", "none");
+
+            }
+
+        };
+
+        var $selectCheckBox = function () {
+
+            $(".filter.concept-filters.excracted").on('click', function () {
+                var url = $(this).find('input').data('url'),
+                    searchType = $('#main-content').hasClass('page-section-content-searchAll') ? '?doSearch=Search&' : '?',
+                    changeUrl = url.replace("?", searchType);
+                window.location.href = changeUrl;
+            });
+        }
+    }
+    else {
+        $(document).ready(function () {
+
+            $("div.search-concept-fadein").fadeIn();
+            $options.on('click', 'a.remove', function (e) {
+                $(this).addClass('being-removed');
+            });
+        });
+        var $options = $('.badges'),
+            items = $options.find('li.filter').sort(sortFilters);
+        function sortFilters(aName, bName) {
+            return ((aName.className > bName.className) ? -1 : ((aName.className == bName.className) ? 2 : 1));
+        }
+        $options.html(items);
+        $('.concept-filters').last().addClass("someClass").after("<br/>");
+        $('li.concept-filters').not('.someClass').children('.sort-concept').css("display", "none");
+
+
+        $(".search-concept-fadein").hide(0).delay(200).fadeIn(2000)
+    }
+
+    var $IE11Styling = function () {
+        var isIE11 = !!navigator.userAgent.match(/Trident.*rv\:11\./);
+        if(isIE11){
+            $('.filter.concept-filters.excracted input[name=extractedConcepts]').css("margin-top", "5px");
+        }
+
+    }
+
+</script>
+                </div>
+            </div>
+        </div>
+
+
+    <div class="search-result-top">
+        <div class="search-tools search-tools-left">
+            <ul>
+                <li class="search-pager-information">
+                    50 - 100 out of 52,435 Results
+                </li>
+                <li class="dropdown search-orderings">
+                    
+                    <button id="btn-ordering" data-toggle="dropdown" aria-expanded="false" aria-label="Results sorted byPublication Year, Title(Descending)">Publication Year, Title <span class='direction'>(Descending)</span><i class="icon icon-down-open-mini"></i></button><div class="dropdown-container"><ul class="search-orderings"><li><a href="/en/publications/?page=1&ordering=publicationYearThenTitle&descending=false" rel="nofollow" aria-label="Sort by Publication Year, Title (Ascending)">Publication Year, Title<span class="label">(Ascending)</span></a></li><li><a href="/en/publications/?page=1&ordering=title&descending=false" rel="nofollow" aria-label="Sort by Title (Ascending)">Title</a></li><li><a href="/en/publications/?page=1&ordering=type&descending=false" rel="nofollow" aria-label="Sort by Type (Ascending)">Type</a></li></ul></div>
+                </li>
+                
+            </ul>
+        </div>
+
+        <script type="text/javascript">
+            function exportTrack(event) {
+                if (window._gaq && window._gaq._getTracker) {
+                    gtag('event', 'Export Results', {
+                        'event_category': 'Search',
+                        'event_label': 'publications',
+                        'value': ''
+                    });
+                }
+
+                appData.push({
+                    event:'contentExport',
+                    content:
+                        [
+                            {type: 'publications', exportType: 'file', format: event.target.dataset.format}
+                        ]
+                })
+            }
+        </script>
+
+        
+    </div>
+
+    
+    
+
+    
+
+    
+
+    
+<h2 class="sr-only hidden_search_result_heading">Search results</h2>
+<ul class="list-results">
+    
+        
+            <li class="list-result-item list-result-item-0">
+                
+                    
+                        <div class="search-result-group">
+                            2024
+                        </div>
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontoconference rendering_portal-short rendering_contributiontoconference_portal-short"><h3 class="title"><a rel="ContributionToConference" href="https://research-hub.nrel.gov/en/publications/analytical-modeling-of-metal-foam-composite-phase-change-material" class="link"><span>Analytical Modeling of Metal Foam Composite Phase Change Materials (PCM) in Thermal Energy Storage Using Asymptotic Analysis: Paper No. IMECE2023-114094</span></a></h3><span>Xu, M.</span>, <span>Akhtar, S.</span>, <span>Zueter, A.</span>, <span>Mohit, M.</span> &amp; <span>Sasmito, A.</span>, <span class="date">2024</span>. <span class="numberofpages">10 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to conference<span class="type_parent_sep"> › </span></span><span class="type_classification">Paper</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontoconference rendering_publicationattacheddocumentsportalrenderer rendering_contributiontoconference_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-1">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontoconference rendering_portal-short rendering_contributiontoconference_portal-short"><h3 class="title"><a rel="ContributionToConference" href="https://research-hub.nrel.gov/en/publications/analyzing-residential-charging-demand-for-light-duty-electric-veh" class="link"><span>Analyzing Residential Charging Demand for Light-Duty Electric Vehicles in Colorado: Preprint</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/zhaocai-liu" class="link person"><span>Liu, Z.</span></a>, <span>Alexeenko, P.</span>, <span>Bruchon, M.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/mingzhi-zhang" class="link person"><span>Zhang, M.</span></a> &amp; <a rel="Person" href="https://research-hub.nrel.gov/en/persons/john-kisacikoglu" class="link person"><span>Kisacikoglu, M. J.</span></a>, <span class="date">2024</span>. <span class="numberofpages">9 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to conference<span class="type_parent_sep"> › </span></span><span class="type_classification">Paper</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontoconference rendering_publicationattacheddocumentsportalrenderer rendering_contributiontoconference_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom one">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-2">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontoconference rendering_portal-short rendering_contributiontoconference_portal-short"><h3 class="title"><a rel="ContributionToConference" href="https://research-hub.nrel.gov/en/publications/an-efficient-annual-performance-model-of-a-geothermal-network-for" class="link"><span>An Efficient Annual-Performance Model of a Geothermal Network for Improved System Design, Operation, and Control: Preprint</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/juliet-simpson" class="link person"><span>Simpson, J.</span></a> &amp; <a rel="Person" href="https://research-hub.nrel.gov/en/persons/guangdong-zhu" class="link person"><span>Zhu, G.</span></a>, <span class="date">2024</span>. <span class="numberofpages">15 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to conference<span class="type_parent_sep"> › </span></span><span class="type_classification">Paper</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontoconference rendering_publicationattacheddocumentsportalrenderer rendering_contributiontoconference_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom one">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-3">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontojournal rendering_portal-short rendering_contributiontojournal_portal-short"><h3 class="title"><a rel="ContributionToJournal" href="https://research-hub.nrel.gov/en/publications/an-envelope-time-synchronous-averaging-for-wind-turbine-gearbox-f" class="link"><span>An Envelope Time Synchronous Averaging for Wind Turbine Gearbox Fault Diagnosis</span></a></h3><span>Touti, W.</span>, <span>Salah, M.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/shawn-sheng" class="link person"><span>Sheng, S.</span></a> &amp; <span>Bacha, K.</span>, <span class="date">2024</span>, <span class="journal">In: <a rel="Journal" href="#" class="link"><span>Journal of Vibration Engineering and Technologies.</span></a></span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to journal<span class="type_parent_sep"> › </span></span><span class="type_classification">Article</span><span class="type_classification"><span class="type_parent_sep"> › </span>peer-review</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontojournal rendering_publicationattacheddocumentsportalrenderer rendering_contributiontojournal_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-4">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/an-evaluation-framework-for-state-energy-officesapos-energy-effic" class="link"><span>An Evaluation Framework for State Energy Offices' Energy Efficiency and Clean Energy Workforce Programs</span></a></h3><span>Srivastava, R.</span>, <span>Ayala, R.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/robin-tuttle" class="link person"><span>Tuttle, R.</span></a> &amp; <a rel="Person" href="https://research-hub.nrel.gov/en/persons/allison-moe" class="link person"><span>Moe, A.</span></a>, <span class="date">2024</span>, <span class="numberofpages">51 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Technical Report</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-5">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontojournal rendering_portal-short rendering_contributiontojournal_portal-short"><h3 class="title"><a rel="ContributionToJournal" href="https://research-hub.nrel.gov/en/publications/a-new-re-redistribution-scheme-for-weighted-state-redistribution-" class="link"><span>A New Re-Redistribution Scheme for Weighted State Redistribution with Adaptive Mesh Refinement: Article No. 112879</span></a></h3><span>Barrio Sanchez, I.</span>, <span>Almgren, A.</span>, <span>Bell, J.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/marc-henry-de-frahan" class="link person"><span>Henry de Frahan, M.</span></a> &amp; <span>Zhang, W.</span>, <span class="date">2024</span>, <span class="journal">In: <a rel="Journal" href="#" class="link"><span>Journal of Computational Physics.</span></a></span> <span class="volume">504</span>, <span class="numberofpages">21 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to journal<span class="type_parent_sep"> › </span></span><span class="type_classification">Article</span><span class="type_classification"><span class="type_parent_sep"> › </span>peer-review</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontojournal rendering_publicationattacheddocumentsportalrenderer rendering_contributiontojournal_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-6">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/an-innovative-design-of-high-temperature-sensible-molten-salt-the" class="link"><span>An Innovative Design of High-Temperature, Sensible Molten Salt Thermal Energy Storage Systems With Geopolymer Insulation</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/youyang-zhao" class="link person"><span>Zhao, Y.</span></a>, <span>Viverito, T.</span>, <span>Bowers, R.</span>, <span>Kimbal, C.</span>, <span>Aytas, T.</span> &amp; <span>Olivetti, E.</span>, <span class="date">2024</span>, <span class="numberofpages">172 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Technical Report</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-7">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontojournal rendering_portal-short rendering_contributiontojournal_portal-short"><h3 class="title"><a rel="ContributionToJournal" href="https://research-hub.nrel.gov/en/publications/an-investigation-on-the-pollen-induced-soiling-losses-in-utility-" class="link"><span>An Investigation on the Pollen-Induced Soiling Losses in Utility-Scale PV Plants</span></a></h3><span>Bessa, J.</span>, <span>Valerino, M.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/matthew-muller" class="link person"><span>Muller, M.</span></a>, <span>Bergin, M.</span>, <span>Micheli, L.</span>, <span>Almonacid, F.</span> &amp; <span>Fernandez, E.</span>, <span class="date">2024</span>, <span class="journal">In: <a rel="Journal" href="#" class="link"><span>IEEE Journal of Photovoltaics.</span></a></span> <span class="volume">14</span>, <span class="journalnumber">1</span>, <span class="pages">p. 178-184</span> <span class="numberofpages">7 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to journal<span class="type_parent_sep"> › </span></span><span class="type_classification">Article</span><span class="type_classification"><span class="type_parent_sep"> › </span>peer-review</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontojournal rendering_publicationattacheddocumentsportalrenderer rendering_contributiontojournal_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-8">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontoconference rendering_portal-short rendering_contributiontoconference_portal-short"><h3 class="title"><a rel="ContributionToConference" href="https://research-hub.nrel.gov/en/publications/anomaly-detection-and-mitigation-for-dynamic-frequency-regulation" class="link"><span>Anomaly Detection and Mitigation for Dynamic Frequency Regulation in Hydropower-Battery Systems: Preprint</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/vivek-kumar-singh" class="link person"><span>Singh, V. K.</span></a>, <span>Hossain, R.</span> &amp; <span>Tucker, E.</span>, <span class="date">2024</span>. <span class="numberofpages">8 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to conference<span class="type_parent_sep"> › </span></span><span class="type_classification">Paper</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontoconference rendering_publicationattacheddocumentsportalrenderer rendering_contributiontoconference_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom one">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-9">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/an-overview-of-renewable-energy-desk-activities-for-power-grid-op" class="link"><span>An Overview of Renewable Energy Desk Activities for Power Grid Operations and Planning</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/thushara-de-silva-m" class="link person"><span>De Silva, T.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/seong-choi" class="link person"><span>Choi, S.</span></a> &amp; <a rel="Person" href="https://research-hub.nrel.gov/en/persons/adarsh-nagarajan" class="link person"><span>Nagarajan, A.</span></a>, <span class="date">2024</span>, <span class="numberofpages">4 p.</span> National Renewable Energy Laboratory (NREL).<p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Fact Sheet</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom one">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-10">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/an-updated-life-cycle-assessment-of-utility-scale-solar-photovolt" class="link"><span>An Updated Life Cycle Assessment of Utility-Scale Solar Photovoltaic Systems Installed in the United States</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/brittany-smith" class="link person"><span>Smith, B.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/ashok-sekar" class="link person"><span>Sekar, A.</span></a>, <span>Mirletz, H.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/garvin-heath" class="link person"><span>Heath, G.</span></a> &amp; <a rel="Person" href="https://research-hub.nrel.gov/en/persons/robert-margolis" class="link person"><span>Margolis, R.</span></a>, <span class="date">2024</span>, <span class="numberofpages">85 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Technical Report</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-11">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/application-of-a-prize-mechanism-to-address-data-utilization-chal" class="link"><span>Application of a Prize Mechanism to Address Data Utilization Challenges at Utilities</span></a></h3><span>Gomach, S.</span>, <span>Schulberg, A.</span>, <span>Kobayashi, N.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/deborah-brodt-giles" class="link person"><span>Brodt-Giles, D.</span></a>, <span>Follum, J.</span> &amp; <span>Jenkins, S.</span>, <span class="date">2024</span>, <span class="numberofpages">16 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Technical Report</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-12">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontojournal rendering_portal-short rendering_contributiontojournal_portal-short"><h3 class="title"><a rel="ContributionToJournal" href="https://research-hub.nrel.gov/en/publications/applying-energy-justice-metrics-to-photovoltaic-materials-researc" class="link"><span>Applying Energy Justice Metrics to Photovoltaic Materials Research</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/nikita-dutta" class="link person"><span>Dutta, N.</span></a>, <span>Mirletz, H.</span>, <span>Arkhurst, B.</span>, <span>Houghteling, C.</span>, <span>Gill, E.</span> &amp; <a rel="Person" href="https://research-hub.nrel.gov/en/persons/silvana-ovaitt" class="link person"><span>Ovaitt, S.</span></a>, <span class="date">2024</span>, <span class="journal">In: <a rel="Journal" href="#" class="link"><span>MRS Advances.</span></a></span> <span class="numberofpages">8 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to journal<span class="type_parent_sep"> › </span></span><span class="type_classification">Article</span><span class="type_classification"><span class="type_parent_sep"> › </span>peer-review</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontojournal rendering_publicationattacheddocumentsportalrenderer rendering_contributiontojournal_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-13">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontoconference rendering_portal-short rendering_contributiontoconference_portal-short"><h3 class="title"><a rel="ContributionToConference" href="https://research-hub.nrel.gov/en/publications/a-privacy-preserving-distributed-model-identification-algorithm-f-2" class="link"><span>A Privacy Preserving Distributed Model Identification Algorithm for Power Distribution Systems</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/chin-yao-chang" class="link person"><span>Chang, C-Y.</span></a>, <span class="date">2024</span>. <span class="numberofpages">6 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to conference<span class="type_parent_sep"> › </span></span><span class="type_classification">Paper</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontoconference rendering_publicationattacheddocumentsportalrenderer rendering_contributiontoconference_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-14">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/aries-advanced-research-on-integrated-energy-systems" class="link"><span>ARIES: Advanced Research on Integrated Energy Systems</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/nrel" class="link person"><span>NREL</span></a>, <span class="date">2024</span>, <span class="numberofpages">2 p.</span> National Renewable Energy Laboratory (NREL).<p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Fact Sheet</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom one">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-15">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/aries-2023" class="link"><span>ARIES 2023</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/nrel" class="link person"><span>NREL</span></a>, <span class="date">2024</span>, <span class="numberofpages">24 p.</span> National Renewable Energy Laboratory (NREL).<p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Brochure</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom one">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-16">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontojournal rendering_portal-short rendering_contributiontojournal_portal-short"><h3 class="title"><a rel="ContributionToJournal" href="https://research-hub.nrel.gov/en/publications/a-roadmap-for-tandem-photovoltaics" class="link"><span>A Roadmap for Tandem Photovoltaics</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/kirstin-alberi" class="link person"><span>Alberi, K.</span></a>, <span>Berry, J.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/jacob-cordell" class="link person"><span>Cordell, J.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/daniel-friedman" class="link person"><span>Friedman, D.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/john-geisz" class="link person"><span>Geisz, J.</span></a>, <span>Kirmani, A.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/bryon-larson" class="link person"><span>Larson, B.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/bill-mcmahon" class="link person"><span>McMahon, W.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/lorelle-mansfield" class="link person"><span>Mansfield, L.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/paul-ndione" class="link person"><span>Ndione, P.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/michael-owen-bellini" class="link person"><span>Owen-Bellini, M.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/axel-palmstrom" class="link person"><span>Palmstrom, A.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/matthew-reese" class="link person"><span>Reese, M.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/samantha-bench-reese" class="link person"><span>Reese, S.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/myles-steiner" class="link person"><span>Steiner, M.</span></a>, <span>Tamboli, A.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/san-theingi" class="link person"><span>Theingi, S.</span></a> &amp; <a rel="Person" href="https://research-hub.nrel.gov/en/persons/emily-warren" class="link person"><span>Warren, E.</span></a>, <span class="date">2024</span>, <span class="journal">In: <a rel="Journal" href="#" class="link"><span>Joule.</span></a></span> <span class="volume">8</span>, <span class="journalnumber">3</span>, <span class="pages">p. 658-692</span> <span class="numberofpages">35 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to journal<span class="type_parent_sep"> › </span></span><span class="type_classification">Article</span><span class="type_classification"><span class="type_parent_sep"> › </span>peer-review</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontojournal rendering_publicationattacheddocumentsportalrenderer rendering_contributiontojournal_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                    <div class="metrics-wrap metrics-top one">
+                        
+                            <div class="metric scopus-citations">
+                                
+                                <span class="count">1</span>
+                                
+                                <span class="label">Scopus  Citations</span>
+                            </div>
+                        
+                        
+                    </div>
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-17">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontojournal rendering_portal-short rendering_contributiontojournal_portal-short"><h3 class="title"><a rel="ContributionToJournal" href="https://research-hub.nrel.gov/en/publications/artificial-intelligence-aided-wind-plant-optimization-for-nationw" class="link"><span>Artificial Intelligence-Aided Wind Plant Optimization for Nationwide Evaluation of Land Use and Economic Benefits of Wake Steering</span></a></h3><span>Harrison-Atlas, D.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/andrew-glaws" class="link person"><span>Glaws, A.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/ryan-king" class="link person"><span>King, R.</span></a> &amp; <span>Lantz, E.</span>, <span class="date">2024</span>, <span class="journal">In: <a rel="Journal" href="#" class="link"><span>Nature Energy.</span></a></span> <span class="numberofpages">22 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to journal<span class="type_parent_sep"> › </span></span><span class="type_classification">Article</span><span class="type_classification"><span class="type_parent_sep"> › </span>peer-review</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontojournal rendering_publicationattacheddocumentsportalrenderer rendering_contributiontojournal_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-18">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontojournal rendering_portal-short rendering_contributiontojournal_portal-short"><h3 class="title"><a rel="ContributionToJournal" href="https://research-hub.nrel.gov/en/publications/assessing-total-cost-of-driving-competitiveness-of-zero-emission-" class="link"><span>Assessing Total Cost of Driving Competitiveness of Zero-Emission Trucks: Article No. 109385</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/catherine-ledna" class="link person"><span>Ledna, C.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/matteo-muratori" class="link person"><span>Muratori, M.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/arthur-yip" class="link person"><span>Yip, A.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/paige-jadun" class="link person"><span>Jadun, P.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/chris-hoehne" class="link person"><span>Hoehne, C.</span></a> &amp; <span>Podkaminer, K.</span>, <span class="date">2024</span>, <span class="journal">In: <a rel="Journal" href="#" class="link"><span>iScience.</span></a></span> <span class="volume">27</span>, <span class="journalnumber">4</span>, <span class="numberofpages">18 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to journal<span class="type_parent_sep"> › </span></span><span class="type_classification">Article</span><span class="type_classification"><span class="type_parent_sep"> › </span>peer-review</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontojournal rendering_publicationattacheddocumentsportalrenderer rendering_contributiontojournal_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-19">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontojournal rendering_portal-short rendering_contributiontojournal_portal-short"><h3 class="title"><a rel="ContributionToJournal" href="https://research-hub.nrel.gov/en/publications/a-strategy-to-eliminate-selenium-oxide-islands-formed-on-the-znse" class="link"><span>A Strategy to Eliminate Selenium Oxide Islands Formed on the ZnSe/GaAs Epilayer: Article No. 108176</span></a></h3><span>Park, K.</span> &amp; <a rel="Person" href="https://research-hub.nrel.gov/en/persons/kirstin-alberi" class="link person"><span>Alberi, K.</span></a>, <span class="date">2024</span>, <span class="journal">In: <a rel="Journal" href="#" class="link"><span>Materials Science in Semiconductor Processing.</span></a></span> <span class="volume">174</span>, <span class="numberofpages">7 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to journal<span class="type_parent_sep"> › </span></span><span class="type_classification">Article</span><span class="type_classification"><span class="type_parent_sep"> › </span>peer-review</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontojournal rendering_publicationattacheddocumentsportalrenderer rendering_contributiontojournal_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-20">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontojournal rendering_portal-short rendering_contributiontojournal_portal-short"><h3 class="title"><a rel="ContributionToJournal" href="https://research-hub.nrel.gov/en/publications/a-systematic-multicriteria-based-approach-to-support-product-port" class="link"><span>A Systematic Multicriteria-Based Approach to Support Product Portfolio Selection in Microalgae Biorefineries: Article No. 148462</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/bruno-klein" class="link person"><span>Klein, B.</span></a>, <span>Chagas, M.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/ryan-davis" class="link person"><span>Davis, R.</span></a>, <span>Watanabe, M.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/matthew-wiatrowski" class="link person"><span>Wiatrowski, M.</span></a>, <span>de Morais, E.</span> &amp; <a rel="Person" href="https://research-hub.nrel.gov/en/persons/lieve-laurens" class="link person"><span>Laurens, L.</span></a>, <span class="date">2024</span>, <span class="journal">In: <a rel="Journal" href="#" class="link"><span>Chemical Engineering Journal.</span></a></span> <span class="volume">481</span>, <span class="numberofpages">14 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to journal<span class="type_parent_sep"> › </span></span><span class="type_classification">Article</span><span class="type_classification"><span class="type_parent_sep"> › </span>peer-review</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontojournal rendering_publicationattacheddocumentsportalrenderer rendering_contributiontojournal_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-21">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/atlantic-offshore-wind-transmission-study-us-department-of-energy" class="link"><span>Atlantic Offshore Wind Transmission Study: U.S. Department of Energy (DOE), Energy Efficiency &amp; Renewable Energy (EERE)</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/gregory-brinkman" class="link"><span>Brinkman, G.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/mike-bannister" class="link"><span>Bannister, M.</span></a>, Bredenkamp, S., Carveth, L., <a rel="Person" href="https://research-hub.nrel.gov/en/persons/david-corbus" class="link"><span>Corbus, D.</span></a>, Green, R., <a rel="Person" href="https://research-hub.nrel.gov/en/persons/luke-lavin" class="link"><span>Lavin, L.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/anthony-lopez" class="link"><span>Lopez, A.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/melinda-marquis" class="link"><span>Marquis, M.</span></a>, Mowers, J., Mowers, M., Rese, L., <a rel="Person" href="https://research-hub.nrel.gov/en/persons/billy-roberts" class="link"><span>Roberts, B.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/amy-rose" class="link"><span>Rose, A.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/shahil-shah" class="link"><span>Shah, S.</span></a>, Sharma, P., <a rel="Person" href="https://research-hub.nrel.gov/en/persons/hongfei-sun" class="link"><span>Sun, H.</span></a>, Wang, B., Vyakaranam, B., Huang, Z., <a onclick="$(this).next('span').toggleClassName('common_hidden');$(this).addClassName('common_hidden'); return pure.stopEvent(event);" href="#" class="link"><span> &amp; 12 others</span></a><span class="common_hidden publication_authors_full_inline_list"><span>Harris, K.</span>, <span>Qin, C.</span>, <span>Samaan, N.</span>, <span>Elizondo, M.</span>, <span>Nguyen, T.</span>, <span>Nguyen, Q.</span>, <span>Guddanti, K.</span>, <span>Royer, P.</span>, <span>Bereta dos Reis, F.</span>, <span>Siddiqui, S.</span>, <span>Nekkalapu, S.</span> &amp; <span>Abdelmalak, M.</span></span>, <span class="date">2024</span>, <span class="numberofpages">230 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Technical Report</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-22">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/atlantic-offshore-wind-transmission-study-executive-summary-us-de" class="link"><span>Atlantic Offshore Wind Transmission Study: Executive Summary: U.S. Department of Energy (DOE), Energy Efficiency &amp; Renewable Energy (EERE)</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/gregory-brinkman" class="link"><span>Brinkman, G.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/mike-bannister" class="link"><span>Bannister, M.</span></a>, Bredenkamp, S., Carveth, L., <a rel="Person" href="https://research-hub.nrel.gov/en/persons/david-corbus" class="link"><span>Corbus, D.</span></a>, Green, R., <a rel="Person" href="https://research-hub.nrel.gov/en/persons/luke-lavin" class="link"><span>Lavin, L.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/anthony-lopez" class="link"><span>Lopez, A.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/melinda-marquis" class="link"><span>Marquis, M.</span></a>, Mowers, J., Mowers, M., Rese, L., <a rel="Person" href="https://research-hub.nrel.gov/en/persons/billy-roberts" class="link"><span>Roberts, B.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/amy-rose" class="link"><span>Rose, A.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/shahil-shah" class="link"><span>Shah, S.</span></a>, Sharma, P., <a rel="Person" href="https://research-hub.nrel.gov/en/persons/hongfei-sun" class="link"><span>Sun, H.</span></a>, Wang, B., Vyakaranam, B., Huang, Z., <a onclick="$(this).next('span').toggleClassName('common_hidden');$(this).addClassName('common_hidden'); return pure.stopEvent(event);" href="#" class="link"><span> &amp; 12 others</span></a><span class="common_hidden publication_authors_full_inline_list"><span>Harris, K.</span>, <span>Qin, C.</span>, <span>Samaan, N.</span>, <span>Elizondo, M.</span>, <span>Nguyen, T.</span>, <span>Nguyen, Q.</span>, <span>Guddanti, K.</span>, <span>Royer, P.</span>, <span>Bereta dos Reis, F.</span>, <span>Siddiqui, S.</span>, <span>Nekkalapu, S.</span> &amp; <span>Abdelmalak, M.</span></span>, <span class="date">2024</span>, <span class="numberofpages">19 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Technical Report</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-23">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontojournal rendering_portal-short rendering_contributiontojournal_portal-short"><h3 class="title"><a rel="ContributionToJournal" href="https://research-hub.nrel.gov/en/publications/atomistic-macromolecular-model-of-the-populus-secondary-cell-wall" class="link"><span>Atomistic, Macromolecular Model of the Populus Secondary Cell Wall Informed by Solid-State NMR: Article No. eadi7965</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/bennett-addison" class="link person"><span>Addison, B.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/lintao-bu" class="link person"><span>Bu, L.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/vivek-bharadwaj" class="link person"><span>Bharadwaj, V.</span></a>, <span>Crowley, M.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/liz-ware" class="link person"><span>Harmon-Ware, A.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/michael-crowley" class="link person"><span>Crowley, M.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/yannick-bomble" class="link person"><span>Bomble, Y.</span></a> &amp; <a rel="Person" href="https://research-hub.nrel.gov/en/persons/peter-ciesielski" class="link person"><span>Ciesielski, P.</span></a>, <span class="date">2024</span>, <span class="journal">In: <a rel="Journal" href="#" class="link"><span>Science Advances.</span></a></span> <span class="volume">10</span>, <span class="journalnumber">1</span>, <span class="numberofpages">13 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to journal<span class="type_parent_sep"> › </span></span><span class="type_classification">Article</span><span class="type_classification"><span class="type_parent_sep"> › </span>peer-review</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontojournal rendering_publicationattacheddocumentsportalrenderer rendering_contributiontojournal_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-24">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontoconference rendering_portal-short rendering_contributiontoconference_portal-short"><h3 class="title"><a rel="ContributionToConference" href="https://research-hub.nrel.gov/en/publications/automated-assembly-progress-monitoring-in-modular-construction-fa" class="link"><span>Automated Assembly Progress Monitoring in Modular Construction Factories Using Computer Vision-Based Instance Segmentation</span></a></h3><span>Panahi, R.</span>, <span>Louis, J.</span>, <span>Podder, A.</span>, <span>Swanson, C.</span> &amp; <a rel="Person" href="https://research-hub.nrel.gov/en/persons/shanti-pless" class="link person"><span>Pless, S.</span></a>, <span class="date">2024</span>, <span class="pages">p. 290-297</span>. <span class="numberofpages">8 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to conference<span class="type_parent_sep"> › </span></span><span class="type_classification">Paper</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontoconference rendering_publicationattacheddocumentsportalrenderer rendering_contributiontoconference_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom one">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-25">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontoconference rendering_portal-short rendering_contributiontoconference_portal-short"><h3 class="title"><a rel="ContributionToConference" href="https://research-hub.nrel.gov/en/publications/automated-mobility-districts-a-conceptual-definition-preprint" class="link"><span>Automated Mobility Districts - A Conceptual Definition: Preprint</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/stanley-young" class="link person"><span>Young, S.</span></a> &amp; <span>Lott, J.</span>, <span class="date">2024</span>. <span class="numberofpages">11 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to conference<span class="type_parent_sep"> › </span></span><span class="type_classification">Paper</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontoconference rendering_publicationattacheddocumentsportalrenderer rendering_contributiontoconference_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom one">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-26">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontojournal rendering_portal-short rendering_contributiontojournal_portal-short"><h3 class="title"><a rel="ContributionToJournal" href="https://research-hub.nrel.gov/en/publications/automotive-silicon-carbide-power-module-cooling-with-a-novel-modu" class="link"><span>Automotive Silicon Carbide Power Module Cooling With a Novel Modular Manifold and Embedded Heat Sink: Paper No. EP-23-1026</span></a></h3><span>Osman, A.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/gilbert-moreno" class="link person"><span>Moreno, G.</span></a>, <span>Myers, S.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/joshua-major" class="link person"><span>Major, J.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/xuhui-feng" class="link person"><span>Feng, X.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/sreekant-narumanchi" class="link person"><span>Narumanchi, S.</span></a> &amp; <span>Joshi, Y.</span>, <span class="date">2024</span>, <span class="journal">In: <a rel="Journal" href="#" class="link"><span>Journal of Electronic Packaging, Transactions of the ASME.</span></a></span> <span class="volume">146</span>, <span class="journalnumber">2</span>, <span class="numberofpages">13 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to journal<span class="type_parent_sep"> › </span></span><span class="type_classification">Article</span><span class="type_classification"><span class="type_parent_sep"> › </span>peer-review</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontojournal rendering_publicationattacheddocumentsportalrenderer rendering_contributiontojournal_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-27">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/availability-and-performance-loss-factors-for-us-pv-fleet-systems" class="link"><span>Availability and Performance Loss Factors for U.S. PV Fleet Systems</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/chris-deline" class="link person"><span>Deline, C.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/matthew-muller" class="link person"><span>Muller, M.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/robert-white" class="link person"><span>White, R.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/kirsten-perry" class="link person"><span>Perry, K.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/martin-springer" class="link person"><span>Springer, M.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/michael-deceglie" class="link person"><span>Deceglie, M.</span></a> &amp; <a rel="Person" href="https://research-hub.nrel.gov/en/persons/dirk-jordan" class="link person"><span>Jordan, D.</span></a>, <span class="date">2024</span>, <span class="numberofpages">33 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Technical Report</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-28">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/a-weather-analysis-for-xcel-energyaposs-2030-colorado-preferred-p" class="link"><span>A Weather Analysis for Xcel Energy's 2030 Colorado Preferred Plan</span></a></h3><span>Novacheck, J.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/marty-schwarz" class="link person"><span>Schwarz, M.</span></a> &amp; <a rel="Person" href="https://research-hub.nrel.gov/en/persons/grant-buster" class="link person"><span>Buster, G.</span></a>, <span class="date">2024</span>, <span class="numberofpages">45 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Technical Report</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-29">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontojournal rendering_portal-short rendering_contributiontojournal_portal-short"><h3 class="title"><a rel="ContributionToJournal" href="https://research-hub.nrel.gov/en/publications/barriers-and-variable-spacing-enhance-convective-cooling-and-incr" class="link"><span>Barriers and Variable Spacing Enhance Convective Cooling and Increase Power Output in Solar PV Plants: Article No. 013501</span></a></h3><span>Stanislawski, B.</span>, <span>Harman, T.</span>, <span>Cal, R.</span> &amp; <span>Calaf, M.</span>, <span class="date">2024</span>, <span class="journal">In: <a rel="Journal" href="#" class="link"><span>Journal of Renewable and Sustainable Energy.</span></a></span> <span class="volume">16</span>, <span class="journalnumber">1</span>, <span class="numberofpages">11 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to journal<span class="type_parent_sep"> › </span></span><span class="type_classification">Article</span><span class="type_classification"><span class="type_parent_sep"> › </span>peer-review</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontojournal rendering_publicationattacheddocumentsportalrenderer rendering_contributiontojournal_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-30">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/beginneraposs-guide-to-understanding-power-system-model-results-f" class="link"><span>Beginner's Guide to Understanding Power System Model Results for Long-Term Resource Plans</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/wesley-cole" class="link person"><span>Cole, W.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/caitlin-murphy" class="link person"><span>Murphy, C.</span></a> &amp; <span>Karmakar, A.</span>, <span class="date">2024</span>, <span class="numberofpages">19 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Technical Report</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-31">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/beginneraposs-guide-to-understanding-power-system-model-results-f-2" class="link"><span>Beginner's Guide to Understanding Power System Model Results for Long-Term Resource Plans</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/caitlin-murphy" class="link person"><span>Murphy, C.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/wesley-cole" class="link person"><span>Cole, W.</span></a> &amp; <span>Karmakar, A.</span>, <span class="date">2024</span>, <span class="numberofpages">9 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Presentation</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom one">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-32">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/benefits-and-burdens-exploring-the-role-of-community-benefits-in-" class="link"><span>Benefits and Burdens: Exploring the Role of Community Benefits in Wind Energy Development</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/matilda-kreider" class="link person"><span>Kreider, M.</span></a>, <span>Jabrixio, M.</span>, <span>Thomas, T.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/lucas-eshuis" class="link person"><span>Eshuis, L.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/chloe-constant" class="link person"><span>Constant, C.</span></a> &amp; <a rel="Person" href="https://research-hub.nrel.gov/en/persons/suzanne-macdonald" class="link person"><span>MacDonald, S.</span></a>, <span class="date">2024</span>, <span class="numberofpages">45 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Presentation</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-33">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/best-practices-for-payment-systems-at-public-electric-vehicle-cha" class="link"><span>Best Practices for Payment Systems at Public Electric Vehicle Charging Stations</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/kristi-moriarty" class="link person"><span>Moriarty, K.</span></a> &amp; <span>Smart, J.</span>, <span class="date">2024</span>, <span class="numberofpages">17 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Technical Report</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-34">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/best-practices-to-design-retrofit-and-operate-efficient-data-cent" class="link"><span>Best Practices to Design, Retrofit, and Operate Efficient Data Centers</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/otto-van-geet" class="link person"><span>Van Geet, O.</span></a>, <span class="date">2024</span>, <span class="numberofpages">18 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Presentation</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom one">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-35">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/better-living-through-biology-studying-enzymes-to-make-industrial" class="link"><span>Better Living Through Biology: Studying Enzymes to Make Industrial Processes More Efficient</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/seth-wiley" class="link person"><span>Wiley, S.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/gregory-vansuch" class="link person"><span>Vansuch, G.</span></a> &amp; <a rel="Person" href="https://research-hub.nrel.gov/en/persons/cara-lubner" class="link person"><span>Lubner, C.</span></a>, <span class="date">2024</span>, National Renewable Energy Laboratory (NREL).<p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Poster</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom one">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-36">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/bid-in-price-sensitive-load-a-comparison-with-fixed-load-in-a-rea" class="link"><span>Bid-in Price-Sensitive Load: A Comparison with Fixed Load in a Realistic Test System</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/elaine-hale" class="link person"><span>Hale, E.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/nongchao-guo" class="link person"><span>Guo, N.</span></a> &amp; <span>O'Neill, R.</span>, <span class="date">2024</span>, <span class="numberofpages">61 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Technical Report</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-37">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/bifacial-photovoltaic-module-degradation-dynamics" class="link"><span>Bifacial Photovoltaic Module Degradation Dynamics</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/silvana-ovaitt" class="link person"><span>Ovaitt, S.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/dana-kern" class="link person"><span>Kern, D.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/dirk-jordan" class="link person"><span>Jordan, D.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/steven-johnston" class="link person"><span>Johnston, S.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/elizabeth-palmiotti" class="link person"><span>Palmiotti, E.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/peter-hacke" class="link person"><span>Hacke, P.</span></a> &amp; <a rel="Person" href="https://research-hub.nrel.gov/en/persons/chris-deline" class="link person"><span>Deline, C.</span></a>, <span class="date">2024</span>, National Renewable Energy Laboratory (NREL).<p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Poster</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom one">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-38">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_patent rendering_portal-short rendering_patent_portal-short"><h3 class="title"><a rel="Patent" href="https://research-hub.nrel.gov/en/publications/bioderived-recyclable-epoxy-anhydride-thermosetting-polymers-and-" class="link"><span>Bioderived Recyclable Epoxy-Anhydride Thermosetting Polymers and Resins</span></a></h3><span>Wang, C.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/robynne-murray" class="link person"><span>Murray, R.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/gregg-beckham" class="link person"><span>Beckham, G.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/scott-mauger" class="link person"><span>Mauger, S.</span></a> &amp; <a rel="Person" href="https://research-hub.nrel.gov/en/persons/nicholas-rorrer" class="link person"><span>Rorrer, N.</span></a>, <span class="date">2024</span>, National Renewable Energy Laboratory (NREL), Patent No. U.S. 11,970,575 B2, <span class="date">30 Apr 2024</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Patent</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_patent rendering_publicationattacheddocumentsportalrenderer rendering_patent_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom one">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-39">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/biomass-carbon-removal-and-storage-bicrs" class="link"><span>Biomass Carbon Removal and Storage (BiCRS)</span></a></h3><span>Chun, S.</span> &amp; <a rel="Person" href="https://research-hub.nrel.gov/en/persons/liz-ware" class="link person"><span>Ware, A.</span></a>, <span class="date">2024</span>, National Renewable Energy Laboratory (NREL).<p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Poster</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom one">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-40">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontojournal rendering_portal-short rendering_contributiontojournal_portal-short"><h3 class="title"><a rel="ContributionToJournal" href="https://research-hub.nrel.gov/en/publications/bismuth-in-lead-tin-alloy-perovskites-effect-on-material-properti" class="link"><span>Bismuth in Lead-Tin Alloy Perovskites: Effect on Material Properties and Photovoltaic Device Performance</span></a></h3><span>Palmer, J.</span>, <span>Yang, J.</span>, <span>Gupta, A.</span>, <span>Dolan, C.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/bryon-larson" class="link person"><span>Larson, B.</span></a>, <span>Dunfield, S.</span>, <span>Mannodi-Kanakkithodi, A.</span> &amp; <span>Fenning, D.</span>, <span class="date">2024</span>, <span class="journal">In: <a rel="Journal" href="#" class="link"><span>ACS Applied Energy Materials.</span></a></span> <span class="volume">7</span>, <span class="journalnumber">7</span>, <span class="pages">p. 2726-2734</span> <span class="numberofpages">9 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to journal<span class="type_parent_sep"> › </span></span><span class="type_classification">Article</span><span class="type_classification"><span class="type_parent_sep"> › </span>peer-review</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontojournal rendering_publicationattacheddocumentsportalrenderer rendering_contributiontojournal_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-41">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontojournal rendering_portal-short rendering_contributiontojournal_portal-short"><h3 class="title"><a rel="ContributionToJournal" href="https://research-hub.nrel.gov/en/publications/bridging-the-energy-future-the-role-and-potential-of-hydrogen-co-" class="link"><span>Bridging the Energy Future: The Role and Potential of Hydrogen Co-Firing with Natural Gas: Article No. 140724</span></a></h3><span>Abdin, Z.</span>, <span class="date">2024</span>, <span class="journal">In: <a rel="Journal" href="#" class="link"><span>Journal of Cleaner Production.</span></a></span> <span class="volume">436</span>, <span class="numberofpages">14 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to journal<span class="type_parent_sep"> › </span></span><span class="type_classification">Article</span><span class="type_classification"><span class="type_parent_sep"> › </span>peer-review</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontojournal rendering_publicationattacheddocumentsportalrenderer rendering_contributiontojournal_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-42">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontoconference rendering_portal-short rendering_contributiontoconference_portal-short"><h3 class="title"><a rel="ContributionToConference" href="https://research-hub.nrel.gov/en/publications/budget-constrained-sizing-of-renewable-and-energy-storage-systems" class="link"><span>Budget-Constrained Sizing of Renewable and Energy Storage Systems for Farm-Scale Ammonia Production Within the Food-Energy-Water Nexus (Citation Only)</span></a></h3><span>Liu, X.</span>, <span>Modarresi, A.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/lawryn-kiboma" class="link person"><span>Kiboma, L.</span></a>, <span>Wu, H.</span>, <span>Symons, J.</span> &amp; <span>Hill, M.</span>, <span class="date">2024</span>. <span class="numberofpages">5 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to conference<span class="type_parent_sep"> › </span></span><span class="type_classification">Paper</span></p></div>
+
+                        
+                        
+
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom one">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-43">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/building-electrification-pathways-for-airports-envisioning-the-fu" class="link"><span>Building Electrification Pathways for Airports: Envisioning the Future of Zero-Emissions Transportation</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/nrel" class="link person"><span>NREL</span></a>, <span class="date">2024</span>, National Renewable Energy Laboratory (NREL).<p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Fact Sheet</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom one">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-44">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontojournal rendering_portal-short rendering_contributiontojournal_portal-short"><h3 class="title"><a rel="ContributionToJournal" href="https://research-hub.nrel.gov/en/publications/buried-interface-modulation-via-pedotpss-ionic-exchange-for-the-s" class="link"><span>Buried Interface Modulation via PEDOT:PSS Ionic Exchange for the Sn-Pb Mixed Perovskite Based Solar Cells: Article No. 147587</span></a></h3><span>Lee, S.</span>, <span>Woo, M. Y.</span>, <span>Kim, C.</span>, <span>Kim, K. W.</span>, <span>Lee, H.</span>, <span>Kang, S. B.</span>, <span>Im, J. M.</span>, <span>Jeong, M. J.</span>, <span>Hong, Y.</span>, <span>Yoon, J. W.</span>, <span>Kim, S. Y.</span>, <span>Heo, K.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/kai-zhu" class="link person"><span>Zhu, K.</span></a>, <span>Park, J-S.</span>, <span>Noh, J. H.</span> &amp; <span>Kim, D. H.</span>, <span class="date">2024</span>, <span class="journal">In: <a rel="Journal" href="#" class="link"><span>Biochemical Engineering Journal.</span></a></span> <span class="volume">479</span>, <span class="numberofpages">9 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to journal<span class="type_parent_sep"> › </span></span><span class="type_classification">Article</span><span class="type_classification"><span class="type_parent_sep"> › </span>peer-review</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontojournal rendering_publicationattacheddocumentsportalrenderer rendering_contributiontojournal_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                    <div class="metrics-wrap metrics-top one">
+                        
+                            <div class="metric scopus-citations">
+                                
+                                <span class="count">1</span>
+                                
+                                <span class="label">Scopus  Citations</span>
+                            </div>
+                        
+                        
+                    </div>
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-45">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/california-offshore-wind-resource-bias-investigation-and-correcti" class="link"><span>California Offshore Wind Resource Bias Investigation and Correction</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/nicola-bodini" class="link person"><span>Bodini, N.</span></a>, <span class="date">2024</span>, <span class="numberofpages">17 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Presentation</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-46">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_othercontribution rendering_portal-short rendering_othercontribution_portal-short"><h3 class="title"><a rel="OtherContribution" href="https://research-hub.nrel.gov/en/publications/cambium-2023-scenario-descriptions-and-documentation" class="link"><span>Cambium 2023 Scenario Descriptions and Documentation</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/pieter-gagnon" class="link person"><span>Gagnon, P.</span></a>, <span>Sanchez Perez, P. A.</span>, <span>Obika, K.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/marty-schwarz" class="link person"><span>Schwarz, M.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/james-morris" class="link person"><span>Morris, J.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/jianli-gu" class="link person"><span>Gu, J.</span></a> &amp; <span>Eisenman, J.</span>, <span class="date">2024</span>, <span class="numberofpages">82 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">NREL<span class="type_parent_sep"> › </span></span><span class="type_classification">Technical Report</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_othercontribution rendering_publicationattacheddocumentsportalrenderer rendering_othercontribution_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-47">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontojournal rendering_portal-short rendering_contributiontojournal_portal-short"><h3 class="title"><a rel="ContributionToJournal" href="https://research-hub.nrel.gov/en/publications/can-wholesale-electricity-markets-achieve-resource-adequacy-and-h" class="link"><span>Can Wholesale Electricity Markets Achieve Resource Adequacy and High Clean Energy Generation Targets in the Presence of Self-Interested Actors? Article No. 122774</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/bashar-anwar" class="link person"><span>Anwar, M.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/nongchao-guo" class="link person"><span>Guo, N.</span></a>, <span>Sun, Y.</span> &amp; <a rel="Person" href="https://research-hub.nrel.gov/en/persons/bethany-frew" class="link person"><span>Frew, B.</span></a>, <span class="date">2024</span>, <span class="journal">In: <a rel="Journal" href="#" class="link"><span>Applied Energy.</span></a></span> <span class="volume">359</span>, <span class="numberofpages">22 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to journal<span class="type_parent_sep"> › </span></span><span class="type_classification">Article</span><span class="type_classification"><span class="type_parent_sep"> › </span>peer-review</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontojournal rendering_publicationattacheddocumentsportalrenderer rendering_contributiontojournal_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-48">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontojournal rendering_portal-short rendering_contributiontojournal_portal-short"><h3 class="title"><a rel="ContributionToJournal" href="https://research-hub.nrel.gov/en/publications/carbon-intensity-of-mass-timber-materials-impacts-of-sourcing-and" class="link"><span>Carbon Intensity of Mass Timber Materials: Impacts of Sourcing and Transportation: Article No. 1321340</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/swaroop-atnoorkar" class="link person"><span>Atnoorkar, S.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/omkar-ghatpande" class="link person"><span>Ghatpande, O.</span></a>, <span>Haile, S.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/heather-goetsch" class="link person"><span>Goetsch, H.</span></a> &amp; <a rel="Person" href="https://research-hub.nrel.gov/en/persons/chioke-harris" class="link person"><span>Harris, C.</span></a>, <span class="date">2024</span>, <span class="journal">In: <a rel="Journal" href="#" class="link"><span>Frontiers in Built Environment.</span></a></span> <span class="volume">9</span>, <span class="numberofpages">11 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to journal<span class="type_parent_sep"> › </span></span><span class="type_classification">Article</span><span class="type_classification"><span class="type_parent_sep"> › </span>peer-review</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontojournal rendering_publicationattacheddocumentsportalrenderer rendering_contributiontojournal_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+        
+            <li class="list-result-item list-result-item-49">
+                
+                    
+                
+
+                <div class="result-container">
+                    
+                    
+
+                        <div class="rendering rendering_researchoutput  rendering_researchoutput_portal-short rendering_contributiontojournal rendering_portal-short rendering_contributiontojournal_portal-short"><h3 class="title"><a rel="ContributionToJournal" href="https://research-hub.nrel.gov/en/publications/carrier-density-and-delocalization-signatures-in-doped-carbon-nan" class="link"><span>Carrier Density and Delocalization Signatures in Doped Carbon Nanotubes from Quantitative Magnetic Resonance</span></a></h3><a rel="Person" href="https://research-hub.nrel.gov/en/persons/alejandra-hermosilla-palacios" class="link person"><span>Hermosilla-Palacios, M. A.</span></a>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/marissa-martinez" class="link person"><span>Martinez, M.</span></a>, <span>Doud, E.</span>, <span>Hertel, T.</span>, <span>Spokoyny, A.</span>, <span>Cambre, S.</span>, <span>Wenseleers, W.</span>, <span>Kim, Y-H.</span>, <a rel="Person" href="https://research-hub.nrel.gov/en/persons/andrew-ferguson" class="link person"><span>Ferguson, A.</span></a> &amp; <a rel="Person" href="https://research-hub.nrel.gov/en/persons/jeffrey-blackburn" class="link person"><span>Blackburn, J.</span></a>, <span class="date">2024</span>, <span class="journal">In: <a rel="Journal" href="#" class="link"><span>Nanoscale Horizons.</span></a></span> <span class="volume">9</span>, <span class="journalnumber">2</span>, <span class="pages">p. 278-284</span> <span class="numberofpages">7 p.</span><p class="type"><span class="type_family">Research output<span class="type_family_sep">: </span></span><span class="type_classification_parent">Contribution to journal<span class="type_parent_sep"> › </span></span><span class="type_classification">Article</span><span class="type_classification"><span class="type_parent_sep"> › </span>peer-review</span></p></div>
+
+                        
+                        
+<div class="rendering rendering_researchoutput  rendering_researchoutput_publicationattacheddocumentsportalrenderer rendering_contributiontojournal rendering_publicationattacheddocumentsportalrenderer rendering_contributiontojournal_publicationattacheddocumentsportalrenderer"></div>
+                    
+                    
+                        
+                            
+                        
+                    
+                </div>
+                
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="publication-metrics" aria-label="Publication metrics section">
+        
+            <div class="metrics-container">
+                
+                    <div class="metrics-wrap metrics-top one">
+                        
+                            <div class="metric scopus-citations">
+                                
+                                <span class="count">1</span>
+                                
+                                <span class="label">Scopus  Citations</span>
+                            </div>
+                        
+                        
+                    </div>
+                
+                
+                    <div class="metrics-wrap metrics-bottom ">
+                        
+
+                        
+                            <div class="metric metric-altmetric">
+                                
+                            </div>
+                        
+                    </div>
+                
+            </div>
+        
+    </div>
+
+                
+            </li>
+        
+    
+</ul>
+    <nav class="pages" aria-label="Pagination"><ul><li class='prev'><a href="/en/publications/" class="prevLink" aria-label="Previous page, page1">&lsaquo; Previous</a></li><li><a href="/en/publications/" class="step" aria-label="Goto page1">1</a></li><li><span class='currentStep' aria-label='Current page, page2'>2</span></li><li><a href="/en/publications/?page=2" class="step" aria-label="Goto page3">3</a></li><li><a href="/en/publications/?page=3" class="step" aria-label="Goto page4">4</a></li><li><a href="/en/publications/?page=4" class="step" aria-label="Goto page5">5</a></li><li><a href="/en/publications/?page=5" class="step" aria-label="Goto page6">6</a></li><li><a href="/en/publications/?page=6" class="step" aria-label="Goto page7">7</a></li><li><a href="/en/publications/?page=7" class="step" aria-label="Goto page8">8</a></li><li><a href="/en/publications/?page=8" class="step" aria-label="Goto page9">9</a></li><li><a href="/en/publications/?page=9" class="step" aria-label="Goto page10">10</a></li><li><span class="step gap">..</span></li><li><a href="/en/publications/?page=49" class="step" aria-label="Goto page10">50</a></li><li class='next'><a href="/en/publications/?page=2" class="nextLink" aria-label="Next page, page3">Next &rsaquo;</a></li></ul></nav>
+
+
+    </div>
+
+
+
+<script>
+    function plumXError(e) {
+        $(e).attr("data-failed", "true");
+        checkIfPlumOrAltMetricFailed(e, false);
+    }
+    $('div.altmetric-embed').on('altmetric:hide', function () {
+        $(this).attr("data-failed", "true");
+        checkIfPlumOrAltMetricFailed(this, true)
+    });
+
+
+
+    function checkIfPlumOrAltMetricFailed(e, hasAltmetricFailed)
+    {
+        $(e).closest(".metric").closest(".metrics-bottom").addClass("one");
+        $(e).closest(".metric").remove();
+
+        if(hasAltmetricFailed) {
+            // If AltMetric failed, and found that PlumX also failed
+            if ($(e).closest(".metric").prev().find("a").attr("data-failed")) {
+                $(e).closest(".publication-metrics").find(".metrics-bottom").remove();
+            }
+        } else {
+            // If PlumX failed, and found that AltMetric also failed
+            if ($(e).closest(".metric").next().find("div.altmetric-embed").length === 1) {
+                $(e).closest(".publication-metrics").find(".metrics-bottom").remove();
+            }
+        }
+    }
+</script>
+<script>
+    $(function () {
+        $('.metrics-downloads').each(function(index){
+            if($(this).closest('.list-result-item').find('.files').length === 0){
+                $(this).closest('.metrics-top').addClass('one');
+                $(this).remove();
+            }
+        });
+    });
+</script>
+    
+                        </div>
+                    
+                    
+                </div>
+            </div>
+        
+    </main>
+
+    <footer id="page-footer" class="main-footer">
+        <div class="container">
+            <div class="footer-wrapper">
+                <div class="content-navigation ">
+                    <div dir="ltr" class="footer-columns">
+                        
+                        <div class="footer-column">
+                            <p>
+                                Powered by <a href="http://www.elsevier.com/online-tools/research-intelligence/products-and-services/pure">Pure</a>, <a href="http://www.scopus.com/">Scopus</a> & <a href="http://www.elsevier.com/online-tools/research-intelligence/products-and-services/elsevier-fingerprint-engine">Elsevier Fingerprint Engine&trade;</a>
+                            </p>
+
+                            <p>
+                                All content on this site: Copyright &copy; 2024 <a href="http://www.elsevier.com">Elsevier B.V.</a> or its licensors and contributors. All rights are reserved, including those for text and data mining, AI training, and similar technologies. For all open access content, the Creative Commons licensing terms apply
+                            </p>
+
+                            <p>We use cookies to help provide and enhance our service and tailor content. By continuing you agree to the <a href="/en/about/cookies/">use of cookies</a></p>
+                            
+                            
+                            <p></p>
+                        </div>
+
+                        <div class="footer-column">
+                            
+                                <p><a href="https://www.nrel.gov/security.html" target="_blank">National Renewable Energy Laboratory data protection policy</a></p>
+                            
+                            
+                                <p><a href="https://www.nrel.gov/accessibility.html" target="_blank" rel="nofollow">About web accessibility</a></p>
+                            
+
+                            <p>
+                                
+                            </p>
+
+                            <p>
+                                
+                            </p>
+
+                            <p>
+                                <a href="https://elsevier.responsibledisclosure.com/hc/en-us/requests/new" target="_blank" rel="nofollow">Report vulnerability</a>
+                            </p>
+                        </div>
+
+                        
+                            <div class="footer-column">
+                                
+                                    
+                                        <p>
+                                            <a href="/en/contact/index/"> Contact us</a>
+                                        </p>
+                                    
+                                
+
+                            </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="back-to-top">
+            <a href="#" class="back-to-top" aria-label="Go to top"><i class="icon icon-up-open"></i></a>
+        </div>
+    </footer>
+
+
+    <script src="//d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script>
+
+
+
+    
+
+    
+
+
+<script>window.appData = window.appData || [];</script><script type="text/javascript">
+try {(function() {
+appData.push({...{"page":{"businessUnit":"ELS:RP:ST","cmsName":"Pure Portal","environment":"prod","language":"en","loadTime":"959","loadTimestamp":"1715369928071","name":"pure portal:publications:index","noTracking":"false","productName":"PR","type":"NP-GP"},"visitor":{"accountId":"","accountName":"pr:National Renewable Energy Laboratory","ipAddress":"","accessType":"pr:ANON_GUEST","loginStatus":"anonymous"}}, event: "pageLoad"});})();} catch(e) {if(console) { console.log(e) } }</script>
+<script>try {(function() {
+window.appData = window.appData || [];
+})();} catch(e) {if(console) { console.log(e) } }</script>
+
+</body>
+</html>

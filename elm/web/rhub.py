@@ -36,8 +36,9 @@ class ResearchOutputs():
         self.all_links = []
         for p in range(0, n_pages):
             url = url + f"?page={p}"
-            with urlopen(url) as page:
-                html = page.read().decode("utf-8")
+            #with urlopen(url) as page:
+             #   html = page.read().decode("utf-8")
+            html = self.html_response(url)
             self.soup = BeautifulSoup(html, "html.parser")
 
             self.target = self.soup.find('ul', {'class': 'list-results'})
@@ -46,6 +47,24 @@ class ResearchOutputs():
             page_links = [d['href'] for d in self.docs if
                           '/publications/' in d['href']]
             self.all_links.extend(page_links)
+
+    def html_response(self, url):
+        """Function to retrieve html response.
+
+        Parameters
+        ----------
+        url : str
+            URL of interest.
+
+        Returns
+        -------
+        html : str
+            HTML response output.
+        """
+        with urlopen(url) as page:
+            html = page.read().decode("utf-8")
+
+        return html
 
     def _scrape_authors(self, soup_inst):
         """Scrape the names of authors associated with given publication.
@@ -58,7 +77,7 @@ class ResearchOutputs():
 
         Returns
         -------
-        author names : list 
+        authors : list 
             List of all authors (strings) that contributed to publication.
         """
 
