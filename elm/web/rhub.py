@@ -127,8 +127,14 @@ class ResearchOutputs():
         category (str)
         """
 
-        category = soup_inst.find('span',
-                                  {'class': 'type_classification'}).text
+        try:
+            category = soup_inst.find('span',
+                                      {'class':
+                                       'type_classification'}).text
+        except AttributeError:
+            category = soup_inst.find('span',
+                                      {'class':
+                                       'type_classification_parent'}).text
 
         return category
 
@@ -179,7 +185,7 @@ class ResearchOutputs():
                                                   'authors', 'year',
                                                   'url', 'doi',
                                                   'pdf_url', 'category'))
-        for link in self.all_links[:20]:  # quantity control here #
+        for link in self.all_links[:50]:  # quantity control here #
             with urlopen(link) as page:
                 html = page.read().decode("utf-8")
             meta_soup = BeautifulSoup(html, "html.parser")
@@ -285,7 +291,7 @@ class ResearchOutputs():
 
         os.makedirs(pdf_dir, exist_ok=True)
         os.makedirs(txt_dir, exist_ok=True)
-        url_list = self.all_links[:20]  # quantity control here #
+        url_list = self.all_links[:50]  # quantity control here #
 
         for pub in url_list:
             with urlopen(pub) as page:
@@ -351,7 +357,7 @@ class ResearcherProfiles():
                                               'email', 'url', 'fn',
                                               'category'
                                               ))
-        for link in url_list[:20]:  # quantity control here #
+        for link in url_list[:50]:  # quantity control here #
             with urlopen(link) as page:
                 html = page.read().decode("utf-8")
             meta_soup = BeautifulSoup(html, "html.parser")
@@ -604,7 +610,7 @@ class ResearcherProfiles():
         Text file containing information from the profile.
         """
         os.makedirs(out_dir, exist_ok=True)
-        url_list = self.profile_links[:20]  # quantity control here #
+        url_list = self.profile_links[:50]  # quantity control here #
 
         for i, prof in enumerate(url_list):
             f = os.path.basename(prof) + '.txt'
