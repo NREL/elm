@@ -17,3 +17,4 @@ python-slugify
 scipy
 tabulate
 tiktoken
+beautifulsoup4
