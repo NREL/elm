@@ -1,11 +1,13 @@
 """Test research hub html response"""
+import os
+from elm import TEST_DATA_DIR
 from elm.web.rhub import ResearchOutputs
 import elm.web.rhub
 
 
-fp = '../data/rhub_html.txt'
+FP_TXT = os.path.join(TEST_DATA_DIR, 'rhub_html.txt')
 
-with open(fp, 'r', encoding='utf8') as f:
+with open(FP_TXT, 'r', encoding='utf8') as f:
     TEXT = f.read()
 
 
