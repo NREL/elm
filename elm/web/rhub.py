@@ -152,8 +152,8 @@ class ResearchOutputs():
 
         Returns
         -------
-        year : str 
-            The year a record was published
+        year : str
+            The year a record was published.
         """
         year = soup_inst.find('span', {'class': 'date'}).text
 
@@ -517,7 +517,8 @@ class ResearcherProfiles():
         return full_text
 
     def _scrape_publications(self, profile_url):
-        """Scrapes the name of each publication that a researcher contributed to.
+        """Scrapes the name of each publication that a
+        researcher contributed to.
 
         Parameters
         ----------
