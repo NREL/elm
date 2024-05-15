@@ -69,7 +69,7 @@ class ResearchOutputs():
         Parameters
         ----------
         soup_inst : bs4.BeautifulSoup
-            Active beautiful soup instance for the url associated with a
+            Instantiated beautiful soup instance for the url associated with a
             given publication.
 
         Returns
@@ -89,13 +89,15 @@ class ResearchOutputs():
         Parameters
         ----------
         soup_inst : bs4.BeautifulSoup
-            Active beautiful soup instance for the url associated with a
+            Instantiated beautiful soup instance for the url associated with a
             given publication.
 
         Returns
         -------
-        doi link (str)
-        pdf link (str): link to pdf if it exists
+        doi link : str
+            DOI link for a reference if it exists.
+        pdf link : str
+            PDF link for a reference if it exists
         """
 
         doi_target = soup_inst.find('ul', {'class': 'dois'})
@@ -119,12 +121,13 @@ class ResearchOutputs():
         Parameters
         ----------
         soup_inst : bs4.BeautifulSoup
-            Active beautiful soup instance for the url associated with a
+            Instantiated beautiful soup instance for the url associated with a
             given publication.
 
         Returns
         -------
-        category (str)
+        category : str
+            Publication category for a given record.
         """
 
         try:
@@ -144,12 +147,13 @@ class ResearchOutputs():
         Parameters
         ----------
         soup_inst : bs4.BeautifulSoup
-            Active beautiful soup instance for the url associated with a
+            Instantiated beautiful soup instance for the url associated with a
             given publication.
 
         Returns
         -------
-        year (str): the year a record was published
+        year : str 
+            The year a record was published
         """
         year = soup_inst.find('span', {'class': 'date'}).text
 
@@ -161,12 +165,13 @@ class ResearchOutputs():
         Parameters
         ----------
         soup_inst : bs4.BeautifulSoup
-            Active beautiful soup instance for the url associated with a
+            Instantiated beautiful soup instance for the url associated with a
             given publication.
 
         Returns
         -------
-        NREL Publication Number (str)
+        NREL Publication Number: str
+            Publication number for a record, unique identifier.
         """
 
         nrel_id = soup_inst.find('ul', {'class': 'relations keywords'}).text
@@ -179,7 +184,8 @@ class ResearchOutputs():
 
         Returns
         -------
-        pd.DataFrame
+        publications_meta : pd.DataFrame
+            Dataframe containing metadata for publications.
         """
         publications_meta = pd.DataFrame(columns=('title', 'nrel_id',
                                                   'authors', 'year',
@@ -220,7 +226,7 @@ class ResearchOutputs():
         out_dir: str
             Directory where the .pdf files should be saved.
         soup_inst : bs4.BeautifulSoup
-            Active beautiful soup instance used to locate pdf url.
+            Instantiated beautiful soup instance used to locate pdf url.
         """
         pdf_target = soup_inst.find('ul', {'class': 'links'})
         if pdf_target:
@@ -245,10 +251,7 @@ class ResearchOutputs():
             self.scrape_abstract(txt_dir, fn, soup_inst)
 
     def scrape_abstract(self, out_dir, fn, soup_inst):
-        """
-        Description
-        ----------
-        Scrapes abstract for a provided publication
+        """Scrapes abstract for a provided publication
 
         Parameters
         ----------
@@ -257,7 +260,7 @@ class ResearchOutputs():
         fn: str
             File name for saving the file.
         soup_inst : bs4.BeautifulSoup
-            Active beautiful soup instance used for scraping.
+            Instantiated beautiful soup instance used for scraping.
         """
         out_fp = os.path.join(out_dir, fn)
         if not os.path.exists(out_fp):
@@ -275,10 +278,7 @@ class ResearchOutputs():
             logger.info('{} has already been processed.'.format(out_fp))
 
     def scrape_publications(self, pdf_dir, txt_dir):
-        """
-        Description
-        ----------
-        Downloads pdfs for all Technical Reports and scrapes abstracts
+        """Downloads pdfs for all Technical Reports and scrapes abstracts
         for all other publications listed.
 
         Parameters
@@ -350,7 +350,8 @@ class ResearcherProfiles():
 
         Returns
         -------
-        pd.DataFrame
+        profiles_meta : pd.DataFrame
+            Dataframe containing metadata for researcher profiles.
         """
         url_list = self.profile_links
         profiles_meta = pd.DataFrame(columns=('title', 'nrel_id',
@@ -386,20 +387,18 @@ class ResearcherProfiles():
         return profiles_meta
 
     def _scrape_title(self, soup_inst):
-        """
-        Description
-        ----------
-        Scrapes name and position for each researcher.
+        """Scrapes name and position for each researcher.
 
         Parameters
         ----------
         soup_inst : bs4.BeautifulSoup
-            Active beautiful soup instance for the url associated with a
+            Instantiated beautiful soup instance for the url associated with a
             given researcher.
 
         Returns
         -------
-        intro (str): string containing researchers name and position.
+        intro : str
+            String containing researchers name and position.
         """
 
         r = soup_inst.find('h1').text
@@ -417,20 +416,18 @@ class ResearcherProfiles():
         return intro
 
     def _scrape_bio(self, soup_inst):
-        """
-        Description
-        ----------
-        Scrapes 'Personal Profile' section for each researcher.
+        """Scrapes 'Personal Profile' section for each researcher.
 
         Parameters
         ----------
         soup_inst : bs4.BeautifulSoup
-            Active beautiful soup instance for the url associated with a
+            Instantiated beautiful soup instance for the url associated with a
             given researcher.
 
         Returns
         -------
-        bio (str): string containing text from profile.
+        bio : str
+            String containing background text from profile.
         """
         target = soup_inst.find('h3', string="Personal Profile")
 
@@ -444,16 +441,13 @@ class ResearcherProfiles():
         return bio
 
     def _scrape_lists(self, soup_inst, heading):
-        """
-        Description
-        ----------
-        Scrapes sections such as 'Professional Experience' and
+        """Scrapes sections such as 'Professional Experience' and
         'Research Interests'
 
         Parameters
         ----------
         soup_inst : bs4.BeautifulSoup
-            Active beautiful soup instance for the url associated with a
+            Instantiated beautiful soup instance for the url associated with a
             given researcher.
         heading: str
             Section to scrape. Should be 'Professional Experience' or
@@ -461,7 +455,8 @@ class ResearcherProfiles():
 
         Returns
         -------
-        text (str): string containing contents from the provided section.
+        text : str
+            String containing contents from the experience section.
         """
         r = soup_inst.find('h1').text
         target = soup_inst.find('h3', string=heading)
@@ -481,22 +476,20 @@ class ResearcherProfiles():
         return text
 
     def _scrape_education(self, soup_inst):
-        """
-        Description
-        ----------
-        Scrapes and reformats 'Education/Academic Qualification'
+        """Scrapes and reformats 'Education/Academic Qualification'
         section for each researcher.
 
         Parameters
         ----------
         soup_inst : bs4.BeautifulSoup
-            Active beautiful soup instance for the url associated with a
+            Instantiated beautiful soup instance for the url associated with a
             given researcher.
 
         Returns
         -------
-        full_text (str): string containing researchers education
-        (level, focus, and institution).
+        full_text : str
+            String containing researcher's education (level, focus,
+            and institution).
         """
         r = soup_inst.find('h1').text
         target = soup_inst.find('h3',
@@ -524,10 +517,7 @@ class ResearcherProfiles():
         return full_text
 
     def _scrape_publications(self, profile_url):
-        """
-        Description
-        ----------
-        Scrapes the name of each publication that a researcher contributed to.
+        """Scrapes the name of each publication that a researcher contributed to.
 
         Parameters
         ----------
@@ -536,7 +526,8 @@ class ResearcherProfiles():
 
         Returns
         -------
-        text (str): string containing all publications for a given researcher.
+        text : str
+            String containing names of all publications for a given researcher.
         """
         pubs_url = profile_url + '/publications/'
         with urlopen(pubs_url) as page:
@@ -560,10 +551,7 @@ class ResearcherProfiles():
         return text
 
     def _scrape_similar(self, profile_url):
-        """
-        Description
-        ----------
-        Scrapes the names listed under the 'Similar Profiles' section.
+        """Scrapes the names listed under the 'Similar Profiles' section.
 
         Parameters
         ----------
@@ -572,7 +560,8 @@ class ResearcherProfiles():
 
         Returns
         -------
-        text (str): string containing similar researchers.
+        text : str
+            String containing names of similar researchers.
         """
         sim_url = profile_url + '/similar/'
         with urlopen(sim_url) as sim_page:
@@ -595,19 +584,12 @@ class ResearcherProfiles():
         return text
 
     def scrape_profiles(self, out_dir):
-        """
-        Description
-        ----------
-        Scrapes profiles for each researcher.
+        """Scrapes profiles for each researcher.
 
         Parameters
         ----------
         out_dir: str
             Directory where the .txt files should be saved.
-
-        Returns
-        ---------
-        Text file containing information from the profile.
         """
         os.makedirs(out_dir, exist_ok=True)
         url_list = self.profile_links[:20]  # quantity control here #
