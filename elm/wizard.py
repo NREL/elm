@@ -526,17 +526,22 @@ class EnergyWizardPostgres(EnergyWizardBase):
             A list of references (strs) used. Ideally, this is something like:
             ["{ref_title} ({ref_url})"]
         """
-        # TODO: Slater implement vector db-to-meta-data query here to get
-        # metadata is not stored in db at the moment, query will be updated
 
         placeholders = ', '.join(['%s'] * len(ids))
 
-        sql_query = ("SELECT ewiz_kb.metadata "
+        sql_query = ("SELECT ewiz_kb.title, ewiz_kb.url "
                      "FROM ewiz_schema.ewiz_kb "
                      "WHERE ewiz_kb.id IN (" + placeholders + ")")
 
         self.cursor.execute(sql_query, ids)
 
-        ref_list = self.cursor.fetchall()
+        refs = self.cursor.fetchall()
+
+        ref_strs = (f"{{\"parentTitle\": \"{item[0]}\", "
+                    f"\"parentUrl\": \"{item[1]}\"}} " for item in refs)
+
+        unique_values = set(ref_strs)
+
+        ref_list = list(unique_values)
 
         return ref_list
