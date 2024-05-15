@@ -11,7 +11,7 @@ from elm.pdf import PDFtoTXT
 from elm.summary import Summary
 from elm.tree import DecisionTree
 from elm.wizard import EnergyWizard
-from elm.osti import OstiRecord, OstiList
+from elm.web.osti import OstiRecord, OstiList
 
 __author__ = """Grant Buster"""
 __email__ = "Grant.Buster@nrel.gov"

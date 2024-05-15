@@ -165,6 +165,7 @@ class EnergyWizard(ApiBase):
             # [1:] to not include the system role in the semantic search
             query = [f"{msg['role'].upper()}: {msg['content']}"
                      for msg in self.messages[1:]]
+
             query = '\n\n'.join(query)
 
         token_budget = token_budget or self.token_budget
