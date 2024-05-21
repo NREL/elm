@@ -46,12 +46,12 @@ def get_corpus():
     corpus = pd.concat(corpus, ignore_index=True)
     meta = pd.read_csv('./meta.csv')
 
-    corpus['nrel_id'] = corpus['nrel_id'].astype(str)
-    meta['nrel_id'] = meta['nrel_id'].astype(str)
-    corpus = corpus.set_index('nrel_id')
-    meta = meta.set_index('nrel_id')
+    corpus['id'] = corpus['id'].astype(str)
+    meta['id'] = meta['id'].astype(str)
+    corpus = corpus.set_index('id')
+    meta = meta.set_index('id')
 
-    corpus = corpus.join(meta, on='nrel_id', rsuffix='_record', how='left')
+    corpus = corpus.join(meta, on='id', rsuffix='_record', how='left')
 
     ref = [f"{row['title']} ({row['url']})" for _, row in corpus.iterrows()]
     corpus['ref'] = ref
