@@ -17,7 +17,7 @@ def try_import(package_name):
 
     Returns
     -------
-    p : package
+    p : module
         imported package.
     """
     try:
@@ -26,7 +26,7 @@ def try_import(package_name):
     except ImportError:
         msg = (f'Unable to import {package_name}. '
                'Please ensure you have the package '
-               'installed and spelled correctly '
-               'before proceeding.')
+               'installed. This is an extra requirement '
+               'for the package you are running')
         logger.warning(msg)
         warn(msg)

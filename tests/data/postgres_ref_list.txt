@@ -1,0 +1,10 @@
+['{"parentTitle": "Adapting Agrivoltaics for Solar Mini-Grids in Haiti", "parentUrl": "https://research-hub.nrel.gov/en/publications/adapting-agrivoltaics-for-solar-mini-grids-in-haiti"} ',
+ '{"parentTitle": "2023 International Energy Workshop Summary (NREL Internal Use Only)", "parentUrl": "https://research-hub.nrel.gov/en/publications/2023-international-energy-workshop-summary-nrel-internal-use-only"} ',
+ '{"parentTitle": "A 2023 Perspective: What Is the Value of Hybridization?", "parentUrl": "https://research-hub.nrel.gov/en/publications/a-2023-perspective-what-is-the-value-of-hybridization"} ',
+ '{"parentTitle": "2022 Bioenergy Industry Status Report", "parentUrl": "https://research-hub.nrel.gov/en/publications/2022-bioenergy-industry-status-report"} ',
+ '{"parentTitle": "Bashar Anwar", "parentUrl": "https://research-hub.nrel.gov/en/persons/bashar-anwar"} ',
+ '{"parentTitle": "Rajendra Adhikari", "parentUrl": "https://research-hub.nrel.gov/en/persons/rajendra-adhikari"} ',
+ '{"parentTitle": "2024 JISEA Annual Meeting: Session 4", "parentUrl": "https://research-hub.nrel.gov/en/publications/2024-jisea-annual-meeting-session-4"} ',
+ '{"parentTitle": "Ad-Mat: Adaptations of Mature Manufacturing Strategies for Accelerated Redox Flow Battery Deployment", "parentUrl": "https://research-hub.nrel.gov/en/publications/ad-mat-adaptations-of-mature-manufacturing-strategies-for-acceler"} ',
+ '{"parentTitle": "Achieving an 80% Renewable Portfolio in Alaska\'s Railbelt: Cost Analysis", "parentUrl": "https://research-hub.nrel.gov/en/publications/achieving-an-80-renewable-portfolio-in-alaskaaposs-railbelt-cost-"} ',
+ '{"parentTitle": "Doug Arent", "parentUrl": "https://research-hub.nrel.gov/en/persons/doug-arent"} ']
