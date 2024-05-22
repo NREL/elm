@@ -28,6 +28,7 @@ os.environ['AWS_ACCESS_KEY_ID'] = "dummy"
 os.environ['AWS_SECRET_ACCESS_KEY'] = "dummy"
 os.environ['AWS_SESSION_TOKEN'] = "dummy"
 
+
 class MockClass:
     """Dummy class to mock EnergyWizardPostgres.make_ref_list()"""
 

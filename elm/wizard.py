@@ -390,7 +390,7 @@ class EnergyWizardPostgres(EnergyWizardBase):
     the specification of other connection paremeters such as host,
     port, and name. The database has the following columns: id,
     embedding, chunks, and metadata.
-    
+
     This class is designed as follows:
     Vector database: PostgreSQL database accessed using psycopg2.
     Query Embedding: AWS titan using boto3
@@ -513,7 +513,8 @@ class EnergyWizardPostgres(EnergyWizardBase):
 
         self.cursor.execute(f"SELECT {self.db_table}.id, "
                             f"{self.db_table}.chunks, "
-                            f"{self.db_table}.embedding <=> %s::vector as score "
+                            f"{self.db_table}.embedding "
+                            "<=> %s::vector as score "
                             f"FROM {self.db_schema}.{self.db_table} "
                             "ORDER BY embedding <=> %s::vector LIMIT %s;",
                             (query_embedding, query_embedding, limit,), )
