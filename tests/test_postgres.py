@@ -35,7 +35,8 @@ class MockClass:
 
 def test_ref_list(mocker):
     """Test to ensure correct response vector db."""
-    wizard_mock = mocker.patch('elm.wizard.EnergyWizardPostgres', autospec=True)
+    wizard_mock = mocker.patch('elm.wizard.EnergyWizardPostgres',
+                               autospec=True)
 
     wizard = wizard_mock.return_value
     wizard.messages = []
@@ -43,7 +44,7 @@ def test_ref_list(mocker):
     wizard.token_budget = 500
     wizard.model = "dummy-model-name"
     wizard.count_tokens = mocker.Mock(return_value=50)
-    wizard.make_ref_list.side_effect= MockClass.ref_call
+    wizard.make_ref_list.side_effect = MockClass.ref_call
     wizard.query_vector_db.side_effect = MockClass.query_call
 
     question = "What is a dummy question?"
