@@ -61,6 +61,8 @@ class EnergyWizardBase(ApiBase, ABC):
             ranked strings/scores outputs.
         """
 
+    def test(self, question):
+        return question
     def engineer_query(self, query, token_budget=None, new_info_threshold=0.7,
                        convo=False):
         """Engineer a query for GPT using the corpus of information
