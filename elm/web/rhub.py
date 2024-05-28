@@ -933,7 +933,7 @@ class ProfilesList(list):
         """
         self._response = self._session.get(
             self.url,
-            headers={'Accept':'application/json'}
+            headers={'Accept': 'application/json'}
         )
 
         resp = self._response.json()
@@ -979,8 +979,7 @@ class ProfilesList(list):
                     next_page = self._session.get(
                         self.url,
                         params={'page': page},
-                        headers={'Accept': 'application/json'}
-                        )
+                        headers={'Accept': 'application/json'})
 
                     next_page = next_page.json()['items']
                     yield next_page
@@ -1273,8 +1272,7 @@ class PublicationsList(list):
         """
         self._response = self._session.get(
             self.url,
-            headers={'Accept': 'application/json'}
-            )
+            headers={'Accept': 'application/json'})
 
         resp = self._response.json()
 
@@ -1319,8 +1317,7 @@ class PublicationsList(list):
                     next_page = self._session.get(
                         self.url,
                         params={'page': page},
-                        headers={'Accept': 'application/json'}
-                        )
+                        headers={'Accept': 'application/json'})
 
                     next_page = next_page.json()['items']
                     yield next_page

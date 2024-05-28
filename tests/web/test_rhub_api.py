@@ -16,6 +16,7 @@ with open(PROFILES_JSON, 'r') as json_file:
 with open(PUBLICATIONS_JSON, 'r') as json_file:
     PUBLICATIONS_RECORDS = json.load(json_file)
 
+
 class MockClass:
     """Dummy class to mock ProfilesList._get_first()"""
 
@@ -44,6 +45,7 @@ def test_rhub_profiles(mocker):
     assert 'url' in meta.columns
     assert meta['title'].isna().sum() == 0
     assert meta['url'].isna().sum() == 0
+
 
 def test_rhub_publications(mocker):
     """Test to ensure correct response from research hub."""
