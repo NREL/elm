@@ -6,6 +6,7 @@ from elm.web.rhub import ProfilesList
 from elm.web.rhub import PublicationsList
 import elm.web.rhub
 
+os.environ["RHUB_API_KEY"] = "dummy"
 
 PROFILES_JSON = os.path.join(TEST_DATA_DIR, 'rhub_api_profiles.json')
 PUBLICATIONS_JSON = os.path.join(TEST_DATA_DIR, 'rhub_api_publications.json')
