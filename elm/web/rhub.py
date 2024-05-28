@@ -641,6 +641,8 @@ class ProfilesRecord(dict):
         record : dict
             Profile in dict form, typically a response from the API.
         """
+        api_key = os.getenv("RHUB_API_KEY")
+        assert api_key is not None, "Please set RHUB_API_KEY!"
         assert isinstance(record, dict)
 
         super().__init__(**record)
@@ -714,7 +716,8 @@ class ProfilesRecord(dict):
         id : str
             Researcher ID.
         """
-        id = self.get('pureId')
+        level = self.get('ids')[0]
+        id = level.get('value').get('value')
 
         return id
 
@@ -770,7 +773,7 @@ class ProfilesRecord(dict):
                     info = section.get('value').get('text')[0]
                     experience = info.get('value')
                     experience = self.clean_text(experience)
-    
+
         return bio, interests, experience
 
     @property
@@ -795,9 +798,16 @@ class ProfilesRecord(dict):
                     quali = e.get('qualification')
                     level = quali.get('term').get('text')[0].get('value')
                     deg = e.get('projectTitle').get('text')[0].get('value')
-                    org = e.get('organisationalUnits')[0]
-                    name = org.get('externalOrganisationalUnit').get('name')
-                    school = name.get('text')[0].get('value')
+                    org = e.get('organisationalUnits')
+
+                    if org:
+                        value = org[0].get('externalOrganisationalUnit')
+                        name = value.get('name')
+                        school = name.get('text')[0].get('value')
+                    else:
+                        deg_school = deg
+                        deg = deg_school.split(',')[0]
+                        school = deg_school.split(',')[1]
 
                     deg_string = (f'{researcher_name} has a {level} '
                                   f'degree in {deg} from {school}. ')
@@ -831,7 +841,7 @@ class ProfilesRecord(dict):
                f'{id}/research-outputs?size=100'
                f'&apiKey={api_key}')
         session = requests.Session()
-        response = session.get(url,  headers={'Accept': 'application/json'})
+        response = session.get(url, headers={'Accept': 'application/json'})
 
         content = response.json()['items']
 
@@ -873,12 +883,12 @@ class ProfilesRecord(dict):
             full += research
 
         if self.education:
-            for edu in  self.education:
+            for edu in self.education:
                 full += edu
 
         if self.publications:
             publications = (f"{name} has been involved in the following "
-                            f"pubications: {', '.join(self.publications)}. ")
+                            f"publications: {', '.join(self.publications)}. ")
             full += publications
 
         with open(fp, "w") as text_file:
@@ -899,6 +909,8 @@ class ProfilesList(list):
             entries per page. Default of 1 ensures that this class doesnt hang
             on a million responses.
         """
+        api_key = os.getenv("RHUB_API_KEY")
+        assert api_key is not None, "Please set RHUB_API_KEY!"
 
         self.url = url
         self._session = requests.Session()
@@ -919,8 +931,11 @@ class ProfilesList(list):
         -------
         list
         """
-        self._response = self._session.get(self.url,
-                                           headers={'Accept': 'application/json'})
+        self._response = self._session.get(
+            self.url,
+            headers={'Accept':'application/json'}
+        )
+
         resp = self._response.json()
 
         if not self._response.ok:
@@ -932,8 +947,8 @@ class ProfilesList(list):
 
         self._n_pages = 1
 
-        if not 'last' in self._response.links:
-            count_pages = resp['count']/resp['pageInformation'].get('size')
+        if 'last' not in self._response.links:
+            count_pages = resp['count'] / resp['pageInformation'].get('size')
             self._n_pages = math.ceil(count_pages)
         else:
             url = self._response.links['last']['url']
@@ -961,9 +976,12 @@ class ProfilesList(list):
         if n_pages > 1:
             for page in range(2, self._n_pages + 1):
                 if page <= n_pages:
-                    next_page = self._session.get(self.url,
-                                                  params={'page': page},
-                                                 headers={'Accept': 'application/json'})
+                    next_page = self._session.get(
+                        self.url,
+                        params={'page': page},
+                        headers={'Accept': 'application/json'}
+                        )
+
                     next_page = next_page.json()['items']
                     yield next_page
                 else:
@@ -1025,6 +1043,9 @@ class PublicationsRecord(dict):
         record : dict
             Research Hub record in dict form, typically a response from API.
         """
+        api_key = os.getenv("RHUB_API_KEY")
+        assert api_key is not None, "Please set RHUB_API_KEY!"
+
         assert isinstance(record, dict)
         super().__init__(**record)
 
@@ -1136,11 +1157,11 @@ class PublicationsRecord(dict):
         doi = None
         pdf_url = None
 
-        for l in ev:
-            if l.get('doi'):
-                doi = l.get('doi')
-            if l.get('link'):
-                pdf_url = l.get('link')
+        for link in ev:
+            if link.get('doi'):
+                doi = link.get('doi')
+            if link.get('link'):
+                pdf_url = link.get('link')
 
         return doi, pdf_url
 
@@ -1174,7 +1195,6 @@ class PublicationsRecord(dict):
 
         with open(out_fp, "w") as text_file:
             text_file.write(full)
-
 
     def download(self, pdf_dir, txt_dir):
         """Download PDFs and TXT files to the directories provided. If a record
@@ -1213,6 +1233,7 @@ class PublicationsRecord(dict):
                 fp = os.path.join(pdf_dir, fn)
                 self.save_abstract(abstract, fp)
 
+
 class PublicationsList(list):
     """Class to retrieve and handle multiple publications from an API URL."""
     def __init__(self, url, n_pages=1):
@@ -1227,6 +1248,8 @@ class PublicationsList(list):
             entries per page. Default of 1 ensures that this class doesnt hang
             on a million responses.
         """
+        api_key = os.getenv("RHUB_API_KEY")
+        assert api_key is not None, "Please set RHUB_API_KEY!"
 
         self.url = url
         self._session = requests.Session()
@@ -1248,8 +1271,10 @@ class PublicationsList(list):
         first_page : list
             Publication records as list.
         """
-        self._response = self._session.get(self.url,
-                                           headers={'Accept': 'application/json'})
+        self._response = self._session.get(
+            self.url,
+            headers={'Accept': 'application/json'}
+            )
 
         resp = self._response.json()
 
@@ -1262,8 +1287,8 @@ class PublicationsList(list):
 
         self._n_pages = 1
 
-        if not 'last' in self._response.links:
-            count_pages = resp['count']/resp['pageInformation'].get('size')
+        if 'last' not in self._response.links:
+            count_pages = resp['count'] / resp['pageInformation'].get('size')
             self._n_pages = math.ceil(count_pages)
         else:
             url = self._response.links['last']['url']
@@ -1291,9 +1316,11 @@ class PublicationsList(list):
         if n_pages > 1:
             for page in range(2, self._n_pages + 1):
                 if page <= n_pages:
-                    next_page = self._session.get(self.url,
-                                                  params={'page': page},
-                                                 headers={'Accept': 'application/json'})
+                    next_page = self._session.get(
+                        self.url,
+                        params={'page': page},
+                        headers={'Accept': 'application/json'}
+                        )
 
                     next_page = next_page.json()['items']
                     yield next_page
@@ -1326,17 +1353,18 @@ class PublicationsList(list):
         return df
 
     def download(self, pdf_dir, txt_dir):
-        """Download all PDFs and abstract TXTs from the records in this object
-        into a directory. Files will be given file names based on their record ID.
+        """Download all PDFs and abstract TXTs from the records in this
+        objectbinto a directory. Files will be given file names based
+        on their record ID.
 
         Parameters
         ----------
         pdf_dir : str
-            Directory to download PDFs to. This directory will be created if it
-            does not already exist.
+            Directory to download PDFs to. This directory will be created
+            if it does not already exist.
         txt_dir : str
-            Directory to download TXTs to. This directory will be created if it
-            does not already exist.
+            Directory to download TXTs to. This directory will be created
+            if it does not already exist.
         """
         os.makedirs(pdf_dir, exist_ok=True)
         os.makedirs(txt_dir, exist_ok=True)
@@ -1346,5 +1374,5 @@ class PublicationsList(list):
             except Exception as e:
                 print(f"Could not download {record.title} with error {e}")
                 logger.exception('Could not download {}: {}'
-                                    .format(record.title, e))
+                                 .format(record.title, e))
         logger.info('Finished publications download!')

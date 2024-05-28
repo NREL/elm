@@ -46,22 +46,22 @@ PROFILES_URL = (f'https://research-hub.nrel.gov/ws/api'
                 f'/524/persons?order=lastName'
                 f'&pageSize=20&apiKey={rhub_api_key}')
 PUBLICATIONS_URL = (f'https://research-hub.nrel.gov/ws/api'
-               f'/524/research-outputs?'
-               f'order=publicationYearAndAuthor&'
-               f'orderBy=descending&pageSize=20&'
-               f'apiKey={rhub_api_key}')
+                    f'/524/research-outputs?'
+                    f'order=publicationYearAndAuthor&'
+                    f'orderBy=descending&pageSize=20&'
+                    f'apiKey={rhub_api_key}')
 
 if __name__ == '__main__':
     os.makedirs(PDF_DIR, exist_ok=True)
     os.makedirs(TXT_DIR, exist_ok=True)
     os.makedirs(EMBED_DIR, exist_ok=True)
 
-    profiles = ProfilesList(PROFILES_URL, n_pages=2)
+    profiles = ProfilesList(PROFILES_URL, n_pages=5)
     logger.info("Starting download for researcher profiles.")
     profiles.download(TXT_DIR)
     profiles_meta = profiles.meta()
 
-    publications = PublicationsList(PUBLICATIONS_URL, n_pages=2)
+    publications = PublicationsList(PUBLICATIONS_URL, n_pages=5)
     logger.info("Starting download for publications.")
     publications.download(PDF_DIR, TXT_DIR)
     pubs_meta = publications.meta()
