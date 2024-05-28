@@ -399,8 +399,8 @@ class EnergyWizardPostgres(EnergyWizardBase):
     EMBEDDING_MODEL = 'amazon.titan-embed-text-v1'
 
     def __init__(self, db_host, db_port, db_name,
-                 db_schema, db_table, model=None,
-                 token_budget=3500):
+                 db_schema, db_table, cursor=None, boto_client=None,
+                 model=None, token_budget=3500):
         """
         Parameters
         ----------
@@ -424,33 +424,38 @@ class EnergyWizardPostgres(EnergyWizardBase):
         boto3 = try_import('boto3')
         psycopg2 = try_import('psycopg2')
 
-        db_user = os.getenv("EWIZ_DB_USER")
-        db_password = os.getenv('EWIZ_DB_PASSWORD')
         self.db_schema = db_schema
         self.db_table = db_table
-        assert db_user is not None, "Must set EWIZ_DB_USER!"
-        assert db_password is not None, "Must set EWIZ_DB_PASSWORD!"
 
-        self.conn = psycopg2.connect(user=db_user,
-                                     password=db_password,
-                                     host=db_host,
-                                     port=db_port,
-                                     database=db_name)
+        if cursor is None:
+            db_user = os.getenv("EWIZ_DB_USER")
+            db_password = os.getenv('EWIZ_DB_PASSWORD')
+            assert db_user is not None, "Must set EWIZ_DB_USER!"
+            assert db_password is not None, "Must set EWIZ_DB_PASSWORD!"
+            self.conn = psycopg2.connect(user=db_user,
+                                         password=db_password,
+                                         host=db_host,
+                                         port=db_port,
+                                         database=db_name)
 
-        self.cursor = self.conn.cursor()
+            self.cursor = self.conn.cursor()
+        else:
+            self.cursor = cursor
 
-        access_key = os.getenv('AWS_ACCESS_KEY_ID')
-        secret_key = os.getenv('AWS_SECRET_ACCESS_KEY')
-        session_token = os.getenv('AWS_SESSION_TOKEN')
-
-        assert access_key is not None, "Must set AWS_ACCESS_KEY_ID!"
-        assert secret_key is not None, ("Must set AWS_SECRET_ACCESS_KEY!")
-        assert session_token is not None, "Must set AWS_SESSION_TOKEN!"
-        self._aws_client = boto3.client(service_name='bedrock-runtime',
-                                        region_name='us-west-2',
-                                        aws_access_key_id=access_key,
-                                        aws_secret_access_key=secret_key,
-                                        aws_session_token=session_token)
+        if boto_client is None:
+            access_key = os.getenv('AWS_ACCESS_KEY_ID')
+            secret_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+            session_token = os.getenv('AWS_SESSION_TOKEN')
+            assert access_key is not None, "Must set AWS_ACCESS_KEY_ID!"
+            assert secret_key is not None, ("Must set AWS_SECRET_ACCESS_KEY!")
+            assert session_token is not None, "Must set AWS_SESSION_TOKEN!"
+            self._aws_client = boto3.client(service_name='bedrock-runtime',
+                                            region_name='us-west-2',
+                                            aws_access_key_id=access_key,
+                                            aws_secret_access_key=secret_key,
+                                            aws_session_token=session_token)
+        else:
+            self._aws_client = boto_client
 
         super().__init__(model, token_budget=token_budget)
 
