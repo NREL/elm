@@ -19,7 +19,7 @@ with open(PUBLICATIONS_JSON, 'r') as json_file:
 
 
 class MockClass:
-    """Dummy class to mock ProfilesList._get_first()"""
+    """Dummy class to mock rhub API responses"""
 
     @staticmethod
     def profiles_call(*args, **kwargs):  # pylint: disable=unused-argument

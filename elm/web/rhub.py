@@ -215,7 +215,7 @@ class ProfilesRecord(dict):
                         deg_string = (f'{researcher_name} has a {level} '
                                       f'degree from {school}. ')
                         out_strings.append(deg_string)
-                except:
+                except Exception:
                     pass
 
             return out_strings
