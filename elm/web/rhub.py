@@ -423,7 +423,7 @@ class ProfilesList(list):
         """
         os.makedirs(out_dir, exist_ok=True)
         for record in self:
-            fn = record.title.lower().replace(' ', '-')
+            fn = record.id
             fp_out = os.path.join(out_dir, fn + '.txt')
             if not os.path.exists(fp_out):
                 try:
