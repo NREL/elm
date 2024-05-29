@@ -413,7 +413,12 @@ class EnergyWizardPostgres(EnergyWizardBase):
         db_schema : str
             Schema name for postres database.
         db_table : str
-            Table to query in Postgres database.
+            Table to query in Postgres database. Necessary columns: id,
+            chunks, embedding, title, and url.
+        cursor : psycopg2.extensions.cursor
+            PostgreSQL database cursor used to execute queries.
+        boto_client: botocore.client.BedrockRuntime
+            AWS boto3 client used to access embedding model.
         model : str
             GPT model name, default is the DEFAULT_MODEL global var
         token_budget : int
