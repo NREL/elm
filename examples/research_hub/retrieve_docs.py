@@ -47,7 +47,7 @@ PROFILES_URL = (f'https://research-hub.nrel.gov/ws/api'
                 f'&pageSize=20&apiKey={rhub_api_key}')
 PUBLICATIONS_URL = (f'https://research-hub.nrel.gov/ws/api'
                     f'/524/research-outputs?'
-                    f'order=publicationYearAndAuthor&'
+                    f'order=publicationYear&'
                     f'orderBy=descending&pageSize=20&'
                     f'apiKey={rhub_api_key}')
 

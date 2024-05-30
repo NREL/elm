@@ -522,11 +522,15 @@ class PublicationsRecord(dict):
         authors = []
 
         for r in pa:
-            r.get('name')
             first = r.get('name').get('firstName')
             last = r.get('name').get('lastName')
 
-            full = first + ' ' + last
+            if first and last:
+                full = first + ' ' + last
+            elif first:
+                full = first
+            elif last:
+                full = last
 
             authors.append(full)
 
