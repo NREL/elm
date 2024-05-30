@@ -1,0 +1,12 @@
+[
+ ( "Adapting Agrivoltaics for Solar Mini-Grids in Haiti", "https://research-hub.nrel.gov/en/publications/adapting-agrivoltaics-for-solar-mini-grids-in-haiti"),
+ ("2023 International Energy Workshop Summary (NREL Internal Use Only)", "https://research-hub.nrel.gov/en/publications/2023-international-energy-workshop-summary-nrel-internal-use-only"),
+ ("A 2023 Perspective: What Is the Value of Hybridization?", "https://research-hub.nrel.gov/en/publications/a-2023-perspective-what-is-the-value-of-hybridization"),
+ ("2022 Bioenergy Industry Status Report", "https://research-hub.nrel.gov/en/publications/2022-bioenergy-industry-status-report"),
+ ("Bashar Anwar", "https://research-hub.nrel.gov/en/persons/bashar-anwar"),
+ ("Rajendra Adhikari", "https://research-hub.nrel.gov/en/persons/rajendra-adhikari"),
+ ("2024 JISEA Annual Meeting: Session 4", "https://research-hub.nrel.gov/en/publications/2024-jisea-annual-meeting-session-4"),
+ ("Ad-Mat: Adaptations of Mature Manufacturing Strategies for Accelerated Redox Flow Battery Deployment", "https://research-hub.nrel.gov/en/publications/ad-mat-adaptations-of-mature-manufacturing-strategies-for-acceler"),
+ ("Achieving an 80% Renewable Portfolio in Alaska\'s Railbelt: Cost Analysis", "https://research-hub.nrel.gov/en/publications/achieving-an-80-renewable-portfolio-in-alaskaaposs-railbelt-cost-"),
+ ("Doug Arent", "https://research-hub.nrel.gov/en/persons/doug-arent")
+ ]
