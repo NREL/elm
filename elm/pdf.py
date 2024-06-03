@@ -350,3 +350,28 @@ class PDFtoTXT(ApiBase):
                                    iheaders=iheaders)
         self.full = combine_pages(self.pages)
         return self.full
+
+    def convert_to_txt(self, txt_fp):
+        """Function to convert contents of pdf document to txt file.
+
+        Parameters
+        ----------
+        txt_fp: str
+            Directory for output txt file.
+
+        Returns
+        -------
+        text : str
+            Text string containing contents from pdf
+        """
+        text = self.clean_poppler(layout=True)
+        if self.is_double_col():
+            text = self.clean_poppler(layout=False)
+        text = self.clean_headers(char_thresh=0.6, page_thresh=0.8,
+                                  split_on='\n',
+                                  iheaders=[0, 1, 3, -3, -2, -1])
+        with open(txt_fp, 'w') as f:
+            f.write(text)
+        logger.info(f'Saved: {txt_fp}')
+
+        return text

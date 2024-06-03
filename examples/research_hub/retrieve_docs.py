@@ -52,47 +52,17 @@ PUBLICATIONS_URL = (f'https://research-hub.nrel.gov/ws/api'
                     f'apiKey={rhub_api_key}')
 
 
-def convert_pdf(pdf_fp, txt_fp):
-    """Function to convert pdf document to txt file.
-
-    Parameters
-    ----------
-    pdf_fp : str
-        pdf to convert to text
-    txt_fp: str
-        Directory for output txt file.
-
-    Returns
-    -------
-    text : str
-        Text string containing contents from pdf
-    """
-
-    pdf_obj = PDFtoTXT(pdf_fp)
-    text = pdf_obj.clean_poppler(layout=True)
-    if pdf_obj.is_double_col():
-        text = pdf_obj.clean_poppler(layout=False)
-    text = pdf_obj.clean_headers(char_thresh=0.6, page_thresh=0.8,
-                                 split_on='\n',
-                                 iheaders=[0, 1, 3, -3, -2, -1])
-    with open(txt_fp, 'w') as f:
-        f.write(text)
-    logger.info(f'Saved: {txt_fp}')
-
-    return text
-
-
 if __name__ == '__main__':
     os.makedirs(PDF_DIR, exist_ok=True)
     os.makedirs(TXT_DIR, exist_ok=True)
     os.makedirs(EMBED_DIR, exist_ok=True)
 
-    profiles = ProfilesList(PROFILES_URL, n_pages=5)
+    profiles = ProfilesList(PROFILES_URL, n_pages=10)
     logger.info("Starting download for researcher profiles.")
     profiles.download(TXT_DIR)
     profiles_meta = profiles.meta()
 
-    publications = PublicationsList(PUBLICATIONS_URL, n_pages=5)
+    publications = PublicationsList(PUBLICATIONS_URL, n_pages=20)
     logger.info("Starting download for publications.")
     publications.download(PDF_DIR, TXT_DIR)
     pubs_meta = publications.meta()
@@ -100,11 +70,13 @@ if __name__ == '__main__':
     pubs_meta['fn'] = pubs_meta.apply(lambda row:
                                       row['id'] + '.pdf'
                                       if row['category'] == 'Technical Report'
+                                      and row['pdf_url'] is not None
                                       and row['pdf_url'].endswith('.pdf')
                                       else row['id'] + '.txt', axis=1)
     pubs_meta['fp'] = pubs_meta.apply(lambda row:
                                       PDF_DIR + row['id'] + '.pdf'
                                       if row['category'] == 'Technical Report'
+                                      and row['pdf_url'] is not None
                                       and row['pdf_url'].endswith('.pdf')
                                       else TXT_DIR + row['fn'], axis=1)
 
@@ -137,7 +109,8 @@ if __name__ == '__main__':
 
         else:
             try:
-                text = convert_pdf(fp, txt_fp)
+                pdf_obj = PDFtoTXT(fp)
+                text = pdf_obj.convert_to_txt(txt_fp)
             except Exception as e:
                 failed_count += 1
                 logger.info(f'Could not convert {fp} to pdf.')
