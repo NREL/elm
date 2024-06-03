@@ -14,7 +14,11 @@ logger = logging.getLogger(__name__)
 
 
 class ProfilesRecord(dict):
-    """Class to handle a single profiles as dictionary data"""
+    """Class to handle a single profiles as dictionary data.
+    This class requires setting an 'RHUB_API_KEY' environment
+    variable to access the Pure Web Service. The API key can be
+    obtained...
+    """
     def __init__(self, record):
         """
         Parameters
@@ -297,7 +301,11 @@ class ProfilesRecord(dict):
 
 
 class ProfilesList(list):
-    """Class to retrieve and handle multiple profiles from an API URL."""
+    """Class to retrieve and handle multiple profiles from an API URL.
+    This class requires setting an 'RHUB_API_KEY' environment
+    variable to access the Pure Web Service. The API key can be
+    obtained...
+    """
     def __init__(self, url, n_pages=1):
         """
         Parameters
@@ -436,7 +444,11 @@ class ProfilesList(list):
 
 
 class PublicationsRecord(dict):
-    """Class to handle a single publication as dictionary data"""
+    """Class to handle a single publication as dictionary data.
+    This class requires setting an 'RHUB_API_KEY' environment
+    variable to access the Pure Web Service. The API key can be
+    obtained...
+    """
     def __init__(self, record):
         """
         Parameters
@@ -624,7 +636,6 @@ class PublicationsRecord(dict):
         """
 
         category = self.category
-        title = self.title
         pdf_url = self.links[1]
         abstract = self.abstract
 
@@ -644,13 +655,17 @@ class PublicationsRecord(dict):
                     with open(fp, 'wb') as f_pdf:
                         f_pdf.write(response.content)
             else:
-                fn = title.lower().replace(' ', '-') + '.txt'
-                fp = os.path.join(pdf_dir, fn)
+                fn = self.id.replace('/', '-') + '.txt'
+                fp = os.path.join(txt_dir, fn)
                 self.save_abstract(abstract, fp)
 
 
 class PublicationsList(list):
-    """Class to retrieve and handle multiple publications from an API URL."""
+    """Class to retrieve and handle multiple publications from an API URL.
+    This class requires setting an 'RHUB_API_KEY' environment
+    variable to access the Pure Web Service. The API key can be
+    obtained...
+    """
     def __init__(self, url, n_pages=1):
         """
         Parameters
@@ -672,9 +687,7 @@ class PublicationsList(list):
         self._n_pages = 0
         self._iter = 0
 
-        records = self._get_first()
-        for page in self._get_pages(n_pages=n_pages):
-            records += page
+        records = self._get_all(n_pages)
         records = [PublicationsRecord(single) for single in records]
         super().__init__(records)
 
@@ -739,6 +752,27 @@ class PublicationsList(list):
                     yield next_page
                 else:
                     break
+
+    def _get_all(self, n_pages):
+        """Get all pages of publications up to n_pages.
+
+        Parameters
+        ----------
+        n_pages : int
+            Number of pages to retrieve
+
+        Returns
+        -------
+        all_records : list
+            List of all publication records.
+        """
+        first_page = self._get_first()
+        records = first_page
+
+        for page in self._get_pages(n_pages):
+            records.extend(page)
+
+        return records
 
     def meta(self):
         """Get a meta dataframe with details on all of the publications.

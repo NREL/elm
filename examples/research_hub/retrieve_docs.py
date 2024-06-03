@@ -51,6 +51,37 @@ PUBLICATIONS_URL = (f'https://research-hub.nrel.gov/ws/api'
                     f'orderBy=descending&pageSize=20&'
                     f'apiKey={rhub_api_key}')
 
+
+def convert_pdf(pdf_fp, txt_fp):
+    """Function to convert pdf document to txt file.
+
+    Parameters
+    ----------
+    pdf_fp : str
+        pdf to convert to text
+    txt_fp: str
+        Directory for output txt file.
+
+    Returns
+    -------
+    text : str
+        Text string containing contents from pdf
+    """
+
+    pdf_obj = PDFtoTXT(pdf_fp)
+    text = pdf_obj.clean_poppler(layout=True)
+    if pdf_obj.is_double_col():
+        text = pdf_obj.clean_poppler(layout=False)
+    text = pdf_obj.clean_headers(char_thresh=0.6, page_thresh=0.8,
+                                 split_on='\n',
+                                 iheaders=[0, 1, 3, -3, -2, -1])
+    with open(txt_fp, 'w') as f:
+        f.write(text)
+    logger.info(f'Saved: {txt_fp}')
+
+    return text
+
+
 if __name__ == '__main__':
     os.makedirs(PDF_DIR, exist_ok=True)
     os.makedirs(TXT_DIR, exist_ok=True)
@@ -88,6 +119,8 @@ if __name__ == '__main__':
     missing = ~meta['fp'].apply(os.path.exists)
     meta = meta[~missing]
 
+    failed_count = 0
+
     for i, row in meta.iterrows():
         fp = row['fp']
         txt_fp = os.path.join(TXT_DIR, row['fn'].replace('.pdf', '.txt'))
@@ -103,16 +136,12 @@ if __name__ == '__main__':
                 text = f.read()
 
         else:
-            pdf_obj = PDFtoTXT(fp)
-            text = pdf_obj.clean_poppler(layout=True)
-            if pdf_obj.is_double_col():
-                text = pdf_obj.clean_poppler(layout=False)
-            text = pdf_obj.clean_headers(char_thresh=0.6, page_thresh=0.8,
-                                         split_on='\n',
-                                         iheaders=[0, 1, 3, -3, -2, -1])
-            with open(txt_fp, 'w') as f:
-                f.write(text)
-            logger.info(f'Saved: {txt_fp}')
+            try:
+                text = convert_pdf(fp, txt_fp)
+            except Exception as e:
+                failed_count += 1
+                logger.info(f'Could not convert {fp} to pdf.')
+                continue
 
         assert os.path.exists(txt_fp)
 
@@ -140,4 +169,4 @@ if __name__ == '__main__':
             bad.append(fp)
     assert not any(bad), f'Bad output: {bad}'
 
-    logger.info('Finished!')
+    logger.info(f'Finished! Failed to process {failed_count} documents')
