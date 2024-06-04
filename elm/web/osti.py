@@ -178,9 +178,7 @@ class OstiList(list):
         self._n_pages = 0
         self._iter = 0
 
-        records = self._get_first()
-        for page in self._get_pages(n_pages=n_pages):
-            records += page
+        records = self._get_all(n_pages)
         records = [OstiRecord(single) for single in records]
         super().__init__(records)
 
@@ -233,6 +231,27 @@ class OstiList(list):
                     yield next_page
                 else:
                     break
+
+    def _get_all(self, n_pages):
+        """Get all pages of records up to n_pages.
+
+        Parameters
+        ----------
+        n_pages : int
+            Number of pages to retrieve
+
+        Returns
+        -------
+        all_records : list
+            List of all records.
+        """
+        first_page = self._get_first()
+        records = first_page
+
+        for page in self._get_pages(n_pages):
+            records.extend(page)
+
+        return records
 
     def download(self, out_dir):
         """Download all PDFs from the records in this OSTI object into a

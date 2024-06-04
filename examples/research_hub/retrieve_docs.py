@@ -2,29 +2,29 @@
 Code to build Corpus from the researcher hub.
 """
 import os
-import os.path
 import asyncio
-from glob import glob
-import logging
-import time
 import pandas as pd
+import logging
 import openai
+import time
+from glob import glob
 from rex import init_logger
-
 
 from elm.pdf import PDFtoTXT
 from elm.embed import ChunkAndEmbed
-from elm.web.rhub import ResearcherProfiles
-from elm.web.rhub import ResearchOutputs
+from elm.web.rhub import ProfilesList
+from elm.web.rhub import PublicationsList
 
-# initialize logger
+
 logger = logging.getLogger(__name__)
 init_logger(__name__, log_level='DEBUG')
 init_logger('elm', log_level='INFO')
 
-# set openAI variables
+
+# NREL-Azure endpoint. You can also use just the openai endpoint.
+# NOTE: embedding values are different between OpenAI and Azure models!
 openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
-openai.api_key = os.getenv("AZURE_OPENAI_API_KEY")
+openai.api_key = os.getenv("AZURE_OPENAI_KEY")
 openai.api_type = 'azure'
 openai.api_version = '2023-03-15-preview'
 
@@ -41,42 +41,57 @@ PDF_DIR = './pdfs/'
 TXT_DIR = './txt/'
 EMBED_DIR = './embed/'
 
+rhub_api_key = os.getenv("RHUB_API_KEY")
+PROFILES_URL = (f'https://research-hub.nrel.gov/ws/api'
+                f'/524/persons?order=lastName'
+                f'&pageSize=20&apiKey={rhub_api_key}')
+PUBLICATIONS_URL = (f'https://research-hub.nrel.gov/ws/api'
+                    f'/524/research-outputs?'
+                    f'order=publicationYear&'
+                    f'orderBy=descending&pageSize=20&'
+                    f'apiKey={rhub_api_key}')
+
+
 if __name__ == '__main__':
     os.makedirs(PDF_DIR, exist_ok=True)
     os.makedirs(TXT_DIR, exist_ok=True)
     os.makedirs(EMBED_DIR, exist_ok=True)
 
-    rp = ResearcherProfiles('https://research-hub.nrel.gov/en/persons/')
-    pubs = ResearchOutputs('https://research-hub.nrel.gov/en/publications/')
+    profiles = ProfilesList(PROFILES_URL, n_pages=10)
+    logger.info("Starting download for researcher profiles.")
+    profiles.download(TXT_DIR)
+    profiles_meta = profiles.meta()
 
-    rp.scrape_profiles(TXT_DIR)
-    pubs.scrape_publications(PDF_DIR, TXT_DIR)
-
-    profiles_meta = rp.build_meta()
-    pubs_meta = pubs.build_meta()
+    publications = PublicationsList(PUBLICATIONS_URL, n_pages=20)
+    logger.info("Starting download for publications.")
+    publications.download(PDF_DIR, TXT_DIR)
+    pubs_meta = publications.meta()
 
     pubs_meta['fn'] = pubs_meta.apply(lambda row:
-                                      os.path.basename(row['pdf_url'])
+                                      row['id'] + '.pdf'
                                       if row['category'] == 'Technical Report'
+                                      and row['pdf_url'] is not None
                                       and row['pdf_url'].endswith('.pdf')
-                                      else os.path.basename(row['url'])
-                                      + '_abstract.txt', axis=1)
+                                      else row['id'] + '.txt', axis=1)
     pubs_meta['fp'] = pubs_meta.apply(lambda row:
-                                      PDF_DIR + row['fn']
+                                      PDF_DIR + row['id'] + '.pdf'
                                       if row['category'] == 'Technical Report'
+                                      and row['pdf_url'] is not None
                                       and row['pdf_url'].endswith('.pdf')
                                       else TXT_DIR + row['fn'], axis=1)
 
     profiles_meta['fp'] = TXT_DIR + profiles_meta['fn']
 
     meta = pd.concat([profiles_meta, pubs_meta], axis=0, ignore_index=True)
-    meta = meta.drop_duplicates(subset=['nrel_id'])
+    meta = meta.drop_duplicates(subset=['id'])
     meta.to_csv('./meta.csv', index=False)
 
     logger.info('Meta file saved to {}/meta.csv'.format(os.getcwd()))
 
     missing = ~meta['fp'].apply(os.path.exists)
     meta = meta[~missing]
+
+    failed_count = 0
 
     for i, row in meta.iterrows():
         fp = row['fp']
@@ -93,16 +108,13 @@ if __name__ == '__main__':
                 text = f.read()
 
         else:
-            pdf_obj = PDFtoTXT(fp)
-            text = pdf_obj.clean_poppler(layout=True)
-            if pdf_obj.is_double_col():
-                text = pdf_obj.clean_poppler(layout=False)
-            text = pdf_obj.clean_headers(char_thresh=0.6, page_thresh=0.8,
-                                         split_on='\n',
-                                         iheaders=[0, 1, 3, -3, -2, -1])
-            with open(txt_fp, 'w') as f:
-                f.write(text)
-            logger.info(f'Saved: {txt_fp}')
+            try:
+                pdf_obj = PDFtoTXT(fp)
+                text = pdf_obj.convert_to_txt(txt_fp)
+            except Exception as e:
+                failed_count += 1
+                logger.info(f'Could not convert {fp} to pdf.')
+                continue
 
         assert os.path.exists(txt_fp)
 
@@ -117,7 +129,7 @@ if __name__ == '__main__':
             else:
                 df = pd.DataFrame({'text': obj.text_chunks.chunks,
                                    'embedding': embeddings,
-                                   'nrel_id': row['nrel_id']})
+                                   'id': row['id']})
                 df.to_json(embed_fp, indent=2)
                 logger.info('Saved: {}'.format(embed_fp))
             time.sleep(5)
@@ -130,4 +142,4 @@ if __name__ == '__main__':
             bad.append(fp)
     assert not any(bad), f'Bad output: {bad}'
 
-    logger.info('Finished!')
+    logger.info(f'Finished! Failed to process {failed_count} documents')
