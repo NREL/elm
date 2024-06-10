@@ -126,7 +126,7 @@ class EnergyWizardBase(ApiBase, ABC):
         used_index = np.array(used_index)
         references = self.make_ref_list(used_index)
 
-        return message, references
+        return message, references, used_index
 
     @abstractmethod
     def make_ref_list(self, idx):
@@ -200,7 +200,7 @@ class EnergyWizardBase(ApiBase, ABC):
         out = self.engineer_query(query, token_budget=token_budget,
                                   new_info_threshold=new_info_threshold,
                                   convo=convo)
-        query, references = out
+        query, references, _ = out
 
         messages = [{"role": "system", "content": self.MODEL_ROLE},
                     {"role": "user", "content": query}]
