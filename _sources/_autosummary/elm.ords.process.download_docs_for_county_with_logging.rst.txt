@@ -1,0 +1,6 @@
+elm.ords.process.download\_docs\_for\_county\_with\_logging
+===========================================================
+
+.. currentmodule:: elm.ords.process
+
+.. autofunction:: download_docs_for_county_with_logging

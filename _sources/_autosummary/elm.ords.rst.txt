@@ -1,0 +1,36 @@
+elm.ords
+========
+
+.. automodule:: elm.ords
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   elm.ords.download
+   elm.ords.extraction
+   elm.ords.llm
+   elm.ords.process
+   elm.ords.services
+   elm.ords.utilities
+   elm.ords.validation
+

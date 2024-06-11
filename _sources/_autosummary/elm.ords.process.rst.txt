@@ -1,0 +1,32 @@
+elm.ords.process
+================
+
+.. automodule:: elm.ords.process
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      download_doc_for_county
+      download_docs_for_county_with_logging
+      process_counties_with_openai
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

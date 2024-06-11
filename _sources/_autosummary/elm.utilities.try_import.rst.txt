@@ -1,0 +1,30 @@
+elm.utilities.try\_import
+=========================
+
+.. automodule:: elm.utilities.try_import
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      try_import
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
