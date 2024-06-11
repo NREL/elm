@@ -52,6 +52,34 @@ class ProfilesRecord(dict):
         return clean
 
     @property
+    def first_name(self):
+        """Get the first name of this researcher.
+
+        Returns
+        -------
+        first : str
+            Full name of researcher.
+        """
+        names = self.get('name')
+        first = names.get('firstName')
+
+        return first
+
+    @property
+    def last_name(self):
+        """Get the last name of this researcher.
+
+        Returns
+        -------
+        last : str
+            Last name of researcher.
+        """
+        names = self.get('name')
+        last = names.get('lastName')
+
+        return last
+
+    @property
     def title(self):
         """Get the full name of this researcher.
 
@@ -329,10 +357,9 @@ class ProfilesList(list):
         self._n_pages = 0
         self._iter = 0
 
-        records = self._get_first()
-        for page in self._get_pages(n_pages=n_pages):
-            records += page
+        records = self._get_all(n_pages)
         records = [ProfilesRecord(single) for single in records]
+        records = [prof for prof in records if prof.last_name != 'NREL']
         super().__init__(records)
 
     def _get_first(self):
@@ -397,6 +424,27 @@ class ProfilesList(list):
                     yield next_page
                 else:
                     break
+
+    def _get_all(self, n_pages):
+        """Get all pages of profiles up to n_pages.
+
+        Parameters
+        ----------
+        n_pages : int
+            Number of pages to retrieve
+
+        Returns
+        -------
+        all_records : list
+            List of all publication records.
+        """
+        first_page = self._get_first()
+        records = first_page
+
+        for page in self._get_pages(n_pages):
+            records.extend(page)
+
+        return records
 
     def meta(self):
         """Get a meta dataframe with details on all of the profiles.
@@ -583,12 +631,12 @@ class PublicationsRecord(dict):
 
         doi = None
         pdf_url = None
-
-        for link in ev:
-            if link.get('doi'):
-                doi = link.get('doi')
-            if link.get('link'):
-                pdf_url = link.get('link')
+        if ev:
+            for link in ev:
+                if link.get('doi'):
+                    doi = link.get('doi')
+                if link.get('link'):
+                    pdf_url = link.get('link')
 
         return doi, pdf_url
 
