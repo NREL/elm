@@ -44,90 +44,14 @@ class DataBaseWizard(ApiBase):
         self.connection = psycopg2.connect(self.connection_string)
         self.token_budget = token_budget
 
-        fpcache = './db_description.txt'
+        fpcache = './database_manual.txt'
 
         if os.path.exists(fpcache):
             with open(fpcache, 'r') as f:
                 self.database_describe = f.read()
 
         else:
-            # Initializing database schema
-            self.database_schema = self.get_schema()
-            self.database_first_lines = self.get_lines()
-            self.database_unique_values = self.get_unique_values()
-
-            self.database_describe = ('You have been given access to the database '
-                        'schema {}.\n The first ten lines of the database are {}.\n '
-                        'Each column of text contains the following unique '
-                        'values {}.\n The table name is loads.lc_day_profile_demand_enduse.'
-                        .format(self.database_schema,
-                                self.database_first_lines,
-                                self.database_unique_values))
-
-            with open(fpcache, 'w') as f:
-                f.write(self.database_describe)
-
-
-    ## Getting database Schema
-    def get_schema(self):
-        query = """
-        SELECT table_name, column_name, data_type
-        FROM information_schema.columns
-        WHERE table_schema = 'loads' AND table_name = 'lc_day_profile_demand_enduse'
-        ORDER BY table_name, ordinal_position;
-        """
-
-        with self.connection.cursor() as cur:
-            cur.execute(query)
-            schema = {}
-            for table, col, dtype in cur.fetchall():
-                if table not in schema:
-                    schema[table] = []
-                schema[table].append({"column": col, "type": dtype})
-
-        schema_json = json.dumps(schema)
-        return schema_json
-
-
-    def json_serial(self, obj):
-        """JSON serializer for objects not serializable by default json code"""
-
-        if isinstance(obj, (datetime, date)):
-            return obj.isoformat()
-        raise TypeError ("Type %s not serializable" % type(obj))
-
-    ## Getting First 10 lines of database
-    def get_lines(self):
-        query = '''
-        SELECT *
-        FROM loads.lc_day_profile_demand_enduse
-        LIMIT 10;
-        '''
-
-        with self.connection.cursor() as cursor:
-            cursor.execute(query)
-            first_lines = cursor.fetchall()
-
-        first_lines_json = json.dumps(first_lines, default=self.json_serial)
-        return first_lines_json
-
-    # Getting Unique values in non-float columns of the database
-    def get_unique_values(self):
-        schema = json.loads(self.database_schema)
-
-        with self.connection.cursor() as cursor:
-
-            structure_dict = {}
-            for table in schema:
-                for entry in schema[table]:
-                    if entry['type'] == 'text':
-                        column_name = entry['column']
-                        query = f'SELECT DISTINCT {column_name} FROM loads.{table}'
-
-                        cursor.execute(query)
-                        structure_dict[entry['column']] = str(cursor.fetchall())
-
-        return json.dumps(structure_dict)
+            print('Error no expert database file')
 
     # Getting sql from a generic query
     def get_sql_for(self, query):
@@ -137,6 +61,7 @@ class DataBaseWizard(ApiBase):
         e_query = ('{}\n\nPlease create a SQL query that will answer this '
                    'user question: "{}"\n\n'
                    'Return all columns from the database. '
+                   'All the tables are in the schema "loads"'
                    'Please only return the SQL query with no commentary or preface.'
                    .format(self.database_describe, query))
         out = super().chat(e_query, temperature=0)
@@ -148,6 +73,7 @@ class DataBaseWizard(ApiBase):
         based on the db connection (self.connection), returns dataframe
         response."""
         query = sql
+        print(query)
         # Move Connection or cursor to init and test so that you aren't re-intializing
         # it with each instance.
         with self.connection.cursor() as cursor:
@@ -175,7 +101,7 @@ class DataBaseWizard(ApiBase):
         full_response = out
         #print(full_response)
         ## get python code from response
-        full_response = full_response[full_response.find('python')+6:]
+        full_response = full_response[full_response.find('```python')+9:]
         full_response = full_response[:full_response.find('```')]
         py = full_response
         return py
@@ -186,7 +112,6 @@ class DataBaseWizard(ApiBase):
             return plt
         except:
             print(py)
-        """Jordan to write code that takes LLM response and generates plots"""
 
     def chat(self, query,
              debug=True,
