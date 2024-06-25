@@ -67,15 +67,17 @@ if __name__ == '__main__':
     publications.download(PDF_DIR, TXT_DIR)
     pubs_meta = publications.meta()
 
+    pdf_categories = ['Technical Report', 'Paper', 'Fact Sheet']
+
     pubs_meta['fn'] = pubs_meta.apply(lambda row:
                                       row['id'] + '.pdf'
-                                      if row['category'] == 'Technical Report'
+                                      if row['category'] in pdf_categories
                                       and row['pdf_url'] is not None
                                       and row['pdf_url'].endswith('.pdf')
                                       else row['id'] + '.txt', axis=1)
     pubs_meta['fp'] = pubs_meta.apply(lambda row:
                                       PDF_DIR + row['id'] + '.pdf'
-                                      if row['category'] == 'Technical Report'
+                                      if row['category'] in pdf_categories
                                       and row['pdf_url'] is not None
                                       and row['pdf_url'].endswith('.pdf')
                                       else TXT_DIR + row['fn'], axis=1)

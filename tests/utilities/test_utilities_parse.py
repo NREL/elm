@@ -79,6 +79,20 @@ def test_is_multi_col():
         double column!
         """
     )
+    assert is_multi_col(
+        """
+        Text that    has multiple
+        columns and    also has
+        lines without columns.
+        """
+    )
+    assert not is_multi_col(
+        """
+        Text that is mostly single
+        column but might have some
+        weird spacing     like this.
+        """
+    )
 
 
 def test_remove_blank_pages():

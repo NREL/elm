@@ -206,7 +206,7 @@ class PDFtoTXT(ApiBase):
 
         return clean_pages
 
-    def is_double_col(self, separator='    '):
+    def is_double_col(self, text, separator='    '):
         """Does the text look like it has multiple vertical text columns?
 
         Parameters
@@ -219,7 +219,7 @@ class PDFtoTXT(ApiBase):
         out : bool
             True if more than one vertical text column
         """
-        return is_multi_col(self.full, separator=separator)
+        return is_multi_col(text, separator=separator)
 
     def clean_poppler(self, layout=True):
         """Clean the pdf using the poppler pdftotxt utility
@@ -365,7 +365,7 @@ class PDFtoTXT(ApiBase):
             Text string containing contents from pdf
         """
         text = self.clean_poppler(layout=True)
-        if self.is_double_col():
+        if self.is_double_col(text):
             text = self.clean_poppler(layout=False)
         text = self.clean_headers(char_thresh=0.6, page_thresh=0.8,
                                   split_on='\n',
