@@ -564,10 +564,13 @@ class PublicationsRecord(dict):
         id : str
             Publication Number.
         """
-        group = self.get('keywordGroups')[0]
-        cont = group.get('keywordContainers')[0]
-        id = cont.get('freeKeywords')[0].get('freeKeywords')[0]
-        id = id.replace('/', '-')
+        try:
+            group = self.get('keywordGroups')[0]
+            cont = group.get('keywordContainers')[0]
+            id = cont.get('freeKeywords')[0].get('freeKeywords')[0]
+            id = id.replace('/', '-')
+        except TypeError:
+            id = self.get('externalId')
 
         return id
 
@@ -690,7 +693,9 @@ class PublicationsRecord(dict):
         pdf_url = self.links[1]
         abstract = self.abstract
 
-        if category != 'Technical Report':
+        pdf_categories = ['Technical Report', 'Paper', 'Fact Sheet']
+
+        if category not in pdf_categories:
             fn = self.id.replace('/', '-') + '.txt'
             fp = os.path.join(txt_dir, fn)
             if not os.path.exists(fp):
