@@ -13,7 +13,7 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-def is_multi_col(text, separator="    "):
+def is_multi_col(text, separator="    ", threshold_ratio=0.35):
     """Does the text look like it has multiple vertical text columns?
 
     Parameters
@@ -23,14 +23,24 @@ def is_multi_col(text, separator="    "):
         columns.
     separator : str
         Heuristic split string to look for spaces between columns
+    threshold_ratio : float
+        Portion of lines containing the separator at which point
+        the text should be classified as multi-column.
 
     Returns
     -------
     out : bool
         True if more than one vertical text column
     """
-    n_cols = [len(line.strip().split(separator)) for line in text.split("\n")]
-    return np.median(n_cols) >= 2
+    lines = text.split("\n")
+    total_lines = len(lines)
+
+    gap_lines = [line for line in lines if separator in line.strip()]
+    cols = len(gap_lines)
+
+    ratio = cols / total_lines
+
+    return ratio >= threshold_ratio
 
 
 def remove_blank_pages(pages):
