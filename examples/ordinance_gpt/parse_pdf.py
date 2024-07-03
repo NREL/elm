@@ -1,19 +1,19 @@
-import asyncio
-from elm.base import ApiBase
-from elm.web.document import PDFDocument
+"""Example on parsing an existing PDF file for ordinances. """
 from functools import partial
+
 import openai
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from elm.ords.services.queues import initialize_service_queue
+
+from rex import init_logger
+from elm.base import ApiBase
+from elm.web.document import PDFDocument
+from elm.ords.llm import LLMCaller
 from elm.ords.services.openai import OpenAIService
 from elm.ords.utilities import RTS_SEPARATORS
 from elm.ords.process import validate_api_params
-from elm.ords.llm import LLMCaller
 from elm.ords.extraction.ordinance import OrdinanceExtractor
 from elm.ords.extraction.apply import extract_ordinance_values
 from elm.ords.services.provider import run_with_services
-from rex import init_logger
-
 from elm.ords.extraction.apply import (check_for_ordinance_info,
                                        extract_ordinance_text_with_llm)
 
@@ -21,7 +21,8 @@ from elm.ords.extraction.apply import (check_for_ordinance_info,
 if __name__ == '__main__':
     init_logger('elm', log_level='INFO')
 
-    fp_pdf = './examples/ordinance_gpt/county_ord_files/Box Elder County, Utah.pdf'
+    fp_pdf = ('./examples/ordinance_gpt/county_ord_files/'
+              'Box Elder County, Utah.pdf')
 
     fp_txt_all = fp_pdf.replace('.pdf', '.txt')
     fp_txt_clean = fp_pdf.replace('.pdf', '_clean.txt')
