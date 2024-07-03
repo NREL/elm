@@ -269,7 +269,7 @@ async def _process_with_logs(
 ):
     """Process counties with logging enabled."""
     counties = _load_counties_to_process(county_fp)
-    azure_api_key, azure_version, azure_endpoint = _validate_api_params(
+    azure_api_key, azure_version, azure_endpoint = validate_api_params(
         azure_api_key, azure_version, azure_endpoint
     )
 
@@ -318,7 +318,7 @@ async def _process_with_logs(
             )
             trackers.append(usage_tracker)
             task = asyncio.create_task(
-                download_docs_for_county_with_logging(
+                process_county_with_logging(
                     log_listener,
                     log_dir,
                     location,
@@ -379,7 +379,8 @@ def _load_counties_to_process(county_fp):
     return load_counties_from_fp(county_fp)
 
 
-def _validate_api_params(azure_api_key, azure_version, azure_endpoint):
+def validate_api_params(azure_api_key=None, azure_version=None,
+                        azure_endpoint=None):
     """Validate OpenAI API parameters."""
     azure_api_key = azure_api_key or os.environ.get("AZURE_OPENAI_API_KEY")
     azure_version = azure_version or os.environ.get("AZURE_OPENAI_VERSION")
@@ -404,7 +405,7 @@ def _configure_file_loader_kwargs(file_loader_kwargs):
     return file_loader_kwargs
 
 
-async def download_docs_for_county_with_logging(
+async def process_county_with_logging(
     listener,
     log_dir,
     county,
@@ -461,7 +462,7 @@ async def download_docs_for_county_with_logging(
         listener, log_dir, location=county.full_name, level=level
     ):
         task = asyncio.create_task(
-            download_doc_for_county(
+            process_county(
                 county,
                 text_splitter,
                 num_urls=num_urls,
@@ -485,7 +486,7 @@ async def download_docs_for_county_with_logging(
         return doc
 
 
-async def download_doc_for_county(
+async def process_county(
     county,
     text_splitter,
     num_urls=5,
