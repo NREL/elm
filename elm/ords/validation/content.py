@@ -125,7 +125,6 @@ class ValidationWithMemory:
             logger.debug("Mem at ind %d is %s", step, mem)
             check = mem.get(key)
             if check is None:
-                # logger.debug("text=%s", text)
                 content = await self.slc.call(
                     sys_msg=prompt.format(key=key),
                     content=text,
