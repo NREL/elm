@@ -41,8 +41,8 @@ if __name__ == '__main__':
                                      api_version=azure_version,
                                      azure_endpoint=azure_endpoint)
     llm_service = OpenAIService(client, rate_limit=1e9)
-    initialize_service_queue(llm_service.__class__.__name__)
     services = [llm_service]
+
     kwargs = dict(llm_service=llm_service, model='gpt-4', temperature=0)
     extractor = OrdinanceExtractor(LLMCaller(**kwargs))
 
