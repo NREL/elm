@@ -1,7 +1,10 @@
 # Welcome to Energy Language Model - OrdinanceGPT
 
-The ordinance web scraping and data extraction portion of this codebase required a few extra dependencies that do not come out-of-the-box with the base ELM software.
-To set up ELM for ordinances, first create a conda environment. Then, _before installing ELM_, run the poppler installation:
+The ordinance web scraping and data extraction portion of this codebase
+required a few extra dependencies that do not come out-of-the-box with the base
+ELM software. To set up ELM for ordinances, first create a conda environment.
+We have had some issues using python 3.9 and recommend using python 3.11. Then,
+_before installing ELM_, run the poppler installation:
 
     $ conda install -c conda-forge poppler
 
