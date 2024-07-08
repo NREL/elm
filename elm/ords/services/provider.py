@@ -151,34 +151,36 @@ class RunningAsyncServices:
                 logger.debug("Tearing down Service: %s", service.name)
                 tear_down_service_queue(service.name)
 
+    @classmethod
+    def run(cls, services, coroutine):
+        """Run an async function that relies on services.
 
-async def _run(services, coroutine):
-    """Run a coroutine under services. """
-    async with RunningAsyncServices(services):
-        return await coroutine
+        You can treat this function like the ``asyncio.run`` function
+        with an extra parameter::
 
-
-def run_with_services(services, coroutine):
-    """Run an async function that relies on services.
-
-    You can treat this function like the ``asyncio.run`` function with
-    an extra parameter::
-
-        openai_service = OpenAIService(...)
-        run_with_services([openai_service], my_async_func(*args, **kwargs))
+            openai_service = OpenAIService(...)
+            RunningAsyncServices.run(
+                [openai_service], my_async_func(*args, **kwargs)
+            )
 
 
-    Parameters
-    ----------
-    services : iterable of :class:`elm.ords.services.base.Service`
-        An iterable (i.e. a list) of Services that are needed to run the
-        asynchronous function.
-    coroutine :  coroutine
-        A coroutine that should be run with the services.
+        Parameters
+        ----------
+        services : iterable of :class:`elm.ords.services.base.Service`
+            An iterable (i.e. a list) of Services that are needed to run
+            the asynchronous function.
+        coroutine :  coroutine
+            A coroutine that should be run with the services.
 
-    Returns
-    -------
-    Any
-        Returns the output of the coroutine.
-    """
-    return asyncio.run(_run(services, coroutine))
+        Returns
+        -------
+        Any
+            Returns the output of the coroutine.
+        """
+        return asyncio.run(cls._run_coroutine(services, coroutine))
+
+    @classmethod
+    async def _run_coroutine(cls, services, coroutine):
+        """Run a coroutine under services. """
+        async with cls(services):
+            return await coroutine

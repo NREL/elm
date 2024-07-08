@@ -13,7 +13,7 @@ from elm.ords.utilities import RTS_SEPARATORS
 from elm.ords.process import validate_api_params
 from elm.ords.extraction.ordinance import OrdinanceExtractor
 from elm.ords.extraction.apply import extract_ordinance_values
-from elm.ords.services.provider import run_with_services
+from elm.ords.services.provider import RunningAsyncServices
 from elm.ords.extraction.apply import (check_for_ordinance_info,
                                        extract_ordinance_text_with_llm)
 
@@ -43,18 +43,24 @@ if __name__ == '__main__':
                                      azure_endpoint=azure_endpoint)
     llm_service = OpenAIService(client, rate_limit=1e9)
     services = [llm_service]
+    run_async = partial(RunningAsyncServices.run, services)
 
     kwargs = dict(llm_service=llm_service, model='gpt-4', temperature=0)
     extractor = OrdinanceExtractor(LLMCaller(**kwargs))
 
-    check_for_ords = check_for_ordinance_info(doc, text_splitter, **kwargs)
-    doc = run_with_services(services, check_for_ords)
+    # Three (equivalent) ways to call async ordinance functions:
 
+    # call async func using a partial function (`run_async`)
+    doc = run_async(check_for_ordinance_info(doc, text_splitter, **kwargs))
+
+    # Build coroutine first the use it to call async func
     extract_text = extract_ordinance_text_with_llm(doc, text_splitter,
                                                    extractor)
-    doc = run_with_services(services, extract_text)
+    doc = RunningAsyncServices.run(services, extract_text)
 
-    doc = run_with_services(services, extract_ordinance_values(doc, **kwargs))
+    # Build coroutine and use it to call async func in one go
+    doc = RunningAsyncServices.run(services,
+                                   extract_ordinance_values(doc, **kwargs))
 
     doc.metadata['ordinance_values'].to_csv(fp_ords)
     with open(fp_txt_all, 'w') as f:
