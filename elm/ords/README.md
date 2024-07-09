@@ -12,7 +12,7 @@ Then, install `pdftotext`:
 
     $ pip install pdftotext
 
-(OPTIONAL) If you want to have access to Optical Character Recognition (OCR) for PDF parsing, you should also install pytesseract during this step:
+(OPTIONAL) If you want to have access to Optical Character Recognition (OCR) for PDF parsing, you should also install pytesseract during this step. Note that there may be additional OS-specific installation steps to get tesseract working properly (see the pytesseract install instructions [here](https://pypi.org/project/pytesseract/))
 
     $ pip install pytesseract pdf2image
 

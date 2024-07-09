@@ -1,4 +1,4 @@
-"""Example on parsing an existing PDF file for ordinances. """
+"""Example on parsing an existing PDF file on-disk for ordinances."""
 from functools import partial
 
 import openai
@@ -13,7 +13,7 @@ from elm.ords.utilities import RTS_SEPARATORS
 from elm.ords.process import validate_api_params
 from elm.ords.extraction.ordinance import OrdinanceExtractor
 from elm.ords.extraction.apply import extract_ordinance_values
-from elm.ords.services.provider import RunningAsyncServices
+from elm.ords.services.provider import RunningAsyncServices as ARun
 from elm.ords.extraction.apply import (check_for_ordinance_info,
                                        extract_ordinance_text_with_llm)
 
@@ -21,49 +21,54 @@ from elm.ords.extraction.apply import (check_for_ordinance_info,
 if __name__ == '__main__':
     init_logger('elm', log_level='INFO')
 
-    fp_pdf = ('./examples/ordinance_gpt/county_ord_files/'
-              'Box Elder County, Utah.pdf')
+    # download this from https://app.box.com/s/a8oi8jotb9vnu55rzdul7e291jnn7hmq
+    fp_pdf = 'Palo Alto Iowa.pdf'
 
-    fp_txt_all = fp_pdf.replace('.pdf', '.txt')
-    fp_txt_clean = fp_pdf.replace('.pdf', '_clean.txt')
-    fp_ords = fp_pdf.replace('.pdf', '_ords.csv')
+    for idx in range(10):
+        fp_txt_all = fp_pdf.replace('.pdf', f'_all_{idx}.txt')
+        fp_txt_clean = fp_pdf.replace('.pdf', f'_clean_{idx}.txt')
+        fp_ords = fp_pdf.replace('.pdf', f'_ords_{idx}.csv')
 
-    doc = PDFDocument.from_file(fp_pdf)
+        doc = PDFDocument.from_file(fp_pdf)
 
-    text_splitter = RecursiveCharacterTextSplitter(
-        RTS_SEPARATORS,
-        chunk_size=3000,
-        chunk_overlap=300,
-        length_function=partial(ApiBase.count_tokens, model='gpt-4'),
-    )
+        text_splitter = RecursiveCharacterTextSplitter(
+            RTS_SEPARATORS,
+            chunk_size=3000,
+            chunk_overlap=300,
+            length_function=partial(ApiBase.count_tokens, model='gpt-4'),
+        )
 
-    azure_api_key, azure_version, azure_endpoint = validate_api_params()
-    client = openai.AsyncAzureOpenAI(api_key=azure_api_key,
-                                     api_version=azure_version,
-                                     azure_endpoint=azure_endpoint)
-    llm_service = OpenAIService(client, rate_limit=1e9)
-    services = [llm_service]
-    run_async = partial(RunningAsyncServices.run, services)
+        # setup LLM and Ordinance service/utility classes
+        azure_api_key, azure_version, azure_endpoint = validate_api_params()
+        client = openai.AsyncAzureOpenAI(api_key=azure_api_key,
+                                         api_version=azure_version,
+                                         azure_endpoint=azure_endpoint)
+        llm_service = OpenAIService(client, rate_limit=1e9)
+        services = [llm_service]
+        kwargs = dict(llm_service=llm_service, model='gpt-4', temperature=0)
+        extractor = OrdinanceExtractor(LLMCaller(**kwargs))
 
-    kwargs = dict(llm_service=llm_service, model='gpt-4', temperature=0)
-    extractor = OrdinanceExtractor(LLMCaller(**kwargs))
+        """The following three function calls present three (equivalent) ways
+        to call ELM async ordinance functions. The three functions 1) check
+        ordinance documents for relevant ordinance info, 2) extract the
+        relevant text, and 3) run the decision tree to get structured ordinance
+        data from the unstructured legal text."""
 
-    # Three (equivalent) ways to call async ordinance functions:
+        # 1) call async func using a partial function (`run_async`)
+        run_async = partial(ARun.run, services)
+        doc = run_async(check_for_ordinance_info(doc, text_splitter, **kwargs))
 
-    # call async func using a partial function (`run_async`)
-    doc = run_async(check_for_ordinance_info(doc, text_splitter, **kwargs))
+        # 2) Build coroutine first the use it to call async func
+        # (extract_ordinance_text_with_llm is an async function)
+        extrct = extract_ordinance_text_with_llm(doc, text_splitter, extractor)
+        doc = ARun.run(services, extrct)
 
-    # Build coroutine first the use it to call async func
-    extract_text = extract_ordinance_text_with_llm(doc, text_splitter,
-                                                   extractor)
-    doc = RunningAsyncServices.run(services, extract_text)
+        # 3) Build coroutine and use it to call async func in one go
+        doc = ARun.run(services, extract_ordinance_values(doc, **kwargs))
 
-    # Build coroutine and use it to call async func in one go
-    doc = RunningAsyncServices.run(services,
-                                   extract_ordinance_values(doc, **kwargs))
-
-    doc.metadata['ordinance_values'].to_csv(fp_ords)
-    with open(fp_txt_all, 'w') as f:
-        f.write(doc.metadata["ordinance_text"])
-    with open(fp_txt_clean, 'w') as f:
-        f.write(doc.metadata["cleaned_ordinance_text"])
+        # save outputs
+        doc.metadata['ordinance_values'].to_csv(fp_ords)
+        with open(fp_txt_all, 'w') as f:
+            f.write(doc.metadata["ordinance_text"])
+        with open(fp_txt_clean, 'w') as f:
+            f.write(doc.metadata["cleaned_ordinance_text"])
