@@ -345,7 +345,7 @@ class PDFtoTXT(ApiBase):
         ----------
         txt_fp: str, optional
             Optional Directory for output txt file.
-        separator : str
+        separator : str, optional
             Heuristic split string to look for spaces between columns
         clean_header_kwargs : dict, optional
             Optional kwargs to override clean_headers kwargs
