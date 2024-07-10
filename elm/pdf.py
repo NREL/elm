@@ -343,7 +343,7 @@ class PDFtoTXT(ApiBase):
 
         Parameters
         ----------
-        txt_fp: str | optional
+        txt_fp: str, optional
             Optional Directory for output txt file.
         separator : str
             Heuristic split string to look for spaces between columns
