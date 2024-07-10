@@ -173,6 +173,8 @@ class OrdinanceValidator(ValidationWithMemory):
                     logger.debug("Text at ind %d is not legal text", ind)
                     continue
 
+                logger.debug("Text at ind %d is legal text", ind)
+
             contains_ord_info = await self.parse_from_ind(
                 ind, self.CONTAINS_ORD_PROMPT, key="contains_ord_info"
             )
@@ -182,6 +184,8 @@ class OrdinanceValidator(ValidationWithMemory):
                 )
                 continue
 
+            logger.debug("Text at ind %d does contain ordinance info", ind)
+
             is_utility_scale = await self.parse_from_ind(
                 ind, self.IS_UTILITY_SCALE_PROMPT, key="x"
             )
@@ -190,6 +194,8 @@ class OrdinanceValidator(ValidationWithMemory):
                     "Text at ind %d is not for utility-scale WECS", ind
                 )
                 continue
+
+            logger.debug("Text at ind %d is for utility-scale WECS", ind)
 
             self._ordinance_chunks.append({"text": text, "ind": ind})
             logger.debug("Added text at ind %d to ordinances", ind)

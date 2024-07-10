@@ -336,15 +336,19 @@ class PDFtoTXT(ApiBase):
         self.full = combine_pages(self.pages)
         return self.full
 
-    def convert_to_txt(self, txt_fp, separator='    '):
-        """Function to convert contents of pdf document to txt file.
+    def convert_to_txt(self, txt_fp=None, separator='    ',
+                       clean_header_kwargs=None):
+        """Function to convert contents of pdf document to txt file using
+        poppler.
 
         Parameters
         ----------
-        txt_fp: str
-            Directory for output txt file.
-        separator : str
+        txt_fp: str, optional
+            Optional Directory for output txt file.
+        separator : str, optional
             Heuristic split string to look for spaces between columns
+        clean_header_kwargs : dict, optional
+            Optional kwargs to override clean_headers kwargs
 
         Returns
         -------
@@ -354,11 +358,13 @@ class PDFtoTXT(ApiBase):
         text = self.clean_poppler(layout=True)
         if is_multi_col(text, separator=separator):
             text = self.clean_poppler(layout=False)
-        text = self.clean_headers(char_thresh=0.6, page_thresh=0.8,
-                                  split_on='\n',
-                                  iheaders=[0, 1, 3, -3, -2, -1])
-        with open(txt_fp, 'w') as f:
-            f.write(text)
-        logger.info(f'Saved: {txt_fp}')
+
+        clean_header_kwargs = clean_header_kwargs or {}
+        text = self.clean_headers(**clean_header_kwargs)
+
+        if txt_fp is not None:
+            with open(txt_fp, 'w') as f:
+                f.write(text)
+                logger.info(f'Saved: {txt_fp}')
 
         return text

@@ -3,6 +3,7 @@
 from abc import ABC, abstractmethod
 from copy import deepcopy
 from functools import cached_property
+import logging
 
 from elm.utilities.parse import (
     combine_pages,
@@ -10,10 +11,15 @@ from elm.utilities.parse import (
     html_to_text,
     remove_blank_pages,
     format_html_tables,
+    read_pdf,
+    read_pdf_ocr,
     replace_common_pdf_conversion_chars,
     replace_multi_dot_lines,
     remove_empty_lines_or_page_footers,
 )
+
+
+logger = logging.getLogger(__name__)
 
 
 class BaseDocument(ABC):
@@ -172,6 +178,41 @@ class PDFDocument(BaseDocument):
         if self._last_page_index:
             raw_pages += [page for page in self.pages[self._last_page_index:]]
         return raw_pages
+
+    @classmethod
+    def from_file(cls, fp, **init_kwargs):
+        """Initialize a PDFDocument object from a .pdf file on disk. This
+        method will try to use pdftotext (a poppler utility) and then
+        OCR with pytesseract.
+
+        Parameters
+        ----------
+        fp : str
+            filepath to .pdf on disk
+        init_kwargs : dict
+            Optional kwargs for PDFDocument Initialization
+
+        Returns
+        -------
+        out : PDFDocument
+            Initialized PDFDocument class from input fp
+        """
+
+        with open(fp, 'rb') as f:
+            pages = read_pdf(f.read())
+
+        if all(len(page) < 10 for page in pages):
+            # fallback to OCR with pytesseract if no pages have more than 10
+            # chars. Typical scanned document only has weird ascii per page.
+            with open(fp, 'rb') as f:
+                pages = read_pdf_ocr(f.read())
+
+        if not any(pages):
+            msg = f'Could not get text from pdf: {fp}'
+            logger.error(msg)
+            raise RuntimeError(msg)
+
+        return cls(pages, **init_kwargs)
 
 
 class HTMLDocument(BaseDocument):

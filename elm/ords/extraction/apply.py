@@ -277,7 +277,7 @@ async def extract_ordinance_values(doc, **kwargs):
         A document known to contain ordinance text. This means it must
         contain an ``"cleaned_ordinance_text"`` key in the metadata. You
         can run
-        :func:`~elm.ords.extraction.apply.extract_ordinance_text`
+        :func:`~elm.ords.extraction.apply.extract_ordinance_text_with_llm`
         to have this attribute populated automatically for documents
         that are found to contain ordinance data. Note that if the
         document's metadata does not contain the
@@ -297,8 +297,8 @@ async def extract_ordinance_values(doc, **kwargs):
     if not doc.metadata.get("cleaned_ordinance_text"):
         msg = (
             "Input document has no 'cleaned_ordinance_text' key or string "
-            "does not contain info. Please run `extract_ordinance_text` "
-            "prior to calling this method."
+            "does not contain info. Please run "
+            "`extract_ordinance_text_with_llm` prior to calling this method."
         )
         logger.warning(msg)
         warn(msg, UserWarning)
