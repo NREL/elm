@@ -357,8 +357,8 @@ class ApiBase(ABC):
 
         # Optional mappings for weird azure names to tiktoken/openai names
         tokenizer_aliases = {'gpt-35-turbo': 'gpt-3.5-turbo',
-                             'gpt-4-32k': 'gpt-4-32k-0314'
-                             }
+                             'gpt-4-32k': 'gpt-4-32k-0314',
+                             'ewiz-gpt-4': 'gpt-4'}
 
         token_model = tokenizer_aliases.get(model, model)
         encoding = tiktoken.encoding_for_model(token_model)
