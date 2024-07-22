@@ -44,6 +44,11 @@ class ApiBase(ABC):
     MODEL_ROLE = "You are a research assistant that answers questions."
     """High level model role"""
 
+    TOKENIZER_ALIASES = {'gpt-35-turbo': 'gpt-3.5-turbo',
+                         'gpt-4-32k': 'gpt-4-32k-0314'
+                         }
+    """Optional mappings for unusual Azure names to tiktoken/openai names."""
+
     def __init__(self, model=None):
         """
         Parameters
@@ -338,8 +343,8 @@ class ApiBase(ABC):
 
         return embedding
 
-    @staticmethod
-    def count_tokens(text, model):
+    @classmethod
+    def count_tokens(cls, text, model):
         """Return the number of tokens in a string.
 
         Parameters
@@ -355,12 +360,7 @@ class ApiBase(ABC):
             Number of tokens in text
         """
 
-        # Optional mappings for weird azure names to tiktoken/openai names
-        tokenizer_aliases = {'gpt-35-turbo': 'gpt-3.5-turbo',
-                             'gpt-4-32k': 'gpt-4-32k-0314',
-                             'ewiz-gpt-4': 'gpt-4'}
-
-        token_model = tokenizer_aliases.get(model, model)
+        token_model = cls.TOKENIZER_ALIASES.get(model, model)
         encoding = tiktoken.encoding_for_model(token_model)
 
         return len(encoding.encode(text))
