@@ -399,6 +399,11 @@ class EnergyWizardPostgres(EnergyWizardBase):
     """
     EMBEDDING_MODEL = 'amazon.titan-embed-text-v1'
 
+    TOKENIZER_ALIASES = {**EnergyWizardBase.TOKENIZER_ALIASES,
+                         'ewiz-gpt-4': 'gpt-4'
+                         }
+    """Optional mappings for weird azure names to tiktoken/openai names."""
+
     def __init__(self, db_host, db_port, db_name,
                  db_schema, db_table, cursor=None, boto_client=None,
                  model=None, token_budget=3500):
