@@ -84,6 +84,6 @@ def test_postgres():
     ref_list = wizard.make_ref_list(ids)
 
     assert len(ref_list) > 0
-    assert 'parentTitle' in str(ref_list)
-    assert 'parentUrl' in str(ref_list)
+    assert 'title' in str(ref_list)
+    assert 'url' in str(ref_list)
     assert 'research-hub.nrel.gov' in str(ref_list)

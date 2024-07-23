@@ -405,7 +405,8 @@ class EnergyWizardPostgres(EnergyWizardBase):
     """Optional mappings for weird azure names to tiktoken/openai names."""
 
     def __init__(self, db_host, db_port, db_name,
-                 db_schema, db_table, cursor=None, boto_client=None,
+                 db_schema, db_table, meta_columns=None,
+                 cursor=None, boto_client=None,
                  model=None, token_budget=3500):
         """
         Parameters
@@ -421,6 +422,9 @@ class EnergyWizardPostgres(EnergyWizardBase):
         db_table : str
             Table to query in Postgres database. Necessary columns: id,
             chunks, embedding, title, and url.
+        meta_columns : list
+            List of metadata columns to retrieve from database. Default
+            query returns title and url.
         cursor : psycopg2.extensions.cursor
             PostgreSQL database cursor used to execute queries.
         boto_client: botocore.client.BedrockRuntime
@@ -437,6 +441,10 @@ class EnergyWizardPostgres(EnergyWizardBase):
 
         self.db_schema = db_schema
         self.db_table = db_table
+        if meta_columns is None:
+            self.meta_columns = ['title', 'url']
+        else:
+            self.meta_columns = meta_columns
 
         if cursor is None:
             db_user = os.getenv("EWIZ_DB_USER")
@@ -559,8 +567,10 @@ class EnergyWizardPostgres(EnergyWizardBase):
         """
 
         placeholders = ', '.join(['%s'] * len(ids))
+        columns_str = ', '.join([f"{self.db_table}.{c}"
+                                 for c in self.meta_columns])
 
-        sql_query = (f"SELECT {self.db_table}.title, {self.db_table}.url "
+        sql_query = (f"SELECT {columns_str} "
                      f"FROM {self.db_schema}.{self.db_table} "
                      f"WHERE {self.db_table}.id IN (" + placeholders + ")")
 
@@ -568,11 +578,18 @@ class EnergyWizardPostgres(EnergyWizardBase):
 
         refs = self.cursor.fetchall()
 
-        ref_strs = (f"{{\"parentTitle\": \"{item[0]}\", "
-                    f"\"parentUrl\": \"{item[1]}\"}} " for item in refs)
+        ref_list = []
+        for item in refs:
+            ref_dict = {self.meta_columns[i]: item[i]
+                        for i in range(len(self.meta_columns))}
+            ref_str = "{"
+            ref_str += ", ".join([f"\"{key}\": \"{value}\""
+                                  for key, value in ref_dict.items()])
+            ref_str += "}"
 
-        unique_values = set(ref_strs)
+            ref_list.append(ref_str)
 
-        ref_list = list(unique_values)
+        unique_values = set(ref_list)
+        unique_list = list(unique_values)
 
-        return ref_list
+        return unique_list
