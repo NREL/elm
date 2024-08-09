@@ -1,0 +1,6 @@
+elm.web.html\_pw.load\_html\_with\_pw
+=====================================
+
+.. currentmodule:: elm.web.html_pw
+
+.. autofunction:: load_html_with_pw

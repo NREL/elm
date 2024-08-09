@@ -1,0 +1,6 @@
+elm.utilities.parse.replace\_common\_pdf\_conversion\_chars
+===========================================================
+
+.. currentmodule:: elm.utilities.parse
+
+.. autofunction:: replace_common_pdf_conversion_chars

@@ -1,0 +1,6 @@
+elm.web.utilities.clean\_search\_query
+======================================
+
+.. currentmodule:: elm.web.utilities
+
+.. autofunction:: clean_search_query

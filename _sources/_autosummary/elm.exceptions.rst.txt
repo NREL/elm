@@ -1,0 +1,31 @@
+elm.exceptions
+==============
+
+.. automodule:: elm.exceptions
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+      :toctree:
+   
+      ELMError
+      ELMRuntimeError
+   
+   
+
+
+

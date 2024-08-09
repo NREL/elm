@@ -1,0 +1,6 @@
+elm.exceptions.ELMRuntimeError
+==============================
+
+.. currentmodule:: elm.exceptions
+
+.. autoexception:: ELMRuntimeError

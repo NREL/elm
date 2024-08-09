@@ -1,0 +1,32 @@
+elm.web.utilities
+=================
+
+.. automodule:: elm.web.utilities
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      clean_search_query
+      compute_fn_from_url
+      write_url_doc_to_file
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
