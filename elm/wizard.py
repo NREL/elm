@@ -404,11 +404,14 @@ class EnergyWizardPostgres(EnergyWizardBase):
                          }
     """Optional mappings for weird azure names to tiktoken/openai names."""
 
+    DEFAULT_META_COLS = ('title', 'url', 'authors', 'year', 'category', 'id')
+    """Default columns to retrieve for metadata"""
+
     def __init__(self, db_host, db_port, db_name,
-                 db_schema, db_table, meta_columns=None,
-                 cursor=None, boto_client=None,
-                 model=None, token_budget=3500,
-                 tag=False):
+                 db_schema, db_table, probes=25,
+                 meta_columns=None, cursor=None,
+                 boto_client=None, model=None,
+                 token_budget=3500, tag=False):
         """
         Parameters
         ----------
@@ -423,6 +426,9 @@ class EnergyWizardPostgres(EnergyWizardBase):
         db_table : str
             Table to query in Postgres database. Necessary columns: id,
             chunks, embedding, title, and url.
+        probes : int
+            Number of lists to search in vector database. Recommended
+            value is sqrt(n_lists).
         meta_columns : list
             List of metadata columns to retrieve from database. Default
             query returns title and url.
@@ -443,22 +449,24 @@ class EnergyWizardPostgres(EnergyWizardBase):
         boto3 = try_import('boto3')
         self.psycopg2 = try_import('psycopg2')
 
-        self.db_schema = db_schema
-        self.db_table = db_table
-
         if meta_columns is None:
             self.meta_columns = ['title', 'url']
         else:
             self.meta_columns = meta_columns
 
         if cursor is None:
-            db_user = os.getenv("EWIZ_DB_USER")
-            db_password = os.getenv('EWIZ_DB_PASSWORD')
-            assert db_user is not None, "Must set EWIZ_DB_USER!"
-            assert db_password is not None, "Must set EWIZ_DB_PASSWORD!"
-            self.db_kwargs = dict(user=db_user, password=db_password,
-                                  host=db_host, port=db_port,
-                                  database=db_name)
+            self.db_host = db_host
+            self.db_port = db_port
+            self.db_name = db_name
+            self.db_schema = db_schema
+            self.db_table = db_table
+            self.db_user = os.getenv("EWIZ_DB_USER")
+            self.db_password = os.getenv('EWIZ_DB_PASSWORD')
+            assert self.db_user is not None, "Must set EWIZ_DB_USER!"
+            assert self.db_password is not None, "Must set EWIZ_DB_PASSWORD!"
+            self.db_kwargs = dict(user=self.db_user, password=self.db_password,
+                                  host=self.db_host, port=self.db_port,
+                                  database=self.db_name)
             self.conn = self.psycopg2.connect(**self.db_kwargs)
 
             self.cursor = self.conn.cursor()
@@ -466,6 +474,7 @@ class EnergyWizardPostgres(EnergyWizardBase):
             self.cursor = cursor
 
         self.tag = tag
+        self.probes = probes
 
         if boto_client is None:
             access_key = os.getenv('AWS_ACCESS_KEY_ID')
@@ -553,7 +562,7 @@ class EnergyWizardPostgres(EnergyWizardBase):
 
         return tag
 
-    def query_vector_db(self, query, probes=25, limit=100):
+    def query_vector_db(self, query, limit=100):
         """Returns a list of strings and relatednesses, sorted from most
         related to least.
 
@@ -561,8 +570,6 @@ class EnergyWizardPostgres(EnergyWizardBase):
         ----------
         query : str
             Question being asked of GPT
-        probes: int
-            Number of lists to search in vector database index.
         limit : int
             Number of top results to return.
 
@@ -582,7 +589,7 @@ class EnergyWizardPostgres(EnergyWizardBase):
         with self.psycopg2.connect(**self.db_kwargs) as conn:
             cursor = conn.cursor()
             try:
-                cursor.execute(f"SET LOCAL ivfflat.probes = {probes};"
+                cursor.execute(f"SET LOCAL ivfflat.probes = {self.probes};"
                                f"SELECT {self.db_table}.id, "
                                f"{self.db_table}.chunks, "
                                f"{self.db_table}.embedding "
@@ -612,45 +619,64 @@ class EnergyWizardPostgres(EnergyWizardBase):
 
         return strings, scores, best
 
-    def _format_refs(self, refs):
-        """Parse and nicely format a reference dictionary into
-        a list of well formatted string representations
+    def _format_refs(self, refs, ids):
+        """Parse and nicely format a reference dictionary into a list of well
+        formatted string representations
+
         Parameters
         ----------
         refs : list
             List of references returned from the vector db
+        ids : np.ndarray
+            IDs of the used text from the text corpus sorted by embedding
+            relevance.
+
         Returns
         -------
         out : list
-            Unique ordered list of references
+            Unique ordered list of references (most relevant first)
         """
+
         ref_list = []
         for item in refs:
-            ref_dict = {self.meta_columns[i]: item[i]
-                        for i in range(len(self.meta_columns))}
-
-            ilist = []
-            for key, value in ref_dict.items():
+            ref_dict = {}
+            for icol, col in enumerate(self.meta_columns):
+                value = item[icol]
                 value = str(value).replace(chr(34), '')
-                istr = f"\"{key}\": \"{value}\""
-                ilist.append(istr)
+                ref_dict[col] = value
 
-            ref_str = ", ".join(ilist)
-            ref_str = '{' + ref_str + '}'
-            ref_list.append(ref_str)
+            ref_list.append(ref_dict)
 
         seen = set()
-        ref_list = [x for x in ref_list if not
-                    (x in seen or seen.add(x))]
+        unique_ref_list = []
+        for ref_dict in ref_list:
+            if str(ref_dict) not in seen:
+                seen.add(str(ref_dict))
+                unique_ref_list.append(ref_dict)
+        ref_list = unique_ref_list
+
+        if 'id' in ref_list[0]:
+            ids_list = list(ids)
+            sorted_ref_list = []
+            for ref_id in ids_list:
+                for ref_dict in ref_list:
+                    if ref_dict['id'] == ref_id:
+                        sorted_ref_list.append(ref_dict)
+                        break
+            ref_list = sorted_ref_list
+
+        ref_list = [json.dumps(ref) for ref in ref_list]
 
         return ref_list
 
     def make_ref_list(self, ids):
         """Make a reference list
+
         Parameters
         ----------
-        used_index : np.ndarray
+        ids : np.ndarray
             IDs of the used text from the text corpus
+
         Returns
         -------
         ref_list : list
@@ -679,6 +705,6 @@ class EnergyWizardPostgres(EnergyWizardBase):
                 conn.commit()
                 refs = cursor.fetchall()
 
-        ref_list = self._format_refs(refs)
+        ref_list = self._format_refs(refs, ids)
 
         return ref_list
