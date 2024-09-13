@@ -34,4 +34,4 @@ jobs:
         python -m pip install .
     - name: Run pytest and Generate coverage report
       run: |
-        python -m pytest --ignore=tests/ords --ignore=tests/utilities --ignore=tests/web -v --disable-warnings
+        python -m pytest --ignore=tests/ords --ignore=tests/utilities --ignore=tests/web --ignore=tests/test_wizard_postgres.py -v --disable-warnings

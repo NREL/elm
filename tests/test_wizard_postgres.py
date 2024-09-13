@@ -67,6 +67,7 @@ def test_postgres(mocker):
     """Test to ensure correct response vector db."""
 
     os.environ["EWIZ_DB_USER"] = "user"
+    os.environ["EWIZ_DB_PASSWORD"] = "password"
 
     mock_conn_cm = mocker.MagicMock()
     mock_conn = mock_conn_cm.__enter__.return_value
