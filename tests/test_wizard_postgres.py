@@ -63,14 +63,21 @@ class BotoClient:
         return dummy_response
 
 
-def test_postgres():
+def test_postgres(mocker):
     """Test to ensure correct response vector db."""
 
     os.environ["EWIZ_DB_USER"] = "user"
 
+    mock_conn_cm = mocker.MagicMock()
+    mock_conn = mock_conn_cm.__enter__.return_value
+    mock_conn.cursor.return_value = Cursor()
+
+    mock_connect = mocker.patch('psycopg2.connect')
+    mock_connect.return_value = mock_conn_cm
+
     wizard = EnergyWizardPostgres(db_host='Dummy', db_port='Dummy',
                                   db_name='Dummy', db_schema='Dummy',
-                                  db_table='Dummy', cursor=Cursor(),
+                                  db_table='Dummy',
                                   boto_client=BotoClient())
 
     question = 'Is this a dummy question?'

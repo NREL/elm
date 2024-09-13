@@ -17,7 +17,7 @@ from elm.web.rhub import PublicationsList
 
 
 logger = logging.getLogger(__name__)
-init_logger(__name__, log_level='DEBUG')
+init_logger(__name__, log_level='INFO')
 init_logger('elm', log_level='INFO')
 
 
