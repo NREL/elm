@@ -450,29 +450,28 @@ class EnergyWizardPostgres(EnergyWizardBase):
         self.psycopg2 = try_import('psycopg2')
 
         if meta_columns is None:
-            self.meta_columns = ['title', 'url']
+            self.meta_columns = ['title', 'url', 'id']
         else:
             self.meta_columns = meta_columns
 
+        assert 'id' in self.meta_columns, "Please include the 'id' column!"
+
         if cursor is None:
-            self.db_host = db_host
-            self.db_port = db_port
-            self.db_name = db_name
-            self.db_schema = db_schema
-            self.db_table = db_table
-            self.db_user = os.getenv("EWIZ_DB_USER")
-            self.db_password = os.getenv('EWIZ_DB_PASSWORD')
-            assert self.db_user is not None, "Must set EWIZ_DB_USER!"
-            assert self.db_password is not None, "Must set EWIZ_DB_PASSWORD!"
-            self.db_kwargs = dict(user=self.db_user, password=self.db_password,
-                                  host=self.db_host, port=self.db_port,
-                                  database=self.db_name)
+            db_user = os.getenv("EWIZ_DB_USER")
+            db_password = os.getenv('EWIZ_DB_PASSWORD')
+            assert db_user is not None, "Must set EWIZ_DB_USER!"
+            assert db_password is not None, "Must set EWIZ_DB_PASSWORD!"
+            self.db_kwargs = dict(user=db_user, password=db_password,
+                                  host=db_host, port=db_port,
+                                  database=db_name)
             self.conn = self.psycopg2.connect(**self.db_kwargs)
 
             self.cursor = self.conn.cursor()
         else:
             self.cursor = cursor
 
+        self.db_schema = db_schema
+        self.db_table = db_table
         self.tag = tag
         self.probes = probes
 
@@ -564,7 +563,11 @@ class EnergyWizardPostgres(EnergyWizardBase):
 
     def query_vector_db(self, query, limit=100):
         """Returns a list of strings and relatednesses, sorted from most
-        related to least.
+        related to least. SQL query uses a context handler and rollback
+        to ensure a failed query does not interupt future questions from
+        the user. Ex: a user submitting a new question before the first
+        one completes will close the cursor preventing future database
+        access.
 
         Parameters
         ----------
@@ -639,20 +642,20 @@ class EnergyWizardPostgres(EnergyWizardBase):
 
         ref_list = []
         for item in refs:
-            ref_dict = {}
-            for icol, col in enumerate(self.meta_columns):
-                value = item[icol]
-                value = str(value).replace(chr(34), '')
-                ref_dict[col] = value
+            ref_dict = {col: str(value).replace(chr(34), '')
+                        for col, value in zip(self.meta_columns, item)}
 
             ref_list.append(ref_dict)
 
-        seen = set()
+        assert len(ref_list) > 0, ("The Wizard did not return any "
+                                   "references. Please check your database "
+                                   "connection or query.")
+
         unique_ref_list = []
         for ref_dict in ref_list:
-            if str(ref_dict) not in seen:
-                seen.add(str(ref_dict))
-                unique_ref_list.append(ref_dict)
+            if any(ref_dict == d for d in unique_ref_list):
+                continue
+            unique_ref_list.append(ref_dict)
         ref_list = unique_ref_list
 
         if 'id' in ref_list[0]:
@@ -670,7 +673,11 @@ class EnergyWizardPostgres(EnergyWizardBase):
         return ref_list
 
     def make_ref_list(self, ids):
-        """Make a reference list
+        """Make a reference list. SQL query uses a context handler and
+        rollback to ensure a failed query does not interupt future questions
+        from the user. Ex: a user submitting a new question before the first
+        one completes will close the cursor preventing future database
+        access.
 
         Parameters
         ----------

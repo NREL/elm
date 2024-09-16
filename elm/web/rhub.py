@@ -585,26 +585,23 @@ class PublicationsRecord(dict):
         """
         pa = self.get('personAssociations')
 
+        if not pa:
+            return None
+
         authors = []
 
         for r in pa:
             name = r.get('name')
 
-            if name:
-                first = name.get('firstName')
-                last = name.get('lastName')
+            if not name:
+                continue
 
-                if first and last:
-                    full = first + ' ' + last
-                elif first:
-                    full = first
-                elif last:
-                    full = last
-                else:
-                    full = None
+            first = name.get('firstName')
+            last = name.get('lastName')
 
-                if full:
-                    authors.append(full)
+            full = " ".join(filter(bool, [first, last]))
+
+            authors.append(full)
 
         out = ', '.join(authors)
 
@@ -660,11 +657,15 @@ class PublicationsRecord(dict):
         """
         abstract = self.get('abstract')
 
-        if abstract:
-            text = abstract.get('text')[0]
-            value = text.get('value')
-        else:
-            value = None
+        if not abstract:
+            return None
+
+        text = abstract.get('text')
+
+        if not text:
+            return None
+
+        value = text[0].get('value')
 
         return value
 
