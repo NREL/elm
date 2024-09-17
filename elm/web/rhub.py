@@ -585,22 +585,27 @@ class PublicationsRecord(dict):
         """
         pa = self.get('personAssociations')
 
+        if not pa:
+            return None
+
         authors = []
 
         for r in pa:
-            first = r.get('name').get('firstName')
-            last = r.get('name').get('lastName')
+            name = r.get('name')
 
-            if first and last:
-                full = first + ' ' + last
-            elif first:
-                full = first
-            elif last:
-                full = last
+            if not name:
+                continue
+
+            first = name.get('firstName')
+            last = name.get('lastName')
+            full = " ".join(filter(bool, [first, last]))
+
+            if not full:
+                continue
 
             authors.append(full)
 
-            out = ', '.join(authors)
+        out = ', '.join(authors)
 
         return out
 
@@ -653,8 +658,16 @@ class PublicationsRecord(dict):
             String containing abstract text.
         """
         abstract = self.get('abstract')
-        text = abstract.get('text')[0]
-        value = text.get('value')
+
+        if not abstract:
+            return None
+
+        text = abstract.get('text')
+
+        if not text:
+            return None
+
+        value = text[0].get('value')
 
         return value
 
@@ -701,6 +714,9 @@ class PublicationsRecord(dict):
             if not os.path.exists(fp):
                 if abstract:
                     self.save_abstract(abstract, fp)
+                else:
+                    logger.info(f'{self.title}: does not have an '
+                                'abstract to downlod')
         else:
             if pdf_url and pdf_url.endswith('.pdf'):
                 fn = self.id.replace('/', '-') + '.pdf'
@@ -876,7 +892,6 @@ class PublicationsList(list):
             try:
                 record.download(pdf_dir, txt_dir)
             except Exception as e:
-                print(f"Could not download {record.title} with error {e}")
                 logger.exception('Could not download {}: {}'
                                  .format(record.title, e))
         logger.info('Finished publications download!')

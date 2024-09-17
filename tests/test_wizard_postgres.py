@@ -5,6 +5,7 @@ import os
 import ast
 import json
 from io import BytesIO
+import numpy as np
 from elm import TEST_DATA_DIR
 from elm.wizard import EnergyWizardPostgres
 
@@ -20,6 +21,9 @@ with open(FP_QUERY_TXT, 'r', encoding='utf8') as f:
 
 QUERY_TUPLE = ast.literal_eval(QUERY_TEXT)
 REF_TUPLE = ast.literal_eval(REF_TEXT)
+
+os.environ["EWIZ_DB_USER"] = "user"
+os.environ["EWIZ_DB_PASSWORD"] = "password"
 
 
 class Cursor:
@@ -63,14 +67,18 @@ class BotoClient:
         return dummy_response
 
 
-def test_postgres():
+def test_postgres(mocker):
     """Test to ensure correct response vector db."""
 
-    os.environ["EWIZ_DB_USER"] = "user"
+    mock_conn_cm = mocker.MagicMock()
+    mock_conn = mock_conn_cm.__enter__.return_value
+    mock_conn.cursor.return_value = Cursor()
 
+    mock_connect = mocker.patch('psycopg2.connect')
+    mock_connect.return_value = mock_conn_cm
     wizard = EnergyWizardPostgres(db_host='Dummy', db_port='Dummy',
                                   db_name='Dummy', db_schema='Dummy',
-                                  db_table='Dummy', cursor=Cursor(),
+                                  db_table='Dummy',
                                   boto_client=BotoClient())
 
     question = 'Is this a dummy question?'
@@ -87,3 +95,69 @@ def test_postgres():
     assert 'title' in str(ref_list)
     assert 'url' in str(ref_list)
     assert 'research-hub.nrel.gov' in str(ref_list)
+
+
+def test_ref_replace():
+    """Test to ensure removal of double quotes from references."""
+
+    wizard = EnergyWizardPostgres(db_host='Dummy', db_port='Dummy',
+                                  db_name='Dummy', db_schema='Dummy',
+                                  db_table='Dummy', cursor=Cursor(),
+                                  boto_client=BotoClient(),
+                                  meta_columns=['title', 'url', 'id'])
+
+    refs = [(chr(34), 'test.com', '5a'),
+            ('remove "double" quotes', 'test_2.com', '7b')]
+
+    ids = np.array(['7b', '5a'])
+
+    out = wizard._format_refs(refs, ids)
+
+    assert len(out) > 1
+
+    for i in out:
+        refs_dict = json.loads(i)
+        assert '"' not in refs_dict['title']
+        assert chr(34) not in refs_dict['title']
+
+
+def test_ids():
+    """Test to ensure only records with valid ids are returned."""
+
+    wizard = EnergyWizardPostgres(db_host='Dummy', db_port='Dummy',
+                                  db_name='Dummy', db_schema='Dummy',
+                                  db_table='Dummy', cursor=Cursor(),
+                                  boto_client=BotoClient(),
+                                  meta_columns=['title', 'url', 'id'])
+
+    refs = [('title', 'test.com', '5a'),
+            ('title2', 'test_2.com', '7b')]
+
+    ids = np.array(['7c', '5a'])
+
+    out = wizard._format_refs(refs, ids)
+
+    assert len(out) == 1
+    assert not any('7b' in item for item in out)
+
+
+def test_sorted_refs():
+    """Test to ensure references are sorted in same order as ids."""
+
+    wizard = EnergyWizardPostgres(db_host='Dummy', db_port='Dummy',
+                                  db_name='Dummy', db_schema='Dummy',
+                                  db_table='Dummy', cursor=Cursor(),
+                                  boto_client=BotoClient(),
+                                  meta_columns=['title', 'url', 'id'])
+
+    refs = [('title', 'test.com', '5a'),
+            ('title2', 'test_2.com', '7b')]
+
+    ids = np.array(['7b', '5a'])
+
+    expected = ['{"title": "title2", "url": "test_2.com", "id": "7b"}',
+                '{"title": "title", "url": "test.com", "id": "5a"}']
+
+    out = wizard._format_refs(refs, ids)
+
+    assert expected == out
