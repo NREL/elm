@@ -97,18 +97,12 @@ def test_postgres(mocker):
     assert 'research-hub.nrel.gov' in str(ref_list)
 
 
-def test_ref_replace(mocker):
+def test_ref_replace():
     """Test to ensure removal of double quotes from references."""
-    mock_conn_cm = mocker.MagicMock()
-    mock_conn = mock_conn_cm.__enter__.return_value
-    mock_conn.cursor.return_value = Cursor()
-
-    mock_connect = mocker.patch('psycopg2.connect')
-    mock_connect.return_value = mock_conn_cm
 
     wizard = EnergyWizardPostgres(db_host='Dummy', db_port='Dummy',
                                   db_name='Dummy', db_schema='Dummy',
-                                  db_table='Dummy',
+                                  db_table='Dummy', cursor=Cursor(),
                                   boto_client=BotoClient(),
                                   meta_columns=['title', 'url', 'id'])
 
@@ -120,22 +114,19 @@ def test_ref_replace(mocker):
     out = wizard._format_refs(refs, ids)
 
     assert len(out) > 1
+
     for i in out:
-        assert json.loads(i)
+        refs_dict = json.loads(i)
+        assert '"' not in refs_dict['title']
+        assert chr(34) not in refs_dict['title']
 
 
-def test_ids(mocker):
+def test_ids():
     """Test to ensure only records with valid ids are returned."""
-    mock_conn_cm = mocker.MagicMock()
-    mock_conn = mock_conn_cm.__enter__.return_value
-    mock_conn.cursor.return_value = Cursor()
-
-    mock_connect = mocker.patch('psycopg2.connect')
-    mock_connect.return_value = mock_conn_cm
 
     wizard = EnergyWizardPostgres(db_host='Dummy', db_port='Dummy',
                                   db_name='Dummy', db_schema='Dummy',
-                                  db_table='Dummy',
+                                  db_table='Dummy', cursor=Cursor(),
                                   boto_client=BotoClient(),
                                   meta_columns=['title', 'url', 'id'])
 
@@ -147,21 +138,15 @@ def test_ids(mocker):
     out = wizard._format_refs(refs, ids)
 
     assert len(out) == 1
-    assert '7b' not in out
+    assert not any('7b' in item for item in out)
 
 
-def test_sorted_refs(mocker):
+def test_sorted_refs():
     """Test to ensure references are sorted in same order as ids."""
-    mock_conn_cm = mocker.MagicMock()
-    mock_conn = mock_conn_cm.__enter__.return_value
-    mock_conn.cursor.return_value = Cursor()
-
-    mock_connect = mocker.patch('psycopg2.connect')
-    mock_connect.return_value = mock_conn_cm
 
     wizard = EnergyWizardPostgres(db_host='Dummy', db_port='Dummy',
                                   db_name='Dummy', db_schema='Dummy',
-                                  db_table='Dummy',
+                                  db_table='Dummy', cursor=Cursor(),
                                   boto_client=BotoClient(),
                                   meta_columns=['title', 'url', 'id'])
 

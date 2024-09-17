@@ -598,8 +598,10 @@ class PublicationsRecord(dict):
 
             first = name.get('firstName')
             last = name.get('lastName')
-
             full = " ".join(filter(bool, [first, last]))
+
+            if not full:
+                continue
 
             authors.append(full)
 
