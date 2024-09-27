@@ -104,10 +104,11 @@ def test_ref_replace():
                                   db_name='Dummy', db_schema='Dummy',
                                   db_table='Dummy', cursor=Cursor(),
                                   boto_client=BotoClient(),
-                                  meta_columns=['title', 'url', 'id'])
+                                  meta_columns=['title', 'url',
+                                                'nrel_id', 'id'])
 
-    refs = [(chr(34), 'test.com', '5a'),
-            ('remove "double" quotes', 'test_2.com', '7b')]
+    refs = [(chr(34), 'test.com', 'nrel-1', '5a'),
+            ('remove "double" quotes', 'test_2.com', 'nrel-2', '7b')]
 
     ids = np.array(['7b', '5a'])
 
@@ -128,10 +129,11 @@ def test_ids():
                                   db_name='Dummy', db_schema='Dummy',
                                   db_table='Dummy', cursor=Cursor(),
                                   boto_client=BotoClient(),
-                                  meta_columns=['title', 'url', 'id'])
+                                  meta_columns=['title', 'url',
+                                                'nrel_id', 'id'])
 
-    refs = [('title', 'test.com', '5a'),
-            ('title2', 'test_2.com', '7b')]
+    refs = [('title', 'test.com', 'nrel-1', '5a'),
+            ('title2', 'test_2.com', 'nrel-2', '7b')]
 
     ids = np.array(['7c', '5a'])
 
@@ -148,15 +150,18 @@ def test_sorted_refs():
                                   db_name='Dummy', db_schema='Dummy',
                                   db_table='Dummy', cursor=Cursor(),
                                   boto_client=BotoClient(),
-                                  meta_columns=['title', 'url', 'id'])
+                                  meta_columns=['title', 'url',
+                                                'nrel_id', 'id'])
 
-    refs = [('title', 'test.com', '5a'),
-            ('title2', 'test_2.com', '7b')]
+    refs = [('title', 'test.com', 'nrel-1', '5a'),
+            ('title2', 'test_2.com', 'nrel-2', '7b')]
 
     ids = np.array(['7b', '5a'])
 
-    expected = ['{"title": "title2", "url": "test_2.com", "id": "7b"}',
-                '{"title": "title", "url": "test.com", "id": "5a"}']
+    expected = [('{"title": "title2", "url": "test_2.com", '
+                 '"nrel_id": "nrel-2", "id": "7b"}'),
+                ('{"title": "title", "url": "test.com", '
+                 '"nrel_id": "nrel-1", "id": "5a"}')]
 
     out = wizard._format_refs(refs, ids)
 
