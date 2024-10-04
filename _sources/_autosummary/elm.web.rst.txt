@@ -1,0 +1,36 @@
+elm.web
+=======
+
+.. automodule:: elm.web
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   document
+   file_loader
+   google_search
+   html_pw
+   osti
+   rhub
+   utilities
+

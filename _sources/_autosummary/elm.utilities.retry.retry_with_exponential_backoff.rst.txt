@@ -1,0 +1,6 @@
+elm.utilities.retry.retry\_with\_exponential\_backoff
+=====================================================
+
+.. currentmodule:: elm.utilities.retry
+
+.. autofunction:: retry_with_exponential_backoff

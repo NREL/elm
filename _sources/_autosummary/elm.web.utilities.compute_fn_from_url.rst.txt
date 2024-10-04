@@ -1,0 +1,6 @@
+elm.web.utilities.compute\_fn\_from\_url
+========================================
+
+.. currentmodule:: elm.web.utilities
+
+.. autofunction:: compute_fn_from_url

@@ -1,0 +1,6 @@
+elm.ords.extraction.graphs.setup\_participating\_owner
+======================================================
+
+.. currentmodule:: elm.ords.extraction.graphs
+
+.. autofunction:: setup_participating_owner
