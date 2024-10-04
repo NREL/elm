@@ -45,7 +45,8 @@ class ApiBase(ABC):
     """High level model role"""
 
     TOKENIZER_ALIASES = {'gpt-35-turbo': 'gpt-3.5-turbo',
-                         'gpt-4-32k': 'gpt-4-32k-0314'
+                         'gpt-4-32k': 'gpt-4-32k-0314',
+                         'llmev-gpt-4-32k': 'gpt-4-32k-0314'
                          }
     """Optional mappings for unusual Azure names to tiktoken/openai names."""
 
