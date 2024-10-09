@@ -23,6 +23,10 @@ jobs:
         channels: conda-forge,defaults
         python-version: ${{ matrix.python-version }}
         miniconda-version: "latest"
+    - name: Update apt-get
+      run: "sudo apt-get update"
+    - name: Install Poppler Reqs
+      run: "sudo apt install build-essential libpoppler-cpp-dev pkg-config"
     - name: Install dependencies
       shell: bash -l {0}
       run: |
