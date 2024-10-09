@@ -22,76 +22,6 @@ QUESTION_TEMPLATES = [
 ]
 
 
-async def _down_select_docs_correct_location(
-    docs, location, county, state, **kwargs
-):
-    """Remove all documents not pertaining to the location."""
-    llm_caller = StructuredLLMCaller(**kwargs)
-    county_validator = CountyValidator(llm_caller)
-    searchers = [
-        asyncio.create_task(
-            county_validator.check(doc, county=county, state=state),
-            name=location,
-        )
-        for doc in docs
-    ]
-    output = await asyncio.gather(*searchers)
-    correct_loc_docs = [doc for doc, check in zip(docs, output) if check]
-    return sorted(
-        correct_loc_docs,
-        key=lambda doc: (not isinstance(doc, PDFDocument), len(doc.text)),
-    )
-
-
-async def _check_docs_for_ords(docs, text_splitter, **kwargs):
-    """Check documents to see if they contain ordinance info."""
-    ord_docs = []
-    for doc in docs:
-        doc = await check_for_ordinance_info(doc, text_splitter, **kwargs)
-        if doc.metadata["contains_ord_info"]:
-            ord_docs.append(doc)
-    return ord_docs
-
-
-def _parse_all_ord_docs(all_ord_docs):
-    """Parse a list of documents and get the result for the best match."""
-    if not all_ord_docs:
-        return None
-
-    return sorted(all_ord_docs, key=_ord_doc_sorting_key)[-1]
-
-
-def _ord_doc_sorting_key(doc):
-    """All text sorting key"""
-    year, month, day = doc.metadata.get("date", (-1, -1, -1))
-    return year, isinstance(doc, PDFDocument), -1 * len(doc.text), month, day
-
-
-async def _docs_from_google_search(
-    location, text_splitter, num_urls, browser_semaphore, **file_loader_kwargs
-):
-    """Download docs from google location queries. """
-    queries = [
-        question.format(location=location.full_name)
-        for question in QUESTION_TEMPLATES
-    ]
-    file_loader_kwargs.update(
-        {
-            "html_read_kwargs": {"text_splitter": text_splitter},
-            "file_cache_coroutine": TempFileCache.call,
-        }
-    )
-
-    return await google_results_as_docs(
-        queries,
-        num_urls=num_urls,
-        text_splitter=text_splitter,
-        browser_semaphore=browser_semaphore,
-        task_name=location.full_name,
-        **file_loader_kwargs,
-    )
-
-
 async def download_county_ordinance(
     location,
     text_splitter,
@@ -157,3 +87,73 @@ async def download_county_ordinance(
         location.full_name,
     )
     return _parse_all_ord_docs(docs)
+
+
+async def _docs_from_google_search(
+    location, text_splitter, num_urls, browser_semaphore, **file_loader_kwargs
+):
+    """Download docs from google location queries. """
+    queries = [
+        question.format(location=location.full_name)
+        for question in QUESTION_TEMPLATES
+    ]
+    file_loader_kwargs.update(
+        {
+            "html_read_kwargs": {"text_splitter": text_splitter},
+            "file_cache_coroutine": TempFileCache.call,
+        }
+    )
+
+    return await google_results_as_docs(
+        queries,
+        num_urls=num_urls,
+        text_splitter=text_splitter,
+        browser_semaphore=browser_semaphore,
+        task_name=location.full_name,
+        **file_loader_kwargs,
+    )
+
+
+async def _down_select_docs_correct_location(
+    docs, location, county, state, **kwargs
+):
+    """Remove all documents not pertaining to the location."""
+    llm_caller = StructuredLLMCaller(**kwargs)
+    county_validator = CountyValidator(llm_caller)
+    searchers = [
+        asyncio.create_task(
+            county_validator.check(doc, county=county, state=state),
+            name=location,
+        )
+        for doc in docs
+    ]
+    output = await asyncio.gather(*searchers)
+    correct_loc_docs = [doc for doc, check in zip(docs, output) if check]
+    return sorted(
+        correct_loc_docs,
+        key=lambda doc: (not isinstance(doc, PDFDocument), len(doc.text)),
+    )
+
+
+async def _check_docs_for_ords(docs, text_splitter, **kwargs):
+    """Check documents to see if they contain ordinance info."""
+    ord_docs = []
+    for doc in docs:
+        doc = await check_for_ordinance_info(doc, text_splitter, **kwargs)
+        if doc.metadata["contains_ord_info"]:
+            ord_docs.append(doc)
+    return ord_docs
+
+
+def _parse_all_ord_docs(all_ord_docs):
+    """Parse a list of documents and get the result for the best match."""
+    if not all_ord_docs:
+        return None
+
+    return sorted(all_ord_docs, key=_ord_doc_sorting_key)[-1]
+
+
+def _ord_doc_sorting_key(doc):
+    """All text sorting key"""
+    year, month, day = doc.metadata.get("date", (-1, -1, -1))
+    return year, isinstance(doc, PDFDocument), -1 * len(doc.text), month, day
