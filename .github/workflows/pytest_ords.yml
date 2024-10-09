@@ -23,10 +23,15 @@ jobs:
         channels: conda-forge,defaults
         python-version: ${{ matrix.python-version }}
         miniconda-version: "latest"
-    - name: Update apt-get
-      run: "sudo apt-get update"
     - name: Install Poppler Reqs
-      run: "sudo apt install build-essential libpoppler-cpp-dev pkg-config"
+      run:   |
+         if [ "$RUNNER_OS" == "Linux" ]; then
+              sudo apt-get update
+              sudo apt-get install build-essential libpoppler-cpp-dev pkg-config python-dev
+         elif [ "$RUNNER_OS" == "macOS" ]; then
+              sudo yum install gcc-c++ pkgconfig poppler-cpp-devel python-devel redhat-rpm-config
+         fi
+      shell: bash
     - name: Install dependencies
       shell: bash -l {0}
       run: |
