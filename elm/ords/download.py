@@ -29,7 +29,7 @@ async def download_county_ordinance(
     browser_semaphore=None,
     **kwargs
 ):
-    """Download the ordinance document for a single county.
+    """Download the ordinance document(s) for a single county.
 
     Parameters
     ----------
@@ -100,7 +100,6 @@ async def _docs_from_google_search(
             "file_cache_coroutine": TempFileCache.call,
         }
     )
-
     return await google_results_as_docs(
         queries,
         num_urls=num_urls,
