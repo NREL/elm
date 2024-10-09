@@ -1,18 +1,14 @@
 # -*- coding: utf-8 -*-
 """ELM Ordinance county file downloading logic"""
-import pprint
 import asyncio
 import logging
-from itertools import zip_longest, chain
-from contextlib import AsyncExitStack
 
 from elm.ords.llm import StructuredLLMCaller
 from elm.ords.extraction import check_for_ordinance_info
 from elm.ords.services.threaded import TempFileCache
 from elm.ords.validation.location import CountyValidator
 from elm.web.document import PDFDocument
-from elm.web.file_loader import AsyncFileLoader
-from elm.web.google_search import PlaywrightGoogleLinkSearch
+from elm.web.google_search import google_results_as_docs
 
 
 logger = logging.getLogger(__name__)
@@ -24,70 +20,6 @@ QUESTION_TEMPLATES = [
     '3. "What is the specific legal information regarding zoning '
     'ordinances for commercial wind energy conversion systems in {location}?"',
 ]
-
-
-async def _search_single(question, browser_sem, num_results=10, **kwargs):
-    """Perform a single google search."""
-    if browser_sem is None:
-        browser_sem = AsyncExitStack()
-
-    search_engine = PlaywrightGoogleLinkSearch(**kwargs)
-    async with browser_sem:
-        return await search_engine.results(question, num_results=num_results)
-
-
-async def _find_urls(
-    queries, num_results=10, browser_sem=None, task_name=None, **kwargs
-):
-    """Parse google search output for URLs."""
-    searchers = [
-        asyncio.create_task(
-            _search_single(
-                query, browser_sem, num_results=num_results, **kwargs
-            ),
-            name=task_name,
-        )
-        for query in queries
-    ]
-    return await asyncio.gather(*searchers)
-
-
-def _down_select_urls(search_results, num_urls=5):
-    """Select the top 5 URLs."""
-    all_urls = chain.from_iterable(
-        zip_longest(*[results[0] for results in search_results])
-    )
-    urls = set()
-    for url in all_urls:
-        if not url:
-            continue
-        urls.add(url)
-        if len(urls) == num_urls:
-            break
-    return urls
-
-
-async def _load_docs(urls, text_splitter, browser_semaphore=None, **kwargs):
-    """Load a document for each input URL."""
-    loader_kwargs = {
-        "html_read_kwargs": {"text_splitter": text_splitter},
-        "file_cache_coroutine": TempFileCache.call,
-        "browser_semaphore": browser_semaphore,
-    }
-    loader_kwargs.update(kwargs)
-    file_loader = AsyncFileLoader(**loader_kwargs)
-    docs = await file_loader.fetch_all(*urls)
-
-    logger.debug(
-        "Loaded the following number of pages for docs: %s",
-        pprint.PrettyPrinter().pformat(
-            {
-                doc.metadata.get("source", "Unknown"): len(doc.pages)
-                for doc in docs
-            }
-        ),
-    )
-    return [doc for doc in docs if not doc.empty]
 
 
 async def _down_select_docs_correct_location(
@@ -135,66 +67,29 @@ def _ord_doc_sorting_key(doc):
     return year, isinstance(doc, PDFDocument), -1 * len(doc.text), month, day
 
 
-async def google_results_as_docs(
-    queries,
-    num_urls=None,
-    text_splitter=None,
-    browser_semaphore=None,
-    task_name=None,
-    **file_loader_kwargs,
+async def _docs_from_google_search(
+    location, text_splitter, num_urls, browser_semaphore, **file_loader_kwargs
 ):
-    """Retrieve top ``N`` google search results as document instances.
+    """Download docs from google location queries. """
+    queries = [
+        question.format(location=location.full_name)
+        for question in QUESTION_TEMPLATES
+    ]
+    file_loader_kwargs.update(
+        {
+            "html_read_kwargs": {"text_splitter": text_splitter},
+            "file_cache_coroutine": TempFileCache.call,
+        }
+    )
 
-    Parameters
-    ----------
-    queries : collection of str
-        Collection of strings representing google queries. Documents for
-        the top `num_urls` google search results (from all of these
-        queries combined_ will be returned from this function.
-    num_urls : int, optional
-        Number of unique top Google search result to return as docs. The
-        google search results from all queries are interleaved and the
-        top `num_urls` unique URL's are downloaded as docs. If this
-        number is less than ``len(queries)``, some of your queries may
-        not contribute to the final output. By default, ``None``, which
-        sets ``num_urls = 3 * len(queries)``.
-    text_splitter : obj, optional
-        Instance of an object that implements a `split_text` method.
-        The method should take text as input (str) and return a list
-        of text chunks. Raw text from HTML pages will be passed through
-        this splitter to split the single wep page into multiple pages
-        for the output document. Langchain's text splitters should work
-        for this input. By default, ``None``, which means the original
-        pages input becomes the raw pages attribute.
-    browser_semaphore : :class:`asyncio.Semaphore`, optional
-        Semaphore instance that can be used to limit the number of
-        playwright browsers open concurrently. If ``None``, no limits
-        are applied. By default, ``None``.
-    task_name : str, optional
-        Optional task name to use in :func:`asyncio.create_task`.
-        By default, ``None``.
-
-    Returns
-    -------
-    list of :class:`elm.web.document.BaseDocument`
-        List of documents representing the top `num_urls` results from
-        the google searches across all `queries`.
-    """
-    pw_launch_kwargs = file_loader_kwargs.get("pw_launch_kwargs", {})
-    urls = await _find_urls(
+    return await google_results_as_docs(
         queries,
-        num_results=10,
-        browser_sem=browser_semaphore,
-        task_name=task_name,
-        **pw_launch_kwargs
+        num_urls=num_urls,
+        text_splitter=text_splitter,
+        browser_semaphore=browser_semaphore,
+        task_name=location.full_name,
+        **file_loader_kwargs,
     )
-    num_urls = num_urls or 3 * len(queries)
-    urls = _down_select_urls(urls, num_urls=num_urls)
-    logger.debug("Downloading documents for URLS: \n\t-%s", "\n\t-".join(urls))
-    docs = await _load_docs(
-        urls, text_splitter, browser_semaphore, **file_loader_kwargs
-    )
-    return docs
 
 
 async def download_county_ordinance(
@@ -223,7 +118,7 @@ async def download_county_ordinance(
         ordinance document. By default, ``5``.
     file_loader_kwargs : dict, optional
         Dictionary of keyword-argument pairs to initialize
-        :class:`elm.web.file_loader.AsyncFileLoader` with. The
+        :class:`elm.web.file_loader.AsyncFileLoader` with. If found, the
         "pw_launch_kwargs" key in these will also be used to initialize
         the :class:`elm.web.google_search.PlaywrightGoogleLinkSearch`
         used for the google URL search. By default, ``None``.
@@ -241,18 +136,12 @@ async def download_county_ordinance(
         Document instance for the downloaded document, or ``None`` if no
         document was found.
     """
-    queries = [
-        question.format(location=location.full_name)
-        for question in QUESTION_TEMPLATES
-    ]
-    file_loader_kwargs = file_loader_kwargs or {}
-    docs = await google_results_as_docs(
-        queries,
-        num_urls=num_urls,
-        text_splitter=text_splitter,
-        browser_semaphore=browser_semaphore,
-        task_name=location.full_name,
-        **file_loader_kwargs,
+    docs = await _docs_from_google_search(
+        location,
+        text_splitter,
+        num_urls,
+        browser_semaphore,
+        **(file_loader_kwargs or {})
     )
     docs = await _down_select_docs_correct_location(
         docs,
