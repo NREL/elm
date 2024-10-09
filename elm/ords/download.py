@@ -83,7 +83,7 @@ async def download_county_ordinance(
         len(docs),
         location.full_name,
     )
-    return _parse_all_ord_docs(docs)
+    return _sort_final_ord_docs(docs)
 
 
 async def _docs_from_google_search(
@@ -140,8 +140,8 @@ async def _contains_ords(doc, **kwargs):
     return doc.metadata.get("contains_ord_info", False)
 
 
-def _parse_all_ord_docs(all_ord_docs):
-    """Parse a list of documents and get the result for the best match."""
+def _sort_final_ord_docs(all_ord_docs):
+    """Sort the final list of documents by year, type, and text length."""
     if not all_ord_docs:
         return None
 
