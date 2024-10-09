@@ -27,9 +27,9 @@ jobs:
       run:   |
          if [ "$RUNNER_OS" == "Linux" ]; then
               sudo apt-get update
-              sudo apt-get install build-essential libpoppler-cpp-dev pkg-config python-dev
+              sudo apt-get install libpoppler-cpp-dev pkg-config
          elif [ "$RUNNER_OS" == "macOS" ]; then
-              sudo yum install gcc-c++ pkgconfig poppler-cpp-devel python-devel redhat-rpm-config
+              brew install cmake pkg-config poppler
          fi
       shell: bash
     - name: Install dependencies
