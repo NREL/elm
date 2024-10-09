@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """ELM Ordinance full processing logic"""
-import os
 import time
 import json
 import asyncio
