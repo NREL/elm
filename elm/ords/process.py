@@ -14,6 +14,7 @@ import pandas as pd
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 from elm import ApiBase
+from elm.utilities import validate_azure_api_params
 from elm.ords.download import download_county_ordinance
 from elm.ords.extraction import (
     extract_ordinance_text_with_ngram_validation,
@@ -269,7 +270,7 @@ async def _process_with_logs(
 ):
     """Process counties with logging enabled."""
     counties = _load_counties_to_process(county_fp)
-    azure_api_key, azure_version, azure_endpoint = validate_api_params(
+    azure_api_key, azure_version, azure_endpoint = validate_azure_api_params(
         azure_api_key, azure_version, azure_endpoint
     )
 
@@ -377,18 +378,6 @@ def _load_counties_to_process(county_fp):
         logger.info("No `county_fp` input! Loading all counties")
         return load_all_county_info()
     return load_counties_from_fp(county_fp)
-
-
-def validate_api_params(azure_api_key=None, azure_version=None,
-                        azure_endpoint=None):
-    """Validate OpenAI API parameters."""
-    azure_api_key = azure_api_key or os.environ.get("AZURE_OPENAI_API_KEY")
-    azure_version = azure_version or os.environ.get("AZURE_OPENAI_VERSION")
-    azure_endpoint = azure_endpoint or os.environ.get("AZURE_OPENAI_ENDPOINT")
-    assert azure_api_key is not None, "Must set AZURE_OPENAI_API_KEY!"
-    assert azure_version is not None, "Must set AZURE_OPENAI_VERSION!"
-    assert azure_endpoint is not None, "Must set AZURE_OPENAI_ENDPOINT!"
-    return azure_api_key, azure_version, azure_endpoint
 
 
 def _configure_thread_pool_kwargs(tpe_kwargs):
