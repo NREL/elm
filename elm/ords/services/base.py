@@ -9,8 +9,6 @@ from elm.ords.utilities.exceptions import ELMOrdsNotInitializedError
 
 
 logger = logging.getLogger(__name__)
-
-
 MISSING_SERVICE_MESSAGE = """Must initialize the queue for {service_name!r}.
 You can likely use the following code structure to fix this:
 
