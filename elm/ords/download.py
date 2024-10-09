@@ -26,31 +26,28 @@ QUESTION_TEMPLATES = [
 ]
 
 
-async def _search_single(
-    location, question, browser_sem, num_results=10, **kwargs
-):
+async def _search_single(question, browser_sem, num_results=10, **kwargs):
     """Perform a single google search."""
     if browser_sem is None:
         browser_sem = AsyncExitStack()
 
     search_engine = PlaywrightGoogleLinkSearch(**kwargs)
     async with browser_sem:
-        return await search_engine.results(
-            question.format(location=location),
-            num_results=num_results,
-        )
+        return await search_engine.results(question, num_results=num_results)
 
 
-async def _find_urls(location, num_results=10, browser_sem=None, **kwargs):
+async def _find_urls(
+    queries, num_results=10, browser_sem=None, task_name=None, **kwargs
+):
     """Parse google search output for URLs."""
     searchers = [
         asyncio.create_task(
             _search_single(
-                location, q, browser_sem, num_results=num_results, **kwargs
+                query, browser_sem, num_results=num_results, **kwargs
             ),
-            name=location,
+            name=task_name,
         )
-        for q in QUESTION_TEMPLATES
+        for query in queries
     ]
     return await asyncio.gather(*searchers)
 
@@ -138,6 +135,68 @@ def _ord_doc_sorting_key(doc):
     return year, isinstance(doc, PDFDocument), -1 * len(doc.text), month, day
 
 
+async def google_results_as_docs(
+    queries,
+    num_urls=None,
+    text_splitter=None,
+    browser_semaphore=None,
+    task_name=None,
+    **file_loader_kwargs,
+):
+    """Retrieve top ``N`` google search results as document instances.
+
+    Parameters
+    ----------
+    queries : collection of str
+        Collection of strings representing google queries. Documents for
+        the top `num_urls` google search results (from all of these
+        queries combined_ will be returned from this function.
+    num_urls : int, optional
+        Number of unique top Google search result to return as docs. The
+        google search results from all queries are interleaved and the
+        top `num_urls` unique URL's are downloaded as docs. If this
+        number is less than ``len(queries)``, some of your queries may
+        not contribute to the final output. By default, ``None``, which
+        sets ``num_urls = 3 * len(queries)``.
+    text_splitter : obj, optional
+        Instance of an object that implements a `split_text` method.
+        The method should take text as input (str) and return a list
+        of text chunks. Raw text from HTML pages will be passed through
+        this splitter to split the single wep page into multiple pages
+        for the output document. Langchain's text splitters should work
+        for this input. By default, ``None``, which means the original
+        pages input becomes the raw pages attribute.
+    browser_semaphore : :class:`asyncio.Semaphore`, optional
+        Semaphore instance that can be used to limit the number of
+        playwright browsers open concurrently. If ``None``, no limits
+        are applied. By default, ``None``.
+    task_name : str, optional
+        Optional task name to use in :func:`asyncio.create_task`.
+        By default, ``None``.
+
+    Returns
+    -------
+    list of :class:`elm.web.document.BaseDocument`
+        List of documents representing the top `num_urls` results from
+        the google searches across all `queries`.
+    """
+    pw_launch_kwargs = file_loader_kwargs.get("pw_launch_kwargs", {})
+    urls = await _find_urls(
+        queries,
+        num_results=10,
+        browser_sem=browser_semaphore,
+        task_name=task_name,
+        **pw_launch_kwargs
+    )
+    num_urls = num_urls or 3 * len(queries)
+    urls = _down_select_urls(urls, num_urls=num_urls)
+    logger.debug("Downloading documents for URLS: \n\t-%s", "\n\t-".join(urls))
+    docs = await _load_docs(
+        urls, text_splitter, browser_semaphore, **file_loader_kwargs
+    )
+    return docs
+
+
 async def download_county_ordinance(
     location,
     text_splitter,
@@ -168,7 +227,7 @@ async def download_county_ordinance(
         "pw_launch_kwargs" key in these will also be used to initialize
         the :class:`elm.web.google_search.PlaywrightGoogleLinkSearch`
         used for the google URL search. By default, ``None``.
-    browser_semaphore : asyncio.Semaphore, optional
+    browser_semaphore : :class:`asyncio.Semaphore`, optional
         Semaphore instance that can be used to limit the number of
         playwright browsers open concurrently. If ``None``, no limits
         are applied. By default, ``None``.
@@ -182,18 +241,18 @@ async def download_county_ordinance(
         Document instance for the downloaded document, or ``None`` if no
         document was found.
     """
+    queries = [
+        question.format(location=location.full_name)
+        for question in QUESTION_TEMPLATES
+    ]
     file_loader_kwargs = file_loader_kwargs or {}
-    pw_launch_kwargs = file_loader_kwargs.get("pw_launch_kwargs", {})
-    urls = await _find_urls(
-        location.full_name,
-        num_results=10,
-        browser_sem=browser_semaphore,
-        **pw_launch_kwargs
-    )
-    urls = _down_select_urls(urls, num_urls=num_urls)
-    logger.debug("Downloading documents for URLS: \n\t-%s", "\n\t-".join(urls))
-    docs = await _load_docs(
-        urls, text_splitter, browser_semaphore, **file_loader_kwargs
+    docs = await google_results_as_docs(
+        queries,
+        num_urls=num_urls,
+        text_splitter=text_splitter,
+        browser_semaphore=browser_semaphore,
+        task_name=location.full_name,
+        **file_loader_kwargs,
     )
     docs = await _down_select_docs_correct_location(
         docs,
