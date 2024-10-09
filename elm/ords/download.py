@@ -155,8 +155,10 @@ async def download_county_ordinance(
     text_splitter : obj, optional
         Instance of an object that implements a `split_text` method.
         The method should take text as input (str) and return a list
-        of text chunks. Langchain's text splitters should work for this
-        input.
+        of text chunks. Raw text from HTML pages will be passed through 
+        this splitter to split the single wep page into multiple pages 
+        for the output document. Langchain's text splitters should work 
+        for this input.
     num_urls : int, optional
         Number of unique Google search result URL's to check for
         ordinance document. By default, ``5``.
