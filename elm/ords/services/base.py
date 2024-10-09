@@ -11,6 +11,22 @@ from elm.ords.utilities.exceptions import ELMOrdsNotInitializedError
 logger = logging.getLogger(__name__)
 
 
+MISSING_SERVICE_MESSAGE = """Must initialize the queue for {service_name!r}.
+You can likely use the following code structure to fix this:
+
+    from elm.ords.services.provider import RunningAsyncServices
+
+    services = [
+        ...
+        {service_name}(...),
+        ...
+    ]
+    async with RunningAsyncServices(services):
+        # function call here
+
+"""
+
+
 class Service(ABC):
     """Abstract base class for a Service that can be queued to run."""
 
@@ -20,9 +36,11 @@ class Service(ABC):
     @classmethod
     def _queue(cls):
         """Get queue for class."""
-        queue = get_service_queue(cls.__name__)
+        service_name = cls.__name__
+        queue = get_service_queue(service_name)
         if queue is None:
-            raise ELMOrdsNotInitializedError("Must initialize the queue!")
+            msg = MISSING_SERVICE_MESSAGE.format(service_name=service_name)
+            raise ELMOrdsNotInitializedError(msg)
         return queue
 
     @classmethod
