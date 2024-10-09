@@ -81,7 +81,7 @@ class AsyncFileLoader:
             `pdf_read_coroutine`. By default, ``None``.
         html_read_kwargs : dict, optional
             Keyword-value argument pairs to pass to the
-            `html_read_coroutine`. By default, ``None``.. By default, ``None``.
+            `html_read_coroutine`. By default, ``None``.
         pdf_read_coroutine : callable, optional
             PDF file read coroutine. Must by an async function. Should
             accept PDF bytes as the first argument and kwargs as the
