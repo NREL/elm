@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """ELM Ordinance county file downloading logic"""
-import asyncio
 import logging
 
 from elm.ords.llm import StructuredLLMCaller
@@ -8,7 +7,7 @@ from elm.ords.extraction import check_for_ordinance_info
 from elm.ords.services.threaded import TempFileCache
 from elm.ords.validation.location import CountyValidator
 from elm.web.document import PDFDocument
-from elm.web.google_search import google_results_as_docs
+from elm.web.google_search import google_results_as_docs, filter_documents
 
 
 logger = logging.getLogger(__name__)
@@ -74,13 +73,11 @@ async def download_county_ordinance(
         **(file_loader_kwargs or {})
     )
     docs = await _down_select_docs_correct_location(
-        docs,
-        location=location.full_name,
-        county=location.name,
-        state=location.state,
-        **kwargs
+        docs, location=location, **kwargs
     )
-    docs = await _check_docs_for_ords(docs, text_splitter, **kwargs)
+    docs = await _down_select_docs_correct_content(
+        docs, location=location, text_splitter=text_splitter, **kwargs
+    )
     logger.info(
         "Found %d potential ordinance documents for %s",
         len(docs),
@@ -114,35 +111,33 @@ async def _docs_from_google_search(
     )
 
 
-async def _down_select_docs_correct_location(
-    docs, location, county, state, **kwargs
-):
+async def _down_select_docs_correct_location(docs, location, **kwargs):
     """Remove all documents not pertaining to the location."""
     llm_caller = StructuredLLMCaller(**kwargs)
     county_validator = CountyValidator(llm_caller)
-    searchers = [
-        asyncio.create_task(
-            county_validator.check(doc, county=county, state=state),
-            name=location,
-        )
-        for doc in docs
-    ]
-    output = await asyncio.gather(*searchers)
-    correct_loc_docs = [doc for doc, check in zip(docs, output) if check]
-    return sorted(
-        correct_loc_docs,
-        key=lambda doc: (not isinstance(doc, PDFDocument), len(doc.text)),
+    return await filter_documents(
+        docs,
+        validation_coroutine=county_validator.check,
+        task_name=location.full_name,
+        county=location.name,
+        state=location.state,
     )
 
 
-async def _check_docs_for_ords(docs, text_splitter, **kwargs):
-    """Check documents to see if they contain ordinance info."""
-    ord_docs = []
-    for doc in docs:
-        doc = await check_for_ordinance_info(doc, text_splitter, **kwargs)
-        if doc.metadata["contains_ord_info"]:
-            ord_docs.append(doc)
-    return ord_docs
+async def _down_select_docs_correct_content(docs, location, **kwargs):
+    """Remove all documents that don't contain ordinance info."""
+    return await filter_documents(
+        docs,
+        validation_coroutine=_contains_ords,
+        task_name=location.full_name,
+        **kwargs,
+    )
+
+
+async def _contains_ords(doc, **kwargs):
+    """Helper coroutine that checks for ordinance info. """
+    doc = check_for_ordinance_info(doc, **kwargs)
+    return doc.metadata.get("contains_ord_info", False)
 
 
 def _parse_all_ord_docs(all_ord_docs):
