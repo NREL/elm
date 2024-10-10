@@ -1,3 +1,4 @@
+# pylint: disable=all
 """ELM web scraping and info extraction pipeline demo. """
 
 import asyncio
@@ -86,10 +87,9 @@ def setup_decision_tree_graph(text, chat_llm_caller):
     G.add_node(
         "leadership",
         prompt=(
-            "Does the following text mention who the current director of "
-            "the National Renewable Energy Laboratory (NREL) is? Begin "
-            "your response with either 'Yes' or 'No' and justify your answer."
-            '\n\n"""\n{text}\n"""'
+            "Does the text mention who the current director of the National "
+            "Renewable Energy Laboratory (NREL) is? Begin your response with "
+            "either 'Yes' or 'No' and justify your answer."
         ),
     )
     G.add_edge(
@@ -101,7 +101,6 @@ def setup_decision_tree_graph(text, chat_llm_caller):
         prompt=(
             "Based on the text, who is the current director of the National "
             "Renewable Energy Laboratory (NREL)?"
-            '\n\n"""\n{text}\n"""'
         ),
     )
     G.add_edge("name", "final")  # no condition - always go to the end
@@ -121,7 +120,13 @@ def setup_decision_tree_graph(text, chat_llm_caller):
     return G
 
 
-async def extract_final_values(doc, chat_llm):
+async def extract_final_values(doc, model):
+
+    chat_llm = ChatLLMCaller(
+        llm_service=OpenAIService,
+        system_message=CHAT_SYSTEM_MESSAGE,
+        model=model
+    )
 
     G = setup_decision_tree_graph(
         text=doc.metadata["relevant_text"], chat_llm_caller=chat_llm
@@ -141,7 +146,7 @@ async def run_pipeline():
     docs = await google_results_as_docs(QUERIES)
     docs = await filter_documents(docs, url_is_wiki)
 
-    model = "lmev-gpt-4"
+    model = "gpt-4"
     text_splitter = RecursiveCharacterTextSplitter(
         RTS_SEPARATORS,  # or your own custom set of separators
         chunk_size=3000,  # or your own custom chunk size
@@ -157,12 +162,7 @@ async def run_pipeline():
     )
 
     llm = LLMCaller(llm_service=OpenAIService, model=model)
-    chat_llm = ChatLLMCaller(
-        llm_service=OpenAIService,
-        system_message=CHAT_SYSTEM_MESSAGE,
-        model=model
-    )
-    services = [OpenAIService(client, rate_limit=4000)]
+    services = [OpenAIService(client, rate_limit=40000)]
 
     async with RunningAsyncServices(services):
         tasks = [
@@ -172,7 +172,7 @@ async def run_pipeline():
         docs = await asyncio.gather(*tasks)
 
         tasks = [
-            asyncio.create_task(extract_final_values(doc, chat_llm))
+            asyncio.create_task(extract_final_values(doc, model))
             for doc in docs
         ]
         info_dicts = await asyncio.gather(*tasks)
