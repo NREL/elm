@@ -23,6 +23,15 @@ jobs:
         channels: conda-forge,defaults
         python-version: ${{ matrix.python-version }}
         miniconda-version: "latest"
+    - name: Install Poppler Reqs
+      run:   |
+         if [ "$RUNNER_OS" == "Linux" ]; then
+              sudo apt-get update
+              sudo apt-get install libpoppler-cpp-dev
+         elif [ "$RUNNER_OS" == "macOS" ]; then
+              brew install poppler
+         fi
+      shell: bash
     - name: Install dependencies
       shell: bash -l {0}
       run: |
@@ -32,6 +41,8 @@ jobs:
         python -m pip install pytest
         python -m pip install pytest-mock
         python -m pip install pytest-cov
+        python -m pip install psycopg2-binary
+        python -m pip install boto3
         python -m pip install .
         playwright install
     - name: Run pytest and Generate coverage report
@@ -40,6 +51,7 @@ jobs:
         python -m pytest -v --disable-warnings --cov=./ --cov-report=xml:coverage.xml
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
+      if: matrix.os == 'ubuntu-latest'
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: ./coverage.xml
