@@ -42,7 +42,7 @@ CHAT_SYSTEM_MESSAGE = (
 
 
 async def url_is_wiki(doc):
-    return "wiki" in doc.metadata.get("source", "")
+    return "wikipedia" in doc.metadata.get("source", "")
 
 
 async def extract_relevant_info(doc, text_splitter, llm):
