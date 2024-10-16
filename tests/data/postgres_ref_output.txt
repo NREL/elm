@@ -1,12 +1,1 @@
-[
- ( "Adapting Agrivoltaics for Solar Mini-Grids in Haiti", "https://research-hub.nrel.gov/en/publications/adapting-agrivoltaics-for-solar-mini-grids-in-haiti"),
- ("2023 International Energy Workshop Summary (NREL Internal Use Only)", "https://research-hub.nrel.gov/en/publications/2023-international-energy-workshop-summary-nrel-internal-use-only"),
- ("A 2023 Perspective: What Is the Value of Hybridization?", "https://research-hub.nrel.gov/en/publications/a-2023-perspective-what-is-the-value-of-hybridization"),
- ("2022 Bioenergy Industry Status Report", "https://research-hub.nrel.gov/en/publications/2022-bioenergy-industry-status-report"),
- ("Bashar Anwar", "https://research-hub.nrel.gov/en/persons/bashar-anwar"),
- ("Rajendra Adhikari", "https://research-hub.nrel.gov/en/persons/rajendra-adhikari"),
- ("2024 JISEA Annual Meeting: Session 4", "https://research-hub.nrel.gov/en/publications/2024-jisea-annual-meeting-session-4"),
- ("Ad-Mat: Adaptations of Mature Manufacturing Strategies for Accelerated Redox Flow Battery Deployment", "https://research-hub.nrel.gov/en/publications/ad-mat-adaptations-of-mature-manufacturing-strategies-for-acceler"),
- ("Achieving an 80% Renewable Portfolio in Alaska\'s Railbelt: Cost Analysis", "https://research-hub.nrel.gov/en/publications/achieving-an-80-renewable-portfolio-in-alaskaaposs-railbelt-cost-"),
- ("Doug Arent", "https://research-hub.nrel.gov/en/persons/doug-arent")
- ]
+[('LA100 Equity Strategies. Chapter 10: Household Transportation Electrification', 'https://research-hub.nrel.gov/en/publications/5d165039-68a9-4a5d-8c48-17261f3cf02e', 'NREL-TP-5400-85957', '0b8ab085-df53-45d7-b338-6fef10bde449'), ('LA100 Equity Strategies. Chapter 10: Household Transportation Electrification', 'https://research-hub.nrel.gov/en/publications/5d165039-68a9-4a5d-8c48-17261f3cf02e', 'NREL-TP-5400-85957', '103d49b6-9273-47ff-924b-253225c444a0'), ('The Los Angeles 100% Renewable Energy Study (LA100): Chapter 12. Synthesis', 'https://research-hub.nrel.gov/en/publications/132a7f1b-3d16-4a8f-944b-f4ebcd358c8d', 'NREL-TP-6A20-85433', '8f0c4221-1710-4381-b084-c9afc4dd8a53'), ('LA100 Equity Strategies. Chapter 11: Truck Electrification for Improved Air Quality and Health', 'https://research-hub.nrel.gov/en/publications/99001a6f-21af-4fb1-ab1d-62a2d2ec8a76', 'NREL-TP-6A20-85958', '8fe6d830-68bf-43ec-85f4-23f911f21c5b'), ('The Los Angeles 100% Renewable Energy Study (LA100): Chapter 10. Environmental Justice', 'https://research-hub.nrel.gov/en/publications/de86d778-6183-46a2-8748-404068d1e6e1', 'NREL-TP-6A20-85431', 'ea6f2998-4c2a-459b-b75b-8dc93d219f4c')]
