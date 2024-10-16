@@ -1,0 +1,6 @@
+elm.ords.process.validate\_api\_params
+======================================
+
+.. currentmodule:: elm.ords.process
+
+.. autofunction:: validate_api_params

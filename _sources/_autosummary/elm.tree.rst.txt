@@ -1,0 +1,31 @@
+elm.tree
+========
+
+.. automodule:: elm.tree
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      DecisionTree
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,6 @@
+elm.ords.services.openai.usage\_from\_response
+==============================================
+
+.. currentmodule:: elm.ords.services.openai
+
+.. autofunction:: usage_from_response
