@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*-
 """ELM Web Scraping - Google search."""
+import pprint
 import asyncio
 import logging
+from itertools import zip_longest, chain
+from contextlib import AsyncExitStack
 
 from playwright.async_api import (
     async_playwright,
     TimeoutError as PlaywrightTimeoutError,
 )
 
+from elm.web.document import PDFDocument
+from elm.web.file_loader import AsyncFileLoader
 from elm.web.utilities import clean_search_query
 
 
@@ -102,6 +107,166 @@ class PlaywrightGoogleLinkSearch:
         """
         queries = map(clean_search_query, queries)
         return await self._get_links(queries, num_results)
+
+
+async def google_results_as_docs(
+    queries,
+    num_urls=None,
+    browser_semaphore=None,
+    task_name=None,
+    **file_loader_kwargs,
+):
+    """Retrieve top ``N`` google search results as document instances.
+
+    Parameters
+    ----------
+    queries : collection of str
+        Collection of strings representing google queries. Documents for
+        the top `num_urls` google search results (from all of these
+        queries combined_ will be returned from this function.
+    num_urls : int, optional
+        Number of unique top Google search result to return as docs. The
+        google search results from all queries are interleaved and the
+        top `num_urls` unique URL's are downloaded as docs. If this
+        number is less than ``len(queries)``, some of your queries may
+        not contribute to the final output. By default, ``None``, which
+        sets ``num_urls = 3 * len(queries)``.
+    browser_semaphore : :class:`asyncio.Semaphore`, optional
+        Semaphore instance that can be used to limit the number of
+        playwright browsers open concurrently. If ``None``, no limits
+        are applied. By default, ``None``.
+    task_name : str, optional
+        Optional task name to use in :func:`asyncio.create_task`.
+        By default, ``None``.
+    **file_loader_kwargs
+        Keyword-argument pairs to initialize
+        :class:`elm.web.file_loader.AsyncFileLoader` with. If found, the
+        "pw_launch_kwargs" key in these will also be used to initialize
+        the :class:`elm.web.google_search.PlaywrightGoogleLinkSearch`
+        used for the google URL search. By default, ``None``.
+
+    Returns
+    -------
+    list of :class:`elm.web.document.BaseDocument`
+        List of documents representing the top `num_urls` results from
+        the google searches across all `queries`.
+    """
+    pw_launch_kwargs = file_loader_kwargs.get("pw_launch_kwargs", {})
+    urls = await _find_urls(
+        queries,
+        num_results=10,
+        browser_sem=browser_semaphore,
+        task_name=task_name,
+        **pw_launch_kwargs
+    )
+    num_urls = num_urls or 3 * len(queries)
+    urls = _down_select_urls(urls, num_urls=num_urls)
+    logger.debug("Downloading documents for URLS: \n\t-%s", "\n\t-".join(urls))
+    docs = await _load_docs(urls, browser_semaphore, **file_loader_kwargs)
+    return docs
+
+
+async def filter_documents(
+    documents, validation_coroutine, task_name=None, **kwargs
+):
+    """Filter documents by applying a filter function to each.
+
+    Parameters
+    ----------
+    documents : iter of :class:`elm.web.document.BaseDocument`
+        Iterable of documents to filter.
+    validation_coroutine : coroutine
+        A coroutine that returns ``False`` if the document should be
+        discarded and ``True`` otherwise. This function should take a
+        single :class:`elm.web.document.BaseDocument` instance as the
+        first argument. The function may have other arguments, which
+        will be passed down using `**kwargs`.
+    task_name : str, optional
+        Optional task name to use in :func:`asyncio.create_task`.
+        By default, ``None``.
+    **kwargs
+        Keyword-argument pairs to pass to `validation_coroutine`. This
+        should not include the document instance itself, which will be
+        independently passed in as the first argument.
+
+    Returns
+    -------
+    list of :class:`elm.web.document.BaseDocument`
+        List of documents that passed the validation check, sorted by
+        text length, with PDF documents taking the highest precedence.
+    """
+    searchers = [
+        asyncio.create_task(
+            validation_coroutine(doc, **kwargs), name=task_name
+        )
+        for doc in documents
+    ]
+    output = await asyncio.gather(*searchers)
+    filtered_docs = [doc for doc, check in zip(documents, output) if check]
+    return sorted(
+        filtered_docs,
+        key=lambda doc: (not isinstance(doc, PDFDocument), len(doc.text)),
+    )
+
+
+async def _find_urls(
+    queries, num_results=10, browser_sem=None, task_name=None, **kwargs
+):
+    """Parse google search output for URLs."""
+    searchers = [
+        asyncio.create_task(
+            _search_single(
+                query, browser_sem, num_results=num_results, **kwargs
+            ),
+            name=task_name,
+        )
+        for query in queries
+    ]
+    return await asyncio.gather(*searchers)
+
+
+async def _search_single(question, browser_sem, num_results=10, **kwargs):
+    """Perform a single google search."""
+    if browser_sem is None:
+        browser_sem = AsyncExitStack()
+
+    search_engine = PlaywrightGoogleLinkSearch(**kwargs)
+    async with browser_sem:
+        return await search_engine.results(question, num_results=num_results)
+
+
+def _down_select_urls(search_results, num_urls=5):
+    """Select the top 5 URLs."""
+    all_urls = chain.from_iterable(
+        zip_longest(*[results[0] for results in search_results])
+    )
+    urls = set()
+    for url in all_urls:
+        if not url:
+            continue
+        urls.add(url)
+        if len(urls) == num_urls:
+            break
+    return urls
+
+
+async def _load_docs(urls, browser_semaphore=None, **kwargs):
+    """Load a document for each input URL."""
+    file_loader = AsyncFileLoader(
+        browser_semaphore=browser_semaphore, **kwargs
+    )
+    docs = await file_loader.fetch_all(*urls)
+
+    logger.debug(
+        "Loaded the following number of pages for docs: %s",
+        pprint.PrettyPrinter().pformat(
+            {
+                doc.metadata.get("source", "Unknown"): len(doc.pages)
+                for doc in docs
+            }
+        ),
+    )
+    return [doc for doc in docs if not doc.empty]
 
 
 async def _navigate_to_google(page):
