@@ -235,7 +235,6 @@ async def _search_single(question, browser_sem, num_results=10, **kwargs):
         return await search_engine.results(question, num_results=num_results)
 
 
-
 def _down_select_urls(search_results, num_urls=5):
     """Select the top 5 URLs."""
     all_urls = chain.from_iterable(
