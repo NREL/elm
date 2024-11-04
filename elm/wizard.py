@@ -450,11 +450,14 @@ class EnergyWizardPostgres(EnergyWizardBase):
         self.psycopg2 = try_import('psycopg2')
 
         if meta_columns is None:
-            self.meta_columns = ['title', 'url', 'id']
+            self.meta_columns = ['title', 'url', 'nrel_id', 'id']
         else:
             self.meta_columns = meta_columns
 
-        assert 'id' in self.meta_columns, "Please include the 'id' column!"
+        assert 'id' in self.meta_columns, ("Please include the chunk id "
+                                           "column: 'id'!")
+        assert 'nrel_id' in self.meta_columns, ("Please include the document "
+                                                "id column: 'nrel_id'!")
 
         if cursor is None:
             db_user = os.getenv("EWIZ_DB_USER")
@@ -652,10 +655,13 @@ class EnergyWizardPostgres(EnergyWizardBase):
                                    "connection or query.")
 
         unique_ref_list = []
+        unique_nrel_ids = set()
         for ref_dict in ref_list:
-            if any(ref_dict == d for d in unique_ref_list):
+            if ref_dict['nrel_id'] in unique_nrel_ids:
                 continue
             unique_ref_list.append(ref_dict)
+            unique_nrel_ids.add(ref_dict['nrel_id'])
+
         ref_list = unique_ref_list
 
         if 'id' in ref_list[0]:
