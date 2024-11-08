@@ -404,7 +404,7 @@ class EnergyWizardPostgres(EnergyWizardBase):
                          }
     """Optional mappings for weird azure names to tiktoken/openai names."""
 
-    DEFAULT_META_COLS = ('title', 'url', 'authors', 'year', 'category', 'id')
+    DEFAULT_META_COLS = ['title', 'url', 'nrel_id', 'id']
     """Default columns to retrieve for metadata"""
 
     def __init__(self, db_host, db_port, db_name,
@@ -431,7 +431,8 @@ class EnergyWizardPostgres(EnergyWizardBase):
             value is sqrt(n_lists).
         meta_columns : list
             List of metadata columns to retrieve from database. Default
-            query returns title and url.
+            query returns title, url, nrel_id, and id. nrel_id and id are
+            necessary to correctly format references.
         cursor : psycopg2.extensions.cursor
             PostgreSQL database cursor used to execute queries.
         boto_client: botocore.client.BedrockRuntime
@@ -450,7 +451,7 @@ class EnergyWizardPostgres(EnergyWizardBase):
         self.psycopg2 = try_import('psycopg2')
 
         if meta_columns is None:
-            self.meta_columns = ['title', 'url', 'nrel_id', 'id']
+            self.meta_columns = self.DEFAULT_META_COLS
         else:
             self.meta_columns = meta_columns
 
@@ -480,16 +481,17 @@ class EnergyWizardPostgres(EnergyWizardBase):
 
         if boto_client is None:
             access_key = os.getenv('AWS_ACCESS_KEY_ID')
-            secret_key = os.getenv('AWS_SECRET_ACCESS_KEY')
-            session_token = os.getenv('AWS_SESSION_TOKEN')
-            assert access_key is not None, "Must set AWS_ACCESS_KEY_ID!"
-            assert secret_key is not None, ("Must set AWS_SECRET_ACCESS_KEY!")
-            assert session_token is not None, "Must set AWS_SESSION_TOKEN!"
-            self._aws_client = boto3.client(service_name='bedrock-runtime',
-                                            region_name='us-west-2',
-                                            aws_access_key_id=access_key,
-                                            aws_secret_access_key=secret_key,
-                                            aws_session_token=session_token)
+            secret = os.getenv('AWS_SECRET_ACCESS_KEY')
+            session = os.getenv('AWS_SESSION_TOKEN')
+            if access_key and secret and session:
+                self._aws_client = boto3.client(service_name='bedrock-runtime',
+                                                region_name='us-west-2',
+                                                aws_access_key_id=access_key,
+                                                aws_secret_access_key=secret,
+                                                aws_session_token=session)
+            else:
+                self._aws_client = boto3.client(service_name='bedrock-runtime',
+                                                region_name='us-west-2')
         else:
             self._aws_client = boto_client
 
