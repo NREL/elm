@@ -205,11 +205,11 @@ class EnergyWizardBase(ApiBase, ABC):
             If debug is True, the list of references (strs) used in the
             engineered prompt is returned here
         performance : dict
-            If timeit is True, returns dictionary with keys of total_chat_time and 
-            vectordb_query_time. 
+            If timeit is True, returns dictionary with keys of total_chat_time, 
+            chat_completion_time and vectordb_query_time. 
         """
         if timeit: 
-            start_time = perf_counter()
+            start_chat_time = perf_counter()
         out = self.engineer_query(query, token_budget=token_budget,
                                   new_info_threshold=new_info_threshold,
                                   convo=convo, timeit=timeit)
@@ -225,9 +225,13 @@ class EnergyWizardBase(ApiBase, ABC):
                       messages=messages,
                       temperature=temperature,
                       stream=stream)
+        if timeit: 
+            start_completion_time = perf_counter()
 
         response = self._client.chat.completions.create(**kwargs)
-
+        if timeit: 
+            finish_completion_time = perf_counter()
+            chat_completion_time = start_completion_time - finish_completion_time
         if return_chat_obj:
             return response, query, references
 
@@ -252,9 +256,10 @@ class EnergyWizardBase(ApiBase, ABC):
                 print(ref_msg)
         if timeit:
             end_time = perf_counter()
-            total_chat_time = start_time - end_time
+            total_chat_time = start_chat_time - end_time
             performance = {
                 "total_chat_time": total_chat_time,
+                "chat_completion_time": chat_completion_time,
                 "vectordb_query_time": vector_query_time
             }
             return response_message, query, references, performance 
