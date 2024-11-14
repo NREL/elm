@@ -3,6 +3,7 @@
 ELM energy wizard
 """
 from abc import ABC, abstractmethod
+from time import perf_counter
 import copy
 import os
 import json
@@ -61,10 +62,12 @@ class EnergyWizardBase(ApiBase, ABC):
             ranked strings/scores outputs.
         """
 
-    def engineer_query(self, query, token_budget=None, new_info_threshold=0.7,
-                       convo=False):
+    def engineer_query(self, query, 
+                       token_budget=None, 
+                       new_info_threshold=0.7,
+                       convo=False,
+                       timeit=False):
         """Engineer a query for GPT using the corpus of information
-
         Parameters
         ----------
         query : str
@@ -99,9 +102,12 @@ class EnergyWizardBase(ApiBase, ABC):
             query = '\n\n'.join(query)
 
         token_budget = token_budget or self.token_budget
-
+        if timeit:
+            start_time = perf_counter()
         strings, _, idx = self.query_vector_db(query)
-
+        if timeit:
+            end_time = perf_counter()
+            vector_query_time = end_time - start_time
         message = copy.deepcopy(self.MODEL_INSTRUCTION)
         question = f"\n\nQuestion: {query}"
         used_index = []
@@ -125,8 +131,10 @@ class EnergyWizardBase(ApiBase, ABC):
         message = message + question
         used_index = np.array(used_index)
         references = self.make_ref_list(used_index)
+        if timeit:
+            message, references, vector_query_time
 
-        return message, references, used_index
+        return message, references
 
     @abstractmethod
     def make_ref_list(self, idx):
@@ -152,10 +160,10 @@ class EnergyWizardBase(ApiBase, ABC):
              token_budget=None,
              new_info_threshold=0.7,
              print_references=False,
-             return_chat_obj=False):
+             return_chat_obj=False, 
+             timeit=False):
         """Answers a query by doing a semantic search of relevant text with
         embeddings and then sending engineered query to the LLM.
-
         Parameters
         ----------
         query : str
@@ -184,7 +192,8 @@ class EnergyWizardBase(ApiBase, ABC):
             valid ref_col.
         return_chat_obj : bool
             Flag to only return the ChatCompletion from OpenAI API.
-
+        timeit : bool
+            Flag to return the performance metrics on API calls.
         Returns
         -------
         response : str
@@ -195,12 +204,19 @@ class EnergyWizardBase(ApiBase, ABC):
         references : list
             If debug is True, the list of references (strs) used in the
             engineered prompt is returned here
+        performance : dict
+            If timeit is True, returns dictionary with keys of total_chat_time and 
+            vectordb_query_time. 
         """
-
+        if timeit: 
+            start_time = perf_counter()
         out = self.engineer_query(query, token_budget=token_budget,
                                   new_info_threshold=new_info_threshold,
-                                  convo=convo)
-        query, references, _ = out
+                                  convo=convo, timeit=timeit)
+        if timeit:
+            query, references, vector_query_time = out
+
+        query, references = out
 
         messages = [{"role": "system", "content": self.MODEL_ROLE},
                     {"role": "user", "content": query}]
@@ -234,7 +250,14 @@ class EnergyWizardBase(ApiBase, ABC):
             response_message += ref_msg
             if stream:
                 print(ref_msg)
-
+        if timeit:
+            end_time = perf_counter()
+            total_chat_time = start_time - end_time
+            performance = {
+                "total_chat_time": total_chat_time,
+                "vectordb_query_time": vector_query_time
+            }
+            return response_message, query, references, performance 
         if debug:
             return response_message, query, references
         else:
