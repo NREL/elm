@@ -7,10 +7,10 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from rex import init_logger
 from elm.base import ApiBase
 from elm.web.document import PDFDocument
+from elm.utilities import validate_azure_api_params
 from elm.ords.llm import LLMCaller
 from elm.ords.services.openai import OpenAIService
 from elm.ords.utilities import RTS_SEPARATORS
-from elm.ords.process import validate_api_params
 from elm.ords.extraction.ordinance import OrdinanceExtractor
 from elm.ords.extraction.apply import extract_ordinance_values
 from elm.ords.services.provider import RunningAsyncServices as ARun
@@ -38,7 +38,7 @@ if __name__ == '__main__':
     )
 
     # setup LLM and Ordinance service/utility classes
-    azure_api_key, azure_version, azure_endpoint = validate_api_params()
+    azure_api_key, azure_version, azure_endpoint = validate_azure_api_params()
     client = openai.AsyncAzureOpenAI(api_key=azure_api_key,
                                      api_version=azure_version,
                                      azure_endpoint=azure_endpoint)
