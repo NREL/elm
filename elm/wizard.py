@@ -90,6 +90,9 @@ class EnergyWizardBase(ApiBase, ABC):
         references : list
             The list of references (strs) used in the engineered prompt is
             returned here
+        vector_query_time : float
+            if timeit is True, then we will time how long the query to the
+            vectorDB takes
         """
 
         self.messages.append({"role": "user", "content": query})
@@ -209,7 +212,7 @@ class EnergyWizardBase(ApiBase, ABC):
         out = self.engineer_query(query, token_budget=token_budget,
                                   new_info_threshold=new_info_threshold,
                                   convo=convo, timeit=True)
-        query, references, vector_query_time = out
+        query, references, _, vector_query_time = out
 
         messages = [{"role": "system", "content": self.MODEL_ROLE},
                     {"role": "user", "content": query}]
