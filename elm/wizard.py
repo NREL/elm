@@ -215,7 +215,7 @@ class EnergyWizardBase(ApiBase, ABC):
         if timeit:
             vector_query_time = out[2]
 
-        query, references = out
+        query, references, vector_query_time = out
 
         messages = [{"role": "system", "content": self.MODEL_ROLE},
                     {"role": "user", "content": query}]
