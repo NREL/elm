@@ -62,8 +62,8 @@ class EnergyWizardBase(ApiBase, ABC):
             ranked strings/scores outputs.
         """
 
-    def engineer_query(self, query, 
-                       token_budget=None, 
+    def engineer_query(self, query,
+                       token_budget=None,
                        new_info_threshold=0.7,
                        convo=False,
                        timeit=False):
@@ -132,8 +132,7 @@ class EnergyWizardBase(ApiBase, ABC):
         used_index = np.array(used_index)
         references = self.make_ref_list(used_index)
         if timeit:
-            message, references, vector_query_time
-
+            return message, references, vector_query_time
         return message, references
 
     @abstractmethod
@@ -160,7 +159,7 @@ class EnergyWizardBase(ApiBase, ABC):
              token_budget=None,
              new_info_threshold=0.7,
              print_references=False,
-             return_chat_obj=False, 
+             return_chat_obj=False,
              timeit=False):
         """Answers a query by doing a semantic search of relevant text with
         embeddings and then sending engineered query to the LLM.
@@ -205,16 +204,13 @@ class EnergyWizardBase(ApiBase, ABC):
             If debug is True, the list of references (strs) used in the
             engineered prompt is returned here
         performance : dict
-            If timeit is True, returns dictionary with keys of total_chat_time, 
-            chat_completion_time and vectordb_query_time. 
+            If timeit is True, returns dictionary with keys of total_chat_time,
+            chat_completion_time and vectordb_query_time.
         """
         start_chat_time = perf_counter()
         out = self.engineer_query(query, token_budget=token_budget,
                                   new_info_threshold=new_info_threshold,
                                   convo=convo, timeit=True)
-        if timeit:
-            vector_query_time = out[2]
-
         query, references, vector_query_time = out
 
         messages = [{"role": "system", "content": self.MODEL_ROLE},
