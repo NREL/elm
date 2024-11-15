@@ -211,7 +211,7 @@ class EnergyWizardBase(ApiBase, ABC):
         start_chat_time = perf_counter()
         out = self.engineer_query(query, token_budget=token_budget,
                                   new_info_threshold=new_info_threshold,
-                                  convo=convo, timeit=timeit)
+                                  convo=convo, timeit=True)
         if timeit:
             vector_query_time = out[2]
 
@@ -236,7 +236,6 @@ class EnergyWizardBase(ApiBase, ABC):
                 chunk_msg = chunk.choices[0].delta.content or ""
                 response_message += chunk_msg
                 print(chunk_msg, end='')
-
         else:
             response_message = response.choices[0].message.content
 
