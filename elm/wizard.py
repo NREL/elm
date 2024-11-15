@@ -130,8 +130,8 @@ class EnergyWizardBase(ApiBase, ABC):
         used_index = np.array(used_index)
         references = self.make_ref_list(used_index)
         if timeit:
-            return message, references, vector_query_time
-        return message, references
+            return message, references, used_index, vector_query_time
+        return message, references, used_index
 
     @abstractmethod
     def make_ref_list(self, idx):
