@@ -208,13 +208,12 @@ class EnergyWizardBase(ApiBase, ABC):
             If timeit is True, returns dictionary with keys of total_chat_time, 
             chat_completion_time and vectordb_query_time. 
         """
-        if timeit: 
-            start_chat_time = perf_counter()
+        start_chat_time = perf_counter()
         out = self.engineer_query(query, token_budget=token_budget,
                                   new_info_threshold=new_info_threshold,
                                   convo=convo, timeit=timeit)
         if timeit:
-            query, references, vector_query_time = out
+            vector_query_time = out[2]
 
         query, references = out
 
@@ -225,16 +224,13 @@ class EnergyWizardBase(ApiBase, ABC):
                       messages=messages,
                       temperature=temperature,
                       stream=stream)
-        if timeit: 
-            start_completion_time = perf_counter()
+        start_completion_time = perf_counter()
 
         response = self._client.chat.completions.create(**kwargs)
-        if timeit: 
-            finish_completion_time = perf_counter()
-            chat_completion_time = start_completion_time - finish_completion_time
+        finish_completion_time = perf_counter()
+        chat_completion_time = start_completion_time - finish_completion_time
         if return_chat_obj:
             return response, query, references
-
         if stream:
             for chunk in response:
                 chunk_msg = chunk.choices[0].delta.content or ""
@@ -254,14 +250,14 @@ class EnergyWizardBase(ApiBase, ABC):
             response_message += ref_msg
             if stream:
                 print(ref_msg)
-        if timeit:
-            end_time = perf_counter()
-            total_chat_time = start_chat_time - end_time
-            performance = {
-                "total_chat_time": total_chat_time,
-                "chat_completion_time": chat_completion_time,
-                "vectordb_query_time": vector_query_time
-            }
+        end_time = perf_counter()
+        total_chat_time = start_chat_time - end_time
+        performance = {
+            "total_chat_time": total_chat_time,
+            "chat_completion_time": chat_completion_time,
+            "vectordb_query_time": vector_query_time
+        }
+        if timeit and debug:
             return response_message, query, references, performance 
         if debug:
             return response_message, query, references
