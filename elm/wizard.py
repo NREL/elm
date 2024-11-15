@@ -102,12 +102,10 @@ class EnergyWizardBase(ApiBase, ABC):
             query = '\n\n'.join(query)
 
         token_budget = token_budget or self.token_budget
-        if timeit:
-            start_time = perf_counter()
+        start_time = perf_counter()
         strings, _, idx = self.query_vector_db(query)
-        if timeit:
-            end_time = perf_counter()
-            vector_query_time = end_time - start_time
+        end_time = perf_counter()
+        vector_query_time = end_time - start_time
         message = copy.deepcopy(self.MODEL_INSTRUCTION)
         question = f"\n\nQuestion: {query}"
         used_index = []
@@ -253,7 +251,7 @@ class EnergyWizardBase(ApiBase, ABC):
             "vectordb_query_time": vector_query_time
         }
         if timeit and debug:
-            return response_message, query, references, performance 
+            return response_message, query, references, performance
         if debug:
             return response_message, query, references
         else:
