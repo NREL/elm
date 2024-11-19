@@ -24,9 +24,9 @@ Points of interaction for OrdinanceGPT:
 **Diagram:**
 ```mermaid
 architecture-beta
-    group api(carbon:4k-filled)[OrdinanceGPT]
+    group api(carbon:accumulation-ice)[OrdinanceGPT]
 
-    service db(database)[Database] in api
+    service db(logos:aws-lambda)[Database] in api
     service disk1(disk)[Storage] in api
     service disk2(disk)[Storage] in api
     service server(server)[Server] in api
