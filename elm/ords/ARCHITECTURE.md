@@ -94,7 +94,6 @@ query:
 import os
 from openai import OpenAI
 
-
 def my_function():
 
     ...
@@ -122,7 +121,6 @@ def my_function():
 
     ...
 
-
 if __name__ == "__main__":
     my_function()
 ```
@@ -137,16 +135,13 @@ some of the logic into a separate function:
 import os
 from openai import OpenAI
 
-
 def count_token_use(response):
     ...
-
 
 def parse_response_to_str(response):
     if response is None:
         return ""
     return response.choices[0].message.content
-
 
 def call_openai(messages, model="gpt-4o"):
     client = OpenAI(
@@ -160,7 +155,6 @@ def call_openai(messages, model="gpt-4o"):
     count_token_use(response)
     return parse_response_to_str(response)
 
-
 def my_function():
     ...
     response_str = call_openai(
@@ -168,7 +162,6 @@ def my_function():
         model="gpt-4o"
     )
     ...
-
 
 if __name__ == "__main__":
     my_function()
@@ -198,7 +191,6 @@ import openai
 from elm.ords.services.provider import RunningAsyncServices
 from elm.ords.services.openai import OpenAIService
 
-
 async def my_function():
     # This function can be anywhere -
     # in a separate module or even in external code
@@ -208,7 +200,6 @@ async def my_function():
         model="gpt-4o"
     )
     ...
-
 
 async def main():
     client = openai.AsyncAzureOpenAI(
@@ -221,7 +212,6 @@ async def main():
     )
     async with RunningAsyncServices([openai_service]):
         await my_function()
-
 
 if __name__ == "__main__":
     asyncio.run(main())
@@ -247,10 +237,8 @@ from elm.ords.services.openai import OpenAIService
 from elm.ords.services.threaded import FileMover
 from elm.ords.services.cpu import PDFLoader
 
-
 async def read_pdf():
     return PDFLoader.call(...)
-
 
 async def my_function():
     ...
@@ -261,7 +249,6 @@ async def my_function():
     ...
     FileMover.call(...)
     ...
-
 
 async def main():
     client = openai.AsyncAzureOpenAI(
@@ -285,7 +272,6 @@ async def main():
         await read_pdf()
         await my_function()
 
-
 if __name__ == "__main__":
     asyncio.run(main())
 ```
@@ -297,5 +283,3 @@ Alternatively, we provide two base classes that you can extend to get similar fu
 for threaded tasks and
 [`ProcessPoolService`](https://nrel.github.io/elm/_autosummary/elm.ords.services.cpu.ProcessPoolService.html#elm.ords.services.cpu.ProcessPoolService)
 for multiprocessing tasks.
-
-MORE TBA
