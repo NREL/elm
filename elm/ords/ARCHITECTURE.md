@@ -651,6 +651,21 @@ for multiprocessing tasks.
 
 ---
 
+<!--
+
+### **4.3 Class Diagram**
+**Diagram:**
+
+```mermaid
++----------------+           +----------------+          +-----------------+
+| UserController | --------~ |  UserService   | -------~ | UserRepository  |
++----------------+           +----------------+          +-----------------+
+```
+
+---
+
+-->
+
 ## **5. Workflows**
 ### **5.1 Downloading documents from Google**
 We give a rough breakdown of the following call:
