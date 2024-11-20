@@ -233,6 +233,7 @@ from elm.ords.services.threaded import FileMover
 from elm.ords.services.cpu import PDFLoader
 
 async def read_pdf():
+    # Loads a PDF file in a separate process (this can be time consuming if using OCR, for example)
     return PDFLoader.call(...)
 
 async def my_function():
@@ -242,7 +243,7 @@ async def my_function():
         model="gpt-4o"
     )
     ...
-    FileMover.call(...)
+    FileMover.call(...) # Moves files to "./my_folder" using separate thread
     ...
 
 async def main():
@@ -252,16 +253,9 @@ async def main():
         azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT")
     )
     services = [
-        # OpenAI service, with rate monitoring as before
-        OpenAIService(client, rate_limit=1e4),
-
-        # launches 8 threads total that can be used run jobs from the queue
-        # Moves files to "./my_folder" using separate thread;
-        FileMover(out_dir="./my_folder", max_workers=8),
-
-        # launches 4 processes that can be used run jobs from the queue
-        # Loads a PDF file in a separate process (this can be time consuming if using OCR, for example)
-        PDFLoader(max_workers=4),
+        OpenAIService(client, rate_limit=1e4),  # OpenAI service, with rate monitoring as before
+        FileMover(out_dir="./my_folder", max_workers=8),  # launches 8 threads total that can be used run jobs
+        PDFLoader(max_workers=4),  # launches 4 processes that can be used run jobs
     ]
     async with RunningAsyncServices(services):
         await read_pdf()
