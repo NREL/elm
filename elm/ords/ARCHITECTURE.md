@@ -723,3 +723,22 @@ sequenceDiagram
 Note that the interleaved call-and-response pairs are meant to exhibit the `async` nature of the process and do not reflect a deterministic execution order.
 
 ---
+
+## **6. Appendix**
+### **6.1 Tools and Libraries**
+- **aiohttp/beautifulsoup4:** For fetching content from the web.
+- **html2text:** For utilities to pull text from HTML.
+- **langchain:** For utility classes like `RecursiveCharacterTextSplitter`.
+- **networkx:** For representing the DAG behind the decision tree(s).
+- **pdftotext:** For robust pdf to text conversion using poppler.
+- **playwright:** For navigating the web and performing Google searches.
+- **PyPDF2:** For auxiliary pdf utilities.
+- **pytesseract (optional):** For OCR utilities to read scanned pdf files.
+- **tiktoken:** For counting the number of LLM tokens used by a query.
+
+---
+
+### Deliverables
+This document can serve as a foundational guide for developers and analysis.
+It helps users of this code understand the software's design and allows for
+smoother onboarding and more informed project planning.
