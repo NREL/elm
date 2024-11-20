@@ -303,7 +303,7 @@ for multiprocessing tasks.
 - **Responsibilities:**
   1. Retrieve data from a URL.
   2. Determine wether information should be stored as a PDF or HTML document.
-- **Key Relationships:** Returns either `PDFDocument` or `HTMLDocument`.
+- **Key Relationships:** Returns either `PDFDocument` or `HTMLDocument`. Uses `aiohttp` to access the web.
 - **Example Code:**
     ```python
     import asyncio
