@@ -255,8 +255,8 @@ async def main():
     )
     services = [
         OpenAIService(client, rate_limit=1e4),  # OpenAI service, with rate monitoring as before
-        FileMover(out_dir="./my_folder", max_workers=8),  # launches 8 threads total that can be used run jobs
-        PDFLoader(max_workers=4),  # launches 4 processes that can be used run jobs
+        FileMover(out_dir="./my_folder", max_workers=8),  # launches 8 threads, each of which can be used run individual jobs
+        PDFLoader(max_workers=4),  # launches 4 processes, each of which can be used run individual jobs
     ]
     async with RunningAsyncServices(services):
         await read_pdf()
