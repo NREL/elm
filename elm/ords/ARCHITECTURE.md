@@ -848,10 +848,10 @@ Note that the interleaved call-and-response pairs are meant to exhibit the `asyn
 - **html2text:** For utilities to pull text from HTML.
 - **langchain:** For utility classes like `RecursiveCharacterTextSplitter`.
 - **networkx:** For representing the DAG behind the decision tree(s).
-- **pdftotext:** For robust pdf to text conversion using poppler.
+- **pdftotext:** For robust PDF to text conversion using poppler.
 - **playwright:** For navigating the web and performing Google searches.
-- **PyPDF2:** For auxiliary pdf utilities.
-- **pytesseract (optional):** For OCR utilities to read scanned pdf files.
+- **PyPDF2:** For auxiliary PDF utilities.
+- **pytesseract (optional):** For OCR utilities to read scanned PDF files.
 - **tiktoken:** For counting the number of LLM tokens used by a query.
 
 ---
