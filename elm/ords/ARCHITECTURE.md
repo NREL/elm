@@ -9,7 +9,7 @@ This document describes the architectural design of the ordinance web scraping a
 - **Secondary:** Model developers extending this functionality to other contexts.
 
 ### **1.3 Scope**
-Covers the backend API design, including key classes, their responsibilities, and interactions.
+Covers the OrdinanceGPT design, including key classes, their responsibilities, and interactions.
 
 ---
 
