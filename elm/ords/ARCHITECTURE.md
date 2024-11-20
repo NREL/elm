@@ -283,3 +283,104 @@ Alternatively, we provide two base classes that you can extend to get similar fu
 for threaded tasks and
 [`ProcessPoolService`](https://nrel.github.io/elm/_autosummary/elm.ords.services.cpu.ProcessPoolService.html#elm.ords.services.cpu.ProcessPoolService)
 for multiprocessing tasks.
+
+### **4.2 Key Classes**
+#### **4.2.1 PlaywrightGoogleLinkSearch**
+- **Purpose:** Search Google using Playwright engine.
+- **Responsibilities:**
+  1. Launch browser using Playwright and navigate to Google.
+  2. Get list of result URLs.
+- **Key Relationships:** Relies on [`Playwright`](https://playwright.dev/python/) for web access.
+- **Example Code:**
+    ```python
+    from elm.web.google_search import PlaywrightGoogleLinkSearch
+
+    async def main():
+        search_engine = PlaywrightGoogleLinkSearch()
+        return await search_engine.results(
+            "Wind energy zoning ordinance Decatur County, Indiana",
+            num_results=10,
+        )
+
+    if __name__ == "__main__":
+        asyncio.run(main())
+    ```
+
+---
+
+#### **4.2.2 OpenAIService**
+- **Purpose:** Orchestrate OpenAI API calls.
+- **Responsibilities:**
+  1. Monitor OpenAI call queue.
+  2. Submit calls to OpenAI API if rate limit has not been exceeded.
+  3. Track token usage, both instantaneous (rate) and total (if user requests it).
+  4. Parse responses into `str` and pass back to calling function.
+- **Key Relationships:** Must be activated with `RunningAsyncServices` context.
+- **Example Code:**
+    ```python
+    import asyncio
+    import openai
+    from elm.ords.services.provider import RunningAsyncServices
+    from elm.ords.services.openai import OpenAIService
+
+    async def main():
+        client = openai.AsyncAzureOpenAI(
+            api_key=os.environ.get("AZURE_OPENAI_API_KEY"),
+            api_version=os.environ.get("AZURE_OPENAI_VERSION"),
+            azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT")
+        )
+        service = OpenAIService(client, rate_limit=1e4),
+        async with RunningAsyncServices([service]):
+            response_str = await OpenAIService.call(
+                messages=[{"role": "user", "content": "Say this is a test"}],
+                model="gpt-4o"
+            )
+        return response_str
+
+    if __name__ == "__main__":
+        asyncio.run(main())
+    ```
+
+---
+
+#### **4.2.3 AsyncFileLoader**
+- **Purpose:** Save content from links as files.
+- **Responsibilities:**
+  1. Retrieve data from a URL.
+  2. Determine wether information should be stored as a PDF or HTML document.
+- **Key Relationships:** Returns either `PDFDocument` or `HTMLDocument`.
+- **Example Code:**
+    ```python
+    import asyncio
+    from elm.web.file_loader import AsyncFileLoader
+
+    async def main():
+        loader = AsyncFileLoader()
+        doc = await loader.fetch(
+            url="https://en.wikipedia.org/wiki/National_Renewable_Energy_Laboratory"
+        )
+        return doc
+
+    if __name__ == "__main__":
+        asyncio.run(main())
+    ```
+
+---
+
+#### **3.2.3 PDFDocument/HTMLDocument**
+- **Purpose:** Track document content and perform minor processing on it.
+- **Responsibilities:**
+  1. Store "raw" document text.
+  2. Compute "cleaned" text, which combines pages, strips html, and formats tables.
+  3. Track pages and other document metadata.
+- **Key Relationships:** Created by `AsyncFileLoader` and used all over ordinance code.
+- **Example Code:**
+    ```python
+    from elm.web.document import HTMLDocument
+
+    content = ...
+    doc = HTMLDocument([content])
+    doc.text, doc.raw_pages, doc.metadata
+    ```
+
+---
