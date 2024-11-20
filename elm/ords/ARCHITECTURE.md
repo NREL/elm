@@ -88,8 +88,8 @@ flowchart LR
 ### **4.1 Key Concept: Services**
 Because OrdinanceGPT is so reliant on LLMs, one of the main design goals is to minimize the code
 overhead incurred by querying the LLM API. In other words, we want to make it **as simple as possible**
-to make an LLM query from _anywhere_ in the model code. Let's look at the code required to do a single OpenAI
-query:
+to make an LLM query from _anywhere_ in the model code. Let's look at the code required to do a single
+OpenAI query using the `openai` python wrapper:
 ```python
 import os
 from openai import OpenAI
@@ -177,9 +177,9 @@ This is the main concept behind _services_ in the ELM ordinance code. We call th
 `Service`, and it monitors a dedicated queue that we can submit to from _anywhere_ in our code
 without having to worry about setting up usage monitors or other utility functions related to
 the API call. To use the service, we simply have to invoke the `call` (class)method with the
-relevant arguments. The price we have to pay is that the service has to be _running_ (i.e. actively
-monitoring a queue and tracking usage) when our function is called. In practice, the code looks
-something like this (with `async` flavor now spread throughout):
+relevant arguments. The only price we have to pay is that the service has to be _running_ (i.e.
+actively monitoring a queue and tracking usage) when our function is called. In practice, the
+code looks something like this (with `async` flavor now spread throughout):
 
 ```python
 import asyncio
