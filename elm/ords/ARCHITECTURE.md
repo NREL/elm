@@ -167,7 +167,7 @@ of anyways!) have quotas and rate limits. It can be frustrating to run into an u
 limit error deep within our model logic, so we'd like to add a tracker for usage that
 staggers the submission of our queries to stay within the pre-imposed rate limits.
 
-To achieve this without complicating the code we have to invoke every time we wish to submit 
+To achieve this without complicating the code we have to invoke every time we wish to submit
 an LLM query, we opt to submit our queries to a _queue_ instead of to the API directly. Then,
 a separate worker can simultaneously monitor the queue and track rolling token usage. If the
 worker finds an item in the queue, it will submit the LLM call to the API as long as the rate
@@ -280,7 +280,8 @@ for multiprocessing tasks.
 - **Purpose:** Search Google using Playwright engine.
 - **Responsibilities:**
   1. Launch browser using Playwright and navigate to Google.
-  2. Get list of result URLs.
+  2. Submit a query to Google Search.
+  3. Get list of resulting URLs.
 - **Key Relationships:** Relies on [`Playwright`](https://playwright.dev/python/) for web access.
 - **Example Code:**
     ```python
