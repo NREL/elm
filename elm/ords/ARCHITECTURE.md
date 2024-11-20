@@ -651,7 +651,7 @@ for multiprocessing tasks.
 
 ## **5. Workflows**
 ### **5.1 Downloading documents from Google**
-We give a basic demonstration of the following call:
+We give a rough breakdown of the following call:
 ```python
 import asyncio
 from elm.web.google_search import google_results_as_docs
@@ -717,6 +717,124 @@ sequenceDiagram
     F ->> A: Document 4
     deactivate F
     deactivate D
+
+```
+
+Note that the interleaved call-and-response pairs are meant to exhibit the `async` nature of the process and do not reflect a deterministic execution order.
+
+---
+
+### **5.2 Querying OpenAI**
+We give a rough breakdown of the following call:
+```python
+import asyncio
+import openai
+from elm.ords.services.provider import RunningAsyncServices
+from elm.ords.services.openai import OpenAIService
+from elm.ords.llm import LLMCaller
+
+async def main():
+    client = openai.AsyncAzureOpenAI(
+        api_key=os.environ.get("AZURE_OPENAI_API_KEY"),
+        api_version=os.environ.get("AZURE_OPENAI_VERSION"),
+        azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT")
+    )
+    service = OpenAIService(client, rate_limit=1e4)
+    llm_caller = LLMCaller(
+        llm_service=OpenAIService,
+        model="gpt-4o",
+        temperature=0,
+        seed=42,
+        timeout=30,
+    )
+    async with RunningAsyncServices([service]):
+        tasks = [
+            asyncio.create_task(
+                llm_caller.call(
+                    sys_msg="You are a helpful assistant",
+                    content=f"Say this is a test: {i}"
+                )
+            )
+            for i in range(1, 4)
+        ]
+        responses = await asyncio.gather(*tasks)
+    return responses
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+**Step-by-Step:**
+1. `main()` initializes `openai.AsyncAzureOpenAI` client, `OpenAIService` (not running), and `LLMCaller`.
+2. `main()` enters the `RunningAsyncServices` context, which starts the `service`.
+3. The now running `OpenAIService` initializes it's own queue and begins monitoring it.
+4. `main()` now submits three LLM queries using the `LLMCaller` instance.
+5. `LLMCaller` puts the queries onto the queue initialized by `OpenAIService`.
+6. `OpenAIService` detects that the queue is not empty, checks that the rate limit has not been exceeded, and submits the first query to the LLM.
+7. `OpenAIService` detects that the queue is still not empty. It checks the updated rate limit. Seeing that it has not been exceeded, it submits the second query to the LLM.
+8. Once again, `OpenAIService` detects that the queue is not empty. It checks the updated rate limit, but it has now been exceeded. It does _not_ submit the third query, and instead continues to monitor the running rate limit.
+9. The LLM send back the first response to `main()`.
+10. `OpenAIService` detects that it has waited long enough, and that the rate limit has still not been exceeded. Since there is still a query in the queue, it submits the third query.
+11. The LLM send back the responses of query 2 and 3 to `main()`.
+12. `OpenAIService` continues to monitor the queue, but `main()` has not submitted any more queries.
+13. Having received all the responses, `main` exists the context. `OpenAIService` tears down the empty queue and stops running.
+
+**Sequence Diagram:**
+```mermaid
+sequenceDiagram
+
+    participant B as LLMCaller
+    participant A as main
+    participant C as RunningAsyncServices
+    participant D as OpenAIService
+    participant E as OpenAIServiceQueue
+    participant F as LLM (Chat GPT)
+
+    A ->> D: Initialize
+    activate D
+    A ->> B: Initialize
+    activate B
+    A ->> C: Enter Context
+    activate C
+    C ->> D: Start Running
+    D ->> E: Initialize
+    activate E
+    D ->> D: Check rate limit (OK)
+    D ->> E: Check queue
+    A ->> B: Submit queries
+    B ->> E: Enqueue "Say this is a test: 1"
+    D ->> D: Check rate limit (OK)
+    D ->> E: Check queue
+    E ->> D: Get LLM call request
+    D ->> F: Submit call for "Say this is a test: 1"
+    B ->> E: Enqueue "Say this is a test: 2"
+    B ->> E: Enqueue "Say this is a test: 3"
+    D ->> D: Check rate limit (OK)
+    D ->> E: Check queue
+    E ->> D: Get LLM call request
+    D ->> F: Submit call for "Say this is a test: 2"
+    D ->> D: Check rate limit (Failed)
+    loop while rate limit exceeded
+        E-->D: Check rate limit
+    end
+    F ->> A: Response: "This is a test: 1"
+    D ->> E: Check queue
+    E ->> D: Get LLM call request
+    D ->> F: Submit call for "Say this is a test: 3"
+    F ->> A: Response: "This is a test: 2"
+    F ->> A: Response: "This is a test: 3"
+    D ->> D: Check rate limit (OK)
+    D ->> E: Check queue
+
+    A ->> C: Exit context
+    C ->> D: Teardown
+    deactivate C
+    D ->> E: Teardown
+    deactivate D
+    deactivate E
+
+    A ->> B: Teardown
+    deactivate B
+
 
 ```
 
