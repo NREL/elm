@@ -32,7 +32,7 @@ architecture-beta
     service web(internet)[Web]
     service ds(disk)[Document Storage]
     service parser(server)[Document Parser] in model
-    service out(disk)[Ordinance CSV]
+    service out(database)[Ordinances]
 
     input:R --> L:scraper
     scraper:T --> L:llm
@@ -41,6 +41,44 @@ architecture-beta
     scraper:R --> L:parser
     parser:T --> B:llm
     parser:B --> T:out
+```
+
+---
+
+## **3. Detailed Design**
+### **3.1 Web Scraper**
+The OrdinanceGPT Web Scraper consists of:
+- **Google Search:** Searches Google using pre-determined queries.
+- **File Downloader:** Converts Google Search results into documents (PDF or text).
+- **Document Validators:** Filters out irrelevant documents.
+
+**Diagram:**
+```mermaid
+flowchart LR
+    A -->|File Downloader| B
+    B -->|Document Validator| C
+    C --> D
+    A@{ shape: rounded, label: "Google Search" }
+    B@{ shape: docs, label: "Multiple Documents"}
+    C@{ shape: lined-document, label: "Ordinance Document"}
+    D@{ shape: lin-cyl, label: "Disk storage" }
+```
+
+### **3.2 Document Parser**
+The OrdinanceGPT Document Parser consists of:
+- **Text Cleaner:** Extract text from ordinance related to data of interest (i.e. wind turbine zoning).
+- **Decision Tree:** One decision tree per ordinance value of interest to guide data extraction using LLMs.
+
+**Diagram:**
+```mermaid
+flowchart LR
+    A -->|Text Cleaner| B
+    B --> C
+    C --> D
+    A@{ shape: lined-document, label: "Ordinance Document"}
+    B@{ shape: hex, label: "Cleaned Text"}
+    C@{ shape: procs, label: "Ordinance value extraction via Decision Tree"}
+    D@{ shape: cyl, label: "Ordinance Database" }
 ```
 
 ---
