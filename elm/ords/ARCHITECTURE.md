@@ -180,16 +180,16 @@ limit error deep within our model logic, so we'd like to add a tracker for usage
 staggers the submission of our queries to stay within the pre-imposed rate limits.
 
 To do this, we need to submit our LLM call to a _queue_ instead of to the API directly. Then,
-a separate worker can simultaneously monitor the queue and track token usage. If the worker finds
-an item in the queue, it will submit the LLM call to the API as long as the rate limit has not
-been reached. Otherwise, it will wait until the limit has been reset before submitting an
-additional call.
+a separate worker can simultaneously monitor the queue and track rolling token usage. If the
+worker finds an item in the queue, it will submit the LLM call to the API as long as the rate
+limit has not been reached. Otherwise, it will wait until the limit has been reset before
+submitting an additional call.
 
 This is the main concept behind _services_ in the ELM ordinance code. We call the worker a
 `Service`, and it monitors a dedicated queue that we can submit to from _anywhere_ in our code
 without having to worry about setting up usage monitors or other utility functions related to
 the API call. The price we have to pay is that the service has to be _running_ (i.e. actively
-monitoring a queue and tracking usage) when our function is called. In practice, it looks
+monitoring a queue and tracking usage) when our function is called. In practice, the code looks
 something like this (with `async` flavor now spread throughout):
 
 ```python
