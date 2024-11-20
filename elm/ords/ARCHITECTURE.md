@@ -176,7 +176,8 @@ submitting an additional call.
 This is the main concept behind _services_ in the ELM ordinance code. We call the worker a
 `Service`, and it monitors a dedicated queue that we can submit to from _anywhere_ in our code
 without having to worry about setting up usage monitors or other utility functions related to
-the API call. The price we have to pay is that the service has to be _running_ (i.e. actively
+the API call. To use the service, we simply have to invoke the `call` (class)method with the 
+relevant arguments. The price we have to pay is that the service has to be _running_ (i.e. actively
 monitoring a queue and tracking usage) when our function is called. In practice, the code looks
 something like this (with `async` flavor now spread throughout):
 
