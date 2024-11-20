@@ -16,7 +16,7 @@ Covers the backend API design, including key classes, their responsibilities, an
 ## **2. High-Level Architecture**
 ### **2.1 System Context**
 Points of interaction for OrdinanceGPT:
-- **End Users:** Users submit model executions via command line using a configuration file. Users can select specific jurisdictions to focus on.
+- **End Users:** Users submit model executions via command-line using a configuration file. Users can select specific jurisdictions to focus on.
 - **Internet via Web Browser:** The model searches the web for relevant legal documents. The most common search technique is Google Search.
 - **LLMs:** The model relies on LLMs (typically ChatGPT) to analyze web scraping results and subsequently extract information from documents.
 - **Filesystem:** Stores output files in organized sub-directories and compiles ordinance information into a CSV.
@@ -336,7 +336,7 @@ for multiprocessing tasks.
 - **Purpose:** Track document content and perform minor processing on it.
 - **Responsibilities:**
   1. Store "raw" document text.
-  2. Compute "cleaned" text, which combines pages, strips html, and formats tables.
+  2. Compute "cleaned" text, which combines pages, strips HTML, and formats tables.
   3. Track pages and other document metadata.
 - **Key Relationships:** Created by `AsyncFileLoader` and used all over ordinance code.
 - **Example Code:**
