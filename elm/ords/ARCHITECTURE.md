@@ -773,8 +773,8 @@ if __name__ == "__main__":
 5. `LLMCaller` puts the queries onto the queue initialized by `OpenAIService`.
 6. `OpenAIService` detects that the queue is not empty, checks that the rate limit has not been exceeded, and submits the first query to the LLM.
 7. `OpenAIService` detects that the queue is still not empty. It checks the updated rate limit. Seeing that it has not been exceeded, it submits the second query to the LLM.
-8. Once again, `OpenAIService` detects that the queue is not empty. It checks the updated rate limit, but it has now been exceeded. It does _not_ submit the third query, and instead continues to monitor the running rate limit.
-9. The LLM send back the first response to `main()`.
+8. The LLM send back the first response to `main()`.
+9. Once again, `OpenAIService` detects that the queue is not empty. It checks the updated rate limit, but it has now been exceeded. It does _not_ submit the third query, and instead continues to monitor the running rate limit.
 10. `OpenAIService` detects that it has waited long enough, and that the rate limit has still not been exceeded. Since there is still a query in the queue, it submits the third query.
 11. The LLM send back the responses of query 2 and 3 to `main()`.
 12. `OpenAIService` continues to monitor the queue, but `main()` has not submitted any more queries.
@@ -814,11 +814,12 @@ sequenceDiagram
     D ->> E: Check queue
     E ->> D: Get LLM call request
     D ->> F: Submit call for "Say this is a test: 2"
+    F ->> A: Response: "This is a test: 1"
     D ->> D: Check rate limit (Failed)
     loop while rate limit exceeded
-        E-->D: Check rate limit
+        D-->D: Check rate limit
     end
-    F ->> A: Response: "This is a test: 1"
+    D ->> D: Check rate limit (OK)
     D ->> E: Check queue
     E ->> D: Get LLM call request
     D ->> F: Submit call for "Say this is a test: 3"
