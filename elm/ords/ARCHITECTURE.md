@@ -308,42 +308,7 @@ for multiprocessing tasks.
 
 ---
 
-#### **4.2.2 OpenAIService**
-- **Purpose:** Orchestrate OpenAI API calls.
-- **Responsibilities:**
-  1. Monitor OpenAI call queue.
-  2. Submit calls to OpenAI API if rate limit has not been exceeded.
-  3. Track token usage, both instantaneous (rate) and total (if user requests it).
-  4. Parse responses into `str` and pass back to calling function.
-- **Key Relationships:** Must be activated with `RunningAsyncServices` context.
-- **Example Code:**
-    ```python
-    import asyncio
-    import openai
-    from elm.ords.services.provider import RunningAsyncServices
-    from elm.ords.services.openai import OpenAIService
-
-    async def main():
-        client = openai.AsyncAzureOpenAI(
-            api_key=os.environ.get("AZURE_OPENAI_API_KEY"),
-            api_version=os.environ.get("AZURE_OPENAI_VERSION"),
-            azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT")
-        )
-        service = OpenAIService(client, rate_limit=1e4),
-        async with RunningAsyncServices([service]):
-            response_str = await OpenAIService.call(
-                messages=[{"role": "user", "content": "Say this is a test"}],
-                model="gpt-4o"
-            )
-        return response_str
-
-    if __name__ == "__main__":
-        asyncio.run(main())
-    ```
-
----
-
-#### **4.2.3 AsyncFileLoader**
+#### **4.2.2 AsyncFileLoader**
 - **Purpose:** Save content from links as files.
 - **Responsibilities:**
   1. Retrieve data from a URL.
@@ -367,7 +332,7 @@ for multiprocessing tasks.
 
 ---
 
-#### **3.2.3 PDFDocument/HTMLDocument**
+#### **4.2.3 PDFDocument/HTMLDocument**
 - **Purpose:** Track document content and perform minor processing on it.
 - **Responsibilities:**
   1. Store "raw" document text.
@@ -381,6 +346,185 @@ for multiprocessing tasks.
     content = ...
     doc = HTMLDocument([content])
     doc.text, doc.raw_pages, doc.metadata
+    ```
+
+---
+
+#### **4.2.4 OpenAIService**
+- **Purpose:** Orchestrate OpenAI API calls.
+- **Responsibilities:**
+  1. Monitor OpenAI call queue.
+  2. Submit calls to OpenAI API if rate limit has not been exceeded.
+  3. Track token usage, both instantaneous (rate) and total (if user requests it).
+  4. Parse responses into `str` and pass back to calling function.
+- **Key Relationships:** Must be activated with `RunningAsyncServices` context.
+- **Example Code:**
+    ```python
+    import asyncio
+    import openai
+    from elm.ords.services.provider import RunningAsyncServices
+    from elm.ords.services.openai import OpenAIService
+
+    async def main():
+        client = openai.AsyncAzureOpenAI(
+            api_key=os.environ.get("AZURE_OPENAI_API_KEY"),
+            api_version=os.environ.get("AZURE_OPENAI_VERSION"),
+            azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT")
+        )
+        service = OpenAIService(client, rate_limit=1e4)
+        async with RunningAsyncServices([service]):
+            response_str = await OpenAIService.call(
+                messages=[{"role": "user", "content": "Say this is a test"}],
+                model="gpt-4o"
+            )
+        return response_str
+
+    if __name__ == "__main__":
+        asyncio.run(main())
+    ```
+
+---
+
+#### **4.2.5 LLMCaller/ChatLLMCaller/StructuredLLMCaller**
+- **Purpose:** Helper classes to call LLMs.
+- **Responsibilities:**
+  1. Use a service (e.g. `OpenAIService`) to query an LLM.
+  2. Maintain a useful context to simplify LLM query.
+       - Typically these classes are initialized with a single LLM model (and optionally a usage tracker)
+       - This context is passed to every `Service.call` invocation, allowing user to focus on only the message.
+  3. Track message history (`ChatLLMCaller`) or convert output into JSON (`StructuredLLMCaller`).
+- **Key Relationships:** Delegates most of work to underlying `Service` class.
+- **Example Code:**
+    ```python
+    import asyncio
+    import openai
+    from elm.ords.services.provider import RunningAsyncServices
+    from elm.ords.services.openai import OpenAIService
+    from elm.ords.llm import StructuredLLMCaller
+
+    CALLER = StructuredLLMCaller(
+        llm_service=OpenAIService,
+        model="gpt-4o",
+        temperature=0,
+        seed=42,
+        timeout=30,
+    )
+
+    async def main():
+        client = openai.AsyncAzureOpenAI(
+            api_key=os.environ.get("AZURE_OPENAI_API_KEY"),
+            api_version=os.environ.get("AZURE_OPENAI_VERSION"),
+            azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT")
+        )
+        service = OpenAIService(client, rate_limit=1e4)
+
+        async with RunningAsyncServices([service]):
+            response_str = await CALLER.call(
+                sys_msg="You are a helpful assistant",
+                content="Say this is a test",
+            )
+        return response_str
+
+    if __name__ == "__main__":
+        asyncio.run(main())
+    ```
+
+---
+
+#### **4.2.6 CountyValidator**
+- **Purpose:** Validate wether a document pertains to a specific county.
+- **Responsibilities:**
+  1. Use a combination of heuristics and LLM queries to determine wether or not a document pertains to a particular county.
+- **Key Relationships:** Uses a `StructuredLLMCaller` for queries and delegates sub-validation to `CountyNameValidator`, `CountyJurisdictionValidator`, and `URLValidator`.
+- **Example Code:**
+    ```python
+    import asyncio
+    import openai
+    from elm.ords.services.provider import RunningAsyncServices
+    from elm.ords.services.openai import OpenAIService
+    from elm.ords.llm import StructuredLLMCaller
+    from elm.ords.validation.location import CountyValidator
+    from elm.web.document import HTMLDocument
+
+    CALLER = StructuredLLMCaller(
+        llm_service=OpenAIService,
+        model="gpt-4o",
+        temperature=0,
+        seed=42,
+        timeout=30,
+    )
+
+    async def main():
+        content = ...
+        doc = HTMLDocument([content])
+
+        client = openai.AsyncAzureOpenAI(
+            api_key=os.environ.get("AZURE_OPENAI_API_KEY"),
+            api_version=os.environ.get("AZURE_OPENAI_VERSION"),
+            azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT")
+        )
+        service = OpenAIService(client, rate_limit=1e4)
+        validator =  CountyValidator(CALLER)
+
+        async with RunningAsyncServices([service]):
+            is_valid = await validator.check(
+                doc, county="Decatur", state="Indiana"
+            )
+
+        return is_valid
+
+    if __name__ == "__main__":
+        asyncio.run(main())
+    ```
+
+---
+
+#### **4.2.7 OrdinanceValidator**
+- **Purpose:** Validate wether a document contains relevant ordinance information.
+- **Responsibilities:**
+  1. Determine wether a document contains relevant (e.g. utility-scale wind zoning) ordinance information by splitting the text into chunks and parsing them individually using LLMs.
+- **Key Relationships:** Child class of `ValidationWithMemory`, which allows the validation to look at neighboring chunks of text.
+- **Example Code:**
+    ```python
+    import asyncio
+    import openai
+    from langchain.text_splitter import RecursiveCharacterTextSplitter
+    from elm.ords.services.provider import RunningAsyncServices
+    from elm.ords.services.openai import OpenAIService
+    from elm.ords.llm import StructuredLLMCaller
+    from elm.ords.validation.location import CountyValidator
+    from elm.web.document import HTMLDocument
+
+    CALLER = StructuredLLMCaller(
+        llm_service=OpenAIService,
+        model="gpt-4o",
+        temperature=0,
+        seed=42,
+        timeout=30,
+    )
+    TEXT_SPLITTER = RecursiveCharacterTextSplitter(...)
+
+    async def main():
+        content = ...
+        doc = HTMLDocument([content])
+
+        client = openai.AsyncAzureOpenAI(
+            api_key=os.environ.get("AZURE_OPENAI_API_KEY"),
+            api_version=os.environ.get("AZURE_OPENAI_VERSION"),
+            azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT")
+        )
+        service = OpenAIService(client, rate_limit=1e4)
+        chunks = TEXT_SPLITTER.split_text(doc.text)
+        validator = OrdinanceValidator(CALLER, chunks)
+
+        async with RunningAsyncServices([service]):
+            contains_ordinances = await validator.parse()
+            text = validator.ordinance_text
+
+        return contains_ordinances, text
+
+    if __name__ == "__main__":
+        asyncio.run(main())
     ```
 
 ---
