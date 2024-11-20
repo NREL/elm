@@ -224,7 +224,7 @@ some additional features behind the scenes, such as automatic resubmission upon 
 ability to set up total token usage tracking.
 
 #### **4.1.1 Threaded and Process Pool Services**
-The ELM ordinance code takes the `Services` idea one step further. When running an async pipeline,
+The ELM ordinance code takes the `Services` idea one step further. When running an `async` pipeline,
 it can be beneficial to run some work on separate threads or even CPU cores. Since these are limited
 resources, we can use `Services` to monitor their use as well! Let's look at a few examples:
 
