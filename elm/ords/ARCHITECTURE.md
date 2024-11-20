@@ -648,3 +648,78 @@ for multiprocessing tasks.
     ```
 
 ---
+
+## **5. Workflows**
+### **5.1 Downloading documents from Google**
+We give a basic demonstration of the following call:
+```python
+import asyncio
+from elm.web.google_search import google_results_as_docs
+
+QUERIES = [
+    "NREL wiki",
+    "National Renewable Energy Laboratory director",
+    "NREL leadership wikipedia",
+]
+
+async def main():
+    docs = await google_results_as_docs(QUERIES, num_urls=4)
+    return docs
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+**Step-by-Step:**
+1. `google_results_as_docs()` is invoked with 3 queries and `num_urls=4`.
+2. Each of the three queries are processed asynchronously, creating a `PlaywrightGoogleLinkSearch` instance and retrieving the top URL results.
+3. Internal code reduces the URL lists returned from each of the queries into the top 4 URLs.
+4. `AsyncFileLoader` asynchronously downloads the content for reach of the top 4 URLs, determines the document type the content should be stored in (`HTMLDocument` or `PDFDocument`), creates and populates the document instances, and returns the document to the caller.
+
+**Sequence Diagram:**
+```mermaid
+sequenceDiagram
+    participant A as google_results_as_docs()
+    participant B as PlaywrightGoogleLinkSearch
+    participant D as AsyncFileLoader
+    participant E as HTMLDocument
+    participant F as PDFDocument
+
+    A ->> B: Query 1
+    activate B
+    A ->> B: Query 2
+    B ->> A: Top-URL List 1
+    A ->> B: Query 3
+    B ->> A: Top-URL List 2
+    B ->> A: Top-URL List 3
+    deactivate B
+
+    Note over A: URL lists reduced to top 4 URLs
+
+    A ->> D: URL 1
+    activate D
+    A ->> D: URL 2
+    D ->> E: Content 1
+    activate E
+    A ->> D: URL 3
+    E ->> A: Document 1
+    deactivate E
+    D ->> F: Content 2
+    activate F
+    D ->> E: Content 3
+    activate E
+    F ->> A: Document 2
+    deactivate F
+    E ->> A: Document 3
+    deactivate E
+    A ->> D: URL 4
+    D ->> F: Content 4
+    activate F
+    F ->> A: Document 4
+    deactivate F
+    deactivate D
+
+```
+
+Note that the interleaved call-and-response pairs are meant to exhibit the `async` nature of the process and do not reflect a deterministic execution order.
+
+---
