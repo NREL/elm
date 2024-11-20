@@ -422,10 +422,10 @@ for multiprocessing tasks.
 ---
 
 #### **4.2.6 CountyValidator**
-- **Purpose:** Validate wether a document pertains to a specific county.
+- **Purpose:** Determine wether a document pertains to a specific county.
 - **Responsibilities:**
   1. Use a combination of heuristics and LLM queries to determine wether or not a document pertains to a particular county.
-- **Key Relationships:** Uses a `StructuredLLMCaller` for queries and delegates sub-validation to `CountyNameValidator`, `CountyJurisdictionValidator`, and `URLValidator`.
+- **Key Relationships:** Uses a `StructuredLLMCaller` for LLM queries and delegates sub-validation to `CountyNameValidator`, `CountyJurisdictionValidator`, and `URLValidator`.
 - **Example Code:**
     ```python
     import asyncio
@@ -470,7 +470,7 @@ for multiprocessing tasks.
 ---
 
 #### **4.2.7 OrdinanceValidator**
-- **Purpose:** Validate wether a document contains relevant ordinance information.
+- **Purpose:** Determine wether a document contains relevant ordinance information.
 - **Responsibilities:**
   1. Determine wether a document contains relevant (e.g. utility-scale wind zoning) ordinance information by splitting the text into chunks and parsing them individually using LLMs.
 - **Key Relationships:** Child class of `ValidationWithMemory`, which allows the validation to look at neighboring chunks of text.
@@ -479,10 +479,10 @@ for multiprocessing tasks.
     import asyncio
     import openai
     from langchain.text_splitter import RecursiveCharacterTextSplitter
+    from elm.ords.extraction.ordinance import OrdinanceValidator
     from elm.ords.services.provider import RunningAsyncServices
     from elm.ords.services.openai import OpenAIService
     from elm.ords.llm import StructuredLLMCaller
-    from elm.ords.validation.location import CountyValidator
     from elm.web.document import HTMLDocument
 
     CALLER = StructuredLLMCaller(
@@ -512,6 +512,136 @@ for multiprocessing tasks.
             text = validator.ordinance_text
 
         return contains_ordinances, text
+
+    if __name__ == "__main__":
+        asyncio.run(main())
+    ```
+
+---
+
+#### **4.2.8 OrdinanceExtractor**
+- **Purpose:** Extract relevant ordinance text from document.
+- **Responsibilities:**
+  1. Extract portions from chunked document text relevant to particular ordinance type (e.g. wind zoning for utility-scale systems).
+- **Key Relationships:** Uses a `StructuredLLMCaller` for LLM queries.
+- **Example Code:**
+    ```python
+    import asyncio
+    import openai
+    from langchain.text_splitter import RecursiveCharacterTextSplitter
+    from elm.ords.extraction.ordinance import OrdinanceExtractor
+    from elm.ords.services.provider import RunningAsyncServices
+    from elm.ords.services.openai import OpenAIService
+    from elm.ords.llm import StructuredLLMCaller
+
+    CALLER = StructuredLLMCaller(
+        llm_service=OpenAIService,
+        model="gpt-4o",
+        temperature=0,
+        seed=42,
+        timeout=30,
+    )
+    TEXT_SPLITTER = RecursiveCharacterTextSplitter(...)
+
+    async def main():
+        content = ...
+
+        client = openai.AsyncAzureOpenAI(
+            api_key=os.environ.get("AZURE_OPENAI_API_KEY"),
+            api_version=os.environ.get("AZURE_OPENAI_VERSION"),
+            azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT")
+        )
+        service = OpenAIService(client, rate_limit=1e4)
+        validator = OrdinanceExtractor(CALLER)
+
+        async with RunningAsyncServices([service]):
+            text_chunks = TEXT_SPLITTER.split_text(content)
+            ordinance_text = await extractor.check_for_restrictions(text_chunks)
+
+            text_chunks = text_splitter.split_text(ordinance_text)
+            ordinance_text = await TEXT_SPLITTER extractor.check_for_correct_size(text_chunks)
+
+        return ordinance_text
+
+    if __name__ == "__main__":
+        asyncio.run(main())
+    ```
+
+---
+
+#### **4.2.9 AsyncDecisionTree**
+- **Purpose:** Represent a series of prompts that can be used in sequence to extract values of interest from text.
+- **Responsibilities:**
+  1. Store all prompts used to extract a particular ordinance value from text.
+  2. Track relationships between the prompts (i.e. which prompts is used first, which prompt is used next depending on the output of the previous prompt, etc.) using a directed acyclic graph.
+- **Key Relationships:** Inherits from `DecisionTree` to add `async` capabilities. Uses a `ChatLLMCaller` for LLm queries.
+- **Example Code:**
+    ```python
+    import asyncio
+    import openai
+    from elm.ords.services.provider import RunningAsyncServices
+    from elm.ords.services.openai import OpenAIService
+
+
+    async def main():
+        client = openai.AsyncAzureOpenAI(
+            api_key=os.environ.get("AZURE_OPENAI_API_KEY"),
+            api_version=os.environ.get("AZURE_OPENAI_VERSION"),
+            azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT")
+        )
+        service = OpenAIService(client, rate_limit=1e4)
+
+        G = ... # graph with prompts and a `ChatLLMCaller` instance embedded
+        tree = AsyncDecisionTree(G)
+
+        async with RunningAsyncServices([service]):
+            response = await tree.async_run()
+
+        return response
+
+    if __name__ == "__main__":
+        asyncio.run(main())
+    ```
+
+---
+
+#### **4.2.10 StructuredOrdinanceParser**
+- **Purpose:** Extract structured ordinance data from text.
+- **Responsibilities:**
+  1. Extract ordinance values into structured format by executing a decision-tree-based chain-of-thought prompt on the text for each value to be extracted.
+- **Key Relationships:** Uses a `StructuredLLMCaller` for LLM queries and multiple `AsyncDecisionTree` instances to guide the extraction of individual values.
+- **Example Code:**
+    ```python
+    import asyncio
+    import openai
+    from elm.ords.extraction.parse import StructuredOrdinanceParser
+    from elm.ords.services.provider import RunningAsyncServices
+    from elm.ords.services.openai import OpenAIService
+    from elm.ords.llm import StructuredLLMCaller
+
+    CALLER = StructuredLLMCaller(
+        llm_service=OpenAIService,
+        model="gpt-4o",
+        temperature=0,
+        seed=42,
+        timeout=30,
+    )
+
+    async def main():
+        content = ...
+
+        client = openai.AsyncAzureOpenAI(
+            api_key=os.environ.get("AZURE_OPENAI_API_KEY"),
+            api_version=os.environ.get("AZURE_OPENAI_VERSION"),
+            azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT")
+        )
+        service = OpenAIService(client, rate_limit=1e4)
+        parser = StructuredOrdinanceParser(CALLER)
+
+        async with RunningAsyncServices([service]):
+            ordinance_values = await parser.parse(content)
+
+        return ordinance_values
 
     if __name__ == "__main__":
         asyncio.run(main())
