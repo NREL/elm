@@ -693,7 +693,7 @@ sequenceDiagram
     B ->> A: Top-URL List 3
     deactivate B
 
-    Note over A: URL lists reduced to top 4 URLs
+    A ->> A: URL lists reduced to top 4 URLs
 
     A ->> D: URL 1
     activate D
