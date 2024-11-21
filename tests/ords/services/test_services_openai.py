@@ -67,7 +67,7 @@ async def test_openai_service(sample_openai_response, monkeypatch):
             )
         return sample_openai_response(kwargs=kwargs)
 
-    client = openai.AsyncOpenAI()
+    client = openai.AsyncOpenAI(api_key="dummy")
     monkeypatch.setattr(
         client.chat.completions,
         "create",

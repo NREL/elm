@@ -59,8 +59,8 @@ if __name__ == '__main__':
 
     # 2) Build coroutine first the use it to call async func
     # (extract_ordinance_text_with_llm is an async function)
-    extrct = extract_ordinance_text_with_llm(doc, text_splitter, extractor)
-    doc = ARun.run(services, extrct)
+    extract = extract_ordinance_text_with_llm(doc, text_splitter, extractor)
+    doc = ARun.run(services, extract)
 
     # 3) Build coroutine and use it to call async func in one go
     doc = ARun.run(services, extract_ordinance_values(doc, **kwargs))
