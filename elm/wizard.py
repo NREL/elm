@@ -65,8 +65,7 @@ class EnergyWizardBase(ApiBase, ABC):
     def engineer_query(self, query,
                        token_budget=None,
                        new_info_threshold=0.7,
-                       convo=False,
-                       timeit=False):
+                       convo=False):
         """Engineer a query for GPT using the corpus of information
         Parameters
         ----------
@@ -91,8 +90,7 @@ class EnergyWizardBase(ApiBase, ABC):
             The list of references (strs) used in the engineered prompt is
             returned here
         vector_query_time : float
-            if timeit is True, then we will time how long the query to the
-            vectorDB takes
+            measures vector database query time
         """
 
         self.messages.append({"role": "user", "content": query})
@@ -132,9 +130,7 @@ class EnergyWizardBase(ApiBase, ABC):
         message = message + question
         used_index = np.array(used_index)
         references = self.make_ref_list(used_index)
-        if timeit:
-            return message, references, used_index, vector_query_time
-        return message, references, used_index
+        return message, references, used_index, vector_query_time
 
     @abstractmethod
     def make_ref_list(self, idx):
@@ -160,8 +156,8 @@ class EnergyWizardBase(ApiBase, ABC):
              token_budget=None,
              new_info_threshold=0.7,
              print_references=False,
-             return_chat_obj=False,
-             timeit=False):
+             return_chat_obj=False
+             ):
         """Answers a query by doing a semantic search of relevant text with
         embeddings and then sending engineered query to the LLM.
         Parameters
@@ -192,8 +188,6 @@ class EnergyWizardBase(ApiBase, ABC):
             valid ref_col.
         return_chat_obj : bool
             Flag to only return the ChatCompletion from OpenAI API.
-        timeit : bool
-            Flag to return the performance metrics on API calls.
         Returns
         -------
         response : str
@@ -205,13 +199,13 @@ class EnergyWizardBase(ApiBase, ABC):
             If debug is True, the list of references (strs) used in the
             engineered prompt is returned here
         performance : dict
-            If timeit is True, returns dictionary with keys of total_chat_time,
+            dictionary with keys of total_chat_time,
             chat_completion_time and vectordb_query_time.
         """
         start_chat_time = perf_counter()
         out = self.engineer_query(query, token_budget=token_budget,
                                   new_info_threshold=new_info_threshold,
-                                  convo=convo, timeit=True)
+                                  convo=convo)
         query, references, _, vector_query_time = out
 
         messages = [{"role": "system", "content": self.MODEL_ROLE},
@@ -253,12 +247,9 @@ class EnergyWizardBase(ApiBase, ABC):
             "chat_completion_time": chat_completion_time,
             "vectordb_query_time": vector_query_time
         }
-        if timeit and debug:
-            return response_message, query, references, performance
         if debug:
-            return response_message, query, references
-        else:
-            return response_message
+            return response_message, query, references, performance
+        return response_message, performance
 
 
 class EnergyWizard(EnergyWizardBase):
