@@ -134,7 +134,7 @@ async def _down_select_docs_correct_content(docs, location, **kwargs):
 
 async def _contains_ords(doc, **kwargs):
     """Helper coroutine that checks for ordinance info. """
-    doc = check_for_ordinance_info(doc, **kwargs)
+    doc = await check_for_ordinance_info(doc, **kwargs)
     return doc.metadata.get("contains_ord_info", False)
 
 
