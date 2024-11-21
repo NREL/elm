@@ -128,3 +128,6 @@ examples/research_hub/meta.csv
 .pixi
 *.egg-info
 pixi*
+
+# Scratch
+*scratch*/
