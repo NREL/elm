@@ -218,8 +218,6 @@ class EnergyWizardBase(ApiBase, ABC):
         start_completion_time = perf_counter()
 
         response = self._client.chat.completions.create(**kwargs)
-        finish_completion_time = perf_counter()
-        chat_completion_time = start_completion_time - finish_completion_time
         if return_chat_obj:
             return response, query, references
         if stream:
@@ -229,6 +227,8 @@ class EnergyWizardBase(ApiBase, ABC):
                 print(chunk_msg, end='')
         else:
             response_message = response.choices[0].message.content
+        finish_completion_time = perf_counter()
+        chat_completion_time = start_completion_time - finish_completion_time
 
         self.messages.append({'role': 'assistant',
                               'content': response_message})
