@@ -76,7 +76,24 @@ def count_tokens(messages, model):
 
 
 class OpenAIService(RateLimitedService):
-    """OpenAI Chat GPT query service"""
+    """OpenAI Chat GPT query service
+
+    Purpose:
+        Orchestrate OpenAI API calls.
+    Responsibilities:
+        1. Monitor OpenAI call queue.
+        2. Submit calls to OpenAI API if rate limit has not been
+           exceeded.
+        3. Track token usage, both instantaneous (rate) and total (if
+           user requests it).
+        4. Parse responses into `str` and pass back to calling function.
+    Key Relationships:
+        Must be activated with
+        :class:`~elm.ords.services.provider.RunningAsyncServices`
+        context.
+
+    .. end desc
+    """
 
     def __init__(self, client, rate_limit=1e3, rate_tracker=None):
         """
