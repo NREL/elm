@@ -46,7 +46,10 @@ class ApiBase(ABC):
 
     TOKENIZER_ALIASES = {'gpt-35-turbo': 'gpt-3.5-turbo',
                          'gpt-4-32k': 'gpt-4-32k-0314',
-                         'llmev-gpt-4-32k': 'gpt-4-32k-0314'
+                         'llmev-gpt-4-32k': 'gpt-4-32k-0314',
+                         'wetosa-gpt-4': 'gpt-4',
+                         'wetosa-gpt-4-standard': 'gpt-4',
+                         'wetosa-gpt-4o': 'gpt-4o',
                          }
     """Optional mappings for unusual Azure names to tiktoken/openai names."""
 
