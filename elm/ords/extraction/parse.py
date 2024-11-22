@@ -106,7 +106,22 @@ def _empty_output(feature):
 
 
 class StructuredOrdinanceParser(BaseLLMCaller):
-    """LLM ordinance document structured data scraping utility."""
+    """LLM ordinance document structured data scraping utility
+
+    Purpose:
+        Extract structured ordinance data from text.
+    Responsibilities:
+        1. Extract ordinance values into structured format by executing
+           a decision-tree-based chain-of-thought prompt on the text for
+           each value to be extracted.
+    Key Relationships:
+        Uses a :class:`~elm.ords.llm.calling.StructuredLLMCaller` for
+        LLM queries and multiple
+        :class:`~elm.ords.extraction.tree.AsyncDecisionTree` instances
+        to guide the extraction of individual values.
+
+    .. end desc
+    """
 
     def _init_chat_llm_caller(self, system_message):
         """Initialize a ChatLLMCaller instance for the DecisionTree"""
