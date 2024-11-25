@@ -28,3 +28,8 @@ To do so, simply run:
 Now you are ready to run ordinance retrieval and extraction. See the [example](https://github.com/NREL/elm/blob/main/examples/ordinance_gpt/README.rst) to get started. If you get additional import errors, just install additional packages as necessary, e.g.:
 
     $ pip install beautifulsoup4 html5lib
+
+
+## Architecture
+
+For information on the architectural design of this code, see the [design document](https://nrel.github.io/elm/dev/ords_architecture.html).

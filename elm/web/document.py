@@ -23,7 +23,21 @@ logger = logging.getLogger(__name__)
 
 
 class BaseDocument(ABC):
-    """Base ELM web document representation."""
+    """Base ELM web document representation
+
+    Purpose:
+        Track document content and perform minor processing on it.
+    Responsibilities:
+        1. Store "raw" document text.
+        2. Compute "cleaned" text, which combines pages, strips HTML,
+           and formats tables.
+        3. Track pages and other document metadata.
+    Key Relationships:
+        Created by :class:`~elm.web.file_loader.AsyncFileLoader` and
+        used all over ordinance code.
+
+    .. end desc
+    """
 
     def __init__(self, pages, metadata=None):
         """

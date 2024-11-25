@@ -150,6 +150,20 @@ class CountyValidator:
     """ELM Ords County validator.
 
     Combines the logic of several validators into a single class.
+
+    Purpose:
+        Determine wether a document pertains to a specific county.
+    Responsibilities:
+        1. Use a combination of heuristics and LLM queries to determine
+           wether or not a document pertains to a particular county.
+    Key Relationships:
+        Uses a :class:`~elm.ords.llm.calling.StructuredLLMCaller` for
+        LLM queries and delegates sub-validation to
+        :class:`~elm.ords.validation.location.CountyNameValidator`,
+        :class:`~elm.ords.validation.location.CountyJurisdictionValidator`,
+        and :class:`~elm.ords.validation.location.URLValidator`.
+
+    .. end desc
     """
 
     def __init__(self, structured_llm_caller, score_thresh=0.8):

@@ -12,7 +12,26 @@ logger = logging.getLogger(__name__)
 class AsyncDecisionTree(DecisionTree):
     """Async class to traverse a directed graph of LLM prompts. Nodes are
     prompts and edges are transitions between prompts based on conditions
-    being met in the LLM response."""
+    being met in the LLM response
+
+
+    Purpose:
+        Represent a series of prompts that can be used in sequence to
+        extract values of interest from text.
+    Responsibilities:
+        1. Store all prompts used to extract a particular ordinance
+           value from text.
+        2. Track relationships between the prompts (i.e. which prompts
+           is used first, which prompt is used next depending on the
+           output of the previous prompt, etc.) using a directed acyclic
+           graph.
+    Key Relationships:
+        Inherits from :class:`~elm.tree.DecisionTree` to add ``async``
+        capabilities. Uses a :class:`~elm.ords.llm.calling.ChatLLMCaller`
+        for LLm queries.
+
+    .. end desc
+    """
 
     def __init__(self, graph):
         """Async class to traverse a directed graph of LLM prompts. Nodes are
