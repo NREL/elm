@@ -1,0 +1,6 @@
+elm.web.utilities.write\_url\_doc\_to\_file
+===========================================
+
+.. currentmodule:: elm.web.utilities
+
+.. autofunction:: write_url_doc_to_file

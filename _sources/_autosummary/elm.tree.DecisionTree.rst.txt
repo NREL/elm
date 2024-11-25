@@ -1,0 +1,35 @@
+elm.tree.DecisionTree
+=====================
+
+.. currentmodule:: elm.tree
+
+.. autoclass:: DecisionTree
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~DecisionTree.call_node
+      ~DecisionTree.run
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DecisionTree.all_messages_txt
+      ~DecisionTree.api
+      ~DecisionTree.graph
+      ~DecisionTree.history
+      ~DecisionTree.messages
+   
+   
