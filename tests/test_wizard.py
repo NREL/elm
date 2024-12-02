@@ -81,12 +81,13 @@ def test_chunk_and_embed(mocker):
     question = 'What time is it?'
     out = wizard.chat(question, debug=True, stream=False,
                       print_references=True)
-    msg, query, ref = out
+    msg, query, ref, performance = out
 
     assert msg.startswith('hello!')
     assert query.startswith(EnergyWizard.MODEL_INSTRUCTION)
     assert query.endswith(question)
     assert 'source0' in ref
+    assert isinstance(performance, float)
 
 
 def test_convo_query(mocker):
