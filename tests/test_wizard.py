@@ -87,7 +87,7 @@ def test_chunk_and_embed(mocker):
     assert query.startswith(EnergyWizard.MODEL_INSTRUCTION)
     assert query.endswith(question)
     assert 'source0' in ref
-    assert isinstance(performance, float)
+    assert isinstance(performance, dict)
 
 
 def test_convo_query(mocker):
