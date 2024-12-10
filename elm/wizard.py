@@ -62,7 +62,7 @@ class EnergyWizardBase(ApiBase, ABC):
             ranked strings/scores outputs.
         """
 
-    async def engineer_query(self, query,
+    def engineer_query(self, query,
                        token_budget=None,
                        new_info_threshold=0.7,
                        convo=False):
@@ -104,7 +104,7 @@ class EnergyWizardBase(ApiBase, ABC):
 
         token_budget = token_budget or self.token_budget
         start_time = perf_counter()
-        strings, _, idx = await self.query_vector_db(query)
+        strings, _, idx = self.query_vector_db(query)
         end_time = perf_counter()
         vector_query_time = end_time - start_time
         message = copy.deepcopy(self.MODEL_INSTRUCTION)
