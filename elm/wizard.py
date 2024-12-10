@@ -249,7 +249,7 @@ class EnergyWizardBase(ApiBase, ABC):
         }
         if debug:
             return response_message, query, references, performance
-        return response_message, performance
+        return response_message, query, performance
 
 
 class EnergyWizard(EnergyWizardBase):
