@@ -70,7 +70,6 @@ def test_chunk_and_embed(mocker):
 
     Note that embedding api is mocked here and not actually tested.
     """
-
     corpus = make_corpus(mocker)
     wizard = EnergyWizard(pd.DataFrame(corpus), token_budget=1000,
                           ref_col='ref')
