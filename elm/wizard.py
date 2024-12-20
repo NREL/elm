@@ -92,7 +92,7 @@ class EnergyWizardBase(ApiBase, ABC):
         vector_query_time : float
             measures vector database query time
         used_index : list
-            Shows the indices of the documents used in making a query to the 
+            Shows the indices of the documents used in making a query to the
             vector database
         """
 
