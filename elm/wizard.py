@@ -91,6 +91,9 @@ class EnergyWizardBase(ApiBase, ABC):
             returned here
         vector_query_time : float
             measures vector database query time
+        used_index : list
+            Shows the indices of the documents used in making a query to the 
+            vector database
         """
 
         self.messages.append({"role": "user", "content": query})
@@ -228,7 +231,7 @@ class EnergyWizardBase(ApiBase, ABC):
         else:
             response_message = response.choices[0].message.content
         finish_completion_time = perf_counter()
-        chat_completion_time = start_completion_time - finish_completion_time
+        chat_completion_time = finish_completion_time - start_completion_time
 
         self.messages.append({'role': 'assistant',
                               'content': response_message})
