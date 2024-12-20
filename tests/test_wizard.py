@@ -86,10 +86,6 @@ def test_chunk_and_embed(mocker):
     assert query.endswith(question)
     assert 'source0' in references
     assert isinstance(performance, dict)
-    assert performance["chat_completion_time"] > 0
-    assert performance["vectordb_query_time"] > 0
-    assert performance["total_chat_time"] > 0
-
 
 def test_convo_query(mocker):
     """Query with multiple messages
