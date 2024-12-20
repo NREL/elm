@@ -244,7 +244,7 @@ class EnergyWizardBase(ApiBase, ABC):
             if stream:
                 print(ref_msg)
         end_time = perf_counter()
-        total_chat_time = start_chat_time - end_time
+        total_chat_time = end_time - start_chat_time
         performance = {
             "total_chat_time": total_chat_time,
             "chat_completion_time": chat_completion_time,
