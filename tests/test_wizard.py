@@ -81,12 +81,12 @@ def test_chunk_and_embed(mocker):
     question = 'What time is it?'
     out = wizard.chat(question, debug=True, stream=False,
                       print_references=True)
-    msg, query, ref, performance = out
+    response_message, query, references, performance = out
 
-    assert msg.startswith('hello!')
+    assert response_message.startswith('hello!')
     assert query.startswith(EnergyWizard.MODEL_INSTRUCTION)
     assert query.endswith(question)
-    assert 'source0' in ref
+    assert 'source0' in references
     assert isinstance(performance, dict)
 
 
