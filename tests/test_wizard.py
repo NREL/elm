@@ -70,7 +70,6 @@ def test_chunk_and_embed(mocker):
 
     Note that embedding api is mocked here and not actually tested.
     """
-
     corpus = make_corpus(mocker)
     wizard = EnergyWizard(pd.DataFrame(corpus), token_budget=1000,
                           ref_col='ref')
@@ -81,13 +80,12 @@ def test_chunk_and_embed(mocker):
     question = 'What time is it?'
     out = wizard.chat(question, debug=True, stream=False,
                       print_references=True)
-    msg, query, ref = out
-
-    assert msg.startswith('hello!')
+    response_message, query, references, performance = out
+    assert response_message.startswith('hello!')
     assert query.startswith(EnergyWizard.MODEL_INSTRUCTION)
     assert query.endswith(question)
-    assert 'source0' in ref
-
+    assert 'source0' in references
+    assert isinstance(performance, dict)
 
 def test_convo_query(mocker):
     """Query with multiple messages
