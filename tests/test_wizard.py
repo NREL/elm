@@ -82,7 +82,6 @@ def test_chunk_and_embed(mocker):
     out = wizard.chat(question, debug=True, stream=False,
                       print_references=True)
     response_message, query, references, performance = out
-
     assert response_message.startswith('hello!')
     assert query.startswith(EnergyWizard.MODEL_INSTRUCTION)
     assert query.endswith(question)
