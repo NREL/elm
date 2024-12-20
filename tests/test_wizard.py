@@ -89,6 +89,7 @@ def test_chunk_and_embed(mocker):
     assert isinstance(performance, dict)
     assert performance["chat_completion_time"] > 0
 
+
 def test_convo_query(mocker):
     """Query with multiple messages
 
