@@ -87,6 +87,7 @@ def test_chunk_and_embed(mocker):
     assert 'source0' in references
     assert isinstance(performance, dict)
 
+
 def test_convo_query(mocker):
     """Query with multiple messages
 
