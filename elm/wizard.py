@@ -65,8 +65,10 @@ class EnergyWizardBase(ApiBase, ABC):
     def engineer_query(self, query,
                        token_budget=None,
                        new_info_threshold=0.7,
-                       convo=False):
+                       convo=False
+                       ):
         """Engineer a query for GPT using the corpus of information
+
         Parameters
         ----------
         query : str
@@ -81,6 +83,7 @@ class EnergyWizardBase(ApiBase, ABC):
             Flag to perform semantic search with full conversation history
             (True) or just the single query (False). Call EnergyWizard.clear()
             to reset the chat history.
+        
         Returns
         -------
         message : str
