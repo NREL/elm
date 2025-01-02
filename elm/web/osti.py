@@ -196,8 +196,8 @@ class OstiList(list):
                    .format(self._response.status_code,
                            self._response.reason))
             raise RuntimeError(msg)
-        first_page = self._response.json()
-
+        raw_text = self._response.text.encode('utf-8').decode('unicode-escape')
+        first_page = json.loads(raw_text)
         self._n_pages = 1
         if 'last' in self._response.links:
             url = self._response.links['last']['url']

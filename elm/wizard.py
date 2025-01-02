@@ -3,6 +3,7 @@
 ELM energy wizard
 """
 from abc import ABC, abstractmethod
+from time import perf_counter
 import copy
 import os
 import json
@@ -61,8 +62,11 @@ class EnergyWizardBase(ApiBase, ABC):
             ranked strings/scores outputs.
         """
 
-    def engineer_query(self, query, token_budget=None, new_info_threshold=0.7,
-                       convo=False):
+    def engineer_query(self, query,
+                       token_budget=None,
+                       new_info_threshold=0.7,
+                       convo=False
+                       ):
         """Engineer a query for GPT using the corpus of information
 
         Parameters
@@ -79,6 +83,7 @@ class EnergyWizardBase(ApiBase, ABC):
             Flag to perform semantic search with full conversation history
             (True) or just the single query (False). Call EnergyWizard.clear()
             to reset the chat history.
+
         Returns
         -------
         message : str
@@ -87,6 +92,11 @@ class EnergyWizardBase(ApiBase, ABC):
         references : list
             The list of references (strs) used in the engineered prompt is
             returned here
+        vector_query_time : float
+            measures vector database query time
+        used_index : list
+            Shows the indices of the documents used in making a query to the
+            vector database
         """
 
         self.messages.append({"role": "user", "content": query})
@@ -99,9 +109,10 @@ class EnergyWizardBase(ApiBase, ABC):
             query = '\n\n'.join(query)
 
         token_budget = token_budget or self.token_budget
-
+        start_time = perf_counter()
         strings, _, idx = self.query_vector_db(query)
-
+        end_time = perf_counter()
+        vector_query_time = end_time - start_time
         message = copy.deepcopy(self.MODEL_INSTRUCTION)
         question = f"\n\nQuestion: {query}"
         used_index = []
@@ -125,8 +136,7 @@ class EnergyWizardBase(ApiBase, ABC):
         message = message + question
         used_index = np.array(used_index)
         references = self.make_ref_list(used_index)
-
-        return message, references, used_index
+        return message, references, used_index, vector_query_time
 
     @abstractmethod
     def make_ref_list(self, idx):
@@ -152,7 +162,8 @@ class EnergyWizardBase(ApiBase, ABC):
              token_budget=None,
              new_info_threshold=0.7,
              print_references=False,
-             return_chat_obj=False):
+             return_chat_obj=False
+             ):
         """Answers a query by doing a semantic search of relevant text with
         embeddings and then sending engineered query to the LLM.
 
@@ -195,12 +206,15 @@ class EnergyWizardBase(ApiBase, ABC):
         references : list
             If debug is True, the list of references (strs) used in the
             engineered prompt is returned here
+        performance : dict
+            dictionary with keys of total_chat_time,
+            chat_completion_time and vectordb_query_time.
         """
-
+        start_chat_time = perf_counter()
         out = self.engineer_query(query, token_budget=token_budget,
                                   new_info_threshold=new_info_threshold,
                                   convo=convo)
-        query, references, _ = out
+        query, references, _, vector_query_time = out
 
         messages = [{"role": "system", "content": self.MODEL_ROLE},
                     {"role": "user", "content": query}]
@@ -209,20 +223,20 @@ class EnergyWizardBase(ApiBase, ABC):
                       messages=messages,
                       temperature=temperature,
                       stream=stream)
+        start_completion_time = perf_counter()
 
         response = self._client.chat.completions.create(**kwargs)
-
         if return_chat_obj:
             return response, query, references
-
         if stream:
             for chunk in response:
                 chunk_msg = chunk.choices[0].delta.content or ""
                 response_message += chunk_msg
                 print(chunk_msg, end='')
-
         else:
             response_message = response.choices[0].message.content
+        finish_completion_time = perf_counter()
+        chat_completion_time = finish_completion_time - start_completion_time
 
         self.messages.append({'role': 'assistant',
                               'content': response_message})
@@ -234,11 +248,16 @@ class EnergyWizardBase(ApiBase, ABC):
             response_message += ref_msg
             if stream:
                 print(ref_msg)
-
+        end_time = perf_counter()
+        total_chat_time = end_time - start_chat_time
+        performance = {
+            "total_chat_time": total_chat_time,
+            "chat_completion_time": chat_completion_time,
+            "vectordb_query_time": vector_query_time
+        }
         if debug:
-            return response_message, query, references
-        else:
-            return response_message
+            return response_message, query, references, performance
+        return response_message, query, performance
 
 
 class EnergyWizard(EnergyWizardBase):
