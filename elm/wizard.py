@@ -166,6 +166,7 @@ class EnergyWizardBase(ApiBase, ABC):
              ):
         """Answers a query by doing a semantic search of relevant text with
         embeddings and then sending engineered query to the LLM.
+
         Parameters
         ----------
         query : str
@@ -194,6 +195,7 @@ class EnergyWizardBase(ApiBase, ABC):
             valid ref_col.
         return_chat_obj : bool
             Flag to only return the ChatCompletion from OpenAI API.
+
         Returns
         -------
         response : str
