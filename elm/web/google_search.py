@@ -21,7 +21,20 @@ _SEARCH_RESULT_TAG = '[jsname="UWckNb"]'
 
 
 class PlaywrightGoogleLinkSearch:
-    """Search for top results on google and return their links"""
+    """Search for top results on google and return their links
+
+    Purpose:
+        Search Google using Playwright engine.
+    Responsibilities:
+        1. Launch browser using Playwright and navigate to Google.
+        2. Submit a query to Google Search.
+        3. Get list of resulting URLs.
+    Key Relationships:
+        Relies on `Playwright <https://playwright.dev/python/>`_ for
+        web access.
+
+    .. end desc
+    """
 
     EXPECTED_RESULTS_PER_PAGE = 10
     """Number of results displayed per Google page. """
@@ -123,7 +136,7 @@ async def google_results_as_docs(
     queries : collection of str
         Collection of strings representing google queries. Documents for
         the top `num_urls` google search results (from all of these
-        queries combined_ will be returned from this function.
+        queries _combined_ will be returned from this function.
     num_urls : int, optional
         Number of unique top Google search result to return as docs. The
         google search results from all queries are interleaved and the

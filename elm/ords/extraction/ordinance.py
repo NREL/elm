@@ -34,7 +34,24 @@ RESTRICTIONS = """- buildings / structures / residences
 
 
 class OrdinanceValidator(ValidationWithMemory):
-    """Check document text for wind ordinances."""
+    """Check document text for wind ordinances
+
+    .. start desc ov
+    Purpose:
+        Determine wether a document contains relevant ordinance
+        information.
+    Responsibilities:
+        1. Determine wether a document contains relevant (e.g.
+        utility-scale wind zoning) ordinance information by splitting
+        the text into chunks and parsing them individually using LLMs.
+    Key Relationships:
+        Child class of
+        :class:`~elm.ords.validation.content.ValidationWithMemory`,
+        which allows the validation to look at neighboring chunks of
+        text.
+
+    .. end desc
+    """
 
     IS_LEGAL_TEXT_PROMPT = (
         "You extract structured data from text. Return your answer in JSON "
@@ -206,7 +223,21 @@ class OrdinanceValidator(ValidationWithMemory):
 
 
 class OrdinanceExtractor:
-    """Extract succinct ordinance text from input"""
+    """Extract succinct ordinance text from input
+
+    .. start desc oe
+    Purpose:
+        Extract relevant ordinance text from document.
+    Responsibilities:
+        1. Extract portions from chunked document text relevant to
+           particular ordinance type (e.g. wind zoning for utility-scale
+           systems).
+    Key Relationships:
+        Uses a :class:`~elm.ords.llm.calling.StructuredLLMCaller` for
+        LLM queries.
+
+    .. end desc
+    """
 
     SYSTEM_MESSAGE = (
         "You extract one or more direct excerpts from a given text based on "

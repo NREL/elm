@@ -10,7 +10,27 @@ _JSON_INSTRUCTIONS = "Return your answer in JSON format"
 
 
 class BaseLLMCaller:
-    """Class to support LLM calling functionality."""
+    """Class to support LLM calling functionality
+
+    Purpose:
+        Helper classes to call LLMs.
+    Responsibilities:
+        1. Use a service (e.g.
+           :class:`~elm.ords.services.openai.OpenAIService`) to query an LLM.
+        2. Maintain a useful context to simplify LLM query.
+            - Typically these classes are initialized with a single LLM
+              model (and optionally a usage tracker)
+            - This context is passed to every ``Service.call`` invocation,
+              allowing user to focus on only the message.
+        3. Track message history
+           (:class:`~elm.ords.llm.calling.ChatLLMCaller`)
+           or convert output into JSON
+           (:class:`~elm.ords.llm.calling.StructuredLLMCaller`).
+    Key Relationships:
+        Delegates most of work to underlying ``Service`` class.
+
+    .. end desc
+    """
 
     def __init__(self, llm_service, usage_tracker=None, **kwargs):
         """

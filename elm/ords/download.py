@@ -103,7 +103,6 @@ async def _docs_from_google_search(
     return await google_results_as_docs(
         queries,
         num_urls=num_urls,
-        text_splitter=text_splitter,
         browser_semaphore=browser_semaphore,
         task_name=location.full_name,
         **file_loader_kwargs,
@@ -135,7 +134,7 @@ async def _down_select_docs_correct_content(docs, location, **kwargs):
 
 async def _contains_ords(doc, **kwargs):
     """Helper coroutine that checks for ordinance info. """
-    doc = check_for_ordinance_info(doc, **kwargs)
+    doc = await check_for_ordinance_info(doc, **kwargs)
     return doc.metadata.get("contains_ord_info", False)
 
 

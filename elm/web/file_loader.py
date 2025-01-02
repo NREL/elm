@@ -28,7 +28,21 @@ async def _read_html_doc(text, **kwargs):
 
 
 class AsyncFileLoader:
-    """Async web file (PDF or HTML) loader"""
+    """Async web file (PDF or HTML) loader
+
+    Purpose:
+        Save content from links as files.
+    Responsibilities:
+        1. Retrieve data from a URL.
+        2. Determine wether information should be stored as a PDF or
+           HTML document.
+    Key Relationships:
+        Returns either :class:`~elm.web.document.PDFDocument` or
+        :class:`~elm.web.document.HTMLDocument`. Uses `aiohttp` to
+        access the web.
+
+    .. end desc
+    """
 
     DEFAULT_HEADER_TEMPLATE = {
         "User-Agent": "",
