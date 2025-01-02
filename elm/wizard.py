@@ -83,7 +83,7 @@ class EnergyWizardBase(ApiBase, ABC):
             Flag to perform semantic search with full conversation history
             (True) or just the single query (False). Call EnergyWizard.clear()
             to reset the chat history.
-        
+
         Returns
         -------
         message : str
