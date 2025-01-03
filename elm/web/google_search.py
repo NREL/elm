@@ -39,6 +39,9 @@ class PlaywrightGoogleLinkSearch:
     EXPECTED_RESULTS_PER_PAGE = 10
     """Number of results displayed per Google page. """
 
+    PAGE_LOAD_TIMEOUT = 90_000
+    """Default page load timeout value in milliseconds"""
+
     def __init__(self, **launch_kwargs):
         """
 
@@ -68,7 +71,7 @@ class PlaywrightGoogleLinkSearch:
         num_results = min(num_results, self.EXPECTED_RESULTS_PER_PAGE)
 
         page = await self._browser.new_page()
-        await _navigate_to_google(page)
+        await _navigate_to_google(page, timeout=self.PAGE_LOAD_TIMEOUT)
         await _perform_google_search(page, query)
         return await _extract_links(page, num_results)
 
@@ -282,10 +285,10 @@ async def _load_docs(urls, browser_semaphore=None, **kwargs):
     return [doc for doc in docs if not doc.empty]
 
 
-async def _navigate_to_google(page):
+async def _navigate_to_google(page, timeout=90_000):
     """Navigate to Google domain."""
     await page.goto("https://www.google.com")
-    await page.wait_for_load_state("networkidle")
+    await page.wait_for_load_state("networkidle", timeout=timeout)
 
 
 async def _perform_google_search(page, search_query):
