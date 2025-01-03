@@ -1,0 +1,6 @@
+elm.utilities.parse.clean\_headers
+==================================
+
+.. currentmodule:: elm.utilities.parse
+
+.. autofunction:: clean_headers

@@ -1,0 +1,6 @@
+elm.web.google\_search.google\_results\_as\_docs
+================================================
+
+.. currentmodule:: elm.web.google_search
+
+.. autofunction:: google_results_as_docs

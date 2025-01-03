@@ -1,0 +1,6 @@
+elm.utilities.parse.is\_multi\_col
+==================================
+
+.. currentmodule:: elm.utilities.parse
+
+.. autofunction:: is_multi_col

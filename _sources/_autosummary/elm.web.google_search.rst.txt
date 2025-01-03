@@ -1,0 +1,39 @@
+elm.web.google\_search
+======================
+
+.. automodule:: elm.web.google_search
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      filter_documents
+      google_results_as_docs
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      PlaywrightGoogleLinkSearch
+   
+   
+
+   
+   
+   
+
+
+

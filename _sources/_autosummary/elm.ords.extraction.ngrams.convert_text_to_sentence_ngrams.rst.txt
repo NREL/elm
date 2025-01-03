@@ -1,0 +1,6 @@
+elm.ords.extraction.ngrams.convert\_text\_to\_sentence\_ngrams
+==============================================================
+
+.. currentmodule:: elm.ords.extraction.ngrams
+
+.. autofunction:: convert_text_to_sentence_ngrams
