@@ -94,13 +94,13 @@ async def load_html_with_pw(  # pragma: no cover
 
 
 async def _load_html(  # pragma: no cover
-    url, browser_sem=None, timeout=90_000, **pw_launch_kwargs
+    url, browser_semaphore=None, timeout=90_000, **pw_launch_kwargs
 ):
     """Load html using playwright"""
-    if browser_sem is None:
-        browser_sem = AsyncExitStack()
+    if browser_semaphore is None:
+        browser_semaphore = AsyncExitStack()
 
-    async with async_playwright() as p, browser_sem:
+    async with async_playwright() as p, browser_semaphore:
         browser = await p.chromium.launch(**pw_launch_kwargs)
         page = await browser.new_page()
         await page.route("**/*", _intercept_route)
