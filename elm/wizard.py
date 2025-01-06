@@ -62,7 +62,8 @@ class EnergyWizardBase(ApiBase, ABC):
             ranked strings/scores outputs.
         """
 
-    def engineer_query(self, query,
+    def engineer_query(self,
+                       query,
                        token_budget=None,
                        new_info_threshold=0.7,
                        convo=False
@@ -154,7 +155,8 @@ class EnergyWizardBase(ApiBase, ABC):
             ["{ref_title} ({ref_url})"]
         """
 
-    def chat(self, query,
+    def chat(self,
+             query,
              debug=True,
              stream=True,
              temperature=0,

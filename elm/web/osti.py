@@ -2,6 +2,7 @@
 """
 Utilities for retrieving data from OSTI.
 """
+import re
 import copy
 import requests
 import json
@@ -183,31 +184,31 @@ class OstiList(list):
         super().__init__(records)
 
     def _get_first(self):
-        """Get the first page of OSTI records
-
-        Returns
-        -------
-        list
-        """
+        """Get the first page of OSTI records"""
         self._response = self._session.get(self.url)
 
         if not self._response.ok:
-            msg = ('OSTI API Request got error {}: "{}"'
-                   .format(self._response.status_code,
-                           self._response.reason))
+            msg = f'OSTI API Request got error {self._response.status_code}: "{self._response.reason}"'
             raise RuntimeError(msg)
+
+        # Clean and parse response
         raw_text = self._response.text.encode('utf-8').decode('unicode-escape')
-        first_page = json.loads(raw_text)
+        try:
+            first_page = json.loads(raw_text)
+        except json.JSONDecodeError:
+            # Add basic cleaning of common JSON issues
+            raw_text = raw_text.replace('}\r\n]', '}]')  # Fix malformed array endings
+            raw_text = re.sub(r',\s*([}\]])', r'\1', raw_text)  # Remove trailing commas
+            first_page = json.loads(raw_text)
+
         self._n_pages = 1
         if 'last' in self._response.links:
             url = self._response.links['last']['url']
             self._n_pages = int(url.split('page=')[-1])
 
-        logger.debug('Found approximately {} records.'
-                     .format(self._n_pages * len(first_page)))
+        logger.debug(f'Found approximately {self._n_pages * len(first_page)} records.')
 
         return first_page
-
     def _get_pages(self, n_pages):
         """Get response pages up to n_pages from OSTI.
 
