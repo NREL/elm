@@ -209,6 +209,7 @@ class OstiList(list):
             {self._n_pages * len(first_page)} records.''')
 
         return first_page
+
     def _get_pages(self, n_pages):
         """Get response pages up to n_pages from OSTI.
 
