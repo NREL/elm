@@ -190,22 +190,18 @@ class OstiList(list):
         self._response = self._session.get(self.url)
 
         if not self._response.ok:
-            msg = f'OSTI API Request got error {self._response.status_code}: "{self._response.reason}"'
+            msg = f'''OSTI API Request got error {self._response.status_code}:
+              "{self._response.reason}"'''
             raise RuntimeError(msg)
 
         try:
             raw_text = self._response.text
+            if raw_text.endswith('}\r\n]'):
+                raw_text = raw_text[:-1]
             first_page = json.loads(raw_text)
-        except (json.JSONDecodeError, UnicodeError):
-            try:
-                raw_text = self._response.text.encode('utf-8').decode('unicode-escape')
-                raw_text = raw_text.strip()
-                raw_text = raw_text.replace('}\r\n]', '}]')
-                raw_text = re.sub(r',\s*([}\]])', r'\1', raw_text)
-                first_page = json.loads(raw_text)
-            except Exception as e:
-                logger.error(f"JSON decode error after cleaning: {str(e)}\nRaw text: {raw_text[:500]}...")
-                raise
+        except (json.JSONDecodeError, UnicodeError) as e:
+            logger.error(f"JSON decode error: {str(e)}\nRaw text: {raw_text[:500]}...")
+            raise
 
         self._n_pages = 1
         if 'last' in self._response.links:
