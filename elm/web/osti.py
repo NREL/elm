@@ -191,14 +191,12 @@ class OstiList(list):
             msg = f'OSTI API Request got error {self._response.status_code}: "{self._response.reason}"'
             raise RuntimeError(msg)
 
-        # Clean and parse response
         raw_text = self._response.text.encode('utf-8').decode('unicode-escape')
         try:
             first_page = json.loads(raw_text)
         except json.JSONDecodeError:
-            # Add basic cleaning of common JSON issues
-            raw_text = raw_text.replace('}\r\n]', '}]')  # Fix malformed array endings
-            raw_text = re.sub(r',\s*([}\]])', r'\1', raw_text)  # Remove trailing commas
+            raw_text = raw_text.replace('}\r\n]', '}]')
+            raw_text = re.sub(r',\s*([}\]])', r'\1', raw_text)
             first_page = json.loads(raw_text)
 
         self._n_pages = 1
