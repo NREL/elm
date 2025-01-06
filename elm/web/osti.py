@@ -212,7 +212,7 @@ class OstiList(list):
             first_page = json.loads(cleaned_text)
 
         except (json.JSONDecodeError, UnicodeError) as e:
-            logger.error(f"JSON decode error: {str(e)}\nRaw text: {raw_text[:500]}...")
+            logger.error(f"JSON decode error: {str(e)}\nRaw text: {raw_text[:1000]}...")
             # One more attempt with minimal cleaning
             try:
                 minimal_clean = raw_text.replace(r'\"', '"').replace(r"\'", "'")

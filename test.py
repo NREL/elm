@@ -31,7 +31,6 @@ def parse_json_safely(text: str) -> List[Dict]:
         return result
 
     except json.JSONDecodeError as e:
-        logger.error(f"Failed to parse JSON: {str(e)}\nFirst 500 chars: {text[:500]}")
         # One more attempt with minimal cleaning
         try:
             minimal_clean = text.replace(r'\"', '"').replace(r"\'", "'")
