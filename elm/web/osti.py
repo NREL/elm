@@ -6,6 +6,7 @@ import re
 import copy
 import requests
 import json
+from typing import Dict, List
 import os
 import pandas as pd
 import logging
@@ -187,11 +188,33 @@ class OstiList(list):
 
     def clean_escape_sequences(self, text: str) -> str:
         """Clean problematic escape sequences in text"""
+        # Replace known problematic escape sequences
         text = text.replace(r'\"', '"')
         text = text.replace(r'\/', '/')
         text = text.replace(r"\'", "'")
+
+        # Remove any remaining invalid escapes
         text = re.sub(r'\\(?!["\\/bfnrt])', '', text)
+
         return text
+
+    def parse_json_safely(self, text: str) -> List[Dict]:
+        """Safely parse JSON with escape sequence handling"""
+        try:
+            # Pre-process the text to handle escape sequences
+            cleaned_text = self.clean_escape_sequences(text)
+
+            # Parse JSON
+            result = json.loads(cleaned_text)
+            return result
+
+        except json.JSONDecodeError:
+            # One more attempt with minimal cleaning
+            try:
+                minimal_clean = text.replace(r'\"', '"').replace(r"\'", "'")
+                return json.loads(minimal_clean)
+            except json.JSONDecodeError:
+                raise
 
     def _get_first(self):
         """Get the first page of OSTI records"""
@@ -202,30 +225,15 @@ class OstiList(list):
             raise RuntimeError(msg)
 
         try:
-            # Get raw text and normalize newlines
-            raw_text = self._response.text.strip()
+            # Get raw text without any decoding tricks
+            raw_text = self._response.text
 
-            # Remove any extraneous newlines between records
-            raw_text = re.sub(r'},\s*\r?\n+\s*{', '},{', raw_text)
-
-            # Handle malformed array endings
-            if raw_text.endswith('}\r\n]'):
-                raw_text = raw_text[:-3] + '}]'
-
-            # Clean any remaining newlines within the JSON
-            raw_text = raw_text.replace('\r\n', '')
-
-            # Parse JSON
-            first_page = json.loads(raw_text)
+            # Parse the records using the safe parser
+            first_page = self.parse_json_safely(raw_text)
 
         except (json.JSONDecodeError, UnicodeError) as e:
             logger.error(f"JSON decode error: {str(e)}\nRaw text: {raw_text[:500]}...")
-            # Fallback attempt - strip all whitespace
-            try:
-                stripped_text = re.sub(r'\s+', '', raw_text)
-                first_page = json.loads(stripped_text)
-            except json.JSONDecodeError:
-                raise
+            raise
 
         self._n_pages = 1
         if 'last' in self._response.links:
