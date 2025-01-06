@@ -205,7 +205,8 @@ class OstiList(list):
             url = self._response.links['last']['url']
             self._n_pages = int(url.split('page=')[-1])
 
-        logger.debug(f'Found approximately {self._n_pages * len(first_page)} records.')
+        logger.debug(f'''Found approximately
+            {self._n_pages * len(first_page)} records.''')
 
         return first_page
     def _get_pages(self, n_pages):
