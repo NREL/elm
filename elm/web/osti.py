@@ -195,10 +195,12 @@ class OstiList(list):
 
         raw_text = self._response.text.encode('utf-8').decode('unicode-escape')
 
-        # Clean malformed JSON response
+        # Clean JSON formatting issues
         raw_text = raw_text.strip()
-        raw_text = raw_text.replace('}\r\n]', '}]')
-        raw_text = raw_text.rstrip(',')  # Remove trailing commas
+        raw_text = raw_text.replace('\r\n', '')  # Remove all newlines
+        raw_text = raw_text.replace('},]', '}]')  # Fix malformed array endings
+        raw_text = re.sub(r',\s*}', '}', raw_text)  # Remove trailing commas before closing braces
+        raw_text = re.sub(r',\s*]', ']', raw_text)  # Remove trailing commas before closing brackets
 
         try:
             first_page = json.loads(raw_text)
@@ -213,6 +215,7 @@ class OstiList(list):
 
         logger.debug(f'Found approximately {self._n_pages * len(first_page)} records.')
         return first_page
+
     def _get_pages(self, n_pages):
         """Get response pages up to n_pages from OSTI.
 
