@@ -198,25 +198,32 @@ class OstiList(list):
         self._response = self._session.get(self.url)
 
         if not self._response.ok:
-            msg = f'''OSTI API Request got error
-            {self._response.status_code}: "{self._response.reason}"'''
+            msg = f'OSTI API Request got error {self._response.status_code}: "{self._response.reason}"'
             raise RuntimeError(msg)
 
         try:
-            raw_text = self._response.text
+            # Get raw text and normalize newlines
+            raw_text = self._response.text.strip()
+
+            # Remove any extraneous newlines between records
+            raw_text = re.sub(r'},\s*\r?\n+\s*{', '},{', raw_text)
+
+            # Handle malformed array endings
             if raw_text.endswith('}\r\n]'):
-                raw_text = raw_text[:-1]
-            cleaned_text = self.clean_escape_sequences(raw_text)
+                raw_text = raw_text[:-3] + '}]'
+
+            # Clean any remaining newlines within the JSON
+            raw_text = raw_text.replace('\r\n', '')
 
             # Parse JSON
-            first_page = json.loads(cleaned_text)
+            first_page = json.loads(raw_text)
 
         except (json.JSONDecodeError, UnicodeError) as e:
-            logger.error(f"JSON decode error: {str(e)}\nRaw text: {raw_text[:1000]}...")
-            # One more attempt with minimal cleaning
+            logger.error(f"JSON decode error: {str(e)}\nRaw text: {raw_text[:500]}...")
+            # Fallback attempt - strip all whitespace
             try:
-                minimal_clean = raw_text.replace(r'\"', '"').replace(r"\'", "'")
-                first_page = json.loads(minimal_clean)
+                stripped_text = re.sub(r'\s+', '', raw_text)
+                first_page = json.loads(stripped_text)
             except json.JSONDecodeError:
                 raise
 
