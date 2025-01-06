@@ -193,20 +193,19 @@ class OstiList(list):
             msg = f'OSTI API Request got error {self._response.status_code}: "{self._response.reason}"'
             raise RuntimeError(msg)
 
-        raw_text = self._response.text.encode('utf-8').decode('unicode-escape')
-
-        # Clean JSON formatting issues
-        raw_text = raw_text.strip()
-        raw_text = raw_text.replace('\r\n', '')  # Remove all newlines
-        raw_text = raw_text.replace('},]', '}]')  # Fix malformed array endings
-        raw_text = re.sub(r',\s*}', '}', raw_text)  # Remove trailing commas before closing braces
-        raw_text = re.sub(r',\s*]', ']', raw_text)  # Remove trailing commas before closing brackets
-
         try:
+            raw_text = self._response.text
             first_page = json.loads(raw_text)
-        except json.JSONDecodeError as e:
-            logger.error(f"JSON decode error: {str(e)}\nRaw text: {raw_text}")
-            raise
+        except (json.JSONDecodeError, UnicodeError):
+            try:
+                raw_text = self._response.text.encode('utf-8').decode('unicode-escape')
+                raw_text = raw_text.strip()
+                raw_text = raw_text.replace('}\r\n]', '}]')
+                raw_text = re.sub(r',\s*([}\]])', r'\1', raw_text)
+                first_page = json.loads(raw_text)
+            except Exception as e:
+                logger.error(f"JSON decode error after cleaning: {str(e)}\nRaw text: {raw_text[:500]}...")
+                raise
 
         self._n_pages = 1
         if 'last' in self._response.links:
@@ -217,28 +216,28 @@ class OstiList(list):
         return first_page
 
     def _get_pages(self, n_pages):
-        """Get response pages up to n_pages from OSTI.
+            """Get response pages up to n_pages from OSTI.
 
-        Parameters
-        ----------
-        n_pages : int
-            Number of pages to retrieve
+            Parameters
+            ----------
+            n_pages : int
+                Number of pages to retrieve
 
-        Returns
-        -------
-        next_pages : list
-            This function will return a generator of next pages, each of which
-            is a list of OSTI records
-        """
-        if n_pages > 1:
-            for page in range(2, self._n_pages + 1):
-                if page <= n_pages:
-                    next_page = self._session.get(self.url,
-                                                  params={'page': page})
-                    next_page = next_page.json()
-                    yield next_page
-                else:
-                    break
+            Returns
+            -------
+            next_pages : list
+                This function will return a generator of next pages, each of which
+                is a list of OSTI records
+            """
+            if n_pages > 1:
+                for page in range(2, self._n_pages + 1):
+                    if page <= n_pages:
+                        next_page = self._session.get(self.url,
+                                                    params={'page': page})
+                        next_page = next_page.json()
+                        yield next_page
+                    else:
+                        break
 
     def _get_all(self, n_pages):
         """Get all pages of records up to n_pages.
