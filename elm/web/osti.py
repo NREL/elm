@@ -185,23 +185,39 @@ class OstiList(list):
         records = [OstiRecord(single) for single in records]
         super().__init__(records)
 
+    def clean_escape_sequences(self, text: str) -> str:
+        """Clean problematic escape sequences in text"""
+        text = text.replace(r'\"', '"')
+        text = text.replace(r'\/', '/')
+        text = text.replace(r"\'", "'")
+        text = re.sub(r'\\(?!["\\/bfnrt])', '', text)
+        return text
+
     def _get_first(self):
         """Get the first page of OSTI records"""
         self._response = self._session.get(self.url)
 
         if not self._response.ok:
-            msg = f'''OSTI API Request got error {self._response.status_code}:
-              "{self._response.reason}"'''
+            msg = f'OSTI API Request got error {self._response.status_code}: "{self._response.reason}"'
             raise RuntimeError(msg)
 
         try:
             raw_text = self._response.text
             if raw_text.endswith('}\r\n]'):
                 raw_text = raw_text[:-1]
-            first_page = json.loads(raw_text)
+            cleaned_text = self.clean_escape_sequences(raw_text)
+
+            # Parse JSON
+            first_page = json.loads(cleaned_text)
+
         except (json.JSONDecodeError, UnicodeError) as e:
             logger.error(f"JSON decode error: {str(e)}\nRaw text: {raw_text[:500]}...")
-            raise
+            # One more attempt with minimal cleaning
+            try:
+                minimal_clean = raw_text.replace(r'\"', '"').replace(r"\'", "'")
+                first_page = json.loads(minimal_clean)
+            except json.JSONDecodeError:
+                raise
 
         self._n_pages = 1
         if 'last' in self._response.links:
