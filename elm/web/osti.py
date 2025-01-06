@@ -190,28 +190,29 @@ class OstiList(list):
         self._response = self._session.get(self.url)
 
         if not self._response.ok:
-            msg = f'''OSTI API Request got error
-            {self._response.status_code}: "{self._response.reason}"'''
+            msg = f'OSTI API Request got error {self._response.status_code}: "{self._response.reason}"'
             raise RuntimeError(msg)
 
         raw_text = self._response.text.encode('utf-8').decode('unicode-escape')
+
+        # Clean malformed JSON response
+        raw_text = raw_text.strip()
+        raw_text = raw_text.replace('}\r\n]', '}]')
+        raw_text = raw_text.rstrip(',')  # Remove trailing commas
+
         try:
             first_page = json.loads(raw_text)
-        except json.JSONDecodeError:
-            raw_text = raw_text.replace('}\r\n]', '}]')
-            raw_text = re.sub(r',\s*([}\]])', r'\1', raw_text)
-            first_page = json.loads(raw_text)
+        except json.JSONDecodeError as e:
+            logger.error(f"JSON decode error: {str(e)}\nRaw text: {raw_text}")
+            raise
 
         self._n_pages = 1
         if 'last' in self._response.links:
             url = self._response.links['last']['url']
             self._n_pages = int(url.split('page=')[-1])
 
-        logger.debug(f'''Found approximately
-            {self._n_pages * len(first_page)} records.''')
-
+        logger.debug(f'Found approximately {self._n_pages * len(first_page)} records.')
         return first_page
-
     def _get_pages(self, n_pages):
         """Get response pages up to n_pages from OSTI.
 
