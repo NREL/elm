@@ -198,7 +198,8 @@ class OstiList(list):
         self._response = self._session.get(self.url)
 
         if not self._response.ok:
-            msg = f'OSTI API Request got error {self._response.status_code}: "{self._response.reason}"'
+            msg = f'''OSTI API Request got error
+            {self._response.status_code}: "{self._response.reason}"'''
             raise RuntimeError(msg)
 
         try:
