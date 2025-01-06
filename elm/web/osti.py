@@ -29,7 +29,9 @@ class OstiRecord(dict):
 
     @staticmethod
     def strip_nested_brackets(text):
-        """Remove text between brackets/parentheses for cleaning OSTI text"""
+        """
+        Remove text between brackets/parentheses for cleaning OSTI text
+        """
         ret = ''
         skip1c = 0
         skip2c = 0
