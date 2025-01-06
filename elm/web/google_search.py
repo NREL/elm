@@ -274,7 +274,7 @@ async def _load_docs(urls, browser_semaphore=None, **kwargs):
     docs = await file_loader.fetch_all(*urls)
 
     logger.debug(
-        "Loaded the following number of pages for docs: %s",
+        "Loaded the following number of pages for docs:\n%s",
         pprint.PrettyPrinter().pformat(
             {
                 doc.metadata.get("source", "Unknown"): len(doc.pages)
