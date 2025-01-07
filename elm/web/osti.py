@@ -336,7 +336,7 @@ class OstiList(list):
             it does not already exist.
         """
         logger.info('Downloading {} records to: {}'
-                    .format(len(self), out_dir))
+                .format(len(self), out_dir))
         os.makedirs(out_dir, exist_ok=True)
         for record in self:
             fp_out = os.path.join(out_dir, record.osti_id + '.pdf')
@@ -345,7 +345,7 @@ class OstiList(list):
                     record.download(fp_out)
                 except Exception as e:
                     logger.exception('Could not download OSTI ID {} "{}": {}'
-                                    .format(record.osti_id, record.title, e))
+                                .format(record.osti_id, record.title, e))
         logger.info('Finished download!')
 
     @property
