@@ -149,7 +149,6 @@ class OstiRecord(dict):
         fp : str
             Filepath to download this record to, typically a .pdf
         """
-        # OSTI returns citation on first query and pdf on second (weird)
         session = requests.Session()
         response = session.get(self.url)
         response = session.get(self.url)
@@ -172,8 +171,8 @@ class OstiList(list):
                 https://www.osti.gov/api/v1/docs
         n_pages : int
             Number of pages to get from the API. Typical response has 20
-            entries per page. Default of 1 ensures that this class doesnt hang
-            on a million responses.
+            entries per page. Default of 1 ensures that this class doesnt
+            hang on a million responses.
         """
 
         self.url = url
@@ -187,7 +186,18 @@ class OstiList(list):
         super().__init__(records)
 
     def clean_escape_sequences(self, text: str) -> str:
-        """Clean problematic escape sequences in text"""
+        """Clean problematic escape sequences and formatting in JSON text.
+
+        Parameters
+        ----------
+        text : str
+            Raw JSON text to be cleaned
+
+        Returns
+        -------
+        str
+            Cleaned JSON text with proper escape sequences and formatting
+        """
         # First fix any invalid escape sequences
         text = re.sub(r'\\([^"\\/bfnrtu])', r'\1', text)
 
@@ -213,29 +223,26 @@ class OstiList(list):
     def parse_json_safely(self, text: str) -> List[Dict]:
         """Safely parse JSON with multiple fallback strategies"""
         try:
-            # First attempt: direct parse after cleaning
             cleaned_text = self.clean_escape_sequences(text)
             return json.loads(cleaned_text)
         except json.JSONDecodeError as e1:
             logger.debug(f"First parse attempt failed: {e1}")
             try:
-                # Second attempt: more aggressive cleaning
-                text = re.sub(r'[\x00-\x1F]+', '', text)  # Remove control characters
-                text = re.sub(r'\\u[0-9a-fA-F]{4}', '', text)  # Remove unicode escapes
-                text = re.sub(r'\s+', ' ', text)  # Normalize whitespace
+                text = re.sub(r'[\x00-\x1F]+', '', text)
+                text = re.sub(r'\\u[0-9a-fA-F]{4}', '', text)
+                text = re.sub(r'\s+', ' ', text)
                 return json.loads(text)
             except json.JSONDecodeError as e2:
                 logger.debug(f"Second parse attempt failed: {e2}")
                 try:
-                    # Final attempt: extract what we can
                     matches = re.findall(r'{[^{}]*}', text)
                     if matches:
-                        # Reconstruct array with valid objects
                         valid_json = f"[{','.join(matches)}]"
                         return json.loads(valid_json)
                     raise e2
                 except json.JSONDecodeError as e3:
-                    logger.error(f"All parsing attempts failed. Final error: {e3}")
+                    logger.error(f"""All parsing attempts
+                                 failed. Final error: {e3}""")
                     raise
 
     def _get_first(self):
@@ -251,7 +258,8 @@ class OstiList(list):
             raw_text = self._response.text
             first_page = self.parse_json_safely(raw_text)
         except (json.JSONDecodeError, UnicodeError) as e:
-            logger.error(f"JSON decode error: {str(e)}\nRaw text: {raw_text[:500]}...")
+            logger.error(f"""JSON decode error:
+                        {str(e)}\nRaw text: {raw_text[:500]}...""")
             raise
         self._n_pages = 1
         if 'last' in self._response.links:
@@ -284,7 +292,8 @@ class OstiList(list):
                     params={'page': page}
                 )
                 if not response.ok:
-                    logger.error(f"Failed to get page {page}: {response.status_code}")
+                    logger.error(f"""Failed to get page {page}:
+                                 {response.status_code}""")
                     continue
                 page_records = self.parse_json_safely(response.text)
 
@@ -317,15 +326,17 @@ class OstiList(list):
 
     def download(self, out_dir):
         """Download all PDFs from the records in this OSTI object into a
-        directory. PDFs will be given file names based on their OSTI record ID
+        directory. PDFs will be given file names based on their OSTI record
+        ID
 
         Parameters
         ----------
         out_dir : str
-            Directory to download PDFs to. This directory will be created if it
-            does not already exist.
+            Directory to download PDFs to. This directory will be created
+            if it does not already exist.
         """
-        logger.info('Downloading {} records to: {}'.format(len(self), out_dir))
+        logger.info('''Downloading {} records to: {}'''
+                    .format(len(self), out_dir))
         os.makedirs(out_dir, exist_ok=True)
         for record in self:
             fp_out = os.path.join(out_dir, record.osti_id + '.pdf')
@@ -334,7 +345,7 @@ class OstiList(list):
                     record.download(fp_out)
                 except Exception as e:
                     logger.exception('Could not download OSTI ID {} "{}": {}'
-                                     .format(record.osti_id, record.title, e))
+                                    .format(record.osti_id, record.title, e))
         logger.info('Finished download!')
 
     @property
