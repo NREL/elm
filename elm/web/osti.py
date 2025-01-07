@@ -344,8 +344,10 @@ class OstiList(list):
                 try:
                     record.download(fp_out)
                 except Exception as e:
-                    logger.exception('Could not download OSTI ID {} "{}": {}'
-                                .format(record.osti_id, record.title, e))
+                    msg = f'''Could not download OSTI ID {record.osti_id}
+                    "{record.title}": {e}'''
+                    logger.exception(msg)
+
         logger.info('Finished download!')
 
     @property
