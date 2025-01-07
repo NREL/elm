@@ -326,16 +326,16 @@ class OstiList(list):
 
     def download(self, out_dir):
         """Download all PDFs from the records in this OSTI object into a
-        directory. PDFs will be given file names based on their OSTI record
-        ID
+        directory. PDFs will be given file names based on their OSTI
+        record ID
 
         Parameters
         ----------
         out_dir : str
-            Directory to download PDFs to. This directory will be created
-            if it does not already exist.
+            Directory to download PDFs to. This directory will be created if
+            it does not already exist.
         """
-        logger.info('''Downloading {} records to: {}'''
+        logger.info('Downloading {} records to: {}'
                     .format(len(self), out_dir))
         os.makedirs(out_dir, exist_ok=True)
         for record in self:

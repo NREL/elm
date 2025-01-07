@@ -26,6 +26,7 @@ def test_osti_from_url():
 
     assert len(docs) == 12
 
+
 def test_osti_from_oids():
     """Test osti list, make sure we can find specific oids from storage futures
     study"""
