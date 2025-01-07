@@ -250,7 +250,8 @@ class OstiList(list):
         self._response = self._session.get(self.url)
 
         if not self._response.ok:
-            msg = f'''OSTI API Request got error {self._response.status_code}:
+            msg = f'''OSTI API Request got error
+            {self._response.status_code}:
             "{self._response.reason}"'''
             raise RuntimeError(msg)
 
@@ -326,8 +327,8 @@ class OstiList(list):
 
     def download(self, out_dir):
         """Download all PDFs from the records in this OSTI object into a
-        directory. PDFs will be given file names based on their OSTI
-        record ID
+        directory. PDFs will be given file names based on their OSTI record
+        ID
 
         Parameters
         ----------
@@ -335,8 +336,7 @@ class OstiList(list):
             Directory to download PDFs to. This directory will be created if
             it does not already exist.
         """
-        logger.info('Downloading {} records to: {}'
-                .format(len(self), out_dir))
+        logger.info(f'Downloading {len(self)} records to: {out_dir}')
         os.makedirs(out_dir, exist_ok=True)
         for record in self:
             fp_out = os.path.join(out_dir, record.osti_id + '.pdf')
@@ -344,8 +344,8 @@ class OstiList(list):
                 try:
                     record.download(fp_out)
                 except Exception as e:
-                    msg = f'''Could not download OSTI ID {record.osti_id}
-                    "{record.title}": {e}'''
+                    msg = (f'Could not download OSTI ID {record.osti_id} '
+                           f'"{record.title}": {e}')
                     logger.exception(msg)
 
         logger.info('Finished download!')
