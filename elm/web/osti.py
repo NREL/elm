@@ -248,48 +248,51 @@ class OstiList(list):
             raise RuntimeError(msg)
 
         try:
-            # Get raw text without any decoding tricks
             raw_text = self._response.text
-            logger.debug(f"Received response length: {len(raw_text)}")
-
-            # Parse the records using the safe parser
             first_page = self.parse_json_safely(raw_text)
-
         except (json.JSONDecodeError, UnicodeError) as e:
             logger.error(f"JSON decode error: {str(e)}\nRaw text: {raw_text[:500]}...")
             raise
-
         self._n_pages = 1
         if 'last' in self._response.links:
             url = self._response.links['last']['url']
             self._n_pages = int(url.split('page=')[-1])
-
-        logger.debug(f'Found approximately {self._n_pages * len(first_page)} records.')
         return first_page
 
     def _get_pages(self, n_pages):
-            """Get response pages up to n_pages from OSTI.
+        """Get response pages up to n_pages from OSTI.
 
-            Parameters
-            ----------
-            n_pages : int
-                Number of pages to retrieve
+        Parameters
+        ----------
+        n_pages : int
+            Number of pages to retrieve
 
-            Returns
-            -------
-            next_pages : list
-                This function will return a generator of next pages, each of which
-                is a list of OSTI records
-            """
-            if n_pages > 1:
-                for page in range(2, self._n_pages + 1):
-                    if page <= n_pages:
-                        next_page = self._session.get(self.url,
-                                                    params={'page': page})
-                        next_page = next_page.json()
-                        yield next_page
-                    else:
-                        break
+        Returns
+        -------
+        next_pages : list
+            Generator of next pages, each a list of OSTI records
+        """
+        if n_pages <= 1:
+            return
+        for page in range(2, self._n_pages + 1):
+            if page > n_pages:
+                break
+
+            try:
+                response = self._session.get(
+                    self.url,
+                    params={'page': page}
+                )
+                if not response.ok:
+                    logger.error(f"Failed to get page {page}: {response.status_code}")
+                    continue
+                page_records = self.parse_json_safely(response.text)
+
+                yield page_records
+
+            except Exception as e:
+                logger.error(f"Error processing page {page}: {str(e)}")
+                continue
 
     def _get_all(self, n_pages):
         """Get all pages of records up to n_pages.
