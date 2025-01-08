@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-# fmt: off
 """ELM Ordinances CLI."""
 import sys
 import json
 import click
 import asyncio
 import logging
+import multiprocessing
 
 from elm.version import __version__
 from elm.ords.process import process_counties_with_openai
@@ -36,6 +36,12 @@ def ords(config, verbose):
         logger = logging.getLogger("elm")
         logger.addHandler(logging.StreamHandler(stream=sys.stdout))
         logger.setLevel(config.get("log_level", "INFO"))
+
+    # Need to set start method to "spawn" instead of "fork" for unix
+    # systems. If this call is not present, software hangs when process
+    # pool executor is launched.
+    # More info here: https://stackoverflow.com/a/63897175/20650649
+    multiprocessing.set_start_method('spawn')
 
     # asyncio.run(...) doesn't throw exceptions correctly for some reason...
     loop = asyncio.get_event_loop()
