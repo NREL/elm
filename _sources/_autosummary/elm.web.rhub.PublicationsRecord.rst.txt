@@ -1,0 +1,49 @@
+elm.web.rhub.PublicationsRecord
+===============================
+
+.. currentmodule:: elm.web.rhub
+
+.. autoclass:: PublicationsRecord
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PublicationsRecord.clear
+      ~PublicationsRecord.copy
+      ~PublicationsRecord.download
+      ~PublicationsRecord.fromkeys
+      ~PublicationsRecord.get
+      ~PublicationsRecord.items
+      ~PublicationsRecord.keys
+      ~PublicationsRecord.pop
+      ~PublicationsRecord.popitem
+      ~PublicationsRecord.save_abstract
+      ~PublicationsRecord.setdefault
+      ~PublicationsRecord.update
+      ~PublicationsRecord.values
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PublicationsRecord.abstract
+      ~PublicationsRecord.authors
+      ~PublicationsRecord.category
+      ~PublicationsRecord.id
+      ~PublicationsRecord.links
+      ~PublicationsRecord.title
+      ~PublicationsRecord.url
+      ~PublicationsRecord.year
+   
+   

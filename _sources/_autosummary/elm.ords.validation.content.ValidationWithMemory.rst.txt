@@ -1,0 +1,24 @@
+elm.ords.validation.content.ValidationWithMemory
+================================================
+
+.. currentmodule:: elm.ords.validation.content
+
+.. autoclass:: ValidationWithMemory
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ValidationWithMemory.parse_from_ind
+   
+   
+
+   
+   
+   

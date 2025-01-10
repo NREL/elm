@@ -1,0 +1,6 @@
+elm.ords.process.process\_county\_with\_logging
+===============================================
+
+.. currentmodule:: elm.ords.process
+
+.. autofunction:: process_county_with_logging

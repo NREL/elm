@@ -1,0 +1,6 @@
+elm.web.google\_search.filter\_documents
+========================================
+
+.. currentmodule:: elm.web.google_search
+
+.. autofunction:: filter_documents

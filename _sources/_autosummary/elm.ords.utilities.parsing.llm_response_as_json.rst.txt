@@ -1,0 +1,6 @@
+elm.ords.utilities.parsing.llm\_response\_as\_json
+==================================================
+
+.. currentmodule:: elm.ords.utilities.parsing
+
+.. autofunction:: llm_response_as_json

@@ -1,0 +1,31 @@
+elm.web.google\_search.PlaywrightGoogleLinkSearch
+=================================================
+
+.. currentmodule:: elm.web.google_search
+
+.. autoclass:: PlaywrightGoogleLinkSearch
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PlaywrightGoogleLinkSearch.results
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PlaywrightGoogleLinkSearch.EXPECTED_RESULTS_PER_PAGE
+      ~PlaywrightGoogleLinkSearch.PAGE_LOAD_TIMEOUT
+   
+   

@@ -1,0 +1,33 @@
+elm.web.document.BaseDocument
+=============================
+
+.. currentmodule:: elm.web.document
+
+.. autoclass:: BaseDocument
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BaseDocument.FILE_EXTENSION
+      ~BaseDocument.WRITE_KWARGS
+      ~BaseDocument.empty
+      ~BaseDocument.raw_pages
+      ~BaseDocument.text
+   
+   

@@ -1,0 +1,51 @@
+elm.web.rhub.ProfilesRecord
+===========================
+
+.. currentmodule:: elm.web.rhub
+
+.. autoclass:: ProfilesRecord
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ProfilesRecord.clean_text
+      ~ProfilesRecord.clear
+      ~ProfilesRecord.copy
+      ~ProfilesRecord.download
+      ~ProfilesRecord.fromkeys
+      ~ProfilesRecord.get
+      ~ProfilesRecord.items
+      ~ProfilesRecord.keys
+      ~ProfilesRecord.pop
+      ~ProfilesRecord.popitem
+      ~ProfilesRecord.setdefault
+      ~ProfilesRecord.update
+      ~ProfilesRecord.values
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ProfilesRecord.education
+      ~ProfilesRecord.email
+      ~ProfilesRecord.first_name
+      ~ProfilesRecord.id
+      ~ProfilesRecord.last_name
+      ~ProfilesRecord.position
+      ~ProfilesRecord.profile_information
+      ~ProfilesRecord.publications
+      ~ProfilesRecord.title
+      ~ProfilesRecord.url
+   
+   
