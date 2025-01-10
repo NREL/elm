@@ -60,7 +60,7 @@ async def _intercept_route(route):  # pragma: no cover
 
 
 async def load_html_with_pw(  # pragma: no cover
-    url, browser_semaphore=None, **pw_launch_kwargs
+    url, browser_semaphore=None, timeout=90_000, **pw_launch_kwargs
 ):
     """Extract HTML from URL using Playwright.
 
@@ -72,6 +72,10 @@ async def load_html_with_pw(  # pragma: no cover
         Semaphore instance that can be used to limit the number of
         playwright browsers open concurrently. If ``None``, no limits
         are applied. By default, ``None``.
+    timeout : int, optional
+        Maximum time to wait for page loading state time in
+        milliseconds. Pass `0` to disable timeout.
+        By default, ``90,000``.
     **pw_launch_kwargs
         Keyword-value argument pairs to pass to
         :meth:`async_playwright.chromium.launch`.
@@ -82,25 +86,26 @@ async def load_html_with_pw(  # pragma: no cover
         HTML from page.
     """
     try:
-        text = await _load_html(url, browser_semaphore, **pw_launch_kwargs)
+        text = await _load_html(url, browser_semaphore=browser_semaphore,
+                                timeout=timeout, **pw_launch_kwargs)
     except (PlaywrightError, PlaywrightTimeoutError):
         text = ""
     return text
 
 
 async def _load_html(  # pragma: no cover
-    url, browser_sem=None, **pw_launch_kwargs
+    url, browser_semaphore=None, timeout=90_000, **pw_launch_kwargs
 ):
     """Load html using playwright"""
-    if browser_sem is None:
-        browser_sem = AsyncExitStack()
+    if browser_semaphore is None:
+        browser_semaphore = AsyncExitStack()
 
-    async with async_playwright() as p, browser_sem:
+    async with async_playwright() as p, browser_semaphore:
         browser = await p.chromium.launch(**pw_launch_kwargs)
         page = await browser.new_page()
         await page.route("**/*", _intercept_route)
         await page.goto(url)
-        await page.wait_for_load_state("networkidle", timeout=90_000)
+        await page.wait_for_load_state("networkidle", timeout=timeout)
         text = await page.content()
 
     return text
