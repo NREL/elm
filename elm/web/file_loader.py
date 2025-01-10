@@ -58,6 +58,9 @@ class AsyncFileLoader:
     }
     """Default header"""
 
+    PAGE_LOAD_TIMEOUT = 90_000
+    """Default page load timeout value in milliseconds"""
+
     def __init__(
         self,
         header_template=None,
@@ -208,9 +211,9 @@ class AsyncFileLoader:
             return doc, url_bytes
 
         logger.trace("PDF read failed; fetching HTML content from %r", url)
-        text = await load_html_with_pw(
-            url, self.browser_semaphore, **self.pw_launch_kwargs
-        )
+        text = await load_html_with_pw(url, self.browser_semaphore,
+                                       timeout=self.PAGE_LOAD_TIMEOUT,
+                                       **self.pw_launch_kwargs)
         doc = await self.html_read_coroutine(text, **self.html_read_kwargs)
         if doc.pages:
             return doc, doc.text
