@@ -372,6 +372,7 @@ def read_pdf(pdf_bytes, verbose=True):
     """
     import pdftotext
 
+    logger.trace("Attempting to load %d bytes as pdf", len(pdf_bytes))
     try:
         pages = _load_pdf_possibly_multi_col(pdf_bytes)
     except pdftotext.Error as e:
@@ -380,6 +381,8 @@ def read_pdf(pdf_bytes, verbose=True):
             logger.exception(e)
         pages = []
 
+    logger.trace("`read_pdf` loaded %d bytes (%d pages)", len(pdf_bytes),
+                 len(pages))
     return pages
 
 

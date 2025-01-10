@@ -111,10 +111,10 @@ if __name__ == '__main__':
             full_response = ""
 
             out = wizard.chat(prompt,
-                              debug=True, stream=True, token_budget=6000,
+                              stream=True, token_budget=6000,
                               temperature=0.0, print_references=True,
                               convo=False, return_chat_obj=True)
-            references = out[-1]
+            references = out[2]
 
             for response in out[0]:
                 full_response += response.choices[0].delta.content or ""
