@@ -2,9 +2,11 @@
 """
 Utilities for retrieving data from OSTI.
 """
+import re
 import copy
 import requests
 import json
+from typing import Dict, List
 import os
 import pandas as pd
 import logging
@@ -28,7 +30,9 @@ class OstiRecord(dict):
 
     @staticmethod
     def strip_nested_brackets(text):
-        """Remove text between brackets/parentheses for cleaning OSTI text"""
+        """
+        Remove text between brackets/parentheses for cleaning OSTI text
+        """
         ret = ''
         skip1c = 0
         skip2c = 0
@@ -145,7 +149,6 @@ class OstiRecord(dict):
         fp : str
             Filepath to download this record to, typically a .pdf
         """
-        # OSTI returns citation on first query and pdf on second (weird)
         session = requests.Session()
         response = session.get(self.url)
         response = session.get(self.url)
@@ -168,8 +171,8 @@ class OstiList(list):
                 https://www.osti.gov/api/v1/docs
         n_pages : int
             Number of pages to get from the API. Typical response has 20
-            entries per page. Default of 1 ensures that this class doesnt hang
-            on a million responses.
+            entries per page. Default of 1 ensures that this class doesnt
+            hang on a million responses.
         """
 
         self.url = url
@@ -182,30 +185,87 @@ class OstiList(list):
         records = [OstiRecord(single) for single in records]
         super().__init__(records)
 
-    def _get_first(self):
-        """Get the first page of OSTI records
+    def clean_escape_sequences(self, text: str) -> str:
+        """Clean problematic escape sequences and formatting in JSON text.
+
+        Parameters
+        ----------
+        text : str
+            Raw JSON text to be cleaned
 
         Returns
         -------
-        list
+        str
+            Cleaned JSON text with proper escape sequences and formatting
         """
+        # First fix any invalid escape sequences
+        text = re.sub(r'\\([^"\\/bfnrtu])', r'\1', text)
+
+        # Handle proper escape sequences
+        text = text.replace(r'\"', '"')
+        text = text.replace(r'\/', '/')
+        text = text.replace(r"\'", "'")
+        text = text.replace(r'\b', '')
+        text = text.replace(r'\f', '')
+        text = text.replace(r'\n', '\n')
+        text = text.replace(r'\r', '\r')
+        text = text.replace(r'\t', '\t')
+
+        # Cleanup array structure
+        text = re.sub(r'\}\s*\r?\n\s*\]$', '}]', text)
+        text = re.sub(r'\]\s*\}\s*\r?\n\s*\]$', ']}]', text)
+
+        # Clean newlines between objects
+        text = re.sub(r'},\s*\r?\n\s*{', '},{', text)
+
+        return text.strip()
+
+    def parse_json_safely(self, text: str) -> List[Dict]:
+        """Safely parse JSON with multiple fallback strategies"""
+        try:
+            cleaned_text = self.clean_escape_sequences(text)
+            return json.loads(cleaned_text)
+        except json.JSONDecodeError as e1:
+            logger.debug(f"First parse attempt failed: {e1}")
+            try:
+                text = re.sub(r'[\x00-\x1F]+', '', text)
+                text = re.sub(r'\\u[0-9a-fA-F]{4}', '', text)
+                text = re.sub(r'\s+', ' ', text)
+                return json.loads(text)
+            except json.JSONDecodeError as e2:
+                logger.debug(f"Second parse attempt failed: {e2}")
+                try:
+                    matches = re.findall(r'{[^{}]*}', text)
+                    if matches:
+                        valid_json = f"[{','.join(matches)}]"
+                        return json.loads(valid_json)
+                    raise e2
+                except json.JSONDecodeError as e3:
+                    logger.error(f"""All parsing attempts
+                                 failed. Final error: {e3}""")
+                    raise
+
+    def _get_first(self):
+        """Get the first page of OSTI records"""
         self._response = self._session.get(self.url)
 
         if not self._response.ok:
-            msg = ('OSTI API Request got error {}: "{}"'
-                   .format(self._response.status_code,
-                           self._response.reason))
+            msg = f'''OSTI API Request got error
+            {self._response.status_code}:
+            "{self._response.reason}"'''
             raise RuntimeError(msg)
-        first_page = self._response.json()
 
+        try:
+            raw_text = self._response.text
+            first_page = self.parse_json_safely(raw_text)
+        except (json.JSONDecodeError, UnicodeError) as e:
+            logger.error(f"""JSON decode error:
+                        {str(e)}\nRaw text: {raw_text[:500]}...""")
+            raise
         self._n_pages = 1
         if 'last' in self._response.links:
             url = self._response.links['last']['url']
             self._n_pages = int(url.split('page=')[-1])
-
-        logger.debug('Found approximately {} records.'
-                     .format(self._n_pages * len(first_page)))
-
         return first_page
 
     def _get_pages(self, n_pages):
@@ -219,18 +279,30 @@ class OstiList(list):
         Returns
         -------
         next_pages : list
-            This function will return a generator of next pages, each of which
-            is a list of OSTI records
+            Generator of next pages, each a list of OSTI records
         """
-        if n_pages > 1:
-            for page in range(2, self._n_pages + 1):
-                if page <= n_pages:
-                    next_page = self._session.get(self.url,
-                                                  params={'page': page})
-                    next_page = next_page.json()
-                    yield next_page
-                else:
-                    break
+        if n_pages <= 1:
+            return
+        for page in range(2, self._n_pages + 1):
+            if page > n_pages:
+                break
+
+            try:
+                response = self._session.get(
+                    self.url,
+                    params={'page': page}
+                )
+                if not response.ok:
+                    logger.error(f"""Failed to get page {page}:
+                                 {response.status_code}""")
+                    continue
+                page_records = self.parse_json_safely(response.text)
+
+                yield page_records
+
+            except Exception as e:
+                logger.error(f"Error processing page {page}: {str(e)}")
+                continue
 
     def _get_all(self, n_pages):
         """Get all pages of records up to n_pages.
@@ -255,15 +327,16 @@ class OstiList(list):
 
     def download(self, out_dir):
         """Download all PDFs from the records in this OSTI object into a
-        directory. PDFs will be given file names based on their OSTI record ID
+        directory. PDFs will be given file names based on their OSTI record
+        ID
 
         Parameters
         ----------
         out_dir : str
-            Directory to download PDFs to. This directory will be created if it
-            does not already exist.
+            Directory to download PDFs to. This directory will be created if
+            it does not already exist.
         """
-        logger.info('Downloading {} records to: {}'.format(len(self), out_dir))
+        logger.info(f'Downloading {len(self)} records to: {out_dir}')
         os.makedirs(out_dir, exist_ok=True)
         for record in self:
             fp_out = os.path.join(out_dir, record.osti_id + '.pdf')
@@ -271,8 +344,10 @@ class OstiList(list):
                 try:
                     record.download(fp_out)
                 except Exception as e:
-                    logger.exception('Could not download OSTI ID {} "{}": {}'
-                                     .format(record.osti_id, record.title, e))
+                    msg = (f'Could not download OSTI ID {record.osti_id} '
+                           f'"{record.title}": {e}')
+                    logger.exception(msg)
+
         logger.info('Finished download!')
 
     @property

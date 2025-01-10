@@ -70,7 +70,6 @@ def test_chunk_and_embed(mocker):
 
     Note that embedding api is mocked here and not actually tested.
     """
-
     corpus = make_corpus(mocker)
     wizard = EnergyWizard(pd.DataFrame(corpus), token_budget=1000,
                           ref_col='ref')
@@ -79,14 +78,13 @@ def test_chunk_and_embed(mocker):
                         MockClass.create)
 
     question = 'What time is it?'
-    out = wizard.chat(question, debug=True, stream=False,
-                      print_references=True)
-    msg, query, ref = out
-
-    assert msg.startswith('hello!')
+    out = wizard.chat(question, stream=False, print_references=True)
+    response_message, query, references, performance = out
+    assert response_message.startswith('hello!')
     assert query.startswith(EnergyWizard.MODEL_INSTRUCTION)
     assert query.endswith(question)
-    assert 'source0' in ref
+    assert 'source0' in references
+    assert isinstance(performance, dict)
 
 
 def test_convo_query(mocker):
@@ -105,13 +103,13 @@ def test_convo_query(mocker):
     question1 = 'What time is it?'
     question2 = 'How about now?'
 
-    query = wizard.chat(question1, debug=True, stream=False, convo=True,
+    query = wizard.chat(question1, stream=False, convo=True,
                         print_references=True)[1]
     assert question1 in query
     assert question2 not in query
     assert len(wizard.messages) == 3
 
-    query = wizard.chat(question2, debug=True, stream=False, convo=True,
+    query = wizard.chat(question2, stream=False, convo=True,
                         print_references=True)[1]
     assert question1 in query
     assert question2 in query
@@ -120,7 +118,7 @@ def test_convo_query(mocker):
     wizard.clear()
     assert len(wizard.messages) == 1
 
-    query = wizard.chat(question2, debug=True, stream=False, convo=True,
+    query = wizard.chat(question2, stream=False, convo=True,
                         print_references=True)[1]
     assert question1 not in query
     assert question2 in query
