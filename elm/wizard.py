@@ -93,11 +93,11 @@ class EnergyWizardBase(ApiBase, ABC):
         references : list
             The list of references (strs) used in the engineered prompt is
             returned here
-        vector_query_time : float
-            measures vector database query time
         used_index : list
             Shows the indices of the documents used in making a query to the
             vector database
+        vector_query_time : float
+            measures vector database query time
         """
 
         self.messages.append({"role": "user", "content": query})
@@ -157,7 +157,6 @@ class EnergyWizardBase(ApiBase, ABC):
 
     def chat(self,
              query,
-             debug=True,
              stream=True,
              temperature=0,
              convo=False,
@@ -173,8 +172,6 @@ class EnergyWizardBase(ApiBase, ABC):
         ----------
         query : str
             Question being asked of EnergyWizard
-        debug : bool
-            Flag to return extra diagnostics on the engineered question.
         stream : bool
             Flag to print subsequent chunks of the response in a streaming
             fashion
@@ -194,23 +191,25 @@ class EnergyWizardBase(ApiBase, ABC):
             contents being added multiple times.
         print_references : bool
             Flag to print references if EnergyWizard is initialized with a
-            valid ref_col.
+            valid ``ref_col``.
         return_chat_obj : bool
-            Flag to only return the ChatCompletion from OpenAI API.
+            Flag to return the ChatCompletion object from OpenAI API instead of
+            the message string.
 
         Returns
         -------
-        response : str
-            GPT output / answer.
+        response : str | ChatCompletion
+            GPT response string ``if not return_chat_obj`` or OpenAI
+            ChatCompletion object ``if return_chat_obj``
         query : str
-            If debug is True, the engineered query asked of GPT will also be
-            returned here
+            The engineered query asked of GPT including retrieved context
         references : list
-            If debug is True, the list of references (strs) used in the
-            engineered prompt is returned here
-        performance : dict
-            dictionary with keys of total_chat_time,
-            chat_completion_time and vectordb_query_time.
+            The list of references (strs) used in the engineered prompt is
+            returned here
+        performance : dict | None
+            dictionary with keys of ``total_chat_time``,
+            ``chat_completion_time`` and ``vectordb_query_time``. If
+            return_chat_obj, this is None
         """
         start_chat_time = perf_counter()
         out = self.engineer_query(query, token_budget=token_budget,
@@ -228,8 +227,10 @@ class EnergyWizardBase(ApiBase, ABC):
         start_completion_time = perf_counter()
 
         response = self._client.chat.completions.create(**kwargs)
+
         if return_chat_obj:
-            return response, query, references
+            return response, query, references, None
+
         if stream:
             for chunk in response:
                 chunk_msg = chunk.choices[0].delta.content or ""
@@ -237,6 +238,7 @@ class EnergyWizardBase(ApiBase, ABC):
                 print(chunk_msg, end='')
         else:
             response_message = response.choices[0].message.content
+
         finish_completion_time = perf_counter()
         chat_completion_time = finish_completion_time - start_completion_time
 
@@ -250,6 +252,7 @@ class EnergyWizardBase(ApiBase, ABC):
             response_message += ref_msg
             if stream:
                 print(ref_msg)
+
         end_time = perf_counter()
         total_chat_time = end_time - start_chat_time
         performance = {
@@ -257,9 +260,8 @@ class EnergyWizardBase(ApiBase, ABC):
             "chat_completion_time": chat_completion_time,
             "vectordb_query_time": vector_query_time
         }
-        if debug:
-            return response_message, query, references, performance
-        return response_message, query, performance
+
+        return response_message, query, references, performance
 
 
 class EnergyWizard(EnergyWizardBase):
