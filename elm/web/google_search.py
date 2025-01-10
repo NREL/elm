@@ -62,6 +62,7 @@ class PlaywrightGoogleLinkSearch:
 
     async def _close_browser(self):
         """Close browser instance and reset internal attributes"""
+        logger.trace("Closing browser...")
         await self._browser.close()
         self._browser = None
 
@@ -70,9 +71,13 @@ class PlaywrightGoogleLinkSearch:
         logger.debug("Searching Google: %r", query)
         num_results = min(num_results, self.EXPECTED_RESULTS_PER_PAGE)
 
+        logger.trace("Loading browser page for query: %r", query)
         page = await self._browser.new_page()
+        logger.trace("Navigating to google for query: %r", query)
         await _navigate_to_google(page, timeout=self.PAGE_LOAD_TIMEOUT)
+        logger.trace("Performing google search for query: %r", query)
         await _perform_google_search(page, query)
+        logger.trace("Extracting links for query: %r", query)
         return await _extract_links(page, num_results)
 
     async def _skip_exc_search(self, query, num_results=10):
@@ -95,7 +100,9 @@ class PlaywrightGoogleLinkSearch:
                 )
                 for query in queries
             ]
+            logger.trace("Kicking off search for %d queries", len(searches))
             results = await asyncio.gather(*searches)
+            logger.trace("Got results for link search:\n%r", results)
             await self._close_browser()
         return results
 
@@ -247,7 +254,10 @@ async def _search_single(question, browser_sem, num_results=10, **kwargs):
         browser_sem = AsyncExitStack()
 
     search_engine = PlaywrightGoogleLinkSearch(**kwargs)
+    logger.trace("Single search browser_semaphore=%r", browser_sem)
     async with browser_sem:
+        logger.trace("Starting search for %r with browser_semaphore=%r",
+                     question, browser_sem)
         return await search_engine.results(question, num_results=num_results)
 
 
@@ -268,33 +278,35 @@ def _down_select_urls(search_results, num_urls=5):
 
 async def _load_docs(urls, browser_semaphore=None, **kwargs):
     """Load a document for each input URL."""
+    logger.trace("Downloading docs for the following URL's:\n%r", urls)
+    logger.trace("kwargs for AsyncFileLoader:\n%s",
+                 pprint.PrettyPrinter().pformat(kwargs))
     file_loader = AsyncFileLoader(
         browser_semaphore=browser_semaphore, **kwargs
     )
     docs = await file_loader.fetch_all(*urls)
 
-    logger.debug(
-        "Loaded the following number of pages for docs: %s",
-        pprint.PrettyPrinter().pformat(
-            {
-                doc.metadata.get("source", "Unknown"): len(doc.pages)
-                for doc in docs
-            }
-        ),
-    )
+    page_lens = {doc.metadata.get("source", "Unknown"): len(doc.pages)
+                 for doc in docs}
+    logger.debug("Loaded the following number of pages for docs:\n%s",
+                 pprint.PrettyPrinter().pformat(page_lens))
     return [doc for doc in docs if not doc.empty]
 
 
 async def _navigate_to_google(page, timeout=90_000):
     """Navigate to Google domain."""
     await page.goto("https://www.google.com")
+    logger.trace("Waiting for google to load")
     await page.wait_for_load_state("networkidle", timeout=timeout)
 
 
 async def _perform_google_search(page, search_query):
     """Fill in search bar with user query and click search button"""
+    logger.trace("Finding search bar for query: %r", search_query)
     await page.get_by_label("Search", exact=True).fill(search_query)
+    logger.trace("Closing autofill for query: %r", search_query)
     await _close_autofill_suggestions(page)
+    logger.trace("Hitting search button for query: %r", search_query)
     await page.get_by_role("button", name="Google Search").click()
 
 

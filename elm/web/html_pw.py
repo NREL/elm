@@ -97,14 +97,24 @@ async def _load_html(  # pragma: no cover
     url, browser_semaphore=None, timeout=90_000, **pw_launch_kwargs
 ):
     """Load html using playwright"""
+    logger.trace("`_load_html` pw_launch_kwargs=%r", pw_launch_kwargs)
+    logger.trace("browser_semaphore=%r", browser_semaphore)
+
     if browser_semaphore is None:
         browser_semaphore = AsyncExitStack()
 
+    logger.trace("Loading HTML using playwright")
     async with async_playwright() as p, browser_semaphore:
+        logger.trace("launching chromium; browser_semaphore=%r",
+                     browser_semaphore)
         browser = await p.chromium.launch(**pw_launch_kwargs)
+        logger.trace("Loading new page")
         page = await browser.new_page()
+        logger.trace("Intercepting requests and aborting blocked ones")
         await page.route("**/*", _intercept_route)
+        logger.trace("Navigating to: %r", url)
         await page.goto(url)
+        logger.trace("Waiting for load with timeout: %r", timeout)
         await page.wait_for_load_state("networkidle", timeout=timeout)
         text = await page.content()
 
