@@ -39,12 +39,20 @@ def test_chunk_and_embed(mocker):
     graph = nx.DiGraph(text='hello', name='Grant',
                        api=ApiBase(model='gpt-35-turbo'))
 
+    response_dict = {}
+
+    # pylint: disable=unused-argument
+    def callback(response, graph, node_name):
+        response_dict.update({node_name: response})
+
     graph.add_node('init', prompt='Say {text} to {name}')
     graph.add_edge('init', 'next', condition=lambda x: 'Grant' in x)
-    graph.add_node('next', prompt='How are you?')
+    graph.add_node('next', prompt='How are you?', callback=callback)
 
     tree = DecisionTree(graph)
     tree.run()
 
     assert 'init' in tree.history
     assert 'next' in tree.history
+    assert isinstance(tree['next']['response'], str)
+    assert isinstance(response_dict['next'], str)

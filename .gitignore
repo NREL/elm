@@ -122,6 +122,7 @@ examples/research_hub/pdfs/
 examples/research_hub/embed/
 examples/research_hub/txt/
 examples/research_hub/meta.csv
+
 *ignore*.py
 
 # pixi environments
