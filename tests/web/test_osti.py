@@ -16,8 +16,14 @@ def test_osti_from_url():
            '&has_fulltext=true'
            '&publication_date_start=03/01/2021'
            '&publication_date_end=03/01/2021')
+
     osti = OstiList(url, n_pages=1e6)
-    docs = [orec.title for orec in osti if 'la100' in orec.title.lower()]
+    docs = []
+    for orec in osti:
+        if orec.title is not None and isinstance(orec.title, str):
+            if 'la100' in orec.title.lower():
+                docs.append(orec.title)
+
     assert len(docs) == 12
 
 
