@@ -25,6 +25,35 @@ DEFAULT_HEADERS = {
 }
 """Default HTML header template"""
 _BT_RENAME = {"chromium": "chrome"}
+# block pages by resource type. e.g. image, stylesheet
+BLOCK_RESOURCE_TYPES = [
+    "beacon",
+    "csp_report",
+    "font",
+    "image",
+    "imageset",
+    "media",
+    "object",
+    "texttrack",
+    #  can block stylsheets and scripts, though it's not recommended:
+    # 'stylesheet',
+    # 'script',
+    # 'xhr',
+]
+# block popular 3rd party resources like tracking and advertisements.
+BLOCK_RESOURCE_NAMES = [
+    "adzerk",
+    "analytics",
+    "cdn.api.twitter",
+    "doubleclick",
+    "exelator",
+    "facebook",
+    "fontawesome",
+    "google",
+    "google-analytics",
+    "googletagmanager",
+    "lit.connatix",  # <- not sure about this one
+]
 
 
 def clean_search_query(query):
@@ -137,13 +166,16 @@ def write_url_doc_to_file(doc, file_content, out_dir, make_name_unique=False):
 
 
 @asynccontextmanager
-async def pw_page(browser):
+async def pw_page(browser, intercept_routes=False):
     """Create new page from playwright browser context
 
     Parameters
     ----------
     browser : :class:`playwright.Browser`
         A playwright browser instance.
+    intercept_routes : bool, default=False
+        Option to intercept all requests and abort blocked ones.
+        Be default, ``False``.
 
     Yields
     ------
@@ -166,7 +198,23 @@ async def pw_page(browser):
         logger.trace("Loading browser page")
         page = await context.new_page()
         await stealth_async(page)
+        if intercept_routes:
+            logger.trace("Intercepting requests and aborting blocked ones")
+            await page.route("**/*", _intercept_route)
         yield page
-
     finally:
         await context.close()
+
+
+async def _intercept_route(route):  # pragma: no cover
+    """intercept all requests and abort blocked ones
+
+    Source: https://scrapfly.io/blog/how-to-block-resources-in-playwright/
+    """
+    if route.request.resource_type in BLOCK_RESOURCE_TYPES:
+        return await route.abort()
+
+    if any(key in route.request.url for key in BLOCK_RESOURCE_NAMES):
+        return await route.abort()
+
+    return await route.continue_()
