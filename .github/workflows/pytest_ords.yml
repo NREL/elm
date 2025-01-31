@@ -44,7 +44,7 @@ jobs:
         python -m pip install psycopg2-binary
         python -m pip install boto3
         python -m pip install .
-        playwright install
+        rebrowser_playwright install
     - name: Run pytest and Generate coverage report
       shell: bash -l {0}
       run: |

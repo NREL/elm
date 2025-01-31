@@ -6,7 +6,7 @@ import logging
 from itertools import zip_longest, chain
 from contextlib import AsyncExitStack
 
-from playwright.async_api import (
+from rebrowser_playwright.async_api import (
     async_playwright,
     TimeoutError as PlaywrightTimeoutError,
 )

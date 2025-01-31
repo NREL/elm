@@ -6,9 +6,11 @@ We use Playwright so that javascript text is rendered before we scrape.
 import logging
 from contextlib import AsyncExitStack
 
-from playwright.async_api import async_playwright
-from playwright.async_api import Error as PlaywrightError
-from playwright.async_api import TimeoutError as PlaywrightTimeoutError
+from rebrowser_playwright.async_api import async_playwright
+from rebrowser_playwright.async_api import Error as PlaywrightError
+from rebrowser_playwright.async_api import (
+    TimeoutError as PlaywrightTimeoutError
+)
 from playwright_stealth import stealth_async
 
 logger = logging.getLogger(__name__)

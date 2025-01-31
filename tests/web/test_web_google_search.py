@@ -3,7 +3,9 @@
 from pathlib import Path
 
 import pytest
-from playwright.async_api import TimeoutError as PlaywrightTimeoutError
+from rebrowser_playwright.async_api import (
+    TimeoutError as PlaywrightTimeoutError
+)
 
 import elm.web.google_search
 
