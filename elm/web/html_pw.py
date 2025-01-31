@@ -11,7 +11,6 @@ from rebrowser_playwright.async_api import Error as PlaywrightError
 from rebrowser_playwright.async_api import (
     TimeoutError as PlaywrightTimeoutError
 )
-from playwright_stealth import stealth_async
 
 from elm.web.utilities import pw_page
 
