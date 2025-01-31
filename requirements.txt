@@ -12,6 +12,7 @@ nltk
 numpy
 pandas
 playwright
+playwright-stealth
 PyPDF2
 python-slugify
 scipy

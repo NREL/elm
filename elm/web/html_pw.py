@@ -9,6 +9,7 @@ from contextlib import AsyncExitStack
 from playwright.async_api import async_playwright
 from playwright.async_api import Error as PlaywrightError
 from playwright.async_api import TimeoutError as PlaywrightTimeoutError
+from playwright_stealth import stealth_async
 
 logger = logging.getLogger(__name__)
 
@@ -110,6 +111,7 @@ async def _load_html(  # pragma: no cover
         browser = await p.chromium.launch(**pw_launch_kwargs)
         logger.trace("Loading new page")
         page = await browser.new_page()
+        await stealth_async(page)
         logger.trace("Intercepting requests and aborting blocked ones")
         await page.route("**/*", _intercept_route)
         logger.trace("Navigating to: %r", url)

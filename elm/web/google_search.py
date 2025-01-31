@@ -10,6 +10,7 @@ from playwright.async_api import (
     async_playwright,
     TimeoutError as PlaywrightTimeoutError,
 )
+from playwright_stealth import stealth_async
 
 from elm.web.document import PDFDocument
 from elm.web.file_loader import AsyncFileLoader
@@ -73,6 +74,7 @@ class PlaywrightGoogleLinkSearch:
 
         logger.trace("Loading browser page for query: %r", query)
         page = await self._browser.new_page()
+        await stealth_async(page)
         logger.trace("Navigating to google for query: %r", query)
         await _navigate_to_google(page, timeout=self.PAGE_LOAD_TIMEOUT)
         logger.trace("Performing google search for query: %r", query)
