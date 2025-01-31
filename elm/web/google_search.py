@@ -10,11 +10,10 @@ from rebrowser_playwright.async_api import (
     async_playwright,
     TimeoutError as PlaywrightTimeoutError,
 )
-from playwright_stealth import stealth_async
 
 from elm.web.document import PDFDocument
 from elm.web.file_loader import AsyncFileLoader
-from elm.web.utilities import clean_search_query
+from elm.web.utilities import clean_search_query, pw_page
 
 
 logger = logging.getLogger(__name__)
@@ -72,15 +71,12 @@ class PlaywrightGoogleLinkSearch:
         logger.debug("Searching Google: %r", query)
         num_results = min(num_results, self.EXPECTED_RESULTS_PER_PAGE)
 
-        logger.trace("Loading browser page for query: %r", query)
-        page = await self._browser.new_page()
-        await stealth_async(page)
-        logger.trace("Navigating to google for query: %r", query)
-        await _navigate_to_google(page, timeout=self.PAGE_LOAD_TIMEOUT)
-        logger.trace("Performing google search for query: %r", query)
-        await _perform_google_search(page, query)
-        logger.trace("Extracting links for query: %r", query)
-        return await _extract_links(page, num_results)
+        async with pw_page(self._browser) as page:
+            await _navigate_to_google(page, timeout=self.PAGE_LOAD_TIMEOUT)
+            logger.trace("Performing google search for query: %r", query)
+            await _perform_google_search(page, query)
+            logger.trace("Extracting links for query: %r", query)
+            return await _extract_links(page, num_results)
 
     async def _skip_exc_search(self, query, num_results=10):
         """Perform search while ignoring timeout errors"""
