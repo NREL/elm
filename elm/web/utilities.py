@@ -6,6 +6,19 @@ from pathlib import Path
 
 from slugify import slugify
 
+DEFAULT_HEADERS = {
+    "Accept": (
+        "text/html,application/xhtml+xml,application/xml;"
+        "q=0.9,image/webp,*/*;q=0.8"
+    ),
+    "Accept-Language": "en-US,en;q=0.5",
+    "Referer": "https://www.google.com/",
+    "DNT": "1",
+    "Connection": "keep-alive",
+    "Upgrade-Insecure-Requests": "1",
+}
+"""Default HTML header template"""
+
 
 def clean_search_query(query):
     """Check if the first character is a digit and remove it if so.
