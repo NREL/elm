@@ -2,10 +2,16 @@
 """ELM Web Scraping utilities."""
 import uuid
 import hashlib
+import logging
 from pathlib import Path
+from random import uniform, randint
+from contextlib import asynccontextmanager
 
 from slugify import slugify
+from fake_useragent import UserAgent
+from playwright_stealth import stealth_async
 
+logger = logging.getLogger(__name__)
 DEFAULT_HEADERS = {
     "Accept": (
         "text/html,application/xhtml+xml,application/xml;"
@@ -18,6 +24,7 @@ DEFAULT_HEADERS = {
     "Upgrade-Insecure-Requests": "1",
 }
 """Default HTML header template"""
+_BT_RENAME = {"chromium": "chrome"}
 
 
 def clean_search_query(query):
@@ -127,3 +134,39 @@ def write_url_doc_to_file(doc, file_content, out_dir, make_name_unique=False):
     with open(out_fp, **doc.WRITE_KWARGS) as fh:
         fh.write(file_content)
     return out_fp
+
+
+@asynccontextmanager
+async def pw_page(browser):
+    """Create new page from playwright browser context
+
+    Parameters
+    ----------
+    browser : :class:`playwright.Browser`
+        A playwright browser instance.
+
+    Yields
+    ------
+    :class:`playwright.Page`
+        A new page that can be used for visiting websites.
+    """
+    browser_type = browser.browser_type.name
+    browser_type = _BT_RENAME.get(browser_type, browser_type)
+
+    logger.trace("Loading browser context for browser type %s", browser_type)
+    context = await browser.new_context(
+        base_url="http://127.0.0.1:443",
+        device_scale_factor=uniform(0.8, 1.2),
+        extra_http_headers=DEFAULT_HEADERS,
+        user_agent=UserAgent(browsers=[browser_type]).random,
+        viewport={"width": randint(800, 1400), "height": randint(800, 1400)},
+    )
+
+    try:
+        logger.trace("Loading browser page")
+        page = await context.new_page()
+        await stealth_async(page)
+        yield page
+
+    finally:
+        await context.close()
