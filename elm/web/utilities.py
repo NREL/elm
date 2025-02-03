@@ -3,6 +3,7 @@
 import uuid
 import hashlib
 import logging
+import asyncio
 from pathlib import Path
 from random import uniform, randint
 from contextlib import asynccontextmanager
@@ -10,6 +11,9 @@ from contextlib import asynccontextmanager
 from slugify import slugify
 from fake_useragent import UserAgent
 from playwright_stealth import stealth_async
+
+from elm.web.document import PDFDocument
+
 
 logger = logging.getLogger(__name__)
 DEFAULT_HEADERS = {
@@ -218,3 +222,46 @@ async def _intercept_route(route):  # pragma: no cover
         return await route.abort()
 
     return await route.continue_()
+
+
+async def filter_documents(
+    documents, validation_coroutine, task_name=None, **kwargs
+):
+    """Filter documents by applying a filter function to each.
+
+    Parameters
+    ----------
+    documents : iter of :class:`elm.web.document.BaseDocument`
+        Iterable of documents to filter.
+    validation_coroutine : coroutine
+        A coroutine that returns ``False`` if the document should be
+        discarded and ``True`` otherwise. This function should take a
+        single :class:`elm.web.document.BaseDocument` instance as the
+        first argument. The function may have other arguments, which
+        will be passed down using `**kwargs`.
+    task_name : str, optional
+        Optional task name to use in :func:`asyncio.create_task`.
+        By default, ``None``.
+    **kwargs
+        Keyword-argument pairs to pass to `validation_coroutine`. This
+        should not include the document instance itself, which will be
+        independently passed in as the first argument.
+
+    Returns
+    -------
+    list of :class:`elm.web.document.BaseDocument`
+        List of documents that passed the validation check, sorted by
+        text length, with PDF documents taking the highest precedence.
+    """
+    searchers = [
+        asyncio.create_task(
+            validation_coroutine(doc, **kwargs), name=task_name
+        )
+        for doc in documents
+    ]
+    output = await asyncio.gather(*searchers)
+    filtered_docs = [doc for doc, check in zip(documents, output) if check]
+    return sorted(
+        filtered_docs,
+        key=lambda doc: (not isinstance(doc, PDFDocument), len(doc.text)),
+    )
