@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class PlaywrightGoogleLinkSearch(PlaywrightSearchEngineLinkSearch):
-    """Search for top results on google and return their links
+    """Search for top links on the main google search engine
 
     Purpose:
         Search Google using Playwright engine.
