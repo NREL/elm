@@ -7,7 +7,7 @@ from rebrowser_playwright.async_api import (
     TimeoutError as PlaywrightTimeoutError
 )
 
-import elm.web.google_search
+import elm.web.search.google
 
 
 @pytest.mark.parametrize(
@@ -22,15 +22,13 @@ import elm.web.google_search
 async def test_basic_search_query(queries, num_results):
     """Test basic google web search query functionality"""
 
-    search_engine = elm.web.google_search.PlaywrightGoogleLinkSearch()
+    search_engine = elm.web.search.google.PlaywrightGoogleLinkSearch()
     out = await search_engine.results(*queries, num_results=num_results)
 
     assert len(out) == len(queries)
     for results in out:
-        assert len(results) == min(
-            num_results,
-            search_engine.EXPECTED_RESULTS_PER_PAGE,
-        )
+        assert len(results) == min(num_results,
+                                   search_engine.MAX_RESULTS_PER_PAGE)
         assert all(link.startswith("http") for link in results)
 
 
@@ -38,24 +36,19 @@ async def test_basic_search_query(queries, num_results):
 async def test_search_query_with_timeout(monkeypatch):
     """Test google web search query with a timeout"""
 
-    og_tps = elm.web.google_search._perform_google_search
+    og_tps = elm.web.search.google.PlaywrightGoogleLinkSearch._perform_search
 
-    async def _tps(page, search_query):
+    async def _tps(obj, page, search_query):
         if search_query == "Python":
             raise PlaywrightTimeoutError("test")
-        return await og_tps(page, search_query)
+        return await og_tps(obj, page, search_query)
 
-    monkeypatch.setattr(
-        elm.web.google_search,
-        "_perform_google_search",
-        _tps,
-        raising=True,
-    )
+    monkeypatch.setattr(elm.web.search.google.PlaywrightGoogleLinkSearch,
+                        "_perform_search", _tps, raising=True)
 
-    search_engine = elm.web.google_search.PlaywrightGoogleLinkSearch()
-    out = await search_engine.results(
-        '1. "Python Programming Language"', "Python", num_results=3
-    )
+    search_engine = elm.web.search.google.PlaywrightGoogleLinkSearch()
+    out = await search_engine.results('1. "Python Programming Language"',
+                                      "Python", num_results=3)
 
     assert len(out) == 2
     assert len(out[0]) == 3
