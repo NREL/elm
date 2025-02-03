@@ -62,8 +62,7 @@ class PlaywrightSearchEngineLinkSearch(ABC):
                          query)
             await self._perform_search(page, query)
             logger.trace("Extracting links for query: %r", query)
-            return await _extract_links(page, num_results,
-                                        search_result_tag=self._SE_SR_TAG)
+            return await self._extract_links(page, num_results)
 
     async def _skip_exc_search(self, query, num_results=10):
         """Perform search while ignoring timeout errors"""
@@ -91,6 +90,12 @@ class PlaywrightSearchEngineLinkSearch(ABC):
             logger.trace("Got results for link search:\n%r", results)
             await self._close_browser()
         return results
+
+    async def _extract_links(self, page, num_results):
+        """Extract links for top `num_results` on page"""
+        links = await asyncio.to_thread(page.locator, self._SE_SR_TAG)
+        return [await links.nth(i).get_attribute("href")
+                for i in range(num_results)]
 
     async def results(self, *queries, num_results=10):
         """Retrieve links for the first `num_results` of each query.
@@ -140,11 +145,3 @@ async def _navigate_to_search_engine(page, se_url, timeout=90_000):
     await page.goto(se_url)
     logger.trace("Waiting for load")
     await page.wait_for_load_state("networkidle", timeout=timeout)
-
-
-async def _extract_links(page, num_results, search_result_tag):
-    """Extract links for top `num_results` on page"""
-    links = await asyncio.to_thread(page.locator, search_result_tag)
-    return [
-        await links.nth(i).get_attribute("href") for i in range(num_results)
-    ]
