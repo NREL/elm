@@ -36,6 +36,7 @@ class PlaywrightGoogleLinkSearch(PlaywrightSearchEngineLinkSearch):
     of youtube links has brought this number down.
     """
 
+    _SE_NAME = "Google"
     _SE_URL = "https://www.google.com"
     _SE_SR_TAG = '[jsname="UWckNb"]'
 
