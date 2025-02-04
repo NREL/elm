@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """ELM Web google searching tests"""
+import os
 from pathlib import Path
 
 import pytest
@@ -10,6 +11,12 @@ from rebrowser_playwright.async_api import (
 import elm.web.search.google
 
 
+SE_TO_TEST = [(elm.web.search.google.PlaywrightGoogleLinkSearch, {})]
+if CSE_URL := os.getenv("GOOGLE_CSE_URL"):
+    SE_TO_TEST.append((elm.web.search.google.PlaywrightGoogleCSELinkSearch,
+                       {"cse_url": CSE_URL}))
+
+
 @pytest.mark.parametrize(
     "queries",
     [
@@ -17,12 +24,14 @@ import elm.web.search.google
         ['1. "Python Programming Language"', "Python"],
     ],
 )
+@pytest.mark.parametrize("se", SE_TO_TEST)
 @pytest.mark.parametrize("num_results", [1, 10, 50])
 @pytest.mark.asyncio
-async def test_basic_search_query(queries, num_results):
+async def test_basic_search_query(queries, se, num_results):
     """Test basic google web search query functionality"""
 
-    search_engine = elm.web.search.google.PlaywrightGoogleLinkSearch()
+    se_class, kwargs = se
+    search_engine = se_class(**kwargs)
     out = await search_engine.results(*queries, num_results=num_results)
 
     assert len(out) == len(queries)
@@ -32,21 +41,22 @@ async def test_basic_search_query(queries, num_results):
         assert all(link.startswith("http") for link in results)
 
 
+@pytest.mark.parametrize("se", SE_TO_TEST)
 @pytest.mark.asyncio
-async def test_search_query_with_timeout(monkeypatch):
+async def test_search_query_with_timeout(monkeypatch, se):
     """Test google web search query with a timeout"""
 
-    og_tps = elm.web.search.google.PlaywrightGoogleLinkSearch._perform_search
+    se_class, kwargs = se
+    og_tps = se_class._perform_search
 
     async def _tps(obj, page, search_query):
         if search_query == "Python":
             raise PlaywrightTimeoutError("test")
         return await og_tps(obj, page, search_query)
 
-    monkeypatch.setattr(elm.web.search.google.PlaywrightGoogleLinkSearch,
-                        "_perform_search", _tps, raising=True)
+    monkeypatch.setattr(se_class, "_perform_search", _tps, raising=True)
 
-    search_engine = elm.web.search.google.PlaywrightGoogleLinkSearch()
+    search_engine = se_class(**kwargs)
     out = await search_engine.results('1. "Python Programming Language"',
                                       "Python", num_results=3)
 
