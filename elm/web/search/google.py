@@ -6,6 +6,8 @@ import logging
 from itertools import zip_longest, chain
 from contextlib import AsyncExitStack
 
+from playwright_stealth import StealthConfig
+
 from elm.web.file_loader import AsyncFileLoader
 from elm.web.search.base import PlaywrightSearchEngineLinkSearch
 
@@ -46,6 +48,56 @@ class PlaywrightGoogleLinkSearch(PlaywrightSearchEngineLinkSearch):
         await page.get_by_label("Search", exact=True).fill(search_query)
         logger.trace("Hitting enter for query: %r", search_query)
         await page.keyboard.press('Enter')
+
+
+class PlaywrightGoogleCSELinkSearch(PlaywrightSearchEngineLinkSearch):
+    """Search for top links on a custom google search engine
+
+    Resources
+    ---------
+    https://programmablesearchengine.google.com/controlpanel/create
+    """
+
+    _SE_NAME = "Google CSE"
+    _SE_SR_TAG = "a.gs-title[href]"
+    PAGE_LOAD_TIMEOUT = 10_000
+
+    def __init__(self, cse_url, **launch_kwargs):
+        """
+
+        Parameters
+        ----------
+        cse_url : str
+            URL of the custom google programmable search engine.
+        **launch_kwargs
+            Keyword arguments to be passed to
+            `playwright.chromium.launch`. For example, you can pass
+            ``headless=False, slow_mo=50`` for a visualization of the
+            search.
+        """
+        super().__init__(**launch_kwargs)
+        self._cse_url = cse_url
+        self._stealth_config = StealthConfig(navigator_user_agent=False)
+
+    @property
+    def _SE_URL(self):
+        """str: URL for the custom google programmable search engine"""
+        if not self._cse_url.endswith("#gsc.tab=0"):
+            self._cse_url = f"{self._cse_url}#gsc.tab=0"
+        return self._cse_url
+
+    async def _perform_search(self, page, search_query):
+        """Fill in search bar with user query and hit enter"""
+        logger.trace("Finding search bar for query: %r", search_query)
+        await page.get_by_label("search", exact=True).fill(search_query)
+        logger.trace("Hitting enter for query: %r", search_query)
+        await page.keyboard.press('Enter')
+
+    async def _extract_links(self, page, num_results):
+        """Extract links for top `num_results` on page"""
+        links = await asyncio.to_thread(page.locator, self._SE_SR_TAG)
+        return [await links.nth(i * 2).get_attribute("href")
+                for i in range(num_results)]
 
 
 async def google_results_as_docs(
