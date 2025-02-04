@@ -41,7 +41,7 @@ class PlaywrightGoogleLinkSearch(PlaywrightSearchEngineLinkSearch):
     _SE_SR_TAG = '[jsname="UWckNb"]'
 
     async def _perform_search(self, page, search_query):
-        """Fill in search bar with user query and click search button"""
+        """Fill in search bar with user query and hit enter"""
         logger.trace("Finding search bar for query: %r", search_query)
         await page.get_by_label("Search", exact=True).fill(search_query)
         logger.trace("Hitting enter for query: %r", search_query)
