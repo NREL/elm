@@ -170,7 +170,7 @@ def write_url_doc_to_file(doc, file_content, out_dir, make_name_unique=False):
 
 
 @asynccontextmanager
-async def pw_page(browser, intercept_routes=False):
+async def pw_page(browser, intercept_routes=False, stealth_config=None):
     """Create new page from playwright browser context
 
     Parameters
@@ -180,6 +180,10 @@ async def pw_page(browser, intercept_routes=False):
     intercept_routes : bool, default=False
         Option to intercept all requests and abort blocked ones.
         Be default, ``False``.
+    stealth_config : :class:`playwright_stealth.StealthConfig`, optional
+        Optional playwright stealth configuration object.
+        By default, ``None``, which uses all the default stealth
+        options.
 
     Yields
     ------
@@ -201,7 +205,7 @@ async def pw_page(browser, intercept_routes=False):
     try:
         logger.trace("Loading browser page")
         page = await context.new_page()
-        await stealth_async(page)
+        await stealth_async(page, stealth_config)
         if intercept_routes:
             logger.trace("Intercepting requests and aborting blocked ones")
             await page.route("**/*", _intercept_route)
