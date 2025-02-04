@@ -39,6 +39,7 @@ class PlaywrightSearchEngineLinkSearch(ABC):
         """
         self.launch_kwargs = launch_kwargs
         self._browser = None
+        self._stealth_config = None
 
     async def _load_browser(self, pw_instance):
         """Launch a chromium instance and load a page"""
@@ -55,7 +56,9 @@ class PlaywrightSearchEngineLinkSearch(ABC):
         logger.debug("Searching %s: %r", self._SE_NAME, query)
         num_results = min(num_results, self.MAX_RESULTS_PER_PAGE)
 
-        async with pw_page(self._browser) as page:
+        page_kwargs = {"browser": self._browser,
+                       "stealth_config": self._stealth_config}
+        async with pw_page(**page_kwargs) as page:
             await _navigate_to_search_engine(page, se_url=self._SE_URL,
                                              timeout=self.PAGE_LOAD_TIMEOUT)
             logger.trace("Performing %s search for query: %r", self._SE_NAME,
