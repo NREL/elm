@@ -31,8 +31,8 @@ class PlaywrightGoogleLinkSearch(PlaywrightSearchEngineLinkSearch):
 
     .. end desc
     """
-    MAX_RESULTS_PER_PAGE = 5
-    """Number of results displayed per Google page.
+    MAX_RESULTS_CONSIDERED_PER_PAGE = 5
+    """Number of results considered per Google page.
 
     This value used to be 10, but the addition of extra divs like a set
     of youtube links has brought this number down.
@@ -41,6 +41,7 @@ class PlaywrightGoogleLinkSearch(PlaywrightSearchEngineLinkSearch):
     _SE_NAME = "Google"
     _SE_URL = "https://www.google.com"
     _SE_SR_TAG = '[jsname="UWckNb"]'
+    _SC = None
 
     async def _perform_search(self, page, search_query):
         """Fill in search bar with user query and hit enter"""
@@ -77,7 +78,6 @@ class PlaywrightGoogleCSELinkSearch(PlaywrightSearchEngineLinkSearch):
         """
         super().__init__(**launch_kwargs)
         self._cse_url = cse_url
-        self._stealth_config = StealthConfig(navigator_user_agent=False)
 
     @property
     def _SE_URL(self):

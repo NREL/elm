@@ -8,6 +8,7 @@ from rebrowser_playwright.async_api import (
     async_playwright,
     TimeoutError as PlaywrightTimeoutError,
 )
+from playwright_stealth import StealthConfig
 
 from elm.web.utilities import clean_search_query, pw_page
 
@@ -18,13 +19,14 @@ logger = logging.getLogger(__name__)
 class PlaywrightSearchEngineLinkSearch(ABC):
     """Search for top results on a given search engine and return links"""
 
-    MAX_RESULTS_PER_PAGE = 10
-    """Number of results displayed per search engine page"""
+    MAX_RESULTS_CONSIDERED_PER_PAGE = 10
+    """Number of results considered per search engine page"""
 
     PAGE_LOAD_TIMEOUT = 90_000
     """Default page load timeout value in milliseconds"""
 
     _SE_NAME = "<unknown se>"
+    _SC = StealthConfig(navigator_user_agent=False)
 
     def __init__(self, **launch_kwargs):
         """
@@ -39,7 +41,6 @@ class PlaywrightSearchEngineLinkSearch(ABC):
         """
         self.launch_kwargs = launch_kwargs
         self._browser = None
-        self._stealth_config = None
 
     async def _load_browser(self, pw_instance):
         """Launch a chromium instance and load a page"""
@@ -54,10 +55,9 @@ class PlaywrightSearchEngineLinkSearch(ABC):
     async def _search(self, query, num_results=10):
         """Search web for links related to a query"""
         logger.debug("Searching %s: %r", self._SE_NAME, query)
-        num_results = min(num_results, self.MAX_RESULTS_PER_PAGE)
+        num_results = min(num_results, self.MAX_RESULTS_CONSIDERED_PER_PAGE)
 
-        page_kwargs = {"browser": self._browser,
-                       "stealth_config": self._stealth_config}
+        page_kwargs = {"browser": self._browser, "stealth_config": self._SC}
         async with pw_page(**page_kwargs) as page:
             await _navigate_to_search_engine(page, se_url=self._SE_URL,
                                              timeout=self.PAGE_LOAD_TIMEOUT)
