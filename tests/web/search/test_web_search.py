@@ -10,10 +10,12 @@ from rebrowser_playwright.async_api import (
 
 import elm.web.search.google
 import elm.web.search.duckduckgo
+import elm.web.search.bing
 
 
 SE_TO_TEST = [(elm.web.search.google.PlaywrightGoogleLinkSearch, {}),
-              (elm.web.search.duckduckgo.PlaywrightDuckDuckGoLinkSearch, {})]
+              (elm.web.search.duckduckgo.PlaywrightDuckDuckGoLinkSearch, {}),
+              (elm.web.search.bing.PlaywrightBingLinkSearch, {})]
 if CSE_URL := os.getenv("GOOGLE_CSE_URL"):
     SE_TO_TEST.append((elm.web.search.google.PlaywrightGoogleCSELinkSearch,
                        {"cse_url": CSE_URL}))
@@ -38,8 +40,8 @@ async def test_basic_search_query(queries, se, num_results):
 
     assert len(out) == len(queries)
     for results in out:
-        assert len(results) == min(num_results,
-                                   search_engine.MAX_RESULTS_PER_PAGE)
+        max_results = search_engine.MAX_RESULTS_CONSIDERED_PER_PAGE
+        assert len(results) == min(num_results, max_results)
         assert all(link.startswith("http") for link in results)
 
 
