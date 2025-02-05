@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""ELM Web google searching tests"""
+"""ELM Web searches using search engines tests"""
 import os
 from pathlib import Path
 
@@ -9,9 +9,11 @@ from rebrowser_playwright.async_api import (
 )
 
 import elm.web.search.google
+import elm.web.search.duckduckgo
 
 
-SE_TO_TEST = [(elm.web.search.google.PlaywrightGoogleLinkSearch, {})]
+SE_TO_TEST = [(elm.web.search.google.PlaywrightGoogleLinkSearch, {}),
+              (elm.web.search.duckduckgo.PlaywrightDuckDuckGoLinkSearch, {})]
 if CSE_URL := os.getenv("GOOGLE_CSE_URL"):
     SE_TO_TEST.append((elm.web.search.google.PlaywrightGoogleCSELinkSearch,
                        {"cse_url": CSE_URL}))
