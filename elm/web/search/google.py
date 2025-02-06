@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 """ELM Web Scraping - Google search."""
+import os
+import json
 import pprint
 import asyncio
 import logging
+import requests
 from itertools import zip_longest, chain
 from contextlib import AsyncExitStack
 
@@ -136,6 +139,29 @@ class APIGoogleCSESearch(APISearchEngineLinkSearch):
         results = build(**build_args).cse().list(**search_args).execute()
         results = (results or {}).get('items', [])
         return list(filter(None, (info.get("link") for info in results)))
+
+
+class APISerperSearch(APISearchEngineLinkSearch):
+    """Search the web for links using the Google Serper API"""
+
+    _SE_NAME = "Google Serper API"
+    _URL  = "https://google.serper.dev/search"
+
+    API_KEY_VAR = "SERPER_API_KEY"
+    """Environment variable that should contain the Google Serper API key"""
+
+    async def _search(self, query, num_results=10):
+        """Search web for links related to a query"""
+
+        payload = json.dumps({"q": query, "num": num_results})
+        headers = {'X-API-KEY': self.api_key,
+                   'Content-Type': 'application/json'}
+
+        response = requests.request("POST", self._URL, headers=headers,
+                                    data=payload)
+        results = json.loads(response.text).get('organic', {})
+        return list(filter(None, (result.get("link", "").replace("+", "%20")
+                                  for result in results)))
 
 
 async def google_results_as_docs(
