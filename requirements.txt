@@ -1,7 +1,10 @@
 openai>=1.1.0
 aiohttp
+beautifulsoup4
 click
+duckduckgo-search
 fake_useragent
+google-api-python-client
 html2text
 langchain
 lxml
@@ -11,11 +14,11 @@ nrel-rex
 nltk
 numpy
 pandas
-rebrowser-playwright
 playwright-stealth
 PyPDF2
 python-slugify
+rebrowser-playwright
 scipy
 tabulate
+tavily-python
 tiktoken
-beautifulsoup4
