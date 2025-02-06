@@ -1,17 +1,20 @@
 # -*- coding: utf-8 -*-
 """ELM Web searches using search engines tests"""
+import os
 from pathlib import Path
 
 import pytest
 
 import elm.web.search.duckduckgo
+import elm.web.search.google
 from elm.web.search.base import APISearchEngineLinkSearch
 
 
 SE_API_TO_TEST = [(elm.web.search.duckduckgo.APIDuckDuckGoSearch, {}),
                   (elm.web.search.duckduckgo.APIDuckDuckGoSearch,
                    {"api_key": None})]
-
+if os.getenv(elm.web.search.google.APIGoogleCSESearch.API_KEY_VAR):
+    SE_API_TO_TEST.append((elm.web.search.google.APIGoogleCSESearch, {}))
 
 def test_api_key_read_from_env(monkeypatch):
     """Test that API search engine reads environ"""
