@@ -3,7 +3,7 @@ aiohttp
 beautifulsoup4
 click
 duckduckgo-search
-fake_useragent
+fake_useragent>=2.0.3
 google-api-python-client
 html2text
 langchain
