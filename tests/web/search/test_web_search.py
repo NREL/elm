@@ -39,6 +39,7 @@ async def test_basic_search_query(queries, se):
 
     assert len(out) == len(queries)
     for results in out:
+        assert results
         assert all(link.startswith("http") for link in results)
 
 
