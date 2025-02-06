@@ -24,7 +24,7 @@ DEFAULT_HEADERS = {
     "Upgrade-Insecure-Requests": "1",
 }
 """Default HTML header template"""
-_BT_RENAME = {"chromium": "chrome"}
+_BT_RENAME = {"chromium": "Chrome"}
 # block pages by resource type. e.g. image, stylesheet
 BLOCK_RESOURCE_TYPES = [
     "beacon",
@@ -182,8 +182,7 @@ async def pw_page(browser, intercept_routes=False):
     :class:`playwright.Page`
         A new page that can be used for visiting websites.
     """
-    browser_type = browser.browser_type.name
-    browser_type = _BT_RENAME.get(browser_type, browser_type)
+    browser_type = _BT_RENAME.get(browser.browser_type.name, "random")
 
     logger.trace("Loading browser context for browser type %s", browser_type)
     context = await browser.new_context(
