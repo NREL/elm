@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """ELM Web Scraping - Base class for search engine search"""
+import os
 import asyncio
 import logging
 from abc import ABC, abstractmethod
@@ -172,6 +173,25 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
     async def _perform_search(self, page, search_query):
         """Search query using search engine"""
         raise NotImplementedError
+
+
+class APISearchEngineLinkSearch(SearchEngineLinkSearch):
+    """Abstract class to search the web using a search engine API"""
+
+    API_KEY_VAR = None
+    """Name of environment variable that should contain the API key"""
+
+    def __init__(self, api_key=None):
+        """
+
+        Parameters
+        ----------
+        api_key : str, optional
+            API key for search engine. If ``None``, will look up the API
+            key using the :obj:`API_KEY_VAR` environment variable.
+            By default, ``None``.
+        """
+        self.api_key = api_key or os.environ.get(self.API_KEY_VAR or "")
 
 
 async def _navigate_to_search_engine(page, se_url, timeout=90_000):
