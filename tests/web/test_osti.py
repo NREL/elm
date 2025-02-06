@@ -4,6 +4,9 @@ Test
 """
 import os
 import tempfile
+
+from flaky import flaky
+
 from elm import OstiList
 
 
@@ -27,6 +30,7 @@ def test_osti_from_url():
     assert len(docs) == 12
 
 
+@flaky(max_runs=5, min_passes=1)
 def test_osti_from_oids():
     """Test osti list, make sure we can find specific oids from storage futures
     study"""

@@ -25,9 +25,9 @@ if CSE_ID := os.getenv("GOOGLE_CSE_ID"):
 
 
 @flaky(max_runs=3, min_passes=1)
-@pytest.mark.parametrize("queries",[['1. "Python Programming Language"'],
-                                    ['1. "Python Programming Language"',
-                                     "Python"],])
+@pytest.mark.parametrize("queries", [['1. "Python Programming Language"'],
+                                     ['1. "Python Programming Language"',
+                                      "Python"],])
 @pytest.mark.parametrize("se", SE_TO_TEST)
 @pytest.mark.asyncio
 async def test_basic_search_query(queries, se):
@@ -68,9 +68,9 @@ async def test_search_query_with_timeout(monkeypatch, se):
     assert not out[1]
 
 
-@pytest.mark.parametrize("queries",[['1. "Python Programming Language"'],
-                                    ['1. "Python Programming Language"',
-                                     "Python"],])
+@pytest.mark.parametrize("queries", [['1. "Python Programming Language"'],
+                                     ['1. "Python Programming Language"',
+                                      "Python"],])
 @pytest.mark.parametrize("num_results_multiplier", [0, 1, 5])
 @pytest.mark.asyncio
 async def test_search_query_num_results(queries, num_results_multiplier):
