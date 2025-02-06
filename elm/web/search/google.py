@@ -7,9 +7,11 @@ from itertools import zip_longest, chain
 from contextlib import AsyncExitStack
 
 from playwright_stealth import StealthConfig
+from apiclient.discovery import build
 
 from elm.web.file_loader import AsyncFileLoader
-from elm.web.search.base import PlaywrightSearchEngineLinkSearch
+from elm.web.search.base import (PlaywrightSearchEngineLinkSearch,
+                                 APISearchEngineLinkSearch)
 
 
 logger = logging.getLogger(__name__)
@@ -98,6 +100,42 @@ class PlaywrightGoogleCSELinkSearch(PlaywrightSearchEngineLinkSearch):
         links = await asyncio.to_thread(page.locator, self._SE_SR_TAG)
         return [await links.nth(i * 2).get_attribute("href")
                 for i in range(num_results)]
+
+
+class APIGoogleCSESearch(APISearchEngineLinkSearch):
+    """Search the web for links using a Google CSE API"""
+
+    _BUILD_ARGS = {"serviceName": "customsearch", "version": "v1"}
+    _SE_NAME = "Google CSE API"
+
+    API_KEY_VAR = "GOOGLE_API_KEY"
+    """Environment variable that should contain the Google CSE API key"""
+    CSE_ID_VAR = "GOOGLE_CSE_ID"
+    """Environment variable that should contain CSE ID"""
+
+    def __init__(self, api_key=None, cse_id=None):
+        """
+
+        Parameters
+        ----------
+        api_key : str, optional
+            API key for search engine. If ``None``, will look up the API
+            key using the :obj:`API_KEY_VAR` environment variable.
+            By default, ``None``.
+        """
+        super().__init__(api_key=api_key)
+        self.cse_id = cse_id or os.environ.get(self.CSE_ID_VAR or "")
+
+    async def _search(self, query, num_results=10):
+        """Search web for links related to a query"""
+        build_args = dict(self._BUILD_ARGS)
+        build_args["developerKey"] = self.api_key
+
+        search_args = {"q": query, "cx": self.cse_id, "num": num_results}
+
+        results = build(**build_args).cse().list(**search_args).execute()
+        results = (results or {}).get('items', [])
+        return list(filter(None, (info.get("link") for info in results)))
 
 
 async def google_results_as_docs(
