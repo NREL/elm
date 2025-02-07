@@ -9,6 +9,7 @@ from fake_useragent import UserAgent
 from elm.utilities.parse import read_pdf
 from elm.web.document import PDFDocument, HTMLDocument
 from elm.web.html_pw import load_html_with_pw
+from elm.web.utilities import DEFAULT_HEADERS
 from elm.utilities.retry import async_retry_with_exponential_backoff
 from elm.exceptions import ELMRuntimeError
 
@@ -44,20 +45,6 @@ class AsyncFileLoader:
     .. end desc
     """
 
-    DEFAULT_HEADER_TEMPLATE = {
-        "User-Agent": "",
-        "Accept": (
-            "text/html,application/xhtml+xml,application/xml;"
-            "q=0.9,image/webp,*/*;q=0.8"
-        ),
-        "Accept-Language": "en-US,en;q=0.5",
-        "Referer": "https://www.google.com/",
-        "DNT": "1",
-        "Connection": "keep-alive",
-        "Upgrade-Insecure-Requests": "1",
-    }
-    """Default header"""
-
     PAGE_LOAD_TIMEOUT = 90_000
     """Default page load timeout value in milliseconds"""
 
@@ -80,8 +67,8 @@ class AsyncFileLoader:
         Parameters
         ----------
         header_template : dict, optional
-            Optional GET header template. If not specified, uses the
-            `DEFAULT_HEADER_TEMPLATE` defined for this class.
+            Optional GET header template. If not specified, uses
+            :obj:`~elm.web.utilities.DEFAULT_HEADERS`.
             By default, ``None``.
         verify_ssl : bool, optional
             Option to use aiohttp's default SSL check. If ``False``,
@@ -146,10 +133,11 @@ class AsyncFileLoader:
 
     def _header_from_template(self, header_template):
         """Compile header from user or default template"""
-        headers = header_template or self.DEFAULT_HEADER_TEMPLATE
+        headers = header_template or DEFAULT_HEADERS
+        headers = dict(headers)
         if not headers.get("User-Agent"):
             headers["User-Agent"] = UserAgent().random
-        return dict(headers)
+        return headers
 
     async def fetch_all(self, *urls):
         """Fetch documents for all requested URL's.

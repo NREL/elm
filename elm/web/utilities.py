@@ -2,9 +2,58 @@
 """ELM Web Scraping utilities."""
 import uuid
 import hashlib
+import logging
 from pathlib import Path
+from random import uniform, randint
+from contextlib import asynccontextmanager
 
 from slugify import slugify
+from fake_useragent import UserAgent
+from playwright_stealth import stealth_async
+
+logger = logging.getLogger(__name__)
+DEFAULT_HEADERS = {
+    "Accept": (
+        "text/html,application/xhtml+xml,application/xml;"
+        "q=0.9,image/webp,*/*;q=0.8"
+    ),
+    "Accept-Language": "en-US,en;q=0.5",
+    "Referer": "https://www.google.com/",
+    "DNT": "1",
+    "Connection": "keep-alive",
+    "Upgrade-Insecure-Requests": "1",
+}
+"""Default HTML header template"""
+_BT_RENAME = {"chromium": "Chrome"}
+# block pages by resource type. e.g. image, stylesheet
+BLOCK_RESOURCE_TYPES = [
+    "beacon",
+    "csp_report",
+    "font",
+    "image",
+    "imageset",
+    "media",
+    "object",
+    "texttrack",
+    #  can block stylsheets and scripts, though it's not recommended:
+    # 'stylesheet',
+    # 'script',
+    # 'xhr',
+]
+# block popular 3rd party resources like tracking and advertisements.
+BLOCK_RESOURCE_NAMES = [
+    "adzerk",
+    "analytics",
+    "cdn.api.twitter",
+    "doubleclick",
+    "exelator",
+    "facebook",
+    "fontawesome",
+    "google",
+    "google-analytics",
+    "googletagmanager",
+    "lit.connatix",  # <- not sure about this one
+]
 
 
 def clean_search_query(query):
@@ -114,3 +163,57 @@ def write_url_doc_to_file(doc, file_content, out_dir, make_name_unique=False):
     with open(out_fp, **doc.WRITE_KWARGS) as fh:
         fh.write(file_content)
     return out_fp
+
+
+@asynccontextmanager
+async def pw_page(browser, intercept_routes=False):
+    """Create new page from playwright browser context
+
+    Parameters
+    ----------
+    browser : :class:`playwright.Browser`
+        A playwright browser instance.
+    intercept_routes : bool, default=False
+        Option to intercept all requests and abort blocked ones.
+        Be default, ``False``.
+
+    Yields
+    ------
+    :class:`playwright.Page`
+        A new page that can be used for visiting websites.
+    """
+    browser_type = _BT_RENAME.get(browser.browser_type.name, "random")
+
+    logger.trace("Loading browser context for browser type %s", browser_type)
+    context = await browser.new_context(
+        base_url="http://127.0.0.1:443",
+        device_scale_factor=uniform(0.8, 1.2),
+        extra_http_headers=DEFAULT_HEADERS,
+        user_agent=UserAgent(browsers=[browser_type]).random,
+        viewport={"width": randint(800, 1400), "height": randint(800, 1400)},
+    )
+
+    try:
+        logger.trace("Loading browser page")
+        page = await context.new_page()
+        await stealth_async(page)
+        if intercept_routes:
+            logger.trace("Intercepting requests and aborting blocked ones")
+            await page.route("**/*", _intercept_route)
+        yield page
+    finally:
+        await context.close()
+
+
+async def _intercept_route(route):  # pragma: no cover
+    """intercept all requests and abort blocked ones
+
+    Source: https://scrapfly.io/blog/how-to-block-resources-in-playwright/
+    """
+    if route.request.resource_type in BLOCK_RESOURCE_TYPES:
+        return await route.abort()
+
+    if any(key in route.request.url for key in BLOCK_RESOURCE_NAMES):
+        return await route.abort()
+
+    return await route.continue_()
