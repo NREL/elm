@@ -53,14 +53,29 @@ class PlaywrightGoogleLinkSearch(PlaywrightSearchEngineLinkSearch):
     async def _perform_search(self, page, search_query):
         """Fill in search bar with user query and hit enter"""
         logger.trace("Finding search bar for query: %r", search_query)
-        try:
-            await page.get_by_label("Search", exact=True).fill(search_query)
-        except PlaywrightTimeoutError:
-            search_bar = page.locator('[autofocus]')
-            await search_bar.clear()
-            await search_bar.fill(search_query)
+        await self._fill_in_search_bar(page, search_query)
         logger.trace("Hitting enter for query: %r", search_query)
         await page.keyboard.press('Enter')
+
+    async def _fill_in_search_bar(self, page, search_query):
+        """Attempt to find and fill the search bar several ways"""
+        try:
+            return await (page
+                          .get_by_label("Search", exact=True)
+                          .fill(search_query))
+        except PlaywrightTimeoutError:
+            pass
+
+        search_bar = page.locator('[name="q"]')
+        try:
+            await search_bar.clear()
+            return await search_bar.fill(search_query)
+        except PlaywrightTimeoutError:
+            pass
+
+        search_bar = page.locator('[autofocus]')
+        await search_bar.clear()
+        return await search_bar.fill(search_query)
 
 
 class PlaywrightGoogleCSELinkSearch(PlaywrightSearchEngineLinkSearch):
