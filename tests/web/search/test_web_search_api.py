@@ -22,6 +22,8 @@ def test_api_key_read_from_env(monkeypatch):
     monkeypatch.setenv("TEST_API_KEY_VAR", "TEST-KEY")
 
     class MockAPISearchEngine(APISearchEngineLinkSearch):
+        """MockAPISearchEngine"""
+
         API_KEY_VAR = "TEST_API_KEY_VAR"
 
         async def _search(self, *__, **___):
@@ -34,6 +36,8 @@ def test_no_api_key_var():
     """Test that API search engine does not break if var name is None"""
 
     class MockAPISearchEngine(APISearchEngineLinkSearch):
+        """MockAPISearchEngine"""
+
         async def _search(self, *__, **___):
             return []
 
