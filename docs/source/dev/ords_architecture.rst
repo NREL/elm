@@ -760,7 +760,7 @@ We give a rough breakdown of the following call:
 .. code-block:: python
 
     import asyncio
-    from elm.web.google_search import google_results_as_docs
+    from elm.web.search import web_search_links_as_docs
 
     QUERIES = [
         "NREL wiki",
@@ -769,7 +769,7 @@ We give a rough breakdown of the following call:
     ]
 
     async def main():
-        docs = await google_results_as_docs(QUERIES, num_urls=4)
+        docs = await web_search_links_as_docs(QUERIES, num_urls=4)
         return docs
 
     if __name__ == "__main__":
@@ -778,7 +778,7 @@ We give a rough breakdown of the following call:
 
 **Step-by-Step:**
 
-1. :func:`~elm.web.google_search.google_results_as_docs()` is invoked with 3 queries and ``num_urls=4``.
+1. :func:`~elm.web.search.run.web_search_links_as_docs()` is invoked with 3 queries and ``num_urls=4``.
 2. Each of the three queries are processed asynchronously, creating a :class:`~elm.web.google_search.PlaywrightGoogleLinkSearch` instance and retrieving the top URL results.
 3. Internal code reduces the URL lists returned from each of the queries into the top 4 URLs.
 4. :class:`~elm.web.file_loader.AsyncFileLoader` asynchronously downloads the content for reach of the top 4 URLs, determines the document type the content should be stored
@@ -789,7 +789,7 @@ We give a rough breakdown of the following call:
 .. mermaid::
 
     sequenceDiagram
-        participant A as google_results_as_docs()
+        participant A as web_search_links_as_docs()
         participant B as PlaywrightGoogleLinkSearch
         participant D as AsyncFileLoader
         participant E as HTMLDocument
