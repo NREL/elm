@@ -16,10 +16,10 @@ SE_API_TO_TEST = [(elm.web.search.duckduckgo.APIDuckDuckGoSearch, {}),
 if os.getenv(elm.web.search.google.APIGoogleCSESearch.API_KEY_VAR):
     SE_API_TO_TEST.append((elm.web.search.google.APIGoogleCSESearch, {}))
 
+
 def test_api_key_read_from_env(monkeypatch):
     """Test that API search engine reads environ"""
     monkeypatch.setenv("TEST_API_KEY_VAR", "TEST-KEY")
-
 
     class MockAPISearchEngine(APISearchEngineLinkSearch):
         API_KEY_VAR = "TEST_API_KEY_VAR"
@@ -40,8 +40,8 @@ def test_no_api_key_var():
     assert MockAPISearchEngine().api_key is None
 
 
-@pytest.mark.parametrize("queries",[['1. "NREL elm"'],
-                                    ['1. "NREL elm"', "NREL reV"],])
+@pytest.mark.parametrize("queries", [['1. "NREL elm"'],
+                                     ['1. "NREL elm"', "NREL reV"],])
 @pytest.mark.parametrize("se", SE_API_TO_TEST)
 @pytest.mark.asyncio
 async def test_basic_search_query(queries, se):
