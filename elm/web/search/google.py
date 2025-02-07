@@ -11,6 +11,9 @@ from contextlib import AsyncExitStack
 
 from playwright_stealth import StealthConfig
 from apiclient.discovery import build
+from rebrowser_playwright.async_api import (
+    TimeoutError as PlaywrightTimeoutError
+)
 
 from elm.web.file_loader import AsyncFileLoader
 from elm.web.search.base import (PlaywrightSearchEngineLinkSearch,
@@ -51,7 +54,12 @@ class PlaywrightGoogleLinkSearch(PlaywrightSearchEngineLinkSearch):
     async def _perform_search(self, page, search_query):
         """Fill in search bar with user query and hit enter"""
         logger.trace("Finding search bar for query: %r", search_query)
-        await page.get_by_label("Search", exact=True).fill(search_query)
+        try:
+            await page.get_by_label("Search", exact=True).fill(search_query)
+        except PlaywrightTimeoutError:
+            search_bar = page.locator('[autofocus]')
+            await search_bar.clear()
+            await search_bar.fill(search_query)
         logger.trace("Hitting enter for query: %r", search_query)
         await page.keyboard.press('Enter')
 
