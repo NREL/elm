@@ -6,8 +6,6 @@ import logging
 from itertools import zip_longest, chain
 from contextlib import AsyncExitStack
 
-from playwright_stealth import StealthConfig
-
 from elm.web.file_loader import AsyncFileLoader
 from elm.web.search.base import PlaywrightSearchEngineLinkSearch
 
