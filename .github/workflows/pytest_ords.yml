@@ -43,6 +43,7 @@ jobs:
         python -m pip install pytest-cov
         python -m pip install psycopg2-binary
         python -m pip install boto3
+        python -m pip install flaky
         python -m pip install .
         rebrowser_playwright install
     - name: Run pytest and Generate coverage report

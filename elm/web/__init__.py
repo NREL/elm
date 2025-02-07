@@ -1,3 +1,3 @@
 """ELM Web scraping. """
 
-from .google_search import PlaywrightGoogleLinkSearch
+from .search.google import PlaywrightGoogleLinkSearch

@@ -7,7 +7,8 @@ from elm.ords.extraction import check_for_ordinance_info
 from elm.ords.services.threaded import TempFileCache
 from elm.ords.validation.location import CountyValidator
 from elm.web.document import PDFDocument
-from elm.web.google_search import google_results_as_docs, filter_documents
+from elm.web.search.google import google_results_as_docs
+from elm.web.utilities import filter_documents
 
 
 logger = logging.getLogger(__name__)
