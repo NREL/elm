@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 from elm.web.search.run import (_single_se_search, _down_select_urls,
-                                _init_se, _load_docs, _single_se_search)
+                                _init_se, _load_docs)
 from elm.web.search.google import (APIGoogleCSESearch,
                                    PlaywrightGoogleLinkSearch)
 from elm.exceptions import ELMKeyError
