@@ -9,7 +9,6 @@ import requests
 from itertools import zip_longest, chain
 from contextlib import AsyncExitStack
 
-from playwright_stealth import StealthConfig
 from apiclient.discovery import build
 from rebrowser_playwright.async_api import (
     TimeoutError as PlaywrightTimeoutError
