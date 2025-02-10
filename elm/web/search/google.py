@@ -152,7 +152,7 @@ class APISerperSearch(APISearchEngineLinkSearch):
     """Search the web for links using the Google Serper API"""
 
     _SE_NAME = "Google Serper API"
-    _URL  = "https://google.serper.dev/search"
+    _URL = "https://google.serper.dev/search"
 
     API_KEY_VAR = "SERPER_API_KEY"
     """Environment variable that should contain the Google Serper API key"""
