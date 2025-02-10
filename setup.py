@@ -20,7 +20,8 @@ with open("requirements.txt") as f:
     install_requires = f.readlines()
 
 
-test_requires = ["pytest>=5.2", "pytest-mock", "pytest-asyncio", "pytest-cov"]
+test_requires = ["pytest>=5.2", "pytest-mock", "pytest-asyncio", "pytest-cov",
+                 "flaky>=3.8.1"]
 description = "Energy Language Model"
 
 setup(

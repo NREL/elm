@@ -3,6 +3,7 @@
 import uuid
 import hashlib
 import logging
+import asyncio
 from pathlib import Path
 from random import uniform, randint
 from contextlib import asynccontextmanager
@@ -10,6 +11,9 @@ from contextlib import asynccontextmanager
 from slugify import slugify
 from fake_useragent import UserAgent
 from playwright_stealth import stealth_async
+
+from elm.web.document import PDFDocument
+
 
 logger = logging.getLogger(__name__)
 DEFAULT_HEADERS = {
@@ -166,7 +170,7 @@ def write_url_doc_to_file(doc, file_content, out_dir, make_name_unique=False):
 
 
 @asynccontextmanager
-async def pw_page(browser, intercept_routes=False):
+async def pw_page(browser, intercept_routes=False, stealth_config=None):
     """Create new page from playwright browser context
 
     Parameters
@@ -176,6 +180,10 @@ async def pw_page(browser, intercept_routes=False):
     intercept_routes : bool, default=False
         Option to intercept all requests and abort blocked ones.
         Be default, ``False``.
+    stealth_config : :class:`playwright_stealth.StealthConfig`, optional
+        Optional playwright stealth configuration object.
+        By default, ``None``, which uses all the default stealth
+        options.
 
     Yields
     ------
@@ -184,7 +192,7 @@ async def pw_page(browser, intercept_routes=False):
     """
     browser_type = _BT_RENAME.get(browser.browser_type.name, "random")
 
-    logger.trace("Loading browser context for browser type %s", browser_type)
+    logger.trace("Loading browser context for browser type %r", browser_type)
     context = await browser.new_context(
         base_url="http://127.0.0.1:443",
         device_scale_factor=uniform(0.8, 1.2),
@@ -196,7 +204,7 @@ async def pw_page(browser, intercept_routes=False):
     try:
         logger.trace("Loading browser page")
         page = await context.new_page()
-        await stealth_async(page)
+        await stealth_async(page, stealth_config)
         if intercept_routes:
             logger.trace("Intercepting requests and aborting blocked ones")
             await page.route("**/*", _intercept_route)
@@ -217,3 +225,46 @@ async def _intercept_route(route):  # pragma: no cover
         return await route.abort()
 
     return await route.continue_()
+
+
+async def filter_documents(
+    documents, validation_coroutine, task_name=None, **kwargs
+):
+    """Filter documents by applying a filter function to each.
+
+    Parameters
+    ----------
+    documents : iter of :class:`elm.web.document.BaseDocument`
+        Iterable of documents to filter.
+    validation_coroutine : coroutine
+        A coroutine that returns ``False`` if the document should be
+        discarded and ``True`` otherwise. This function should take a
+        single :class:`elm.web.document.BaseDocument` instance as the
+        first argument. The function may have other arguments, which
+        will be passed down using `**kwargs`.
+    task_name : str, optional
+        Optional task name to use in :func:`asyncio.create_task`.
+        By default, ``None``.
+    **kwargs
+        Keyword-argument pairs to pass to `validation_coroutine`. This
+        should not include the document instance itself, which will be
+        independently passed in as the first argument.
+
+    Returns
+    -------
+    list of :class:`elm.web.document.BaseDocument`
+        List of documents that passed the validation check, sorted by
+        text length, with PDF documents taking the highest precedence.
+    """
+    searchers = [
+        asyncio.create_task(
+            validation_coroutine(doc, **kwargs), name=task_name
+        )
+        for doc in documents
+    ]
+    output = await asyncio.gather(*searchers)
+    filtered_docs = [doc for doc, check in zip(documents, output) if check]
+    return sorted(
+        filtered_docs,
+        key=lambda doc: (not isinstance(doc, PDFDocument), len(doc.text)),
+    )
