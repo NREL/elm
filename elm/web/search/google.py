@@ -8,8 +8,7 @@ import requests
 
 from apiclient.discovery import build
 from rebrowser_playwright.async_api import (
-    TimeoutError as PlaywrightTimeoutError
-)
+    TimeoutError as PlaywrightTimeoutError)
 
 from elm.web.search.base import (PlaywrightSearchEngineLinkSearch,
                                  APISearchEngineLinkSearch)
