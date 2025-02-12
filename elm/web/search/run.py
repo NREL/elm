@@ -50,8 +50,9 @@ _DEFAULT_SE = ("PlaywrightGoogleLinkSearch", "PlaywrightDuckDuckGoLinkSearch",
 
 
 async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
-                                   num_urls=None, browser_semaphore=None,
-                                   task_name=None, **kwargs):
+                                   num_urls=None, ignore_url_parts=None,
+                                   browser_semaphore=None, task_name=None,
+                                   **kwargs):
     """Retrieve top ``N`` search results as document instances
 
     Parameters
@@ -77,6 +78,10 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
         number is less than ``len(queries)``, some of your queries may
         not contribute to the final output. By default, ``None``, which
         sets ``num_urls = 3 * len(queries)``.
+    ignore_url_parts : iterable of str, optional
+        Optional URL components to blacklist. For example, supplying
+        `ignore_url_parts={"wikipedia.org"}` will ignore all URLs that
+        contain "wikipedia.org". By default, ``None``.
     browser_semaphore : :class:`asyncio.Semaphore`, optional
         Semaphore instance that can be used to limit the number of
         playwright browsers open concurrently. If ``None``, no limits
@@ -101,6 +106,7 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
     """
     num_urls = num_urls or 3 * len(queries)
     urls = await _search_with_fallback(search_engines, queries, num_urls,
+                                       ignore_url_parts=ignore_url_parts,
                                        browser_sem=browser_semaphore,
                                        task_name=task_name, kwargs=kwargs)
     logger.debug("Downloading documents for URLS: \n\t-%s", "\n\t-".join(urls))
@@ -109,7 +115,8 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
 
 
 async def _search_with_fallback(search_engines, queries, num_urls,
-                                browser_sem, task_name, kwargs):
+                                ignore_url_parts, browser_sem, task_name,
+                                kwargs):
     """Search for links using multiple search engines if needed"""
     if len(search_engines) < 1:
         msg = f"Must provide at least one search engine! Got {search_engines=}"
@@ -119,7 +126,8 @@ async def _search_with_fallback(search_engines, queries, num_urls,
     for se_name in search_engines:
         logger.debug("Searching web using %r", se_name)
         urls = await _single_se_search(se_name, queries, num_urls,
-                                       browser_sem, task_name, kwargs)
+                                       ignore_url_parts, browser_sem,
+                                       task_name, kwargs)
         if urls:
             return urls
 
@@ -128,8 +136,8 @@ async def _search_with_fallback(search_engines, queries, num_urls,
     return set()
 
 
-async def _single_se_search(se_name, queries, num_urls, browser_sem,
-                            task_name, kwargs):
+async def _single_se_search(se_name, queries, num_urls, ignore_url_parts,
+                            browser_sem, task_name, kwargs):
     """Search for links using a single search engine"""
     if se_name not in SEARCH_ENGINE_OPTIONS:
         msg = (f"'se_name' must be one of: {list(SEARCH_ENGINE_OPTIONS)}\n"
@@ -138,7 +146,8 @@ async def _single_se_search(se_name, queries, num_urls, browser_sem,
         raise ELMKeyError(msg)
 
     links = await _run_search(se_name, queries, browser_sem, task_name, kwargs)
-    return _down_select_urls(links, num_urls=num_urls)
+    return _down_select_urls(links, num_urls=num_urls,
+                             ignore_url_parts=ignore_url_parts)
 
 
 async def _run_search(se_name, queries, browser_sem, task_name, kwargs):
@@ -195,19 +204,26 @@ def _init_se(se_name, kwargs):
     return se_class(**se_kwargs), uses_browser
 
 
-def _down_select_urls(search_results, num_urls=5):
+def _down_select_urls(search_results, num_urls=5, ignore_url_parts=None):
     """Select the top N URLs"""
+    ignore_url_parts = _as_set(ignore_url_parts)
     all_urls = chain.from_iterable(zip_longest(*[results[0]
                                                  for results
                                                  in search_results]))
     urls = set()
     for url in all_urls:
-        if not url:
+        if not url or any(substr in url for substr in ignore_url_parts):
             continue
         urls.add(url)
         if len(urls) == num_urls:
             break
     return urls
+
+def _as_set(user_input):
+    """Convert user input (possibly None or str) to set of strings"""
+    if isinstance(user_input, str):
+        user_input = {user_input}
+    return set(user_input or [])
 
 
 async def _load_docs(urls, browser_semaphore=None, **kwargs):
