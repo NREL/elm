@@ -19,9 +19,9 @@ SE_TO_TEST = [(elm.web.search.google.PlaywrightGoogleLinkSearch, {}),
               (elm.web.search.duckduckgo.PlaywrightDuckDuckGoLinkSearch, {}),
               (elm.web.search.bing.PlaywrightBingLinkSearch, {}),
               (elm.web.search.yahoo.PlaywrightYahooLinkSearch, {})]
-if CSE_URL := os.getenv("GOOGLE_CSE_URL"):
+if CSE_ID := os.getenv("GOOGLE_CSE_ID"):
     SE_TO_TEST.append((elm.web.search.google.PlaywrightGoogleCSELinkSearch,
-                       {"cse_url": CSE_URL}))
+                       {"cse_url": f"https://cse.google.com/cse?cx={CSE_ID}"}))
 
 
 @flaky(max_runs=3, min_passes=1)
@@ -39,6 +39,7 @@ async def test_basic_search_query(queries, se):
 
     assert len(out) == len(queries)
     for results in out:
+        assert results
         assert all(link.startswith("http") for link in results)
 
 
