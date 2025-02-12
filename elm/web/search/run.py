@@ -45,7 +45,8 @@ SEARCH_ENGINE_OPTIONS = {
                                           "pw_launch_kwargs")
 }
 """Supported search engines"""
-_DEFAULT_SE = ("PlaywrightGoogleLinkSearch", )
+_DEFAULT_SE = ("PlaywrightGoogleLinkSearch", "PlaywrightDuckDuckGoLinkSearch",
+               "APIDuckDuckGoSearch")
 
 
 async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
