@@ -116,7 +116,7 @@ async def _search_with_fallback(search_engines, queries, num_urls,
         raise ELMInputError(msg)
 
     for se_name in search_engines:
-        logger.trace("Searching web using %r", se_name)
+        logger.debug("Searching web using %r", se_name)
         urls = await _single_se_search(se_name, queries, num_urls,
                                        browser_sem, task_name, kwargs)
         if urls:
