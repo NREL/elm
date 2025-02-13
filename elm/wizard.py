@@ -224,12 +224,22 @@ class EnergyWizardBase(ApiBase, ABC):
                       messages=messages,
                       temperature=temperature,
                       stream=stream)
-        start_completion_time = perf_counter()
 
+        start_completion_time = perf_counter()
         response = self._client.chat.completions.create(**kwargs)
 
+        finish_completion_time = perf_counter()
+        chat_completion_time = finish_completion_time - start_completion_time
+        total_chat_time = finish_completion_time - start_chat_time
+
+        performance = {
+            "total_chat_time": total_chat_time,
+            "chat_completion_time": chat_completion_time,
+            "vectordb_query_time": vector_query_time
+        }
+
         if return_chat_obj:
-            return response, query, references, None
+            return response, query, references, performance
 
         if stream:
             for chunk in response:
@@ -238,9 +248,6 @@ class EnergyWizardBase(ApiBase, ABC):
                 print(chunk_msg, end='')
         else:
             response_message = response.choices[0].message.content
-
-        finish_completion_time = perf_counter()
-        chat_completion_time = finish_completion_time - start_completion_time
 
         self.messages.append({'role': 'assistant',
                               'content': response_message})
