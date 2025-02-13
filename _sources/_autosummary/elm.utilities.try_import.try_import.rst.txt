@@ -1,0 +1,6 @@
+elm.utilities.try\_import.try\_import
+=====================================
+
+.. currentmodule:: elm.utilities.try_import
+
+.. autofunction:: try_import

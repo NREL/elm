@@ -1,0 +1,33 @@
+elm.ords.extraction.ordinance.OrdinanceExtractor
+================================================
+
+.. currentmodule:: elm.ords.extraction.ordinance
+
+.. autoclass:: OrdinanceExtractor
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~OrdinanceExtractor.check_for_correct_size
+      ~OrdinanceExtractor.check_for_restrictions
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OrdinanceExtractor.MODEL_INSTRUCTIONS_RESTRICTIONS
+      ~OrdinanceExtractor.MODEL_INSTRUCTIONS_SIZE
+      ~OrdinanceExtractor.SYSTEM_MESSAGE
+   
+   
