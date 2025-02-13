@@ -154,6 +154,11 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
     async def _extract_links(self, page, num_results):
         """Extract links for top `num_results` on page"""
         links = await asyncio.to_thread(page.locator, self._SE_SR_TAG)
+
+        if not self.launch_kwargs.get("headless", True):
+            # Viz purposes only
+            [await links.nth(i).hover() for i in range(num_results)]
+
         return [await links.nth(i).get_attribute("href")
                 for i in range(num_results)]
 

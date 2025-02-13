@@ -19,7 +19,8 @@ logger = logging.getLogger(__name__)
 
 async def _read_pdf_doc(pdf_bytes, **kwargs):
     """Default read PDF function (runs in main thread)"""
-    pages = read_pdf(pdf_bytes)
+    verbose = kwargs.pop("verbose", True)
+    pages = read_pdf(pdf_bytes, verbose=verbose)
     return PDFDocument(pages, **kwargs)
 
 

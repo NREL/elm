@@ -7,7 +7,7 @@ from elm.ords.extraction import check_for_ordinance_info
 from elm.ords.services.threaded import TempFileCache
 from elm.ords.validation.location import CountyValidator
 from elm.web.document import PDFDocument
-from elm.web.search.google import google_results_as_docs
+from elm.web.search import web_search_links_as_docs
 from elm.web.utilities import filter_documents
 
 
@@ -101,7 +101,7 @@ async def _docs_from_google_search(
             "file_cache_coroutine": TempFileCache.call,
         }
     )
-    return await google_results_as_docs(
+    return await web_search_links_as_docs(
         queries,
         num_urls=num_urls,
         browser_semaphore=browser_semaphore,
