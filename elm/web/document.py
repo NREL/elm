@@ -55,7 +55,7 @@ class BaseDocument(ABC):
         self.metadata = metadata or {}
 
     def __repr__(self):
-        header = (f"{self.__class__.__name__} with {len(self.pages)} "
+        header = (f"{self.__class__.__name__} with {len(self.pages):,} "
                   "pages\nAttrs:")
         if not self.metadata:
             return f"{header} None"
@@ -63,7 +63,7 @@ class BaseDocument(ABC):
         metadata = {}
         for k, v in self.metadata.items():
             if isinstance(v, pd.DataFrame):
-                v = f"DataFrame with {len(v)} rows"
+                v = f"DataFrame with {len(v):,} rows"
             metadata[k] = v
 
         indent = max(len(k) for k in metadata) + 2
