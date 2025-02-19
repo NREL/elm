@@ -33,16 +33,16 @@ SEARCH_ENGINE_OPTIONS = {
     "APISerperSearch": _SE_OPT(APISerperSearch, False,
                                "google_serper_api_kwargs"),
     "APITavilySearch": _SE_OPT(APITavilySearch, False, "tavily_api_kwargs"),
-    "PlaywrightBingLinkSearch" : _SE_OPT(PlaywrightBingLinkSearch, True,
-                                         "pw_launch_kwargs"),
-    "PlaywrightDuckDuckGoLinkSearch" : _SE_OPT(PlaywrightDuckDuckGoLinkSearch,
-                                               True, "pw_launch_kwargs"),
-    "PlaywrightGoogleCSELinkSearch" : _SE_OPT(PlaywrightGoogleCSELinkSearch,
+    "PlaywrightBingLinkSearch": _SE_OPT(PlaywrightBingLinkSearch, True,
+                                        "pw_launch_kwargs"),
+    "PlaywrightDuckDuckGoLinkSearch": _SE_OPT(PlaywrightDuckDuckGoLinkSearch,
                                               True, "pw_launch_kwargs"),
-    "PlaywrightGoogleLinkSearch" : _SE_OPT(PlaywrightGoogleLinkSearch, True,
-                                           "pw_launch_kwargs"),
-    "PlaywrightYahooLinkSearch" : _SE_OPT(PlaywrightYahooLinkSearch, True,
-                                          "pw_launch_kwargs")
+    "PlaywrightGoogleCSELinkSearch": _SE_OPT(PlaywrightGoogleCSELinkSearch,
+                                             True, "pw_launch_kwargs"),
+    "PlaywrightGoogleLinkSearch": _SE_OPT(PlaywrightGoogleLinkSearch, True,
+                                          "pw_launch_kwargs"),
+    "PlaywrightYahooLinkSearch": _SE_OPT(PlaywrightYahooLinkSearch, True,
+                                         "pw_launch_kwargs")
 }
 """Supported search engines"""
 _DEFAULT_SE = ("PlaywrightGoogleLinkSearch", "PlaywrightDuckDuckGoLinkSearch",
