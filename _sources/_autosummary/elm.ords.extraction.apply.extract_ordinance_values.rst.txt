@@ -1,0 +1,6 @@
+elm.ords.extraction.apply.extract\_ordinance\_values
+====================================================
+
+.. currentmodule:: elm.ords.extraction.apply
+
+.. autofunction:: extract_ordinance_values

@@ -1,0 +1,49 @@
+elm.summary.Summary
+===================
+
+.. currentmodule:: elm.summary
+
+.. autoclass:: Summary
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Summary.call_api
+      ~Summary.call_api_async
+      ~Summary.chat
+      ~Summary.clear
+      ~Summary.combine
+      ~Summary.count_tokens
+      ~Summary.generic_async_query
+      ~Summary.generic_query
+      ~Summary.get_embedding
+      ~Summary.run
+      ~Summary.run_async
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Summary.DEFAULT_MODEL
+      ~Summary.EMBEDDING_MODEL
+      ~Summary.EMBEDDING_URL
+      ~Summary.HEADERS
+      ~Summary.MODEL_INSTRUCTION
+      ~Summary.MODEL_ROLE
+      ~Summary.TOKENIZER_ALIASES
+      ~Summary.TOKENIZER_PATTERNS
+      ~Summary.URL
+      ~Summary.all_messages_txt
+   
+   

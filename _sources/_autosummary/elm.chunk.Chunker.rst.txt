@@ -1,0 +1,54 @@
+elm.chunk.Chunker
+=================
+
+.. currentmodule:: elm.chunk
+
+.. autoclass:: Chunker
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Chunker.add_overlap
+      ~Chunker.call_api
+      ~Chunker.call_api_async
+      ~Chunker.chat
+      ~Chunker.chunk_text
+      ~Chunker.clean_paragraphs
+      ~Chunker.clear
+      ~Chunker.count_tokens
+      ~Chunker.generic_async_query
+      ~Chunker.generic_query
+      ~Chunker.get_embedding
+      ~Chunker.is_good_paragraph
+      ~Chunker.merge_chunks
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Chunker.DEFAULT_MODEL
+      ~Chunker.EMBEDDING_MODEL
+      ~Chunker.EMBEDDING_URL
+      ~Chunker.HEADERS
+      ~Chunker.MODEL_ROLE
+      ~Chunker.TOKENIZER_ALIASES
+      ~Chunker.TOKENIZER_PATTERNS
+      ~Chunker.URL
+      ~Chunker.all_messages_txt
+      ~Chunker.chunk_tokens
+      ~Chunker.chunks
+      ~Chunker.paragraph_tokens
+      ~Chunker.paragraphs
+   
+   
