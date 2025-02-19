@@ -62,10 +62,10 @@ class BaseDocument(ABC):
             if isinstance(v, pd.DataFrame):
                 v = f"DataFrame with {len(v)} rows"
             metadata[k] = v
-        
+
         indent = max(len(k) for k in metadata) + 2
-        attrs = "\n".join([f"{k:>{indent}}:\t{v}" 
-                           or k, v in metadata.items()])
+        attrs = "\n".join([f"{k:>{indent}}:\t{v}"
+                           for k, v in metadata.items()])
         return f"{header}\n{attrs}"
 
     @property
