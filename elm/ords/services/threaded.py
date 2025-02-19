@@ -16,12 +16,12 @@ from elm.web.utilities import write_url_doc_to_file
 
 def _move_file(doc, out_dir):
     """Move a file from a temp directory to an output directory."""
-    cached_fp = doc.metadata.get("cache_fn")
+    cached_fp = doc.attrs.get("cache_fn")
     if cached_fp is None:
         return
 
     cached_fp = Path(cached_fp)
-    out_fn = doc.metadata.get("location_name", cached_fp.name)
+    out_fn = doc.attrs.get("location_name", cached_fp.name)
     if not out_fn.endswith(cached_fp.suffix):
         out_fn = f"{out_fn}{cached_fp.suffix}"
 
@@ -32,8 +32,8 @@ def _move_file(doc, out_dir):
 
 def _write_cleaned_file(doc, out_dir):
     """Write cleaned ordinance text to directory."""
-    cleaned_text = doc.metadata.get("cleaned_ordinance_text")
-    location_name = doc.metadata.get("location_name")
+    cleaned_text = doc.attrs.get("cleaned_ordinance_text")
+    location_name = doc.attrs.get("location_name")
 
     if cleaned_text is None or location_name is None:
         return
@@ -46,8 +46,8 @@ def _write_cleaned_file(doc, out_dir):
 
 def _write_ord_db(doc, out_dir):
     """Write parsed ordinance database to directory."""
-    ord_db = doc.metadata.get("ordinance_values")
-    location_name = doc.metadata.get("location_name")
+    ord_db = doc.attrs.get("ordinance_values")
+    location_name = doc.attrs.get("location_name")
 
     if ord_db is None or location_name is None:
         return

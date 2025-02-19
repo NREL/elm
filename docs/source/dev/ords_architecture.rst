@@ -407,7 +407,7 @@ for multiprocessing tasks.
 
     content = ...
     doc = HTMLDocument([content])
-    doc.text, doc.raw_pages, doc.metadata
+    doc.text, doc.raw_pages, doc.attrs
 
 --------------------------------------------------------------------------------------------------------------------------------------------------
 

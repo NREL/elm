@@ -79,7 +79,7 @@ def test_write_url_doc_to_file(tmp_path):
     """Test basic execution of `write_url_doc_to_file`"""
 
     doc = HTMLDocument(["test"])
-    doc.metadata["source"] = "http://www.example.com/?=%20test"
+    doc.attrs["source"] = "http://www.example.com/?=%20test"
     out_fp = write_url_doc_to_file(doc, doc.text, tmp_path)
 
     text_files = list(tmp_path.glob("*.txt"))

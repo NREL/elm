@@ -5,6 +5,8 @@ from copy import deepcopy
 from functools import cached_property
 import logging
 
+import pandas as pd
+
 from elm.utilities.parse import (
     combine_pages,
     clean_headers,
@@ -39,7 +41,7 @@ class BaseDocument(ABC):
     .. end desc
     """
 
-    def __init__(self, pages, metadata=None):
+    def __init__(self, pages, attrs=None):
         """
 
         Parameters
@@ -47,12 +49,29 @@ class BaseDocument(ABC):
         pages : iterable
             Iterable of strings, where each string is a page of a
             document.
-        metadata : dict, optional
+        attrs : dict, optional
             Optional dict containing metadata for the document.
             By default, ``None``.
         """
         self.pages = remove_blank_pages(pages)
-        self.metadata = metadata or {}
+        self.attrs = attrs or {}
+
+    def __repr__(self):
+        header = (f"{self.__class__.__name__} with {len(self.pages):,} "
+                  "pages\nAttrs:")
+        if not self.attrs:
+            return f"{header} None"
+
+        attrs = {}
+        for k, v in self.attrs.items():
+            if isinstance(v, pd.DataFrame):
+                v = f"DataFrame with {len(v):,} rows"
+            attrs[k] = v
+
+        indent = max(len(k) for k in attrs) + 2
+        attrs = "\n".join([f"{k:>{indent}}:\t{v}"
+                           for k, v in attrs.items()])
+        return f"{header}\n{attrs}"
 
     @property
     def empty(self):
@@ -118,7 +137,7 @@ class PDFDocument(BaseDocument):
     def __init__(
         self,
         pages,
-        metadata=None,
+        attrs=None,
         percent_raw_pages_to_keep=25,
         max_raw_pages=18,
         num_end_pages_to_keep=2,
@@ -131,8 +150,7 @@ class PDFDocument(BaseDocument):
         pages : iterable
             Iterable of strings, where each string is a page of a
             document.
-        metadata : str, optional
-            metadata : dict, optional
+        attrs : str, optional
             Optional dict containing metadata for the document.
             By default, ``None``.
         percent_raw_pages_to_keep : int, optional
@@ -153,7 +171,7 @@ class PDFDocument(BaseDocument):
             to the :func:`~elm.utilities.parse.clean_headers`
             function. By default, ``None``.
         """
-        super().__init__(pages, metadata=metadata)
+        super().__init__(pages, attrs=attrs)
         self.percent_raw_pages_to_keep = percent_raw_pages_to_keep
         self.max_raw_pages = min(len(self.pages), max_raw_pages)
         self.num_end_pages_to_keep = num_end_pages_to_keep
@@ -244,7 +262,7 @@ class HTMLDocument(BaseDocument):
     def __init__(
         self,
         pages,
-        metadata=None,
+        attrs=None,
         html_table_to_markdown_kwargs=None,
         ignore_html_links=True,
         text_splitter=None,
@@ -256,7 +274,7 @@ class HTMLDocument(BaseDocument):
         pages : iterable
             Iterable of strings, where each string is a page of a
             document.
-        metadata : dict, optional
+        attrs : dict, optional
             Optional dict containing metadata for the document.
             By default, ``None``.
         html_table_to_markdown_kwargs : dict, optional
@@ -275,7 +293,7 @@ class HTMLDocument(BaseDocument):
             By default, ``None``, which means the original pages input
             becomes the raw pages attribute.
         """
-        super().__init__(pages, metadata=metadata)
+        super().__init__(pages, attrs=attrs)
         self.html_table_to_markdown_kwargs = deepcopy(
             self.HTML_TABLE_TO_MARKDOWN_KWARGS
         )

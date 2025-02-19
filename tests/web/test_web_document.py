@@ -4,6 +4,7 @@ from pathlib import Path
 
 import pytest
 import pdftotext
+import pandas as pd
 
 from elm import TEST_DATA_DIR
 from elm.web.document import PDFDocument, HTMLDocument
@@ -24,7 +25,7 @@ def test_basic_document(doc_type):
     doc = doc_type([""])
     assert doc.text == ""
     assert doc.raw_pages == []
-    assert doc.metadata == {}
+    assert doc.attrs == {}
     if doc_type is PDFDocument:
         assert doc.num_raw_pages_to_keep == 0
         assert doc._last_page_index == 0
@@ -96,6 +97,26 @@ def test_html_doc_with_splitter():
     doc = HTMLDocument([og_text], text_splitter=TestSplitter())
 
     assert len(doc.raw_pages) == og_text.count("\n") + 1
+
+
+def test_doc_repr():
+    """Test document repr method"""
+
+    a = PDFDocument([])
+    expected_repr = "PDFDocument with 0 pages\nAttrs: None"
+    assert repr(a) == expected_repr
+
+    b = PDFDocument(["test", "another"])
+    expected_repr = "PDFDocument with 2 pages\nAttrs: None"
+    assert repr(b) == expected_repr
+
+    c = PDFDocument(["a"] * 1543)
+    c.attrs = {"A": "some text", "b": pd.DataFrame({"Test": ["a"] * 1953})}
+
+    expected_repr = ("PDFDocument with 1,543 pages\nAttrs:\n  A:\tsome text\n"
+                     "  b:\tDataFrame with 1,953 rows")
+    assert repr(c) == expected_repr
+
 
 
 if __name__ == "__main__":

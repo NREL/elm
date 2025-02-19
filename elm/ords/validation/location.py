@@ -204,7 +204,7 @@ class CountyValidator:
             `True` if the doc contents pertain to the input county.
             `False` otherwise.
         """
-        source = doc.metadata.get("source")
+        source = doc.attrs.get("source")
         logger.debug(
             "Validating document from source: %s", source or "Unknown"
         )
@@ -280,7 +280,7 @@ async def _validator_check_for_doc(validator, doc, score_thresh=0.8, **kwargs):
         "%s score is %.2f for doc from source %s (Pass: %s)",
         validator.__class__.__name__,
         score,
-        doc.metadata.get("source", "Unknown"),
+        doc.attrs.get("source", "Unknown"),
         str(score > score_thresh),
     )
     return score > score_thresh

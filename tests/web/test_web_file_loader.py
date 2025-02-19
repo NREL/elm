@@ -74,8 +74,8 @@ async def test_async_file_loader_basic_pdf(monkeypatch):
     truth = PDFDocument(pdf)
 
     assert doc.text == truth.text
-    assert doc.metadata["source"] == "gpt-4"
-    assert "cache_fn" not in doc.metadata
+    assert doc.attrs["source"] == "gpt-4"
+    assert "cache_fn" not in doc.attrs
 
 
 @pytest.mark.asyncio
@@ -104,8 +104,8 @@ async def test_async_file_loader_basic_html(monkeypatch):
     truth = HTMLDocument([content])
 
     assert doc.text == truth.text
-    assert doc.metadata["source"] == "Whatcom"
-    assert "cache_fn" not in doc.metadata
+    assert doc.attrs["source"] == "Whatcom"
+    assert "cache_fn" not in doc.attrs
 
 
 @pytest.mark.asyncio
@@ -126,11 +126,11 @@ async def test_async_file_loader_fetch_all(monkeypatch, tmp_path):
     )
 
     def _write_file(doc, content):
-        out_fn = doc.metadata["source"]
+        out_fn = doc.attrs["source"]
         out_fp = tmp_path / f"{out_fn}.{doc.FILE_EXTENSION}"
         with open(out_fp, **doc.WRITE_KWARGS) as fh:
             fh.write(content)
-        if doc.metadata["source"] == "gpt-4":
+        if doc.attrs["source"] == "gpt-4":
             return None
         return out_fp
 
@@ -160,12 +160,12 @@ async def test_async_file_loader_fetch_all(monkeypatch, tmp_path):
     truth_html = HTMLDocument([content])
 
     assert docs[0].text == truth_pdf.text
-    assert docs[0].metadata["source"] == "gpt-4"
-    assert "cache_fn" not in docs[0].metadata
+    assert docs[0].attrs["source"] == "gpt-4"
+    assert "cache_fn" not in docs[0].attrs
 
     assert docs[1].text == truth_html.text
-    assert docs[1].metadata["source"] == "Whatcom"
-    assert docs[1].metadata["cache_fn"].stem == "Whatcom"
+    assert docs[1].attrs["source"] == "Whatcom"
+    assert docs[1].attrs["cache_fn"].stem == "Whatcom"
 
     assert len(list(tmp_path.glob("*"))) == 2
     assert filecmp.cmp(GPT4_DOC_PATH, list(tmp_path.glob("*.pdf"))[0])

@@ -33,16 +33,16 @@ SEARCH_ENGINE_OPTIONS = {
     "APISerperSearch": _SE_OPT(APISerperSearch, False,
                                "google_serper_api_kwargs"),
     "APITavilySearch": _SE_OPT(APITavilySearch, False, "tavily_api_kwargs"),
-    "PlaywrightBingLinkSearch" : _SE_OPT(PlaywrightBingLinkSearch, True,
-                                         "pw_launch_kwargs"),
-    "PlaywrightDuckDuckGoLinkSearch" : _SE_OPT(PlaywrightDuckDuckGoLinkSearch,
-                                               True, "pw_launch_kwargs"),
-    "PlaywrightGoogleCSELinkSearch" : _SE_OPT(PlaywrightGoogleCSELinkSearch,
+    "PlaywrightBingLinkSearch": _SE_OPT(PlaywrightBingLinkSearch, True,
+                                        "pw_launch_kwargs"),
+    "PlaywrightDuckDuckGoLinkSearch": _SE_OPT(PlaywrightDuckDuckGoLinkSearch,
                                               True, "pw_launch_kwargs"),
-    "PlaywrightGoogleLinkSearch" : _SE_OPT(PlaywrightGoogleLinkSearch, True,
-                                           "pw_launch_kwargs"),
-    "PlaywrightYahooLinkSearch" : _SE_OPT(PlaywrightYahooLinkSearch, True,
-                                          "pw_launch_kwargs")
+    "PlaywrightGoogleCSELinkSearch": _SE_OPT(PlaywrightGoogleCSELinkSearch,
+                                             True, "pw_launch_kwargs"),
+    "PlaywrightGoogleLinkSearch": _SE_OPT(PlaywrightGoogleLinkSearch, True,
+                                          "pw_launch_kwargs"),
+    "PlaywrightYahooLinkSearch": _SE_OPT(PlaywrightYahooLinkSearch, True,
+                                         "pw_launch_kwargs")
 }
 """Supported search engines"""
 _DEFAULT_SE = ("PlaywrightGoogleLinkSearch", "PlaywrightDuckDuckGoLinkSearch",
@@ -67,7 +67,7 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
         of URLs, then iteration will end and documents for each URL will
         be returned. Otherwise, the next engine in this list will be
         used to run the web search. If this also fails, the next engine
-        is used and so on. If all web searched fail, en empty list is
+        is used and so on. If all web searches fail, an empty list is
         returned. See :obj:`~elm.web.search.run.SEARCH_ENGINE_OPTIONS`
         for supported search engine options.
         By default, ``("PlaywrightGoogleLinkSearch", )``.
@@ -219,6 +219,7 @@ def _down_select_urls(search_results, num_urls=5, ignore_url_parts=None):
             break
     return urls
 
+
 def _as_set(user_input):
     """Convert user input (possibly None or str) to set of strings"""
     if isinstance(user_input, str):
@@ -235,7 +236,7 @@ async def _load_docs(urls, browser_semaphore=None, **kwargs):
                                   **kwargs)
     docs = await file_loader.fetch_all(*urls)
 
-    page_lens = {doc.metadata.get("source", "Unknown"): len(doc.pages)
+    page_lens = {doc.attrs.get("source", "Unknown"): len(doc.pages)
                  for doc in docs}
     logger.debug("Loaded the following number of pages for docs:\n%s",
                  pprint.PrettyPrinter().pformat(page_lens))
