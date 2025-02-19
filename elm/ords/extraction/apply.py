@@ -49,16 +49,16 @@ async def check_for_ordinance_info(doc, text_splitter, **kwargs):
         snippet. Note that the snippet may contain other info as well,
         but should encapsulate all of the ordinance text.
     """
-    if "contains_ord_info" in doc.metadata:
+    if "contains_ord_info" in doc.attrs:
         return doc
 
     llm_caller = StructuredLLMCaller(**kwargs)
     chunks = text_splitter.split_text(doc.text)
     validator = OrdinanceValidator(llm_caller, chunks)
-    doc.metadata["contains_ord_info"] = await validator.parse()
-    if doc.metadata["contains_ord_info"]:
-        doc.metadata["date"] = await DateExtractor(llm_caller).parse(doc)
-        doc.metadata["ordinance_text"] = validator.ordinance_text
+    doc.attrs["contains_ord_info"] = await validator.parse()
+    if doc.attrs["contains_ord_info"]:
+        doc.attrs["date"] = await DateExtractor(llm_caller).parse(doc)
+        doc.attrs["ordinance_text"] = validator.ordinance_text
 
     return doc
 
@@ -90,18 +90,18 @@ async def extract_ordinance_text_with_llm(doc, text_splitter, extractor):
     -------
     elm.web.document.BaseDocument
         Document that has been parsed for ordinance text. The results of
-        the extraction are stored in the document's metadata. In
-        particular, the metadata will contain a
+        the extraction are stored in the document's metadata (attrs). In
+        particular, the metadata (attrs) will contain a
         ``"cleaned_ordinance_text"`` key that will contain the cleaned
         ordinance text.
     """
-    text_chunks = text_splitter.split_text(doc.metadata["ordinance_text"])
+    text_chunks = text_splitter.split_text(doc.attrs["ordinance_text"])
     ordinance_text = await extractor.check_for_restrictions(text_chunks)
-    doc.metadata["restrictions_ordinance_text"] = ordinance_text
+    doc.attrs["restrictions_ordinance_text"] = ordinance_text
 
     text_chunks = text_splitter.split_text(ordinance_text)
     ordinance_text = await extractor.check_for_correct_size(text_chunks)
-    doc.metadata["cleaned_ordinance_text"] = ordinance_text
+    doc.attrs["cleaned_ordinance_text"] = ordinance_text
 
     return doc
 
@@ -167,7 +167,7 @@ async def extract_ordinance_text_with_ngram_validation(
         ``"cleaned_ordinance_text"`` key that will contain the cleaned
         ordinance text.
     """
-    if not doc.metadata.get("ordinance_text"):
+    if not doc.attrs.get("ordinance_text"):
         msg = (
             "Input document has no 'ordinance_text' key or string does not "
             "contain information. Please run `check_for_ordinance_info` "
@@ -203,8 +203,8 @@ async def _extract_with_ngram_check(
     """Extract ordinance info from doc and validate using ngrams."""
     from elm.ords.extraction.ngrams import sentence_ngram_containment
 
-    source = doc.metadata.get("source", "Unknown")
-    og_text = doc.metadata["ordinance_text"]
+    source = doc.attrs.get("source", "Unknown")
+    og_text = doc.attrs["ordinance_text"]
     if not og_text:
         msg = (
             "Document missing original ordinance text! No extraction "
@@ -221,7 +221,7 @@ async def _extract_with_ngram_check(
         doc = await extract_ordinance_text_with_llm(
             doc, text_splitter, extractor
         )
-        cleaned_text = doc.metadata["cleaned_ordinance_text"]
+        cleaned_text = doc.attrs["cleaned_ordinance_text"]
         if not cleaned_text:
             logger.debug(
                 "No cleaned text found after extraction on attempt %d "
@@ -256,7 +256,7 @@ async def _extract_with_ngram_check(
             source,
         )
     else:
-        doc.metadata["cleaned_ordinance_text"] = best_summary
+        doc.attrs["cleaned_ordinance_text"] = best_summary
         msg = (
             f"Ngram check failed after {num_tries}. LLM hallucination in "
             "cleaned ordinance text is extremely likely! Proceed with "
@@ -294,7 +294,7 @@ async def extract_ordinance_values(doc, **kwargs):
         particular, the metadata will contain an ``"ordinance_values"``
         key that will contain the DataFame with ordinance values.
     """
-    if not doc.metadata.get("cleaned_ordinance_text"):
+    if not doc.attrs.get("cleaned_ordinance_text"):
         msg = (
             "Input document has no 'cleaned_ordinance_text' key or string "
             "does not contain info. Please run "
@@ -305,6 +305,6 @@ async def extract_ordinance_values(doc, **kwargs):
         return doc
 
     parser = StructuredOrdinanceParser(**kwargs)
-    text = doc.metadata["cleaned_ordinance_text"]
-    doc.metadata["ordinance_values"] = await parser.parse(text)
+    text = doc.attrs["cleaned_ordinance_text"]
+    doc.attrs["ordinance_values"] = await parser.parse(text)
     return doc

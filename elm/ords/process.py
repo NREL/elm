@@ -530,8 +530,8 @@ async def process_county(
         await _record_time_and_usage(start_time, **kwargs)
         return None
 
-    doc.metadata["location"] = county
-    doc.metadata["location_name"] = county.full_name
+    doc.attrs["location"] = county
+    doc.attrs["location_name"] = county.full_name
     await _record_usage(**kwargs)
 
     doc = await extract_ordinance_text_with_ngram_validation(
@@ -550,7 +550,7 @@ async def process_county(
             "%d ordinance value(s) found for %s. Outputs are here: '%s'",
             ord_count,
             county.full_name,
-            doc.metadata["ord_db_fp"],
+            doc.attrs["ord_db_fp"],
         )
     else:
         logger.info("No ordinances found for %s.", county.full_name)
@@ -579,21 +579,21 @@ async def _record_time_and_usage(start_time, **kwargs):
 async def _move_file_to_out_dir(doc):
     """Move PDF or HTML text file to output directory."""
     out_fp = await FileMover.call(doc)
-    doc.metadata["out_fp"] = out_fp
+    doc.attrs["out_fp"] = out_fp
     return doc
 
 
 async def _write_cleaned_text(doc):
     """Write cleaned text to `clean_dir`."""
     out_fp = await CleanedFileWriter.call(doc)
-    doc.metadata["cleaned_fp"] = out_fp
+    doc.attrs["cleaned_fp"] = out_fp
     return doc
 
 
 async def _write_ord_db(doc):
     """Write cleaned text to `county_dbs_dir`."""
     out_fp = await OrdDBFileWriter.call(doc)
-    doc.metadata["ord_db_fp"] = out_fp
+    doc.attrs["ord_db_fp"] = out_fp
     return doc
 
 
@@ -628,10 +628,10 @@ def _num_ords_in_doc(doc):
     if doc is None:
         return 0
 
-    if "ordinance_values" not in doc.metadata:
+    if "ordinance_values" not in doc.attrs:
         return 0
 
-    ord_vals = doc.metadata["ordinance_values"]
+    ord_vals = doc.attrs["ordinance_values"]
     if ord_vals.empty:
         return 0
 
@@ -666,16 +666,16 @@ def _docs_to_db(docs):
 
 def _db_results(doc):
     """Extract results from doc metadata to DataFrame."""
-    results = doc.metadata.get("ordinance_values")
+    results = doc.attrs.get("ordinance_values")
     if results is None:
         return None
 
-    results["source"] = doc.metadata.get("source")
-    year = doc.metadata.get("date", (None, None, None))[0]
+    results["source"] = doc.attrs.get("source")
+    year = doc.attrs.get("date", (None, None, None))[0]
     results["ord_year"] = year if year is not None and year > 0 else None
     results["last_updated"] = datetime.now().strftime("%m/%d/%Y")
 
-    location = doc.metadata["location"]
+    location = doc.attrs["location"]
     results["FIPS"] = location.fips
     results["county"] = location.name
     results["state"] = location.state

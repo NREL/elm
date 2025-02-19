@@ -181,7 +181,7 @@ class AsyncFileLoader:
     async def _fetch_doc_with_url_in_metadata(self, url):
         """Fetch doc contents and add URL to metadata"""
         doc, raw_content = await self._fetch_doc(url)
-        doc.metadata["source"] = url
+        doc.attrs["source"] = url
         return doc, raw_content
 
     async def _fetch_doc(self, url):
@@ -239,5 +239,5 @@ class AsyncFileLoader:
 
         cache_fn = await self.file_cache_coroutine(doc, raw_content)
         if cache_fn is not None:
-            doc.metadata["cache_fn"] = cache_fn
+            doc.attrs["cache_fn"] = cache_fn
         return doc

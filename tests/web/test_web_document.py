@@ -25,7 +25,7 @@ def test_basic_document(doc_type):
     doc = doc_type([""])
     assert doc.text == ""
     assert doc.raw_pages == []
-    assert doc.metadata == {}
+    assert doc.attrs == {}
     if doc_type is PDFDocument:
         assert doc.num_raw_pages_to_keep == 0
         assert doc._last_page_index == 0
@@ -111,7 +111,7 @@ def test_doc_repr():
     assert repr(b) == expected_repr
 
     c = PDFDocument(["a"] * 1543)
-    c.metadata = {"A": "some text", "b": pd.DataFrame({"Test": ["a"] * 1953})}
+    c.attrs = {"A": "some text", "b": pd.DataFrame({"Test": ["a"] * 1953})}
 
     expected_repr = ("PDFDocument with 1,543 pages\nAttrs:\n  A:\tsome text\n"
                      "  b:\tDataFrame with 1,953 rows")

@@ -136,7 +136,7 @@ async def _down_select_docs_correct_content(docs, location, **kwargs):
 async def _contains_ords(doc, **kwargs):
     """Helper coroutine that checks for ordinance info. """
     doc = await check_for_ordinance_info(doc, **kwargs)
-    return doc.metadata.get("contains_ord_info", False)
+    return doc.attrs.get("contains_ord_info", False)
 
 
 def _sort_final_ord_docs(all_ord_docs):
@@ -149,5 +149,5 @@ def _sort_final_ord_docs(all_ord_docs):
 
 def _ord_doc_sorting_key(doc):
     """All text sorting key"""
-    year, month, day = doc.metadata.get("date", (-1, -1, -1))
+    year, month, day = doc.attrs.get("date", (-1, -1, -1))
     return year, isinstance(doc, PDFDocument), -1 * len(doc.text), month, day

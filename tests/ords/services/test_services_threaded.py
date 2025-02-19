@@ -13,7 +13,7 @@ async def test_temp_file_cache_service():
     """Test base implementation of `TempFileCache` class"""
 
     doc = HTMLDocument(["test"])
-    doc.metadata["source"] = "http://www.example.com/?=%20test"
+    doc.attrs["source"] = "http://www.example.com/?=%20test"
 
     cache = TempFileCache()
     cache.acquire_resources()
@@ -29,14 +29,14 @@ async def test_file_move_service(tmp_path):
     """Test base implementation of `FileMover` class"""
 
     doc = HTMLDocument(["test"])
-    doc.metadata["source"] = "http://www.example.com/?=%20test"
+    doc.attrs["source"] = "http://www.example.com/?=%20test"
 
     cache = TempFileCache()
     cache.acquire_resources()
     out_fp = await cache.process(doc, doc.text)
     assert out_fp.exists()
     assert out_fp.read_text().startswith("test")
-    doc.metadata["cache_fn"] = out_fp
+    doc.attrs["cache_fn"] = out_fp
 
     expected_moved_fp = tmp_path / out_fp.name
     assert not expected_moved_fp.exists()

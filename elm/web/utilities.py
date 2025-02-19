@@ -161,7 +161,7 @@ def write_url_doc_to_file(doc, file_content, out_dir, make_name_unique=False):
         Path to output file.
     """
     out_fn = compute_fn_from_url(
-        url=doc.metadata["source"], make_unique=make_name_unique
+        url=doc.attrs["source"], make_unique=make_name_unique
     )
     out_fp = Path(out_dir) / f"{out_fn}.{doc.FILE_EXTENSION}"
     with open(out_fp, **doc.WRITE_KWARGS) as fh:

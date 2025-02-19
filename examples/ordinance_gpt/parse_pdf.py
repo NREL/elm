@@ -66,8 +66,8 @@ if __name__ == '__main__':
     doc = ARun.run(services, extract_ordinance_values(doc, **kwargs))
 
     # save outputs
-    doc.metadata['ordinance_values'].to_csv(fp_ords)
+    doc.attrs['ordinance_values'].to_csv(fp_ords)
     with open(fp_txt_all, 'w') as f:
-        f.write(doc.metadata["ordinance_text"])
+        f.write(doc.attrs["ordinance_text"])
     with open(fp_txt_clean, 'w') as f:
-        f.write(doc.metadata["cleaned_ordinance_text"])
+        f.write(doc.attrs["cleaned_ordinance_text"])
