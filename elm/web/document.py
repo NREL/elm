@@ -54,6 +54,20 @@ class BaseDocument(ABC):
         self.pages = remove_blank_pages(pages)
         self.metadata = metadata or {}
 
+    def __repr__(self):
+        header = (f"{self.__class__.__name__} with {len(self.pages)} "
+                  "pages\nAttrs:")
+        metadata = {}
+        for k, v in self.metadata.items():
+            if isinstance(v, pd.DataFrame):
+                v = f"DataFrame with {len(v)} rows"
+            metadata[k] = v
+        
+        indent = max(len(k) for k in metadata) + 2
+        attrs = "\n".join([f"{k:>{indent}}:\t{v}" 
+                           or k, v in metadata.items()])
+        return f"{header}\n{attrs}"
+
     @property
     def empty(self):
         """bool: ``True`` if the document contains no pages."""
