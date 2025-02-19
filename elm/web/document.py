@@ -57,6 +57,9 @@ class BaseDocument(ABC):
     def __repr__(self):
         header = (f"{self.__class__.__name__} with {len(self.pages)} "
                   "pages\nAttrs:")
+        if not self.metadata:
+            return f"{header} None"
+
         metadata = {}
         for k, v in self.metadata.items():
             if isinstance(v, pd.DataFrame):
