@@ -67,7 +67,7 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
         of URLs, then iteration will end and documents for each URL will
         be returned. Otherwise, the next engine in this list will be
         used to run the web search. If this also fails, the next engine
-        is used and so on. If all web searched fail, en empty list is
+        is used and so on. If all web searches fail, an empty list is
         returned. See :obj:`~elm.web.search.run.SEARCH_ENGINE_OPTIONS`
         for supported search engine options.
         By default, ``("PlaywrightGoogleLinkSearch", )``.
