@@ -5,6 +5,8 @@ from copy import deepcopy
 from functools import cached_property
 import logging
 
+import pandas as pd
+
 from elm.utilities.parse import (
     combine_pages,
     clean_headers,
