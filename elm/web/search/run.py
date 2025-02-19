@@ -219,6 +219,7 @@ def _down_select_urls(search_results, num_urls=5, ignore_url_parts=None):
             break
     return urls
 
+
 def _as_set(user_input):
     """Convert user input (possibly None or str) to set of strings"""
     if isinstance(user_input, str):
