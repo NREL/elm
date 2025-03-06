@@ -122,7 +122,8 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
         logger.debug("Searching %s: %r", self._SE_NAME, query)
         num_results = min(num_results, self.MAX_RESULTS_CONSIDERED_PER_PAGE)
 
-        page_kwargs = {"browser": self._browser, "stealth_config": self._SC}
+        page_kwargs = {"browser": self._browser, "stealth_config": self._SC,
+                       "ignore_https_errors": True}  # no sensitive inputs
         async with pw_page(**page_kwargs) as page:
             await _navigate_to_search_engine(page, se_url=self._SE_URL,
                                              timeout=self.PAGE_LOAD_TIMEOUT)
