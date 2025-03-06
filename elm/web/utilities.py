@@ -170,7 +170,8 @@ def write_url_doc_to_file(doc, file_content, out_dir, make_name_unique=False):
 
 
 @asynccontextmanager
-async def pw_page(browser, intercept_routes=False, stealth_config=None):
+async def pw_page(browser, intercept_routes=False, stealth_config=None,
+                  ignore_https_errors=False):
     """Create new page from playwright browser context
 
     Parameters
@@ -184,6 +185,13 @@ async def pw_page(browser, intercept_routes=False, stealth_config=None):
         Optional playwright stealth configuration object.
         By default, ``None``, which uses all the default stealth
         options.
+    ignore_https_errors : bool, default=False
+        Option to ignore https errors (i.e. SSL cert errors). This is
+        not generally safe to do - you are susceptible to MITM attacks.
+        However, if you are doing a simple scrape without providing
+        any sensitive information (which you probably shouldn't be doing
+        programmatically anyways), then it's probably ok to ignore these
+        errors. By default, ``False``.
 
     Yields
     ------
@@ -202,6 +210,7 @@ async def pw_page(browser, intercept_routes=False, stealth_config=None):
         extra_http_headers=DEFAULT_HEADERS,
         user_agent=ua,
         viewport={"width": randint(800, 1400), "height": randint(800, 1400)},
+        ignore_https_errors=ignore_https_errors,
     )
 
     try:
