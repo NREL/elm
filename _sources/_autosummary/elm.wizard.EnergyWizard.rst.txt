@@ -1,0 +1,51 @@
+elm.wizard.EnergyWizard
+=======================
+
+.. currentmodule:: elm.wizard
+
+.. autoclass:: EnergyWizard
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~EnergyWizard.call_api
+      ~EnergyWizard.call_api_async
+      ~EnergyWizard.chat
+      ~EnergyWizard.clear
+      ~EnergyWizard.cosine_dist
+      ~EnergyWizard.count_tokens
+      ~EnergyWizard.engineer_query
+      ~EnergyWizard.generic_async_query
+      ~EnergyWizard.generic_query
+      ~EnergyWizard.get_embedding
+      ~EnergyWizard.make_ref_list
+      ~EnergyWizard.preflight_corpus
+      ~EnergyWizard.query_vector_db
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~EnergyWizard.DEFAULT_MODEL
+      ~EnergyWizard.EMBEDDING_MODEL
+      ~EnergyWizard.EMBEDDING_URL
+      ~EnergyWizard.HEADERS
+      ~EnergyWizard.MODEL_INSTRUCTION
+      ~EnergyWizard.MODEL_ROLE
+      ~EnergyWizard.TOKENIZER_ALIASES
+      ~EnergyWizard.TOKENIZER_PATTERNS
+      ~EnergyWizard.URL
+      ~EnergyWizard.all_messages_txt
+   
+   

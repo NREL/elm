@@ -1,0 +1,6 @@
+elm.utilities.parse.html\_to\_text
+==================================
+
+.. currentmodule:: elm.utilities.parse
+
+.. autofunction:: html_to_text

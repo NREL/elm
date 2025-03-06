@@ -1,0 +1,48 @@
+elm.embed.ChunkAndEmbed
+=======================
+
+.. currentmodule:: elm.embed
+
+.. autoclass:: ChunkAndEmbed
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ChunkAndEmbed.call_api
+      ~ChunkAndEmbed.call_api_async
+      ~ChunkAndEmbed.chat
+      ~ChunkAndEmbed.clean_tables
+      ~ChunkAndEmbed.clear
+      ~ChunkAndEmbed.count_tokens
+      ~ChunkAndEmbed.generic_async_query
+      ~ChunkAndEmbed.generic_query
+      ~ChunkAndEmbed.get_embedding
+      ~ChunkAndEmbed.run
+      ~ChunkAndEmbed.run_async
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ChunkAndEmbed.DEFAULT_MODEL
+      ~ChunkAndEmbed.EMBEDDING_MODEL
+      ~ChunkAndEmbed.EMBEDDING_URL
+      ~ChunkAndEmbed.HEADERS
+      ~ChunkAndEmbed.MODEL_ROLE
+      ~ChunkAndEmbed.TOKENIZER_ALIASES
+      ~ChunkAndEmbed.TOKENIZER_PATTERNS
+      ~ChunkAndEmbed.URL
+      ~ChunkAndEmbed.all_messages_txt
+   
+   
