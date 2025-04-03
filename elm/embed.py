@@ -142,7 +142,7 @@ class ChunkAndEmbed(ApiBase):
                     .format(len(self.text_chunks)))
 
         all_request_jsons = []
-        # breakpoint()
+    
         for chunk in self.text_chunks:
             req = {"input": chunk, "model": self.model}
 

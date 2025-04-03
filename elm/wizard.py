@@ -390,7 +390,6 @@ class EnergyWizard(EnergyWizardBase):
         """
 
         # embedding = self.get_embedding_new(self.azure_client, query)
-        breakpoint()
         embedding = self.get_embedding(query)
         scores = 1 - self.cosine_dist(embedding)
         best = np.argsort(scores)[::-1][:limit]
