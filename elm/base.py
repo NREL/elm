@@ -147,6 +147,38 @@ class ApiBase(ABC):
             out = {'error': str(e)}
 
         return out
+    
+    @staticmethod
+    async def call_api_embedding(client, request_json):
+        out = None 
+        kwargs = dict(request_json)
+        
+        try:
+            response = client.embeddings.create(**kwargs)
+        except Exception as e:
+            logger.debug(f'Error in OpenAI API call from '
+                         f'`aiohttp.ClientSession().post(**kwargs)` with '
+                         f'kwargs: {kwargs}')
+            logger.exception('Error in OpenAI API call! Turn on debug logging '
+                             'to see full query that caused error.')
+            out = {'error': str(e)}
+        
+        # out = json.loads(response.model_dump_json(indent=2))
+        out = response.model_dump_json(indent=2)
+
+        return out
+    
+    async def call_api_async_embedding(self, client, all_request_jsons,
+                                       ignore_error=None, rate_limit=40e3):
+        out = None 
+        # kwargs = dict(request_json)
+        client = self.client
+        
+        self.api_queue = ApiQueue(client, all_request_jsons,
+                                  ignore_error=ignore_error,
+                                  rate_limit=rate_limit)
+        out = await self.api_queue.run()
+        return out
 
     async def call_api_async(self, url, headers, all_request_jsons,
                              ignore_error=None, rate_limit=40e3):
@@ -351,6 +383,42 @@ class ApiBase(ABC):
             raise RuntimeError(msg) from exc
 
         return embedding
+    
+    @classmethod
+    def get_embedding_new(cls, azure_client, text):
+        """Get the 1D array (list) embedding of a text string.
+
+        Parameters
+        ----------
+        text : str
+            Text to embed
+
+        Returns
+        -------
+        embedding : list
+            List of float that represents the numerical embedding of the text
+        """
+        out = None 
+        req = {'input': text, 'model': 'egswaterord-openai-embedding'}
+        kwargs = dict(req)
+
+        response = azure_client.embeddings.create(**kwargs)
+        breakpoint()
+        embedding = None
+        
+        try:
+            embedding = response.data[0].embedding
+        except Exception as e:
+            logger.debug(f'Error in OpenAI API call from '
+                         f'`aiohttp.ClientSession().post(**kwargs)` with '
+                         f'kwargs: {kwargs}')
+            logger.exception('Error in OpenAI API call! Turn on debug logging '
+                             'to see full query that caused error.')
+            out = {'error': str(e)}
+        
+        # out = json.loads(response.model_dump_json(indent=2))
+        # out = response.model_dump_json(indent=2)
+        return embedding
 
     @classmethod
     def count_tokens(cls, text, model, fallback_model='gpt-4'):
@@ -390,7 +458,9 @@ class ApiBase(ABC):
 class ApiQueue:
     """Class to manage the parallel API queue and submission"""
 
-    def __init__(self, url, headers, request_jsons, ignore_error=None,
+    # def __init__(self, url, headers, request_jsons, ignore_error=None,
+    #              rate_limit=40e3, max_retries=10):
+    def __init__(self, client, request_jsons, ignore_error=None,
                  rate_limit=40e3, max_retries=10):
         """
         Parameters
@@ -424,8 +494,9 @@ class ApiQueue:
             raising an error.
         """
 
-        self.url = url
-        self.headers = headers
+        # self.url = url
+        # self.headers = headers
+        self.client = client
         self.request_jsons = request_jsons
         self.ignore_error = ignore_error
         self.rate_limit = rate_limit
@@ -485,10 +556,12 @@ class ApiQueue:
 
                 elif tokens < avail_tokens:
                     token_count += tokens
-                    task = asyncio.create_task(ApiBase.call_api(self.url,
-                                                                self.headers,
-                                                                request),
-                                               name=self.job_names[ijob])
+                    # task = asyncio.create_task(ApiBase.call_api(self.url,
+                    #                                             self.headers,
+                    #                                             request),
+                    #                            name=self.job_names[ijob])
+                    task = asyncio.create_task(ApiBase.call_api_embedding(self.client, request),
+                                                                          name=self.job_names[ijob])
                     self.api_jobs[ijob] = task
                     self.tries[ijob] += 1
                     self._tsub = time.time()

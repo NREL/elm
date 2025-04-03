@@ -220,7 +220,8 @@ class EnergyWizardBase(ApiBase, ABC):
         messages = [{"role": "system", "content": self.MODEL_ROLE},
                     {"role": "user", "content": query}]
         response_message = ''
-        kwargs = dict(model=self.model,
+        kwargs = dict(#model=self.model,
+                      model='egswaterord-openai-embedding',
                       messages=messages,
                       temperature=temperature,
                       stream=stream)
@@ -278,7 +279,7 @@ class EnergyWizard(EnergyWizardBase):
     memory
     """
 
-    def __init__(self, corpus, model=None, token_budget=3500, ref_col=None):
+    def __init__(self, corpus, azure_client=None, model=None, token_budget=3500, ref_col=None):
         """
         Parameters
         ----------
@@ -297,6 +298,14 @@ class EnergyWizard(EnergyWizardBase):
         """
 
         super().__init__(model, token_budget=token_budget)
+        
+        # self.azure_client = azure_client
+        import openai
+        self.azure_client = openai.AzureOpenAI(
+            api_key = os.getenv("AZURE_OPENAI_API_KEY"),  
+            api_version = "2023-05-15",
+            azure_endpoint = 'https://aoai-prod-eastus-egswaterord-001.openai.azure.com/'#os.getenv("AZURE_OPENAI_ENDPOINT") 
+            )
 
         self.corpus = self.preflight_corpus(corpus)
         self.embedding_arr = np.vstack(self.corpus['embedding'].values)
@@ -380,6 +389,8 @@ class EnergyWizard(EnergyWizardBase):
             ranked strings/scores outputs.
         """
 
+        # embedding = self.get_embedding_new(self.azure_client, query)
+        breakpoint()
         embedding = self.get_embedding(query)
         scores = 1 - self.cosine_dist(embedding)
         best = np.argsort(scores)[::-1][:limit]

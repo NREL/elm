@@ -20,7 +20,7 @@ class ChunkAndEmbed(ApiBase):
     DEFAULT_MODEL = 'text-embedding-ada-002'
     """Default model to do embeddings."""
 
-    def __init__(self, text, model=None, **chunk_kwargs):
+    def __init__(self, text, client, model=None, **chunk_kwargs):
         """
         Parameters
         ----------
@@ -37,6 +37,8 @@ class ChunkAndEmbed(ApiBase):
         super().__init__(model)
 
         self.text = text
+
+        self.client = client
 
         if os.path.isfile(text):
             logger.info('Loading text file: {}'.format(text))
@@ -98,8 +100,9 @@ class ChunkAndEmbed(ApiBase):
             req = {"input": chunk, "model": self.model}
 
             if 'azure' in str(openai.api_type).lower():
-                req['engine'] = self.model
+                req['engine'] = self.model 
 
+            breakpoint()
             out = self.call_api(self.EMBEDDING_URL, self.HEADERS, req)
 
             try:
@@ -139,27 +142,36 @@ class ChunkAndEmbed(ApiBase):
                     .format(len(self.text_chunks)))
 
         all_request_jsons = []
+        # breakpoint()
         for chunk in self.text_chunks:
             req = {"input": chunk, "model": self.model}
 
-            if 'azure' in str(openai.api_type).lower():
-                req['engine'] = self.model
+            # if 'azure' in str(openai.api_type).lower():
+            #     req['engine'] = self.model
 
             all_request_jsons.append(req)
 
-        embeddings = await self.call_api_async(self.EMBEDDING_URL,
-                                               self.HEADERS,
-                                               all_request_jsons,
-                                               rate_limit=rate_limit)
+        # embeddings = await self.call_api_async(self.EMBEDDING_URL,
+        #                                        self.HEADERS,
+        #                                        all_request_jsons,
+        #                                        rate_limit=rate_limit)
 
+        embeddings = await self.call_api_async_embedding(self.client,
+                                                         all_request_jsons,
+                                                         rate_limit=rate_limit)
+        
+        import json
         for i, chunk in enumerate(embeddings):
-            try:
-                embeddings[i] = chunk['data'][0]['embedding']
-            except Exception:
-                msg = ('Could not get embeddings for chunk {}, '
-                       'received API response: {}'.format(i + 1, chunk))
-                logger.error(msg)
-                embeddings[i] = None
+            chunk = json.loads(chunk)
+            embeddings[i] = chunk['data'][0]['embedding']
+            # try:
+            #     embeddings[i] = chunk['data'][0]['embedding']
+            #     breakpoint()
+            # except Exception:
+            #     msg = ('Could not get embeddings for chunk {}, '
+            #            'received API response: {}'.format(i + 1, chunk))
+            #     logger.error(msg)
+            #     embeddings[i] = None
 
         logger.info('Finished all embeddings.')
 
