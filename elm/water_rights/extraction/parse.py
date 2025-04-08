@@ -10,19 +10,24 @@ import pandas as pd
 from elm.ords.llm.calling import BaseLLMCaller, ChatLLMCaller
 from elm.ords.utilities import llm_response_as_json
 from elm.ords.extraction.tree import AsyncDecisionTree
+from elm.utilities import validate_azure_api_params
 #from elm.ords.extraction.features import SetbackFeatures
 from elm.water_rights.extraction.graphs import (
     EXTRACT_ORIGINAL_TEXT_PROMPT,
-    setup_graph_fluids,
-    setup_graph_temperature,
     setup_graph_permits,
+    setup_graph_daily_limits,
+    setup_graph_annual_limits,
+    setup_graph_well_spacing,
+    setup_graph_time,
+    setup_graph_metering_device,
+    setup_graph_drought,
+    setup_graph_plugging_reqs,
     llm_response_starts_with_yes,
 )
 
 ## extra imports for the wizard
 from elm import EnergyWizard
 import openai
-import os
 from glob import glob
 
 logger = logging.getLogger(__name__)
@@ -31,28 +36,6 @@ DEFAULT_SYSTEM_MESSAGE = (
     "You are a legal scholar explaining legal ordinances to a geothermal "
     "energy developer."
 )
-# SETBACKS_SYSTEM_MESSAGE = (
-#     f"{DEFAULT_SYSTEM_MESSAGE} "
-#     "For the duration of this conversation, only focus on "
-#     "ordinances relating to setbacks from {feature} for {wes_type}. Ignore "
-#     "all text that pertains to private, micro, small, or medium sized wind "
-#     "energy systems."
-# )
-# RESTRICTIONS_SYSTEM_MESSAGE = (
-#     f"{DEFAULT_SYSTEM_MESSAGE} "
-#     "For the duration of this conversation, only focus on "
-#     "ordinances relating to {restriction} for {wes_type}. Ignore "
-#     "all text that pertains to private, micro, small, or medium sized wind "
-#     "energy systems."
-# )
-# EXTRA_RESTRICTIONS_TO_CHECK = {
-#     "noise": "maximum noise level",
-#     "max height": "maximum turbine height",
-#     "min lot size": "minimum lot size",
-#     "shadow flicker": "maximum shadow flicker",
-#     "density": "maximum turbine spacing",
-# }
-
 
 def _setup_async_decision_tree(graph_setup_func, **kwargs):
     """Setup Async Decision tree dor ordinance extraction."""
@@ -119,30 +102,32 @@ class StructuredOrdinanceParser(BaseLLMCaller):
             **self.kwargs,
         )
     
-    def _init_wizard(self):
+    def _init_wizard(self, vector_store):
+        azure_api_key, azure_version, azure_endpoint = validate_azure_api_params()
         azure_client = openai.AzureOpenAI(
-            api_key = os.getenv("AZURE_OPENAI_API_KEY"),  
-            api_version = "2024-10-21",
-            azure_endpoint = 'https://aoai-prod-eastus-egswaterord-001.openai.azure.com/'#os.getenv("AZURE_OPENAI_ENDPOINT") 
+            api_key = azure_api_key,  
+            api_version = azure_version,
+            azure_endpoint = azure_endpoint
             )
 
-        corpus = self.get_corpus()
+        # TODO: would be ideal to improve this so the vector store doesn't need to be read in every time
+        corpus = self.get_corpus(vector_store=vector_store)
         
         wizard = EnergyWizard(corpus, azure_client=azure_client, model='egswaterord-openai-embedding')
 
         return wizard
 
-    def get_corpus(self):
+    def get_corpus(self, vector_store):
         """Get the corpus of text data with embeddings."""
         # corpus = sorted(glob('./embed/*.json'))
-        fp = '/Users/spodgorn/Library/CloudStorage/OneDrive-NREL/Desktop/ELM/elm/examples/water_rights/embed/*.json'
+        fp = vector_store
         corpus = sorted(glob(fp))
         corpus = [pd.read_json(fp) for fp in corpus]
         corpus = pd.concat(corpus, ignore_index=True)
 
         return corpus
 
-    async def parse(self, text):
+    async def parse(self, vector_store):
         """Parse text and extract structure ordinance data.
 
         Parameters
@@ -159,33 +144,50 @@ class StructuredOrdinanceParser(BaseLLMCaller):
             DataFrame containing parsed-out ordinance values.
         """
         values = {}
-        # fluid = await self._check_fluid_type(text)
-        # logger.info("Definition type found in text: %s", fluid)
-        # temp = await self._check_temperature(text)
-        # logger.info("Definition type found in text: %s", temp)
-
-        # values['fluid'] = fluid
-        # values['temperature'] = temp
         
-        reqs = await self._check_reqs(text)
-        logger.info("Definition type found in text: %s", reqs)
+        reqs = await self._check_reqs(vector_store)
+        logger.info("Requirements found in text: %s", reqs)
         values['requirements'] = reqs
 
-        breakpoint()
+        daily_lims = await self._check_daily_limits(vector_store)
+        logger.info("Definition type found in text: %s", daily_lims)
+        values['daily_limits'] = daily_lims
 
-        return values
+        annual_lims = await self._check_annual_limits(vector_store)
+        logger.info("Definition type found in text: %s", annual_lims)
+        values['annual_limits'] = annual_lims
 
-    async def _check_reqs(self, text):
-        """Get the fluid type mentioned in the text."""
-        logger.debug("Checking fluid types")
+        well_spacing = await self._check_spacing(vector_store)
+        logger.info("Definition type found in text: %s", well_spacing)
+        values['well_spacing'] = well_spacing
+
+        time = await self._check_time(vector_store)
+        logger.info("Definition type found in text: %s", time)
+        values['drilling_window'] = time
+        
+        metering_device = await self._check_metering_device(vector_store)
+        logger.info("Definition type found in text: %s", metering_device)
+        values['metering_device'] = metering_device
+
+        drought = await self._check_drought(vector_store)
+        logger.info("Definition type found in text: %s", drought)
+        values['drought_mgmt_plan'] = drought
+        
+        plugging = await self._check_plugging(vector_store)
+        logger.info("Definition type found in text: %s", plugging)
+        values['plugging_requirements'] = plugging
+
+        return values    
+
+    async def _check_reqs(self, vector_store):
+        """Get the requirements mentioned in the text."""
+        logger.debug("Checking requirements")
 
         prompt = setup_graph_permits().nodes['init'].get('db_query')
-        wizard = self._init_wizard()
-        response = wizard.query_vector_db(prompt)
-        text = response[0].tolist()
+        wizard = self._init_wizard(vector_store)
+        response, _, idx = wizard.query_vector_db(prompt)
+        text = response.tolist()
         all_text = '\n'.join(text)
-        
-        breakpoint()
 
         tree = _setup_async_decision_tree(
             setup_graph_permits,
@@ -197,9 +199,152 @@ class StructuredOrdinanceParser(BaseLLMCaller):
 
         return dtree_def_type_out
     
+    async def _check_daily_limits(self, vector_store):
+        """Get the extraction limits mentioned in the text."""
+        logger.debug("Checking daily extraction limits")
+
+        prompt = setup_graph_daily_limits().nodes['init'].get('db_query')
+        wizard = self._init_wizard(vector_store)
+        response, _, idx = wizard.query_vector_db(prompt)
+        text = response.tolist()
+        all_text = '\n'.join(text)
+
+        tree = _setup_async_decision_tree(
+            setup_graph_daily_limits,
+            text=all_text,
+            chat_llm_caller=self._init_chat_llm_caller(DEFAULT_SYSTEM_MESSAGE),
+        )
+
+        dtree_def_type_out = await _run_async_tree(tree)
+
+        return dtree_def_type_out
+    
+    async def _check_annual_limits(self, vector_store):
+        """Get the extraction limits mentioned in the text."""
+        logger.debug("Checking annual extraction limits")
+
+        prompt = setup_graph_annual_limits().nodes['init'].get('db_query')
+        wizard = self._init_wizard(vector_store)
+        response, _, idx = wizard.query_vector_db(prompt)
+        text = response.tolist()
+        all_text = '\n'.join(text)
+
+        tree = _setup_async_decision_tree(
+            setup_graph_annual_limits,
+            text=all_text,
+            chat_llm_caller=self._init_chat_llm_caller(DEFAULT_SYSTEM_MESSAGE),
+        )
+
+        dtree_def_type_out = await _run_async_tree(tree)
+
+        return dtree_def_type_out
+    
+    async def _check_spacing(self, vector_store):
+        """Get the spacing requirements mentioned in the text."""
+        logger.debug("Checking spacing requirements")
+
+        prompt = setup_graph_well_spacing().nodes['init'].get('db_query')
+        wizard = self._init_wizard(vector_store)
+        response, _, idx = wizard.query_vector_db(prompt)
+        text = response.tolist()
+        all_text = '\n'.join(text)
+
+        tree = _setup_async_decision_tree(
+            setup_graph_well_spacing,
+            text=all_text,
+            chat_llm_caller=self._init_chat_llm_caller(DEFAULT_SYSTEM_MESSAGE),
+        )
+
+        dtree_def_type_out = await _run_async_tree(tree)
+
+        return dtree_def_type_out
+
+    async def _check_time(self, vector_store):
+        """Get the time requirements mentioned in the text."""
+        logger.debug("Checking time limits")
+
+        prompt = setup_graph_time().nodes['init'].get('db_query')
+        wizard = self._init_wizard(vector_store)
+        response, _, idx = wizard.query_vector_db(prompt)
+        text = response.tolist()
+        all_text = '\n'.join(text)
+
+        tree = _setup_async_decision_tree(
+            setup_graph_time,
+            text=all_text,
+            chat_llm_caller=self._init_chat_llm_caller(DEFAULT_SYSTEM_MESSAGE),
+        )
+
+        dtree_def_type_out = await _run_async_tree(tree)
+
+        return dtree_def_type_out
+    
+    async def _check_metering_device(self, vector_store):
+        """Get the metering device mentioned in the text."""
+        logger.debug("Checking metering device requirements")
+
+        prompt = setup_graph_metering_device().nodes['init'].get('db_query')
+        wizard = self._init_wizard(vector_store)
+        response, _, idx = wizard.query_vector_db(prompt)
+        text = response.tolist()
+        all_text = '\n'.join(text)
+
+        tree = _setup_async_decision_tree(
+            setup_graph_metering_device,
+            text=all_text,
+            chat_llm_caller=self._init_chat_llm_caller(DEFAULT_SYSTEM_MESSAGE),
+        )
+
+        dtree_def_type_out = await _run_async_tree(tree)
+
+        return dtree_def_type_out
+    
+    async def _check_drought(self, vector_store):
+        """Get the drought management plan mentioned in the text."""
+        logger.debug("Checking drought management plan")
+
+        prompt = setup_graph_drought().nodes['init'].get('db_query')
+        wizard = self._init_wizard(vector_store)
+        response, _, idx = wizard.query_vector_db(prompt)
+        text = response.tolist()
+        all_text = '\n'.join(text)
+
+        tree = _setup_async_decision_tree(
+            setup_graph_drought,
+            text=all_text,
+            chat_llm_caller=self._init_chat_llm_caller(DEFAULT_SYSTEM_MESSAGE),
+        )
+
+        dtree_def_type_out = await _run_async_tree(tree)
+
+        return dtree_def_type_out
+
+    async def _check_plugging(self, vector_store):
+        """Get the plugging requirements mentioned in the text."""
+        logger.debug("Checking plugging requirements")
+
+        prompt = setup_graph_plugging_reqs().nodes['init'].get('db_query')
+        wizard = self._init_wizard(vector_store)
+        response, _, idx = wizard.query_vector_db(prompt)
+        text = response.tolist()
+        all_text = '\n'.join(text)
+
+        tree = _setup_async_decision_tree(
+            setup_graph_plugging_reqs,
+            text=all_text,
+            chat_llm_caller=self._init_chat_llm_caller(DEFAULT_SYSTEM_MESSAGE),
+        )
+
+        dtree_def_type_out = await _run_async_tree(tree)
+
+        return dtree_def_type_out
+
+    ########
+    # TODO: below are questions left over from definition extraction task
     async def _check_fluid_type(self, text):
         """Get the fluid type mentioned in the text."""
         logger.debug("Checking fluid types")
+        
         tree = _setup_async_decision_tree(
             setup_graph_fluids,
             text=text,
@@ -220,5 +365,4 @@ class StructuredOrdinanceParser(BaseLLMCaller):
         dtree_def_type_out = await _run_async_tree(tree)
 
         return dtree_def_type_out
-    
     

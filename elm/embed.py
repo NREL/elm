@@ -3,6 +3,7 @@
 ELM text embedding
 """
 import openai
+import json
 import re
 import os
 import logging
@@ -102,7 +103,6 @@ class ChunkAndEmbed(ApiBase):
             if 'azure' in str(openai.api_type).lower():
                 req['engine'] = self.model 
 
-            breakpoint()
             out = self.call_api(self.EMBEDDING_URL, self.HEADERS, req)
 
             try:
@@ -147,31 +147,23 @@ class ChunkAndEmbed(ApiBase):
             req = {"input": chunk, "model": self.model}
 
             # if 'azure' in str(openai.api_type).lower():
-            #     req['engine'] = self.model
+            if 'embedding' not in str(self.model).lower():
+                req['engine'] = self.model
 
             all_request_jsons.append(req)
-
-        # embeddings = await self.call_api_async(self.EMBEDDING_URL,
-        #                                        self.HEADERS,
-        #                                        all_request_jsons,
-        #                                        rate_limit=rate_limit)
-
-        embeddings = await self.call_api_async_embedding(self.client,
-                                                         all_request_jsons,
-                                                         rate_limit=rate_limit)
         
-        import json
+        embeddings = await self.call_api_async(all_request_jsons,
+                                               rate_limit=rate_limit)
+
         for i, chunk in enumerate(embeddings):
             chunk = json.loads(chunk)
-            embeddings[i] = chunk['data'][0]['embedding']
-            # try:
-            #     embeddings[i] = chunk['data'][0]['embedding']
-            #     breakpoint()
-            # except Exception:
-            #     msg = ('Could not get embeddings for chunk {}, '
-            #            'received API response: {}'.format(i + 1, chunk))
-            #     logger.error(msg)
-            #     embeddings[i] = None
+            try:
+                embeddings[i] = chunk['data'][0]['embedding']
+            except Exception:
+                msg = ('Could not get embeddings for chunk {}, '
+                       'received API response: {}'.format(i + 1, chunk))
+                logger.error(msg)
+                embeddings[i] = None
 
         logger.info('Finished all embeddings.')
 

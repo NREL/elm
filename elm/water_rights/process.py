@@ -527,7 +527,6 @@ async def process_county(
         **kwargs,
     )
 
-    breakpoint()
     if doc is None:
         await _record_time_and_usage(start_time, **kwargs)
         return None

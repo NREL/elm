@@ -299,13 +299,12 @@ class EnergyWizard(EnergyWizardBase):
 
         super().__init__(model, token_budget=token_budget)
         
-        # self.azure_client = azure_client
-        import openai
-        self.azure_client = openai.AzureOpenAI(
-            api_key = os.getenv("AZURE_OPENAI_API_KEY"),  
-            api_version = "2023-05-15",
-            azure_endpoint = 'https://aoai-prod-eastus-egswaterord-001.openai.azure.com/'#os.getenv("AZURE_OPENAI_ENDPOINT") 
-            )
+        # import openai
+        # self.azure_client = openai.AzureOpenAI(
+        #     api_key = os.getenv("AZURE_OPENAI_API_KEY"),  
+        #     api_version = "2023-05-15",
+        #     azure_endpoint = 'https://aoai-prod-eastus-egswaterord-001.openai.azure.com/'#os.getenv("AZURE_OPENAI_ENDPOINT") 
+        #     )
 
         self.corpus = self.preflight_corpus(corpus)
         self.embedding_arr = np.vstack(self.corpus['embedding'].values)
@@ -388,9 +387,7 @@ class EnergyWizard(EnergyWizardBase):
             1D array of indices in the text corpus corresponding to the
             ranked strings/scores outputs.
         """
-
-        # embedding = self.get_embedding_new(self.azure_client, query)
-        embedding = self.get_embedding(query)
+        embedding = self.get_embedding(query, self._client)
         scores = 1 - self.cosine_dist(embedding)
         best = np.argsort(scores)[::-1][:limit]
 
