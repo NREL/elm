@@ -37,14 +37,16 @@ Chunker.URL= ('https://aoai-prod-eastus-egswaterord-001.'
 ChunkAndEmbed.EMBEDDING_TYPE ='azure new'
 
 
-QUERIES = ['panola county groundwater conservation district',
-           "panola county groundwater conservation district well permits",]
-        #    "panola county groundwater conservation district well requirements",
-        #    "panola county groundwater conservation district rules"]
+# GWCD_NAME = 'Panhandle'
+GWCD_NAME = 'Panola'
+QUERIES = [f"{GWCD_NAME} groundwater conservation district",
+           f"{GWCD_NAME} groundwater conservation district well permits",
+           f"{GWCD_NAME} groundwater conservation district well requirements",
+           f"{GWCD_NAME} groundwater conservation district rules"]
 
 MODEL = 'egswaterord-openai-embedding'
 
-EMBED_DIR = './embed/'
+EMBED_DIR = f"./{GWCD_NAME.lower().replace(' ', '_')}_embed/"
 
 if __name__ == '__main__':
     init_logger('elm', log_level='DEBUG')
@@ -54,7 +56,7 @@ if __name__ == '__main__':
         QUERIES,
         pdf_read_kwargs={"verbose": False},
         ))
-    
+    breakpoint()
     client = openai.AzureOpenAI(
         api_key = os.getenv("AZURE_OPENAI_API_KEY"), 
         api_version = os.getenv('AZURE_OPENAI_VERSION'),

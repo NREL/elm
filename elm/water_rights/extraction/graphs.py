@@ -175,9 +175,9 @@ def setup_graph_permits(**kwargs):
             "answer."
             '\n\n"""\n{text}\n"""'
         ),
-        db_query=("Do the documents provided mention water well permit requirements? "
-            "Requirements should specify whether or not an application is required "
-            "in order to drill a groundwater well."), 
+        # db_query=("Does {DISTRICT_NAME} require a permit or application to drill a water well?"),
+        # db_query=("Is there an application process to drill a water well in {DISTRICT_NAME}?"),
+        db_query=("Is an application or permit required to drill a water well in {DISTRICT_NAME}?"),
     ) 
 
     G.add_edge("init", "get_reqs", condition=llm_response_starts_with_yes)
@@ -189,27 +189,93 @@ def setup_graph_permits(**kwargs):
         ),
     )
 
-    G.add_edge("get_reqs", "final")
+    G.add_edge("get_reqs", "get_exempt")
+
+    G.add_node(
+        "get_exempt",
+        prompt=(
+            "Are any wells exempt from the permitting process? "
+        ),
+    )
+    
+    G.add_edge("get_exempt", "final")
 
     G.add_node(
         "final",
         prompt=(
             "Respond based on our entire conversation so far. Return your "
             "answer in JSON format (not markdown). Your JSON file must "
-            'include exactly three keys. The keys are "permit_required", "requirements", '
-            'and "explanation". '
+            'include exactly four keys. The keys are "permit_required", "requirements", '
+            '"exemptions", and "explanation". '
             'The value of the "permit_required" key should be either "True" or "False" '
             'based on whether or not the conservation district requires water well permits. '
-            'of this key should be null. The value of the "units" key should be '
-            'the units for the temperature threshold and will likely be '
-            '"celsius" or "fahrenheit", if temperature is not mentioned the value '
-            'of this key should be nullThe value of the "explanation" '
+            'The value "requirements" should list the well permitting requirements if applicable. '
+            'The value of the "exemptions" key should specify whether or not there are well types ' 
+            'that are not subject to the permitting process. The value of the "explanation" '
             "key should be a string containing a short explanation for your "
             "choice."
         ),
     )
 
     return G
+
+def setup_graph_geothermal(**kwargs): ## TODO: finish this one
+    """Setup Graph to get permit requirements 
+
+    Parameters
+    ----------
+    **kwargs
+        Keyword-value pairs to add to graph.
+
+    Returns
+    -------
+    nx.DiGraph
+        Graph instance that can be used to initialize an
+        `elm.tree.DecisionTree`.
+    """
+    G = _setup_graph_no_nodes(**kwargs)
+
+    G.add_node(
+        "init",
+        prompt=(
+            "Does the following text mention a requirement for geothermal systems specifically? "
+            "Begin your response with either 'Yes' or 'No' and explain your "
+            "answer."
+            '\n\n"""\n{text}\n"""'
+        ),
+        # db_query=("Does {DISTRICT_NAME} require a permit or application to drill a water well?"),
+        # db_query=("Is there an application process to drill a water well in {DISTRICT_NAME}?"),
+        db_query=("Is an application or permit required to drill a water well in {DISTRICT_NAME}?"),
+    )
+
+def setup_graph_gas(**kwargs): ## TODO: finish this one
+    """Setup Graph to get permit requirements 
+
+    Parameters
+    ----------
+    **kwargs
+        Keyword-value pairs to add to graph.
+
+    Returns
+    -------
+    nx.DiGraph
+        Graph instance that can be used to initialize an
+        `elm.tree.DecisionTree`.
+    """
+    G = _setup_graph_no_nodes(**kwargs)
+
+    G.add_node(
+        "init",
+        prompt=(
+            "Does the following text mention a requirement for oil and gas operations specifically? "
+            "Begin your response with either 'Yes' or 'No' and explain your "
+            "answer."
+            '\n\n"""\n{text}\n"""'
+        ),
+        # db_query=("Does {DISTRICT_NAME} require a permit or application to drill a water well?"),
+        # db_query=("Is there an application process to drill a water well in {DISTRICT_NAME}?"),
+        db_query=("Is an application or permit required to drill a water well in {DISTRICT_NAME}?"),
+    ) 
 
 def setup_graph_daily_limits(**kwargs):
     """Setup Graph to get permit requirements 
@@ -468,7 +534,7 @@ def setup_graph_time(**kwargs):
     return G
 
 def setup_graph_metering_device(**kwargs):
-    """Setup Graph to get permit requirements 
+    """Setup Graph to get metering device requirements 
 
     Parameters
     ----------

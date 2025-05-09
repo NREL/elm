@@ -270,7 +270,7 @@ async def _extract_with_ngram_check(
     return doc
 
 
-async def extract_ordinance_values(vector_store, doc=None, **kwargs):
+async def extract_ordinance_values(vector_store, location, doc=None, **kwargs):
     """Extract ordinance values for a single document with known ord text.
 
     Parameters
@@ -308,5 +308,5 @@ async def extract_ordinance_values(vector_store, doc=None, **kwargs):
     #     return doc
 
     parser = StructuredOrdinanceParser(**kwargs)
-    values  = await parser.parse(vector_store=vector_store)
+    values  = await parser.parse(vector_store=vector_store, location=location)
     return values 

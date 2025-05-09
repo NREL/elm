@@ -220,8 +220,7 @@ class EnergyWizardBase(ApiBase, ABC):
         messages = [{"role": "system", "content": self.MODEL_ROLE},
                     {"role": "user", "content": query}]
         response_message = ''
-        kwargs = dict(#model=self.model,
-                      model='egswaterord-openai-embedding',
+        kwargs = dict(model=self.model,
                       messages=messages,
                       temperature=temperature,
                       stream=stream)

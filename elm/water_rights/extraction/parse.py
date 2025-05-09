@@ -113,7 +113,8 @@ class StructuredOrdinanceParser(BaseLLMCaller):
         # TODO: would be ideal to improve this so the vector store doesn't need to be read in every time
         corpus = self.get_corpus(vector_store=vector_store)
         
-        wizard = EnergyWizard(corpus, azure_client=azure_client, model='egswaterord-openai-embedding')
+        # wizard = EnergyWizard(corpus, azure_client=azure_client, model='egswaterord-openai-embedding')
+        wizard = EnergyWizard(corpus, azure_client=azure_client, model='egswaterord-gpt4-mini')
 
         return wizard
 
@@ -127,7 +128,7 @@ class StructuredOrdinanceParser(BaseLLMCaller):
 
         return corpus
 
-    async def parse(self, vector_store):
+    async def parse(self, vector_store, location):
         """Parse text and extract structure ordinance data.
 
         Parameters
@@ -144,38 +145,41 @@ class StructuredOrdinanceParser(BaseLLMCaller):
             DataFrame containing parsed-out ordinance values.
         """
         values = {}
+        self.location = location
         
-        reqs = await self._check_reqs(vector_store)
-        logger.info("Requirements found in text: %s", reqs)
-        values['requirements'] = reqs
+        # reqs = await self._check_reqs(vector_store)
+        # logger.info("Requirements found in text: %s", reqs)
+        # values['requirements'] = reqs
+
 
         daily_lims = await self._check_daily_limits(vector_store)
         logger.info("Definition type found in text: %s", daily_lims)
         values['daily_limits'] = daily_lims
+        breakpoint()
 
-        annual_lims = await self._check_annual_limits(vector_store)
-        logger.info("Definition type found in text: %s", annual_lims)
-        values['annual_limits'] = annual_lims
+        # annual_lims = await self._check_annual_limits(vector_store)
+        # logger.info("Definition type found in text: %s", annual_lims)
+        # values['annual_limits'] = annual_lims
 
-        well_spacing = await self._check_spacing(vector_store)
-        logger.info("Definition type found in text: %s", well_spacing)
-        values['well_spacing'] = well_spacing
+        # well_spacing = await self._check_spacing(vector_store)
+        # logger.info("Definition type found in text: %s", well_spacing)
+        # values['well_spacing'] = well_spacing
 
-        time = await self._check_time(vector_store)
-        logger.info("Definition type found in text: %s", time)
-        values['drilling_window'] = time
+        # time = await self._check_time(vector_store)
+        # logger.info("Definition type found in text: %s", time)
+        # values['drilling_window'] = time
         
-        metering_device = await self._check_metering_device(vector_store)
-        logger.info("Definition type found in text: %s", metering_device)
-        values['metering_device'] = metering_device
+        # metering_device = await self._check_metering_device(vector_store)
+        # logger.info("Definition type found in text: %s", metering_device)
+        # values['metering_device'] = metering_device
 
-        drought = await self._check_drought(vector_store)
-        logger.info("Definition type found in text: %s", drought)
-        values['drought_mgmt_plan'] = drought
+        # drought = await self._check_drought(vector_store)
+        # logger.info("Definition type found in text: %s", drought)
+        # values['drought_mgmt_plan'] = drought
         
-        plugging = await self._check_plugging(vector_store)
-        logger.info("Definition type found in text: %s", plugging)
-        values['plugging_requirements'] = plugging
+        # plugging = await self._check_plugging(vector_store)
+        # logger.info("Definition type found in text: %s", plugging)
+        # values['plugging_requirements'] = plugging
 
         return values    
 
@@ -184,6 +188,7 @@ class StructuredOrdinanceParser(BaseLLMCaller):
         logger.debug("Checking requirements")
 
         prompt = setup_graph_permits().nodes['init'].get('db_query')
+        prompt = prompt.format(DISTRICT_NAME=self.location)
         wizard = self._init_wizard(vector_store)
         response, _, idx = wizard.query_vector_db(prompt)
         text = response.tolist()
@@ -208,6 +213,8 @@ class StructuredOrdinanceParser(BaseLLMCaller):
         response, _, idx = wizard.query_vector_db(prompt)
         text = response.tolist()
         all_text = '\n'.join(text)
+
+        breakpoint()
 
         tree = _setup_async_decision_tree(
             setup_graph_daily_limits,
@@ -288,6 +295,8 @@ class StructuredOrdinanceParser(BaseLLMCaller):
         response, _, idx = wizard.query_vector_db(prompt)
         text = response.tolist()
         all_text = '\n'.join(text)
+
+        breakpoint()
 
         tree = _setup_async_decision_tree(
             setup_graph_metering_device,

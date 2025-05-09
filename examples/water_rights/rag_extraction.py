@@ -2,6 +2,7 @@
 import os
 import openai
 import logging
+import json
 from rex import init_logger
 from elm.ords.services.openai import OpenAIService
 from elm.utilities import validate_azure_api_params
@@ -33,7 +34,8 @@ EnergyWizard.HEADERS = {"Content-Type": "application/json",
                         "Authorization": f"Bearer {openai.api_key}",
                         "api-key": f"{openai.api_key}"}
 
-EnergyWizard.MODEL_ROLE = ('You are a water rights expert. Use the '
+EnergyWizard.MODEL_ROLE = ('You are a water rights expert helping geothermal '
+                           'developers understand water permitting and access. Use the '
                            'information below to answer the question. If '
                            'documents do not provide enough information to '
                            'answer the question, say "I do not know."')
@@ -43,7 +45,9 @@ EnergyWizard.EMBEDDING_TYPE = 'azure new'
 
 # MODEL = 'egswaterord-openai-embedding'
 MODEL = 'egswaterord-gpt4-mini'
+# VECTOR_STORE = ('./panhandle_embed/*.json')
 VECTOR_STORE = ('./embed/*.json')
+GWCD_NAME = 'Panola County Groundwater Conservation District'
 if __name__ == '__main__':
 
     azure_api_key, azure_version, azure_endpoint = validate_azure_api_params()
@@ -57,6 +61,10 @@ if __name__ == '__main__':
                   temperature=0)
     
 
-    values = ARun.run(services, extract_ordinance_values(vector_store=VECTOR_STORE, **kwargs))
+    values = ARun.run(services, extract_ordinance_values(vector_store=VECTOR_STORE,
+                                                         location=GWCD_NAME, **kwargs))
 
     breakpoint()
+    out_fp = './panhandle_test.json'
+    with open(out_fp, 'w') as f:
+        json.dump(values, f, indent=2)
