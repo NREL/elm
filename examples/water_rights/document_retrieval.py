@@ -19,7 +19,8 @@ init_logger('elm', log_level='INFO')
 openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
 openai.api_key = os.getenv("AZURE_OPENAI_KEY")
 openai.api_type = 'azure'
-openai.api_version = os.getenv("AZURE_OPENAI_VERSION")
+# openai.api_version = os.getenv("AZURE_OPENAI_VERSION")
+openai.api_version = '2024-08-01'
 
 ChunkAndEmbed.EMBEDDING_MODEL = 'egswaterord-openai-embedding'
 
@@ -38,7 +39,7 @@ ChunkAndEmbed.EMBEDDING_TYPE ='azure new'
 
 
 # GWCD_NAME = 'Panhandle'
-GWCD_NAME = 'Panola'
+GWCD_NAME = 'Trinity Glen Rose'
 QUERIES = [f"{GWCD_NAME} groundwater conservation district",
            f"{GWCD_NAME} groundwater conservation district well permits",
            f"{GWCD_NAME} groundwater conservation district well requirements",
@@ -46,7 +47,7 @@ QUERIES = [f"{GWCD_NAME} groundwater conservation district",
 
 MODEL = 'egswaterord-openai-embedding'
 
-EMBED_DIR = f"./{GWCD_NAME.lower().replace(' ', '_')}_embed/"
+EMBED_DIR = f"./{GWCD_NAME.lower().replace(' ', '_')}_embed_250/"
 
 if __name__ == '__main__':
     init_logger('elm', log_level='DEBUG')
@@ -79,7 +80,7 @@ if __name__ == '__main__':
         if not os.path.exists(embed_fp):
             logger.info(f'Embedding {url}')
             # obj = ChunkAndEmbed(d.text, model=MODEL, tokens_per_chunk=500, overlap=1)
-            obj = ChunkAndEmbed(d.text, client, model=MODEL, tokens_per_chunk=500, overlap=1)
+            obj = ChunkAndEmbed(d.text, client, model=MODEL, tokens_per_chunk=250, overlap=1)
             try:
                 embeddings = asyncio.run(obj.run_async(rate_limit=3e4))
                 if any(e is None for e in embeddings):

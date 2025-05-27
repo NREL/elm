@@ -177,7 +177,7 @@ def setup_graph_permits(**kwargs):
         ),
         # db_query=("Does {DISTRICT_NAME} require a permit or application to drill a water well?"),
         # db_query=("Is there an application process to drill a water well in {DISTRICT_NAME}?"),
-        db_query=("Is an application or permit required to drill a water well in {DISTRICT_NAME}?"),
+        db_query=("Is an application or permit required to drill a water well in {DISTRICT_NAME}?"), # TODO: add 'groundwater' 
     ) 
 
     G.add_edge("init", "get_reqs", condition=llm_response_starts_with_yes)
@@ -219,7 +219,7 @@ def setup_graph_permits(**kwargs):
 
     return G
 
-def setup_graph_geothermal(**kwargs): ## TODO: finish this one
+def setup_graph_geothermal(**kwargs): ## TODO: finish this one --> water wells specifically for geothermal systems
     """Setup Graph to get permit requirements 
 
     Parameters
@@ -248,7 +248,7 @@ def setup_graph_geothermal(**kwargs): ## TODO: finish this one
         db_query=("Is an application or permit required to drill a water well in {DISTRICT_NAME}?"),
     )
 
-def setup_graph_gas(**kwargs): ## TODO: finish this one
+def setup_graph_gas(**kwargs): ## TODO: finish this one --> water wells specifically for oil and gas
     """Setup Graph to get permit requirements 
 
     Parameters
@@ -304,10 +304,9 @@ def setup_graph_daily_limits(**kwargs):
             '\n\n"""\n{text}\n"""'
         ),
         db_query=(
-            "Do the documents mention daily water well extraction limits? "
+            "Does {DISTRICT_NAME} have daily water well extraction limits? "
             "Extraction limits may be defined as an acre-foot "
-            "or a gallon limit."
-                  ),
+            "or a gallon limit."),
     ) 
 
     G.add_edge("init", "get_daily", condition=llm_response_starts_with_yes)
@@ -367,7 +366,7 @@ def setup_graph_annual_limits(**kwargs):
             '\n\n"""\n{text}\n"""'
         ),
         db_query=(
-            "Do the documents mention annual water well extraction limits? "
+            "Does {DISTRICT_NAME} have annual water well extraction limits? "
             "Extraction limits may be defined as an acre-foot "
             "or a gallon limit."
         )
@@ -431,10 +430,10 @@ def setup_graph_well_spacing(**kwargs):
             '\n\n"""\n{text}\n"""'
         ),
         db_query=(
-            'Do the documents mention restrictions related to well spacing? '
-            'Such information typically dictates how far apart two well must be and '
+            'Does {DISTRICT_NAME} have restrictions related to well spacing? ' # TODO: what exactly are we trying to capture? spacing to another well? spacing from property line?
+            'Such information typically dictates how far apart two wells must be and '
             'could prohibit an individual from drilling a well with a certain distance '
-            'of another well. '
+            'of another well or feature. '
         )   
     ) 
 

@@ -20,7 +20,8 @@ init_logger('elm', log_level='INFO')
 openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
 openai.api_key = os.getenv("AZURE_OPENAI_KEY")
 openai.api_type = 'azure'
-openai.api_version = os.getenv('AZURE_OPENAI_VERSION')
+# openai.api_version = os.getenv('AZURE_OPENAI_VERSION')
+openai.api_version = '2024-08-01'
 
 EnergyWizard.EMBEDDING_URL =('https://aoai-prod-eastus-egswaterord-001.'
                               'openai.azure.com/openai/deployments?api-'
@@ -44,10 +45,12 @@ EnergyWizard.EMBEDDING_MODEL = 'egswaterord-openai-embedding'
 EnergyWizard.EMBEDDING_TYPE = 'azure new'
 
 # MODEL = 'egswaterord-openai-embedding'
-MODEL = 'egswaterord-gpt4-mini'
-# VECTOR_STORE = ('./panhandle_embed/*.json')
-VECTOR_STORE = ('./embed/*.json')
-GWCD_NAME = 'Panola County Groundwater Conservation District'
+MODEL = 'egswaterord-gpt4-turbo'
+GWCD_NAME = 'Trinity Glen Rose'
+fp = GWCD_NAME.lower().replace(' ', '_')
+
+VECTOR_STORE = (f'./{fp}_embed_250/*.json')
+GWCD_full = f'{GWCD_NAME} Groundwater Conservation District'
 if __name__ == '__main__':
 
     azure_api_key, azure_version, azure_endpoint = validate_azure_api_params()
@@ -65,6 +68,7 @@ if __name__ == '__main__':
                                                          location=GWCD_NAME, **kwargs))
 
     breakpoint()
-    out_fp = './panhandle_test.json'
+    # out_fp = './panhandle_test.json'
+    out_fp = f'./{fp}_test_250.json'
     with open(out_fp, 'w') as f:
         json.dump(values, f, indent=2)
