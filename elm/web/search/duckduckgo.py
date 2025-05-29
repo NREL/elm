@@ -36,6 +36,42 @@ class APIDuckDuckGoSearch(SearchEngineLinkSearch):
 
     _SE_NAME = "DuckDuckGo API"
 
+    def __init__(self, region="wt-wt", backend="auto", timeout=10,
+                 verify=True, sleep_min_seconds=10, sleep_max_seconds=20):
+        """
+
+        Parameters
+        ----------
+        region : str, optional
+            DDG search region param. By default, ``"wt-wt"``, which
+            signifies no region.
+        backend : {auto, html, lite}, optional
+            Option for DDG search type.
+
+                - auto: select randomly between HTML and Lite backends
+                - html: collect data from https://html.duckduckgo.com
+                - lite: collect data from https://lite.duckduckgo.com
+
+            By default, ``"auto"``.
+        timeout : int, optional
+            Timeout for HTTP requests, in seconds. By default, ``10``.
+        verify : bool, optional
+            Apply SSL verification when making the request.
+            By default, ``True``.
+        sleep_min_seconds : int, optional
+            Minimum number of seconds to sleep between queries.
+            By default, ``10``.
+        sleep_max_seconds : int, optional
+            Maximum number of seconds to sleep between queries.
+            By default, ``20``.
+        """
+        self.region = region
+        self.backend = backend
+        self.timeout = timeout
+        self.verify = verify
+        self.sleep_min_seconds = sleep_min_seconds
+        self.sleep_max_seconds = sleep_max_seconds
+
     async def _search(self, query, num_results=10):
         """Search web for links related to a query"""
 
