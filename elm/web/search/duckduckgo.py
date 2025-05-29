@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """ELM Web Scraping - DuckDuckGo search"""
+import random
+import asyncio
 import logging
 
 from duckduckgo_search import DDGS
@@ -9,6 +11,9 @@ from elm.web.search.base import (PlaywrightSearchEngineLinkSearch,
 
 
 logger = logging.getLogger(__name__)
+
+
+_DDGS_SEMAPHORE = asyncio.Semaphore(1)
 
 
 class PlaywrightDuckDuckGoLinkSearch(PlaywrightSearchEngineLinkSearch):
@@ -82,3 +87,23 @@ class APIDuckDuckGoSearch(SearchEngineLinkSearch):
 
         return list(filter(None, (info.get('href', "").replace("+", "%20")
                                   for info in results)))
+
+    async def _skip_exc_search(self, query, num_results=10):
+        """Sleep between DDG searched to avoid rate limiting"""
+        async with _DDGS_SEMAPHORE:
+            try:
+                out = await self._search(query, num_results=num_results)
+            except Exception as e:
+                logger.exception(e)
+                out = []
+
+            await self._sleep_after_query(query)
+
+        return out
+
+    async def _sleep_after_query(self, query):
+        """Sleep for a random time after a query"""
+        delay = random.uniform(self.sleep_min_seconds, self.sleep_max_seconds)
+        logger.debug("DDG search sleeping for %.2f seconds after query: %s",
+                     delay, query)
+        await asyncio.sleep(delay)
