@@ -64,7 +64,9 @@ class APIDuckDuckGoSearch(SearchEngineLinkSearch):
             Apply SSL verification when making the request.
             By default, ``True``.
         sleep_min_seconds : int, optional
-            Minimum number of seconds to sleep between queries.
+            Minimum number of seconds to sleep between queries. We
+            recommend not setting this below ``5`` seconds to avoid
+            rate limiting errors thrown by DuckDuckGo.
             By default, ``10``.
         sleep_max_seconds : int, optional
             Maximum number of seconds to sleep between queries.
