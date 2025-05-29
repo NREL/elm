@@ -75,6 +75,10 @@ class APIDuckDuckGoSearch(SearchEngineLinkSearch):
     async def _search(self, query, num_results=10):
         """Search web for links related to a query"""
 
-        results = DDGS().text(query, max_results=num_results, backend="html")
+        ddgs = DDGS(timeout=self.timeout, verify=self.verify)
+        results = ddgs.text(query, region=self.region,
+                            backend=self.backend,
+                            max_results=num_results)
+
         return list(filter(None, (info.get('href', "").replace("+", "%20")
                                   for info in results)))
