@@ -5,7 +5,7 @@ import logging
 from duckduckgo_search import DDGS
 
 from elm.web.search.base import (PlaywrightSearchEngineLinkSearch,
-                                 APISearchEngineLinkSearch)
+                                 SearchEngineLinkSearch)
 
 
 logger = logging.getLogger(__name__)
@@ -31,7 +31,7 @@ class PlaywrightDuckDuckGoLinkSearch(PlaywrightSearchEngineLinkSearch):
         await page.keyboard.press('Enter')
 
 
-class APIDuckDuckGoSearch(APISearchEngineLinkSearch):
+class APIDuckDuckGoSearch(SearchEngineLinkSearch):
     """Search the web for links using the DuckDuckGo API"""
 
     _SE_NAME = "DuckDuckGo API"
