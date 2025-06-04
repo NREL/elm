@@ -171,7 +171,7 @@ def write_url_doc_to_file(doc, file_content, out_dir, make_name_unique=False):
 
 @asynccontextmanager
 async def pw_page(browser, intercept_routes=False, stealth_config=None,
-                  ignore_https_errors=False):
+                  ignore_https_errors=False, timeout=30000):
     """Create new page from playwright browser context
 
     Parameters
@@ -192,6 +192,9 @@ async def pw_page(browser, intercept_routes=False, stealth_config=None,
         any sensitive information (which you probably shouldn't be doing
         programmatically anyways), then it's probably ok to ignore these
         errors. By default, ``False``.
+    timeout : int, default=30,000
+        Default navigation and page load timeout (in milliseconds) to
+        assign to page instance. By default, ``30_000``.
 
     Yields
     ------
@@ -216,6 +219,9 @@ async def pw_page(browser, intercept_routes=False, stealth_config=None,
     try:
         logger.trace("Loading browser page")
         page = await context.new_page()
+        page.set_default_navigation_timeout(timeout)
+        page.set_default_timeout(timeout)
+
         await stealth_async(page, stealth_config)
         if intercept_routes:
             logger.trace("Intercepting requests and aborting blocked ones")
