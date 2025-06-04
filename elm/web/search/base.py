@@ -11,7 +11,7 @@ from rebrowser_playwright.async_api import (
 )
 from playwright_stealth import StealthConfig
 
-from elm.web.utilities import clean_search_query, pw_page
+from elm.web.utilities import PWKwargs, clean_search_query, pw_page
 
 
 logger = logging.getLogger(__name__)
@@ -108,7 +108,8 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
             ``headless=False, slow_mo=50`` for a visualization of the
             search.
         """
-        self.launch_kwargs = launch_kwargs
+        self.launch_kwargs = PWKwargs.launch_kwargs()
+        self.launch_kwargs.update(launch_kwargs)
         self._browser = None
 
     async def _load_browser(self, pw_instance):

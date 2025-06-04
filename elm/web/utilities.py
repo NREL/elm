@@ -202,19 +202,10 @@ async def pw_page(browser, intercept_routes=False, stealth_config=None,
         A new page that can be used for visiting websites.
     """
     browser_type = _BT_RENAME.get(browser.browser_type.name, "random")
+    ck = PWKwargs.context_kwargs(browser_type=browser_type,
+                                 ignore_https_errors=ignore_https_errors)
 
-    logger.trace("Loading browser context for browser type %r", browser_type)
-    ua = UserAgent(browsers=[browser_type],
-                   platforms=["desktop", "mobile"]).random
-    logger.trace("User agent is:\n\t- %s", ua)
-    context = await browser.new_context(
-        base_url="http://127.0.0.1:443",
-        device_scale_factor=uniform(0.8, 1.2),
-        extra_http_headers=DEFAULT_HEADERS,
-        user_agent=ua,
-        viewport={"width": randint(800, 1400), "height": randint(800, 1400)},
-        ignore_https_errors=ignore_https_errors,
-    )
+    context = await browser.new_context(**ck)
 
     try:
         logger.trace("Loading browser page")
