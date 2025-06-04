@@ -115,11 +115,29 @@ class PlaywrightGoogleCSELinkSearch(PlaywrightSearchEngineLinkSearch):
         logger.trace("Hitting enter for query: %r", search_query)
         await page.keyboard.press('Enter')
 
-    async def _extract_links(self, page, num_results):
+    async def _extract_links(self, page, num_results, query):
         """Extract links for top `num_results` on page"""
-        links = await asyncio.to_thread(page.locator, self._SE_SR_TAG)
-        return [await links.nth(i * 2).get_attribute("href")
-                for i in range(num_results)]
+        await page.wait_for_load_state('load')
+        await page.wait_for_selector(self._SE_SR_TAG)
+        locator = page.locator(self._SE_SR_TAG)
+
+        count = await locator.count() // 2
+        links = []
+
+        for i in range(count):
+            element = locator.nth(i * 2)
+            try:
+                link = await element.get_attribute("href")
+                if link is not None:
+                    links.append(link)
+            except Exception as e:
+                logger.exception("Skipped extracting link %d for query %r",
+                                 i, query)
+
+            if len(links) >= num_results:
+                break
+
+        return links
 
 
 class APIGoogleCSESearch(APISearchEngineLinkSearch):

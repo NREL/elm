@@ -135,7 +135,7 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
                          query)
             await self._perform_search(page, query)
             logger.trace("Extracting links for query: %r", query)
-            return await self._extract_links(page, num_results)
+            return await self._extract_links(page, num_results, query)
 
     async def _get_links(self, queries, num_results):
         """Get links for multiple queries"""
@@ -156,12 +156,28 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
             await self._close_browser()
         return results
 
-    async def _extract_links(self, page, num_results):
+    async def _extract_links(self, page, num_results, query):
         """Extract links for top `num_results` on page"""
-        links = await asyncio.to_thread(page.locator, self._SE_SR_TAG)
+        await page.wait_for_load_state('load')
+        await page.wait_for_selector(self._SE_SR_TAG)
+        locator = page.locator(self._SE_SR_TAG)
+        count = await locator.count()
+        links = []
 
-        return [await links.nth(i).get_attribute("href")
-                for i in range(num_results)]
+        for i in range(count):
+            element = locator.nth(i)
+            try:
+                link = await element.get_attribute("href")
+                if link is not None:
+                    links.append(link)
+            except Exception as e:
+                logger.exception("Skipped extracting link %d for query %r",
+                                 i, query)
+
+            if len(links) >= num_results:
+                break
+
+        return links
 
     @property
     @abstractmethod
