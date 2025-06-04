@@ -216,6 +216,10 @@ async def pw_page(browser, intercept_routes=False, stealth_config=None,
         page.set_default_navigation_timeout(timeout)
         page.set_default_timeout(timeout)
 
+        await page.set_extra_http_headers(DEFAULT_HEADERS)
+        for script in PWKwargs.stealth_scripts():
+            await page.add_init_script(path=script)
+
         await stealth_async(page, stealth_config)
         if intercept_routes:
             logger.trace("Intercepting requests and aborting blocked ones")
