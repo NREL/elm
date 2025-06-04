@@ -15,7 +15,7 @@ from elm.exceptions import ELMKeyError
 async def test_single_se_search_name_dne():
     """Test error for unknown search engine"""
     with pytest.raises(ELMKeyError) as err:
-        await _single_se_search("DNE", None, None, None, None, None)
+        await _single_se_search("DNE", None, None, None, None, None, None)
 
     assert "'se_name' must be one of" in str(err)
 
@@ -71,7 +71,7 @@ async def test_single_se_search_bad_build():
     """Test that bad init of SE gives no results"""
     test_kwargs = {"google_cse_api_kwargs": {"dne_arg": "test_key"}}
     results = await _single_se_search("APIGoogleCSESearch", [""], None, None,
-                                      None, test_kwargs)
+                                      None, None, test_kwargs)
     assert results == set()
 
 

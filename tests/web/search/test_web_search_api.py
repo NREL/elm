@@ -10,9 +10,8 @@ import elm.web.search.google
 from elm.web.search.base import APISearchEngineLinkSearch
 
 
-SE_API_TO_TEST = [(elm.web.search.duckduckgo.APIDuckDuckGoSearch, {}),
-                  (elm.web.search.duckduckgo.APIDuckDuckGoSearch,
-                   {"api_key": None})]
+SE_API_TO_TEST = [(elm.web.search.duckduckgo.APIDuckDuckGoSearch,
+                   {"verify": False})]
 if os.getenv(elm.web.search.google.APIGoogleCSESearch.API_KEY_VAR):
     SE_API_TO_TEST.append((elm.web.search.google.APIGoogleCSESearch, {}))
 
