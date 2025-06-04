@@ -290,6 +290,8 @@ class PWKwargs:
     """Class to compile Playwright launch and context arguments"""
 
     _PE = PlaywrightEngine(stealth=True)
+    SKIP_SCRIPS = []
+    """List of scrapling stealth script names to skip"""
 
     @classmethod
     def launch_kwargs(cls):
@@ -321,11 +323,10 @@ class PWKwargs:
 
 
     @classmethod
-    def stealth_scripts(cls, skip_scripts=None):
+    def stealth_scripts(cls):
         """iterator: Iterator of scrapling scripts to use for stealth"""
         scripts = deepcopy(cls._PE._PlaywrightEngine__stealth_scripts())
-        skip_scripts = skip_scripts or []
         for script in scripts:
-            if any(name in script for name in skip_scripts):
+            if any(name in script for name in cls.SKIP_SCRIPS):
                 continue
             yield script
