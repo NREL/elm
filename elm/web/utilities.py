@@ -5,12 +5,14 @@ import hashlib
 import logging
 import asyncio
 from pathlib import Path
+from copy import deepcopy
 from random import uniform, randint
 from contextlib import asynccontextmanager
 
 from slugify import slugify
 from fake_useragent import UserAgent
 from playwright_stealth import stealth_async
+from scrapling.engines import PlaywrightEngine
 
 from elm.web.document import PDFDocument
 
