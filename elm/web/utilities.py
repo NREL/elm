@@ -286,3 +286,48 @@ async def filter_documents(
         filtered_docs,
         key=lambda doc: (not isinstance(doc, PDFDocument), len(doc.text)),
     )
+
+
+class PWKwargs:
+    """Class to compile Playwright launch and context arguments"""
+
+    _PE = PlaywrightEngine(stealth=True)
+
+    @classmethod
+    def launch_kwargs(cls):
+        """dict: kwargs to use for `playwright.chromium.launch()`"""
+        return deepcopy(cls._PE._PlaywrightEngine__launch_kwargs())
+
+    @classmethod
+    def context_kwargs(cls, browser_type, ignore_https_errors=False):
+        """dict: kwargs to use for `browser.new_context()`"""
+        ck = deepcopy(cls._PE._PlaywrightEngine__context_kwargs())
+
+        logger.trace("Loading browser context for browser type %r",
+                     browser_type)
+        ua = UserAgent(browsers=[browser_type],
+                       platforms=["desktop", "mobile"]).random
+        logger.trace("User agent is:\n\t- %s", ua)
+
+        vp = {"width": randint(800, 1400), "height": randint(800, 1400)}
+        logger.trace("Screen size is:\n\t- %r", vp)
+
+        ck.update({"base_url": "http://127.0.0.1:443",
+                   "device_scale_factor": uniform(0.8, 1.2),
+                   "extra_http_headers": DEFAULT_HEADERS,
+                   "user_agent": ua,
+                   "viewport": vp,
+                   "screen": vp,
+                   "ignore_https_errors": ignore_https_errors})
+        return ck
+
+
+    @classmethod
+    def stealth_scripts(cls, skip_scripts=None):
+        """iterator: Iterator of scrapling scripts to use for stealth"""
+        scripts = deepcopy(cls._PE._PlaywrightEngine__stealth_scripts())
+        skip_scripts = skip_scripts or []
+        for script in scripts:
+            if any(name in script for name in skip_scripts):
+                continue
+            yield script
