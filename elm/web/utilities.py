@@ -39,6 +39,7 @@ BLOCK_RESOURCE_TYPES = [
     "media",
     "object",
     "texttrack",
+    'websocket',
     #  can block stylsheets and scripts, though it's not recommended:
     # 'stylesheet',
     # 'script',
