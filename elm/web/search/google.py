@@ -2,7 +2,6 @@
 """ELM Web Scraping - Google search."""
 import os
 import json
-import asyncio
 import logging
 import requests
 
