@@ -71,8 +71,8 @@ class SearchEngineLinkSearch(ABC):
         """Perform search while ignoring errors"""
         try:
             return await self._search(query, num_results=num_results)
-        except self._EXCEPTION_TO_CATCH as e:
-            logger.exception(e)
+        except self._EXCEPTION_TO_CATCH:
+            logger.exception("Could not complete search for query=%r", query)
             return []
 
     @abstractmethod

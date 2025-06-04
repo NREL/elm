@@ -192,6 +192,7 @@ class AsyncFileLoader:
                 logger.trace("Fetching content from %r", url)
                 url_bytes = await self._fetch_content_with_retry(url, session)
             except ELMRuntimeError:
+                logger.exception("Could not fetch content from %r", url)
                 return PDFDocument(pages=[]), None
 
         logger.trace("Got content from %r", url)
