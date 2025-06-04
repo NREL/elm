@@ -68,7 +68,7 @@ async def _load_html(  # pragma: no cover
                      browser_semaphore)
         browser = await p.chromium.launch(**pw_launch_kwargs)
         page_kwargs = {"browser": browser, "intercept_routes": True,
-                       "ignore_https_errors": True}  # no sensitive inputs
+                       "timeout": timeout, "ignore_https_errors": True}
         async with pw_page(**page_kwargs) as page:
             logger.trace("Navigating to: %r", url)
             await page.goto(url)
