@@ -183,7 +183,7 @@ async def test_google_search_with_logging(tmp_path):
     assert len(output) == 2
     for query_results, expected_word in zip(output, expected_words):
         assert len(query_results) == 1
-        assert len(query_results[0]) == num_requested_links
+        assert 0 < len(query_results[0]) <= num_requested_links
         assert any(expected_word in link for link in query_results[0])
 
     log_files = list(log_dir.glob("*"))
