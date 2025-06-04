@@ -34,17 +34,21 @@ class SearchEngineLinkSearch(ABC):
         *queries : str
             One or more queries to search for.
         num_results : int, optional
-            Number of top results to retrieve for each query. Note that
-            this value can never exceed the number of results per page
-            (typically 10). If you pass in a larger value, it will be
-            reduced to the number of results per page.
-            By default, ``10``.
+            Maximum number of top results to retrieve for each query.
+            Note that this value can never exceed the number of results
+            per page (typically 10). If you pass in a larger value, it
+            will be reduced to the number of results per page. There is
+            also no guarantee that the search query will return this
+            many results - the actual number of results returned is
+            determined by the number of results on a page (excluding
+            ads). You can, however, use this input to limit the number
+            of results returned. By default, ``10``.
 
         Returns
         -------
         list
             List equal to the length of the input queries, where each
-            entry is another list containing the top `num_results`
+            entry is another list containing no more than `num_results`
             links.
         """
         queries = map(clean_search_query, queries)
