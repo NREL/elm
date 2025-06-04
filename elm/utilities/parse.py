@@ -397,12 +397,12 @@ def _load_pdf_possibly_multi_col(pdf_bytes):
     return pages
 
 
-def read_pdf_ocr(
+def read_pdf_ocr(  # pragma: no cover
     pdf_bytes,
     image_to_string_kwargs=None,
     convert_from_bytes_kwargs=None,
     verbose=True
-):  # pragma: no cover
+):
     """Read PDF contents from bytes using Optical Character recognition (OCR).
 
     This method attempt to read the PDF document using OCR. This is one
@@ -454,9 +454,9 @@ def read_pdf_ocr(
     return pages
 
 
-def _load_pdf_with_pytesseract(
+def _load_pdf_with_pytesseract(  # pragma: no cover
     pdf_bytes, image_to_string_kwargs=None, convert_from_bytes_kwargs=None
-):  # pragma: no cover
+):
     """Load PDF bytes using Optical Character recognition (OCR)"""
 
     try:
