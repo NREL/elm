@@ -46,7 +46,7 @@ class AsyncFileLoader:
     .. end desc
     """
 
-    PAGE_LOAD_TIMEOUT = 90_000
+    PAGE_LOAD_TIMEOUT = 60_000
     """Default page load timeout value in milliseconds"""
 
     def __init__(

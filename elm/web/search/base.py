@@ -91,7 +91,7 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
     MAX_RESULTS_CONSIDERED_PER_PAGE = 10
     """Number of results considered per search engine page"""
 
-    PAGE_LOAD_TIMEOUT = 90_000
+    PAGE_LOAD_TIMEOUT = 60_000
     """Default page load timeout value in milliseconds"""
 
     _SC = StealthConfig(navigator_user_agent=False)
