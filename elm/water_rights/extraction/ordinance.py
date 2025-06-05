@@ -57,8 +57,7 @@ class OrdinanceValidator(ValidationWithMemory):
         "text. The "
         "last key is '{key}', which is a boolean that is set to True if the "
         "text excerpt provides enough info to describe geothermal resources "
-        "and False otherwise. "#Geospatial siting is impacted by any of the "
-        # f"following:\n{RESTRICTIONS}"
+        "and False otherwise."
     )
 
     WELL_PERMITS_PROMPT = (
@@ -70,28 +69,8 @@ class OrdinanceValidator(ValidationWithMemory):
         "summarizes the requirements for drilling a groundwater well. The "
         "last key is '{key}', which is a boolean that is set to True if the "
         "text excerpt provides enough info to determine what is required to "
-        "drill a water well and False otherwise. "#Geospatial siting is impacted by any of the "
-        # f"following:\n{RESTRICTIONS}"
+        "drill a water well and False otherwise. "
     )
-
-    # IS_UTILITY_SCALE_PROMPT = (
-    #     "You are a legal scholar that reads ordinance text and determines "
-    #     "wether it applies to large wind energy systems. Large wind energy "
-    #     "systems (WES) may also be referred to as wind turbines, wind energy "
-    #     "conversion systems (WECS), wind energy facilities (WEF), wind energy "
-    #     "turbines (WET), large wind energy turbines (LWET), utility-scale "
-    #     "wind energy turbines (UWET), commercial wind energy systems, or "
-    #     "similar. Your client is a commercial wind developer that does not "
-    #     "care about ordinances related to private, micro, small, or medium "
-    #     "sized wind energy systems. Ignore any text related to such systems. "
-    #     "Return your answer in JSON format (not markdown). Your JSON file "
-    #     "must include exactly two keys. The first key is 'summary' which "
-    #     "contains a string that summarizes the types of wind energy systems "
-    #     "the text applies to (if any). The second key is '{key}', which is a "
-    #     "boolean that is set to True if any part of the text excerpt is "
-    #     "applicable to the large wind energy conversion systems that the "
-    #     "client is interested in and False otherwise."
-    # )
 
     def __init__(self, structured_llm_caller, text_chunks, num_to_recall=2):
         """

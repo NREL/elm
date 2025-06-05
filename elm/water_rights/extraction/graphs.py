@@ -175,15 +175,13 @@ def setup_graph_permits(**kwargs):
             "answer."
             '\n\n"""\n{text}\n"""'
         ),
-        # db_query=("Does {DISTRICT_NAME} require a permit or application to drill a water well?"),
-        # db_query=("Is there an application process to drill a water well in {DISTRICT_NAME}?"),
-        db_query=("Is an application or permit required to drill a water well in {DISTRICT_NAME}?"), # TODO: add 'groundwater' 
+        db_query=("Is an application or permit required to drill a groundwater well in {DISTRICT_NAME}?"),
     ) 
 
     G.add_edge("init", "get_reqs", condition=llm_response_starts_with_yes)
 
     G.add_node(
-        "get_reqs",
+        "get_reqs", #TODO: maybe we don't need this portion
         prompt=(
             "What are the requirements the text mentions? "
         ),
@@ -305,7 +303,7 @@ def setup_graph_daily_limits(**kwargs):
         ),
         db_query=(
             "Does {DISTRICT_NAME} have daily water well extraction limits? "
-            "Extraction limits may be defined as an acre-foot "
+            "Extraction limits might be defined as an acre-foot "
             "or a gallon limit."),
     ) 
 
@@ -321,6 +319,68 @@ def setup_graph_daily_limits(**kwargs):
     )
 
     G.add_edge("get_daily", "final")
+
+    G.add_node(
+        "final",
+        prompt=(
+            "Respond based on our entire conversation so far. Return your "
+            "answer in JSON format (not markdown). Your JSON file must "
+            'include exactly three keys. The keys are "extraction_limit", "units", '
+            'and "explanation". '
+            'The value of the "extraction_limit" key should be the numerical value associated '
+            'with the extraction limit the "units" key should describe the units associated with '
+            'the extraction limit. The value of the "explanation" '
+            "key should be a string containing a short explanation for your "
+            "choice."
+        ),
+    )
+
+    return G
+
+def setup_graph_monthly_limits(**kwargs):
+    """Setup Graph to get permit requirements 
+
+    Parameters
+    ----------
+    **kwargs
+        Keyword-value pairs to add to graph.
+
+    Returns
+    -------
+    nx.DiGraph
+        Graph instance that can be used to initialize an
+        `elm.tree.DecisionTree`.
+    """
+    G = _setup_graph_no_nodes(**kwargs)
+
+    G.add_node(
+        "init",
+        prompt=(
+            "Does the following text mention monthly water well extraction limits? "
+            "Extraction limits may be defined as an acre-foot "
+            "or a gallon limit."
+            "Begin your response with either 'Yes' or 'No' and explain your "
+            "answer."
+            '\n\n"""\n{text}\n"""'
+        ),
+        db_query=(
+            "Does {DISTRICT_NAME} have monthly water well extraction limits? "
+            "Extraction limits might be defined as an acre-foot "
+            "or a gallon limit."),
+    ) 
+
+    G.add_edge("init", "get_monthly", condition=llm_response_starts_with_yes)
+
+
+    G.add_node(
+        "get_monthly",
+        prompt=(
+            "What is the monthly extraction limit mentioned in the text? "
+            "Include the units associated with the limit (example: gallons or acre-feet). "
+        ),
+    )
+
+    G.add_edge("get_monthly", "final")
 
     G.add_node(
         "final",

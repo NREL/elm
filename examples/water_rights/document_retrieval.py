@@ -41,10 +41,10 @@ ChunkAndEmbed.EMBEDDING_TYPE ='azure new'
 # GWCD_NAME = 'Panhandle'
 GWCD_NAME = 'Trinity Glen Rose'
 QUERIES = [f"{GWCD_NAME} groundwater conservation district",
+           f"{GWCD_NAME} groundwater conservation district rules",
+           f"{GWCD_NAME} groundwater conservation district management plan",
            f"{GWCD_NAME} groundwater conservation district well permits",
-           f"{GWCD_NAME} groundwater conservation district well requirements",
-           f"{GWCD_NAME} groundwater conservation district rules"]
-
+           f"{GWCD_NAME} groundwater conservation district well requirements",]
 MODEL = 'egswaterord-openai-embedding'
 
 EMBED_DIR = f"./{GWCD_NAME.lower().replace(' ', '_')}_embed_250/"
@@ -87,7 +87,9 @@ if __name__ == '__main__':
                     raise RuntimeError('Embeddings are None!')
                 else:
                     df = pd.DataFrame({'text': obj.text_chunks.chunks,
-                                    'embedding': embeddings,})
+                                       'embedding': embeddings,
+                                        'source': url,
+                                    })
                     df.to_json(embed_fp, indent=2)
                     logger.info(f'Saving {embed_fp}')
             except Exception as e:
