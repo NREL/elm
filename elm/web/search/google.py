@@ -116,7 +116,8 @@ class PlaywrightGoogleCSELinkSearch(PlaywrightSearchEngineLinkSearch):
 
     async def _extract_links(self, page, num_results, query):
         """Extract links for top `num_results` on page"""
-        await page.wait_for_load_state('load')
+        await page.wait_for_load_state("networkidle",
+                                       timeout=self.PAGE_LOAD_TIMEOUT)
         await page.wait_for_selector(self._SE_SR_TAG)
         locator = page.locator(self._SE_SR_TAG)
 
