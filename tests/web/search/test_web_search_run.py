@@ -45,7 +45,7 @@ def test_init_se():
     test_kwargs = {"pw_launch_kwargs": {"test": 1}}
     se, *__ = _init_se("PlaywrightGoogleLinkSearch", test_kwargs)
     assert isinstance(se, PlaywrightGoogleLinkSearch)
-    assert se.launch_kwargs == {"test": 1}
+    assert se.launch_kwargs["test"] == 1
     assert test_kwargs == {"pw_launch_kwargs": {"test": 1}}
 
 

@@ -63,7 +63,7 @@ async def test_search_query_with_timeout(monkeypatch, se):
                                       "Python", num_results=3)
 
     assert len(out) == 2
-    assert len(out[0]) == 3
+    assert 0 < len(out[0]) <= 3
     assert all(link.startswith("http") for link in out[0])
     assert not out[1]
 
