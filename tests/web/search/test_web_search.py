@@ -34,7 +34,7 @@ async def test_basic_search_query(queries, se):
     """Test basic web search query functionality"""
 
     se_class, kwargs = se
-    search_engine = se_class(**kwargs)
+    search_engine = se_class(chromium_sandbox=False, **kwargs)
     out = await search_engine.results(*queries)
 
     assert len(out) == len(queries)
@@ -58,7 +58,7 @@ async def test_search_query_with_timeout(monkeypatch, se):
 
     monkeypatch.setattr(se_class, "_perform_search", _tps, raising=True)
 
-    search_engine = se_class(**kwargs)
+    search_engine = se_class(chromium_sandbox=False, **kwargs)
     out = await search_engine.results('1. "Python Programming Language"',
                                       "Python", num_results=3)
 
@@ -76,7 +76,9 @@ async def test_search_query_with_timeout(monkeypatch, se):
 async def test_search_query_num_results(queries, num_results_multiplier):
     """Test basic web search query returns correct number of links"""
 
-    search_engine = elm.web.search.duckduckgo.PlaywrightDuckDuckGoLinkSearch()
+    search_engine = elm.web.search.duckduckgo.PlaywrightDuckDuckGoLinkSearch(
+        chromium_sandbox=False
+    )
     max_results = search_engine.MAX_RESULTS_CONSIDERED_PER_PAGE
     num_results = max(1, max_results * num_results_multiplier)
     out = await search_engine.results(*queries, num_results=num_results)
