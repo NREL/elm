@@ -130,7 +130,7 @@ class PlaywrightGoogleCSELinkSearch(PlaywrightSearchEngineLinkSearch):
                 link = await element.get_attribute("href")
                 if link is not None:
                     links.append(link)
-            except Exception as e:
+            except Exception:
                 logger.exception("Skipped extracting link %d for query %r",
                                  i, query)
 
