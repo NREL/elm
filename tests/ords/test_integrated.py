@@ -152,7 +152,7 @@ async def test_google_search_with_logging(tmp_path):
 
     async def search_single(location):
         logger.info("This location is %r", location)
-        search_engine = PlaywrightGoogleLinkSearch()
+        search_engine = PlaywrightGoogleLinkSearch(chromium_sandbox=False)
         return await search_engine.results(
             f"Wind energy zoning ordinance {location}",
             num_results=num_requested_links,
