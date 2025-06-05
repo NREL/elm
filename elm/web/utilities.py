@@ -5,12 +5,14 @@ import hashlib
 import logging
 import asyncio
 from pathlib import Path
+from copy import deepcopy
 from random import uniform, randint
 from contextlib import asynccontextmanager
 
 from slugify import slugify
 from fake_useragent import UserAgent
 from playwright_stealth import stealth_async
+from scrapling.engines import PlaywrightEngine
 
 from elm.web.document import PDFDocument
 
@@ -39,6 +41,7 @@ BLOCK_RESOURCE_TYPES = [
     "media",
     "object",
     "texttrack",
+    'websocket',
     #  can block stylsheets and scripts, though it's not recommended:
     # 'stylesheet',
     # 'script',
@@ -171,7 +174,7 @@ def write_url_doc_to_file(doc, file_content, out_dir, make_name_unique=False):
 
 @asynccontextmanager
 async def pw_page(browser, intercept_routes=False, stealth_config=None,
-                  ignore_https_errors=False):
+                  ignore_https_errors=False, timeout=30000):
     """Create new page from playwright browser context
 
     Parameters
@@ -192,6 +195,9 @@ async def pw_page(browser, intercept_routes=False, stealth_config=None,
         any sensitive information (which you probably shouldn't be doing
         programmatically anyways), then it's probably ok to ignore these
         errors. By default, ``False``.
+    timeout : int, default=30,000
+        Default navigation and page load timeout (in milliseconds) to
+        assign to page instance. By default, ``30_000``.
 
     Yields
     ------
@@ -199,23 +205,21 @@ async def pw_page(browser, intercept_routes=False, stealth_config=None,
         A new page that can be used for visiting websites.
     """
     browser_type = _BT_RENAME.get(browser.browser_type.name, "random")
+    ck = PWKwargs.context_kwargs(browser_type=browser_type,
+                                 ignore_https_errors=ignore_https_errors)
 
-    logger.trace("Loading browser context for browser type %r", browser_type)
-    ua = UserAgent(browsers=[browser_type],
-                   platforms=["desktop", "mobile"]).random
-    logger.trace("User agent is:\n\t- %s", ua)
-    context = await browser.new_context(
-        base_url="http://127.0.0.1:443",
-        device_scale_factor=uniform(0.8, 1.2),
-        extra_http_headers=DEFAULT_HEADERS,
-        user_agent=ua,
-        viewport={"width": randint(800, 1400), "height": randint(800, 1400)},
-        ignore_https_errors=ignore_https_errors,
-    )
+    context = await browser.new_context(**ck)
 
     try:
         logger.trace("Loading browser page")
         page = await context.new_page()
+        page.set_default_navigation_timeout(timeout)
+        page.set_default_timeout(timeout)
+
+        await page.set_extra_http_headers(DEFAULT_HEADERS)
+        for script in PWKwargs.stealth_scripts():
+            await page.add_init_script(path=script)
+
         await stealth_async(page, stealth_config)
         if intercept_routes:
             logger.trace("Intercepting requests and aborting blocked ones")
@@ -280,3 +284,49 @@ async def filter_documents(
         filtered_docs,
         key=lambda doc: (not isinstance(doc, PDFDocument), len(doc.text)),
     )
+
+
+class PWKwargs:
+    """Class to compile Playwright launch and context arguments"""
+
+    _PE = PlaywrightEngine(stealth=True)
+    SKIP_SCRIPS = []
+    """List of scrapling stealth script names to skip"""
+
+    @classmethod
+    def launch_kwargs(cls):
+        """dict: kwargs to use for `playwright.chromium.launch()`"""
+        return deepcopy(cls._PE._PlaywrightEngine__launch_kwargs())
+
+    @classmethod
+    def context_kwargs(cls, browser_type, ignore_https_errors=False):
+        """dict: kwargs to use for `browser.new_context()`"""
+        ck = deepcopy(cls._PE._PlaywrightEngine__context_kwargs())
+
+        logger.trace("Loading browser context for browser type %r",
+                     browser_type)
+        ua = UserAgent(browsers=[browser_type],
+                       platforms=["desktop", "mobile"]).random
+        logger.trace("User agent is:\n\t- %s", ua)
+
+        vp = {"width": randint(800, 1400), "height": randint(800, 1400)}
+        logger.trace("Screen size is:\n\t- %r", vp)
+
+        ck.update({"base_url": "http://127.0.0.1:443",
+                   "device_scale_factor": uniform(0.8, 1.2),
+                   "extra_http_headers": DEFAULT_HEADERS,
+                   "user_agent": ua,
+                   "viewport": vp,
+                   "screen": vp,
+                   "ignore_https_errors": ignore_https_errors})
+        return ck
+
+
+    @classmethod
+    def stealth_scripts(cls):
+        """iterator: Iterator of scrapling scripts to use for stealth"""
+        scripts = deepcopy(cls._PE._PlaywrightEngine__stealth_scripts())
+        for script in scripts:
+            if any(name in script for name in cls.SKIP_SCRIPS):
+                continue
+            yield script

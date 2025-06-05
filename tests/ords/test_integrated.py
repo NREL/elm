@@ -20,7 +20,7 @@ from elm.ords.services.openai import OpenAIService, usage_from_response
 from elm.ords.services.threaded import TempFileCache
 from elm.ords.services.provider import RunningAsyncServices
 from elm.ords.utilities.queued_logging import LocationFileLog, LogListener
-from elm.web.search.google import PlaywrightGoogleLinkSearch
+from elm.web.search.duckduckgo import PlaywrightDuckDuckGoLinkSearch
 from elm.web.file_loader import AsyncFileLoader
 from elm.web.document import HTMLDocument
 
@@ -141,8 +141,8 @@ async def test_openai_query(sample_openai_response, monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test_google_search_with_logging(tmp_path):
-    """Test searching google for some counties with logging"""
+async def test_search_with_logging(tmp_path):
+    """Test searching for some counties with logging"""
 
     assert not list(tmp_path.glob("*"))
 
@@ -152,7 +152,7 @@ async def test_google_search_with_logging(tmp_path):
 
     async def search_single(location):
         logger.info("This location is %r", location)
-        search_engine = PlaywrightGoogleLinkSearch()
+        search_engine = PlaywrightDuckDuckGoLinkSearch(chromium_sandbox=False)
         return await search_engine.results(
             f"Wind energy zoning ordinance {location}",
             num_results=num_requested_links,
@@ -183,7 +183,7 @@ async def test_google_search_with_logging(tmp_path):
     assert len(output) == 2
     for query_results, expected_word in zip(output, expected_words):
         assert len(query_results) == 1
-        assert len(query_results[0]) == num_requested_links
+        assert 0 < len(query_results[0]) <= num_requested_links
         assert any(expected_word in link for link in query_results[0])
 
     log_files = list(log_dir.glob("*"))

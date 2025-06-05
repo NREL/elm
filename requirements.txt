@@ -19,6 +19,7 @@ PyPDF2
 python-slugify
 rebrowser-playwright
 scipy
+scrapling
 tabulate
 tavily-python
 tiktoken

@@ -12,7 +12,7 @@ from rebrowser_playwright.async_api import (
     TimeoutError as PlaywrightTimeoutError
 )
 
-from elm.web.utilities import pw_page
+from elm.web.utilities import pw_page, PWKwargs
 
 
 logger = logging.getLogger(__name__)
@@ -62,13 +62,16 @@ async def _load_html(  # pragma: no cover
     if browser_semaphore is None:
         browser_semaphore = AsyncExitStack()
 
+    launch_kwargs = PWKwargs.launch_kwargs()
+    launch_kwargs.update(pw_launch_kwargs)
+
     logger.trace("Loading HTML using playwright")
     async with async_playwright() as p, browser_semaphore:
         logger.trace("launching chromium; browser_semaphore=%r",
                      browser_semaphore)
-        browser = await p.chromium.launch(**pw_launch_kwargs)
+        browser = await p.chromium.launch(**launch_kwargs)
         page_kwargs = {"browser": browser, "intercept_routes": True,
-                       "ignore_https_errors": True}  # no sensitive inputs
+                       "timeout": timeout, "ignore_https_errors": True}
         async with pw_page(**page_kwargs) as page:
             logger.trace("Navigating to: %r", url)
             await page.goto(url)

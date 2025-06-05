@@ -46,7 +46,7 @@ class AsyncFileLoader:
     .. end desc
     """
 
-    PAGE_LOAD_TIMEOUT = 90_000
+    PAGE_LOAD_TIMEOUT = 60_000
     """Default page load timeout value in milliseconds"""
 
     def __init__(
@@ -192,6 +192,7 @@ class AsyncFileLoader:
                 logger.trace("Fetching content from %r", url)
                 url_bytes = await self._fetch_content_with_retry(url, session)
             except ELMRuntimeError:
+                logger.exception("Could not fetch content from %r", url)
                 return PDFDocument(pages=[]), None
 
         logger.trace("Got content from %r", url)

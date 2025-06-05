@@ -11,7 +11,7 @@ from rebrowser_playwright.async_api import (
 )
 from playwright_stealth import StealthConfig
 
-from elm.web.utilities import clean_search_query, pw_page
+from elm.web.utilities import PWKwargs, clean_search_query, pw_page
 
 
 logger = logging.getLogger(__name__)
@@ -34,17 +34,21 @@ class SearchEngineLinkSearch(ABC):
         *queries : str
             One or more queries to search for.
         num_results : int, optional
-            Number of top results to retrieve for each query. Note that
-            this value can never exceed the number of results per page
-            (typically 10). If you pass in a larger value, it will be
-            reduced to the number of results per page.
-            By default, ``10``.
+            Maximum number of top results to retrieve for each query.
+            Note that this value can never exceed the number of results
+            per page (typically 10). If you pass in a larger value, it
+            will be reduced to the number of results per page. There is
+            also no guarantee that the search query will return this
+            many results - the actual number of results returned is
+            determined by the number of results on a page (excluding
+            ads). You can, however, use this input to limit the number
+            of results returned. By default, ``10``.
 
         Returns
         -------
         list
             List equal to the length of the input queries, where each
-            entry is another list containing the top `num_results`
+            entry is another list containing no more than `num_results`
             links.
         """
         queries = map(clean_search_query, queries)
@@ -71,8 +75,8 @@ class SearchEngineLinkSearch(ABC):
         """Perform search while ignoring errors"""
         try:
             return await self._search(query, num_results=num_results)
-        except self._EXCEPTION_TO_CATCH as e:
-            logger.exception(e)
+        except self._EXCEPTION_TO_CATCH:
+            logger.exception("Could not complete search for query=%r", query)
             return []
 
     @abstractmethod
@@ -87,7 +91,7 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
     MAX_RESULTS_CONSIDERED_PER_PAGE = 10
     """Number of results considered per search engine page"""
 
-    PAGE_LOAD_TIMEOUT = 90_000
+    PAGE_LOAD_TIMEOUT = 60_000
     """Default page load timeout value in milliseconds"""
 
     _SC = StealthConfig(navigator_user_agent=False)
@@ -104,7 +108,8 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
             ``headless=False, slow_mo=50`` for a visualization of the
             search.
         """
-        self.launch_kwargs = launch_kwargs
+        self.launch_kwargs = PWKwargs.launch_kwargs()
+        self.launch_kwargs.update(launch_kwargs)
         self._browser = None
 
     async def _load_browser(self, pw_instance):
@@ -123,7 +128,8 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
         num_results = min(num_results, self.MAX_RESULTS_CONSIDERED_PER_PAGE)
 
         page_kwargs = {"browser": self._browser, "stealth_config": self._SC,
-                       "ignore_https_errors": True}  # no sensitive inputs
+                       "ignore_https_errors": True,  # no sensitive inputs
+                       "timeout": self.PAGE_LOAD_TIMEOUT}
         async with pw_page(**page_kwargs) as page:
             await _navigate_to_search_engine(page, se_url=self._SE_URL,
                                              timeout=self.PAGE_LOAD_TIMEOUT)
@@ -131,7 +137,7 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
                          query)
             await self._perform_search(page, query)
             logger.trace("Extracting links for query: %r", query)
-            return await self._extract_links(page, num_results)
+            return await self._extract_links(page, num_results, query)
 
     async def _get_links(self, queries, num_results):
         """Get links for multiple queries"""
@@ -152,12 +158,29 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
             await self._close_browser()
         return results
 
-    async def _extract_links(self, page, num_results):
+    async def _extract_links(self, page, num_results, query):
         """Extract links for top `num_results` on page"""
-        links = await asyncio.to_thread(page.locator, self._SE_SR_TAG)
+        await page.wait_for_load_state("networkidle",
+                                       timeout=self.PAGE_LOAD_TIMEOUT)
+        await page.wait_for_selector(self._SE_SR_TAG)
+        locator = page.locator(self._SE_SR_TAG)
+        count = await locator.count()
+        links = []
 
-        return [await links.nth(i).get_attribute("href")
-                for i in range(num_results)]
+        for i in range(count):
+            element = locator.nth(i)
+            try:
+                link = await element.get_attribute("href")
+                if link is not None:
+                    links.append(link)
+            except Exception:
+                logger.exception("Skipped extracting link %d for query %r",
+                                 i, query)
+
+            if len(links) >= num_results:
+                break
+
+        return links
 
     @property
     @abstractmethod
