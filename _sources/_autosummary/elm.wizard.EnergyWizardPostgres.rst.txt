@@ -1,0 +1,50 @@
+elm.wizard.EnergyWizardPostgres
+===============================
+
+.. currentmodule:: elm.wizard
+
+.. autoclass:: EnergyWizardPostgres
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~EnergyWizardPostgres.call_api
+      ~EnergyWizardPostgres.call_api_async
+      ~EnergyWizardPostgres.chat
+      ~EnergyWizardPostgres.clear
+      ~EnergyWizardPostgres.count_tokens
+      ~EnergyWizardPostgres.engineer_query
+      ~EnergyWizardPostgres.generic_async_query
+      ~EnergyWizardPostgres.generic_query
+      ~EnergyWizardPostgres.get_embedding
+      ~EnergyWizardPostgres.make_ref_list
+      ~EnergyWizardPostgres.query_vector_db
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~EnergyWizardPostgres.DEFAULT_META_COLS
+      ~EnergyWizardPostgres.DEFAULT_MODEL
+      ~EnergyWizardPostgres.EMBEDDING_MODEL
+      ~EnergyWizardPostgres.EMBEDDING_URL
+      ~EnergyWizardPostgres.HEADERS
+      ~EnergyWizardPostgres.MODEL_INSTRUCTION
+      ~EnergyWizardPostgres.MODEL_ROLE
+      ~EnergyWizardPostgres.TOKENIZER_ALIASES
+      ~EnergyWizardPostgres.TOKENIZER_PATTERNS
+      ~EnergyWizardPostgres.URL
+      ~EnergyWizardPostgres.all_messages_txt
+   
+   

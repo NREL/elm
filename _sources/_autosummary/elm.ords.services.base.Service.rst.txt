@@ -1,0 +1,36 @@
+elm.ords.services.base.Service
+==============================
+
+.. currentmodule:: elm.ords.services.base
+
+.. autoclass:: Service
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Service.acquire_resources
+      ~Service.call
+      ~Service.process
+      ~Service.process_using_futures
+      ~Service.release_resources
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Service.MAX_CONCURRENT_JOBS
+      ~Service.can_process
+      ~Service.name
+   
+   

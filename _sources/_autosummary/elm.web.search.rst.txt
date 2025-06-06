@@ -1,0 +1,36 @@
+elm.web.search
+==============
+
+.. automodule:: elm.web.search
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   base
+   bing
+   duckduckgo
+   google
+   run
+   tavily
+   yahoo
+

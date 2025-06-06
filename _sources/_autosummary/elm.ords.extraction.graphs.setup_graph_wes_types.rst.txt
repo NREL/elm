@@ -1,0 +1,6 @@
+elm.ords.extraction.graphs.setup\_graph\_wes\_types
+===================================================
+
+.. currentmodule:: elm.ords.extraction.graphs
+
+.. autofunction:: setup_graph_wes_types
