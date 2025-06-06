@@ -76,7 +76,7 @@ class BaseDocument(ABC):
     @property
     def empty(self):
         """bool: ``True`` if the document contains no pages."""
-        return any(_non_empty_pages(self.pages))
+        return not any(_non_empty_pages(self.pages))
 
     @cached_property
     def raw_pages(self):
