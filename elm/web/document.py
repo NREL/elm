@@ -324,5 +324,6 @@ class HTMLDocument(BaseDocument):
 
 def _non_empty_pages(pages):
     """Return all pages with more than 10 chars"""
-    return filter(lambda page: re.search('[a-zA-Z]', page)
-                               and len(page) > 10, pages)
+    return filter(
+        lambda page: re.search('[a-zA-Z]', page) and len(page) > 10, pages
+    )
