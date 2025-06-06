@@ -3,11 +3,19 @@
 Test
 """
 import os
+import time
+import random
 import tempfile
 
 from flaky import flaky
 
 from elm import OstiList
+
+
+def _random_delay(*__):
+    """Randomly sleep for a short time; used for flaky reruns"""
+    time.sleep(random.uniform(0.5, 3.0))
+    return True
 
 
 @flaky(max_runs=5, min_passes=1)
@@ -31,7 +39,7 @@ def test_osti_from_url():
     assert len(docs) == 12
 
 
-@flaky(max_runs=5, min_passes=1)
+@flaky(max_runs=10, min_passes=1, rerun_filter=_random_delay)
 def test_osti_from_oids():
     """Test osti list, make sure we can find specific oids from storage futures
     study"""
