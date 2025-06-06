@@ -14,7 +14,7 @@ import elm.web.search.duckduckgo
 import elm.web.search.bing
 import elm.web.search.yahoo
 
-SE_TO_TEST = [(elm.web.search.google.PlaywrightGoogleLinkSearch, {})
+SE_TO_TEST = [(elm.web.search.google.PlaywrightGoogleLinkSearch, {}),
               (elm.web.search.duckduckgo.PlaywrightDuckDuckGoLinkSearch, {}),
               (elm.web.search.bing.PlaywrightBingLinkSearch, {}),
               (elm.web.search.yahoo.PlaywrightYahooLinkSearch, {})]
