@@ -118,6 +118,26 @@ def test_doc_repr():
     assert repr(c) == expected_repr
 
 
+@pytest.mark.parametrize("pages", ([], ["aaa"], ["\n\n", "\n", "\r3"]))
+def test_doc_is_empty(pages):
+    """Test that doc without any text returns ``True`` for `empty` property"""
+
+    assert PDFDocument(pages).empty
+    assert HTMLDocument(pages).empty
+
+
+def test_html_string_is_empty_doc():
+    """Test that doc with just html text is empty"""
+
+    html_str = ('<!DOCTYPE html><html><head></head><body style="height: 100%; '
+                'width: 100%; overflow: hidden; margin:0px; background-color: '
+                'rgb(38, 38, 38);"><embed '
+                'name="0AA1AAF79D1EC03DEFB5B45B5529FA56" '
+                'style="position:absolute; left: 0; top: 0;" width="100%" '
+                'height="100%" src="about:blank" type="application/pdf" '
+                'internalid="0AA1AAF79D1EC03DEFB5B45B5529FA56"></body></html>')
+    assert HTMLDocument([html_str]).empty
+
 
 if __name__ == "__main__":
     pytest.main(["-q", "--show-capture=all", Path(__file__), "-rapP"])
