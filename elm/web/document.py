@@ -76,7 +76,7 @@ class BaseDocument(ABC):
     @property
     def empty(self):
         """bool: ``True`` if the document contains no pages."""
-        return not self.pages
+        return any(_non_empty_pages(self.pages))
 
     @cached_property
     def raw_pages(self):
@@ -233,12 +233,16 @@ class PDFDocument(BaseDocument):
         with open(fp, 'rb') as f:
             pages = read_pdf(f.read())
 
-        if all(len(page) < 10 for page in pages):
-            # fallback to OCR with pytesseract if no pages have more than 10
-            # chars. Typical scanned document only has weird ascii per page.
-            with open(fp, 'rb') as f:
-                pages = read_pdf_ocr(f.read())
+        pages = list(_non_empty_pages(pages))
+        if pages:
+            return cls(pages, **init_kwargs)
 
+        # fallback to OCR with pytesseract if no pages have more than 10
+        # chars. Typical scanned document only has weird ascii per page.
+        with open(fp, 'rb') as f:
+            pages = read_pdf_ocr(f.read())
+
+        pages = list(_non_empty_pages(pages))
         if not any(pages):
             msg = f'Could not get text from pdf: {fp}'
             logger.error(msg)
@@ -315,3 +319,8 @@ class HTMLDocument(BaseDocument):
         if self.text_splitter is None:
             return self.pages
         return self.text_splitter.split_text("\n\n".join(self.pages))
+
+
+def _non_empty_pages(pages):
+    """Return all pages with more than 10 chars"""
+    return filter(lambda page: page.isalpha() and len(page) > 10, pages)
