@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """ELM Web Document class definitions"""
+import re
 from abc import ABC, abstractmethod
 from copy import deepcopy
 from functools import cached_property
@@ -323,4 +324,5 @@ class HTMLDocument(BaseDocument):
 
 def _non_empty_pages(pages):
     """Return all pages with more than 10 chars"""
-    return filter(lambda page: page.isalpha() and len(page) > 10, pages)
+    return filter(lambda page: re.search('[a-zA-Z]', page)
+                               and len(page) > 10, pages)
