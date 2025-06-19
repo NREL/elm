@@ -6,7 +6,7 @@ import logging
 import asyncio
 from pathlib import Path
 from copy import deepcopy
-from random import uniform, randint, choice
+from random import randint, choice
 from contextlib import asynccontextmanager
 
 from slugify import slugify
@@ -325,7 +325,8 @@ class PWKwargs:
                      browser_type)
 
         platforms = (["desktop"]
-                     if cls.USE_REALISTIC_VIEWPORTS else ["mobile", "desktop"])
+                     if cls.USE_REALISTIC_VIEWPORTS
+                     else ["desktop", "mobile", "tablet"])
         ua_info = (UserAgent(browsers=[browser_type], platforms=platforms)
                    .getBrowser("random"))
         logger.trace("User agent is:\n\t- %s", ua_info["useragent"])
@@ -336,7 +337,7 @@ class PWKwargs:
             dsf = vp.pop("device_scale_factor")
         else:
             vp = {"width": randint(800, 1400), "height": randint(800, 1400)}
-            dsf = uniform(0.8, 1.2),
+            dsf = choice([1, 1.25, 1.5, 2, 2.5, 2.625, 2.75, 3])
         logger.trace("Screen size is:\n\t- %r", vp)
 
         ck.update({"base_url": "http://127.0.0.1:443",
