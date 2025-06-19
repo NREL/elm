@@ -189,18 +189,18 @@ class AsyncFileLoader:
 
         async with aiohttp.ClientSession() as session:
             try:
-                logger.trace("Fetching content from %r", url)
+                logger.debug("Fetching content from %r", url)
                 url_bytes = await self._fetch_content_with_retry(url, session)
             except ELMRuntimeError:
                 logger.exception("Could not fetch content from %r", url)
                 return PDFDocument(pages=[]), None
 
-        logger.trace("Got content from %r", url)
+        logger.debug("Got content from %r", url)
         doc = await self.pdf_read_coroutine(url_bytes, **self.pdf_read_kwargs)
         if not doc.empty:
             return doc, url_bytes
 
-        logger.trace("PDF read failed; fetching HTML content from %r", url)
+        logger.debug("PDF read failed; fetching HTML content from %r", url)
         text = await load_html_with_pw(url, self.browser_semaphore,
                                        timeout=self.PAGE_LOAD_TIMEOUT,
                                        **self.pw_launch_kwargs)
@@ -209,6 +209,7 @@ class AsyncFileLoader:
             return doc, doc.text
 
         if self.pdf_ocr_read_coroutine:
+            logger.debug("HTML read failed; fetching OCR content from %r", url)
             doc = await self.pdf_ocr_read_coroutine(
                 url_bytes, **self.pdf_read_kwargs
             )
