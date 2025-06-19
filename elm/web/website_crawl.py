@@ -72,7 +72,7 @@ ELM_URL_FILTER = URLPatternFilter(reverse=True, patterns=_BLACKLIST_SUBSTRINGS)
 class ELMLinkScorer:
     """Custom URL scorer for ELM website crawling"""
 
-    def __call__(self, keyword_points=None):
+    def __init__(self, keyword_points=None):
         """
 
         Parameters
