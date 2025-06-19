@@ -45,26 +45,28 @@ it. This is just the default strategy, and can/should be modified by
 users to better suit their own use cases.
 """
 
-BLACKLIST_SUBSTRINGS = ["*mailto:*",
-                        "*tel:*",
-                        "*fax:*",
-                        "*javascript:*",
-                        "*login*",
-                        "*signup*",
-                        "*sign up*",
-                        r"*sign%20up*",
-                        "*signin*",
-                        "*sign in*",
-                        r"*sign%20in*",
-                        "*register*",
-                        "*subscribe*",
-                        "*donate*",
-                        "*shop*",
-                        "*cart*",
-                        "*careers*",
-                        "*events*",
-                        "*calendar*"]
-"""Substrings used to exclude URLs that are not relevant to the search"""
+_BLACKLIST_SUBSTRINGS = ["*mailto:*",
+                         "*tel:*",
+                         "*fax:*",
+                         "*javascript:*",
+                         "*login*",
+                         "*signup*",
+                         "*sign up*",
+                         r"*sign%20up*",
+                         "*signin*",
+                         "*sign in*",
+                         r"*sign%20in*",
+                         "*register*",
+                         "*subscribe*",
+                         "*donate*",
+                         "*shop*",
+                         "*cart*",
+                         "*careers*",
+                         "*events*",
+                         "*calendar*"]
+
+ELM_URL_FILTER = URLPatternFilter(reverse=True, patterns=_BLACKLIST_SUBSTRINGS)
+"""Filter used to exclude URLs that are not relevant to the search"""
 
 
 class ELMLinkScorer:
