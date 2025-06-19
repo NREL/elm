@@ -6,7 +6,7 @@ import logging
 import asyncio
 from pathlib import Path
 from copy import deepcopy
-from random import uniform, randint
+from random import uniform, randint, choice
 from contextlib import asynccontextmanager
 
 from slugify import slugify
@@ -293,7 +293,7 @@ class PWKwargs:
     SKIP_SCRIPS = []
     """List of scrapling stealth script names to skip"""
 
-    USE_REALISTIC_VIEWPORTS = True
+    USE_REALISTIC_VIEWPORTS = False
     """bool: Use realistic viewport sizes for the browser context"""
 
     _VIEWPORTS = {
@@ -324,18 +324,25 @@ class PWKwargs:
         logger.trace("Loading browser context for browser type %r",
                      browser_type)
 
-        platforms = (["desktop"] 
+        platforms = (["desktop"]
                      if cls.USE_REALISTIC_VIEWPORTS else ["mobile", "desktop"])
-        ua = UserAgent(browsers=[browser_type], platforms=platforms).random
-        logger.trace("User agent is:\n\t- %s", ua)
+        ua_info = (UserAgent(browsers=["Chrome"], platforms=platforms)
+                   .getBrowser("random"))
+        logger.trace("User agent is:\n\t- %s", ua_info["useragent"])
+        platform_type = ua_info["type"]
 
-        vp = {"width": randint(800, 1400), "height": randint(800, 1400)}
+        if cls.USE_REALISTIC_VIEWPORTS:
+            vp = deepcopy(choice(cls.VIEWPORTS[platform_type]))
+            dsf = vp.pop("device_scale_factor")
+        else:
+            vp = {"width": randint(800, 1400), "height": randint(800, 1400)}
+            dsf = uniform(0.8, 1.2),
         logger.trace("Screen size is:\n\t- %r", vp)
 
         ck.update({"base_url": "http://127.0.0.1:443",
-                   "device_scale_factor": uniform(0.8, 1.2),
+                   "device_scale_factor": dsf,
                    "extra_http_headers": DEFAULT_HEADERS,
-                   "user_agent": ua,
+                   "user_agent": ua_info["useragent"],
                    "viewport": vp,
                    "screen": vp,
                    "ignore_https_errors": ignore_https_errors})
