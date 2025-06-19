@@ -326,7 +326,7 @@ class PWKwargs:
 
         platforms = (["desktop"]
                      if cls.USE_REALISTIC_VIEWPORTS else ["mobile", "desktop"])
-        ua_info = (UserAgent(browsers=["Chrome"], platforms=platforms)
+        ua_info = (UserAgent(browsers=[browser_type], platforms=platforms)
                    .getBrowser("random"))
         logger.trace("User agent is:\n\t- %s", ua_info["useragent"])
         platform_type = ua_info["type"].casefold()
