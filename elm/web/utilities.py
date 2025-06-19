@@ -298,16 +298,16 @@ class PWKwargs:
 
     _VIEWPORTS = {
         "desktop": [
-            {"width": 1920, "height": 1080, "device_scale_factor": 1},
+            {"width": 1080, "height": 600, "device_scale_factor": 1},
+            {"width": 1280, "height": 1024, "device_scale_factor": 1},
             {"width": 1366, "height": 768, "device_scale_factor": 1},
             {"width": 1440, "height": 900, "device_scale_factor": 1},
-            {"width": 1600, "height": 900, "device_scale_factor": 1},
-            {"width": 1280, "height": 1024, "device_scale_factor": 1},
             {"width": 1536, "height": 864, "device_scale_factor": 1},
+            {"width": 1600, "height": 900, "device_scale_factor": 1},
+            {"width": 1680, "height": 1050, "device_scale_factor": 1},
+            {"width": 1920, "height": 1080, "device_scale_factor": 1},
             {"width": 2560, "height": 1440, "device_scale_factor": 1.25},
             {"width": 3840, "height": 2160, "device_scale_factor": 2},
-            {"width": 1680, "height": 1050, "device_scale_factor": 1},
-
         ],
     }
 
