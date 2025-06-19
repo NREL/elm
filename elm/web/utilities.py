@@ -309,6 +309,36 @@ class PWKwargs:
             {"width": 2560, "height": 1440, "device_scale_factor": 1.25},
             {"width": 3840, "height": 2160, "device_scale_factor": 2},
         ],
+        "mobile": [
+            # iPhone 6/7/8
+            {"width": 375, "height": 667, "device_scale_factor": 2},
+            # iPhone X/11 Pro
+            {"width": 375, "height": 812, "device_scale_factor": 3},
+            # iPhone 12/13/14
+            {"width": 390, "height": 844, "device_scale_factor": 3},
+            # iPhone XR/11
+            {"width": 414, "height": 896, "device_scale_factor": 2},
+            # iPhone 14 Pro Max
+            {"width": 428, "height": 926, "device_scale_factor": 3},
+            # Galaxy S9
+            {"width": 360, "height": 800, "device_scale_factor": 2.5},
+            # Pixel 7 Pro
+            {"width": 412, "height": 915, "device_scale_factor": 2.625},
+            # Pixel 6
+            {"width": 393, "height": 873, "device_scale_factor": 2.75},
+            # Pixel 5a
+            {"width": 360, "height": 780, "device_scale_factor": 3},
+        ],
+        "tablet": [
+            # iPad portrait
+            {"width": 768, "height": 1024, "device_scale_factor": 2},
+            # iPad landscape
+            {"width": 1024, "height": 768, "device_scale_factor": 2},
+            # Android tablet
+            {"width": 800, "height": 1280, "device_scale_factor": 1.5},
+            # Samsung Tab
+            {"width": 962, "height": 601, "device_scale_factor": 1.5},
+        ]
     }
 
     @classmethod
