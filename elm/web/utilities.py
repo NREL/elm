@@ -329,7 +329,7 @@ class PWKwargs:
         ua_info = (UserAgent(browsers=["Chrome"], platforms=platforms)
                    .getBrowser("random"))
         logger.trace("User agent is:\n\t- %s", ua_info["useragent"])
-        platform_type = ua_info["type"]
+        platform_type = ua_info["type"].casefold()
 
         if cls.USE_REALISTIC_VIEWPORTS:
             vp = deepcopy(choice(cls.VIEWPORTS[platform_type]))
@@ -345,6 +345,8 @@ class PWKwargs:
                    "user_agent": ua_info["useragent"],
                    "viewport": vp,
                    "screen": vp,
+                   "is_mobile": platform_type in {"mobile", "tablet"},
+                   "has_touch": platform_type in {"mobile", "tablet"},
                    "ignore_https_errors": ignore_https_errors})
         return ck
 
