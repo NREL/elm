@@ -323,8 +323,10 @@ class PWKwargs:
 
         logger.trace("Loading browser context for browser type %r",
                      browser_type)
-        ua = UserAgent(browsers=[browser_type],
-                       platforms=["desktop", "mobile"]).random
+
+        platforms = (["desktop"] 
+                     if cls.USE_REALISTIC_VIEWPORTS else ["mobile", "desktop"])
+        ua = UserAgent(browsers=[browser_type], platforms=platforms).random
         logger.trace("User agent is:\n\t- %s", ua)
 
         vp = {"width": randint(800, 1400), "height": randint(800, 1400)}
