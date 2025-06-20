@@ -2,6 +2,7 @@
 """ELM Document retrieval from a website"""
 
 import asyncio
+import logging
 from math import inf as infinity
 
 from crawl4ai.async_crawler_strategy import AsyncPlaywrightCrawlerStrategy
@@ -22,6 +23,7 @@ from elm.web.file_loader import AsyncFileLoader
 from elm.web.document import HTMLDocument
 
 
+logger = logging.getLogger(__name__)
 BEST_ZONING_ORDINANCE_KEYWORDS = {"pdf": 1152,
                                   "zoning": 576,
                                   "ordinance": 288,
@@ -45,11 +47,7 @@ it. This is just the default strategy, and can/should be modified by
 users to better suit their own use cases.
 """
 
-_BLACKLIST_SUBSTRINGS = ["*mailto:*",
-                         "*tel:*",
-                         "*fax:*",
-                         "*javascript:*",
-                         "*login*",
+_BLACKLIST_SUBSTRINGS = ["*login*",
                          "*signup*",
                          "*sign up*",
                          r"*sign%20up*",
