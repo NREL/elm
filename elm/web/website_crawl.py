@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """ELM Document retrieval from a website"""
 
-import asyncio
 import logging
+from asyncio import PriorityQueue
 from math import inf as infinity
 
 from crawl4ai import AsyncWebCrawler, CrawlerRunConfig, BrowserConfig
@@ -60,6 +60,16 @@ ELM_URL_FILTER = URLPatternFilter(reverse=True, patterns=_BLACKLIST_SUBSTRINGS)
 """Filter used to exclude URLs that are not relevant to the search"""
 
 _SCORE_KEY = "website_link_relevance_score"
+
+
+class PeekablePriorityQueue(PriorityQueue):
+    """A priority queue that allows peeking at the next item"""
+
+    def peek(self):
+        """Peek at the next item in the queue without removing it"""
+        if self.empty():
+            return None
+        return self._queue[0]
 
 
 class ELMLinkScorer:
@@ -121,6 +131,20 @@ class ELMWebsiteCrawlingStrategy(BestFirstCrawlingStrategy):
 
     BATCH_SIZE = 10
     """Number of URLs to process in each batch"""
+
+    ONE_SCORE_AT_A_TIME = True
+    """Whether to batch process only links with the same score.
+
+    This works best if the score is an integer value, since scores are
+    compared directly using the `==` operator.
+    """
+
+    @classmethod
+    async def found_enough_docs(cls, out_docs):
+        """Check if enough documents have been found"""
+        doc_threshold = 5 if cls.ONE_SCORE_AT_A_TIME else 8
+        return len(out_docs) >= doc_threshold
+
 
     async def link_discovery(self, result, source_url, current_depth, visited,
                              next_links):
@@ -188,7 +212,7 @@ class ELMWebsiteCrawlingStrategy(BestFirstCrawlingStrategy):
                   don't allow discovering links from external URLs.
 
         """
-        queue = asyncio.PriorityQueue()
+        queue = PeekablePriorityQueue()
         await queue.put((0, 0, start_url, None, False))
         visited = set()
 
@@ -199,15 +223,24 @@ class ELMWebsiteCrawlingStrategy(BestFirstCrawlingStrategy):
                 break
 
             batch = []
+            curr_score = None
             for _ in range(self.BATCH_SIZE):
                 if queue.empty():
                     break
+                if self.ONE_SCORE_AT_A_TIME and curr_score is not None:
+                    item = queue.peek()
+                    if item[0] != curr_score:
+                        break
+
                 item = await queue.get()
                 score, depth, url, parent_url, is_external = item
                 if url in visited:
                     continue
                 visited.add(url)
                 batch.append(item)
+
+                if self.ONE_SCORE_AT_A_TIME and curr_score is None:
+                    curr_score = score
 
             if not batch:
                 continue
@@ -340,7 +373,8 @@ class ELMWebsiteCrawler:
 
         results = []
         out_docs = []
-        should_stop = termination_callback or _found_enough_docs
+        should_stop = (termination_callback
+                       or ELMWebsiteCrawlingStrategy.found_enough_docs)
         async with AsyncWebCrawler(config=self.browser_config) as crawler:
             async for result in await crawler.arun(base_url,
                                                    config=self.config):
@@ -391,11 +425,6 @@ class ELMWebsiteCrawler:
             return out_docs, results
 
         return out_docs
-
-
-async def _found_enough_docs(out_docs):
-    """Check if enough documents have been found"""
-    return len(out_docs) >= 7
 
 
 def _compute_avg_score(results):
