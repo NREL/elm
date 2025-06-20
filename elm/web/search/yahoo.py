@@ -20,8 +20,11 @@ class PlaywrightYahooLinkSearch(PlaywrightSearchEngineLinkSearch):
     _SE_NAME = "Yahoo"
     _SE_URL = "https://search.yahoo.com/"
     _SE_SR_TAG = '[referrerpolicy="origin"]'
+    _SE_QUERY_URL = (
+        "https://search.yahoo.com/search?p={}&fr=sfp&fr2=p%3As%2Cv%3Asfp"
+    )
 
-    async def _perform_search(self, page, search_query):
+    async def _perform_homepage_search(self, page, search_query):
         """Fill in search bar with user query and hit enter"""
         logger.trace("Finding search bar for query: %r", search_query)
         await page.locator('[id="yschsp"]').fill(search_query)

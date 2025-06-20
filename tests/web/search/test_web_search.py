@@ -51,14 +51,15 @@ async def test_search_query_with_timeout(monkeypatch, se):
     """Test web search query with a timeout"""
 
     se_class, kwargs = se
-    og_tps = se_class._perform_search
+    og_tps = se_class._perform_homepage_search
 
     async def _tps(obj, page, search_query):
         if search_query == "Python":
             raise PlaywrightTimeoutError("test")
         return await og_tps(obj, page, search_query)
 
-    monkeypatch.setattr(se_class, "_perform_search", _tps, raising=True)
+    monkeypatch.setattr(se_class, "_perform_homepage_search", _tps,
+                        raising=True)
 
     search_engine = se_class(chromium_sandbox=False, **kwargs)
     out = await search_engine.results('1. "Python Programming Language"',

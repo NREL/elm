@@ -20,8 +20,9 @@ class PlaywrightBingLinkSearch(PlaywrightSearchEngineLinkSearch):
     _SE_NAME = "Bing"
     _SE_URL = "https://www.bing.com/"
     _SE_SR_TAG = '[redirecturl]'
+    _SE_QUERY_URL = "https://www.bing.com/search?q={}&FORM=QBLH"
 
-    async def _perform_search(self, page, search_query):
+    async def _perform_homepage_search(self, page, search_query):
         """Fill in search bar with user query and hit enter"""
         logger.trace("Finding search bar for query: %r", search_query)
         await page.locator('[id="sb_form_q"]').fill(search_query)

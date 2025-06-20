@@ -25,8 +25,11 @@ class PlaywrightDuckDuckGoLinkSearch(PlaywrightSearchEngineLinkSearch):
     _SE_NAME = "DuckDuckGo"
     _SE_URL = "https://duckduckgo.com/"
     _SE_SR_TAG = '[data-testid="result-extras-url-link"]'
+    _SE_QUERY_URL = (
+        "https://duckduckgo.com/?q={}&kl=us-en&kc=-1&kz=-1&kaf=1&ia=web"
+    )
 
-    async def _perform_search(self, page, search_query):
+    async def _perform_homepage_search(self, page, search_query):
         """Fill in search bar with user query and hit enter"""
         logger.trace("Finding search bar for query: %r", search_query)
         await (page
