@@ -5,19 +5,12 @@ import asyncio
 import logging
 from math import inf as infinity
 
-from crawl4ai.async_crawler_strategy import AsyncPlaywrightCrawlerStrategy
+from crawl4ai import AsyncWebCrawler, CrawlerRunConfig, BrowserConfig
 from crawl4ai.utils import normalize_url_for_deep_crawl
-from crawl4ai import AsyncWebCrawler, CrawlerRunConfig
 from crawl4ai.content_scraping_strategy import LXMLWebScrapingStrategy
 from crawl4ai.deep_crawling import BestFirstCrawlingStrategy
-from crawl4ai.deep_crawling.filters import (
-    FilterChain,
-    DomainFilter,
-    URLPatternFilter,
-    ContentTypeFilter
-)
-from crawl4ai.async_configs import BrowserConfig
-from crawl4ai.deep_crawling.scorers import KeywordRelevanceScorer
+from crawl4ai.deep_crawling.filters import (FilterChain, URLPatternFilter,
+                                            ContentTypeFilter)
 
 from elm.web.file_loader import AsyncFileLoader
 from elm.web.document import HTMLDocument
@@ -65,6 +58,8 @@ _BLACKLIST_SUBSTRINGS = ["*login*",
 
 ELM_URL_FILTER = URLPatternFilter(reverse=True, patterns=_BLACKLIST_SUBSTRINGS)
 """Filter used to exclude URLs that are not relevant to the search"""
+
+_SCORE_KEY = "website_link_relevance_score"
 
 
 class ELMLinkScorer:
@@ -241,3 +236,163 @@ class ELMWebsiteCrawlingStrategy(BestFirstCrawlingStrategy):
                                      if self.url_scorer else 0)
                         await queue.put((new_score, new_depth, new_url,
                                          new_parent, is_external))
+
+
+class ELMWebsiteCrawler:
+    """Crawl a website for documents of interest"""
+
+    def __init__(self, validator, file_loader_kwargs=None,
+                 browser_config_kwargs=None, crawler_config_kwargs=None,
+                 extra_url_filters=None, include_external=False,
+                 url_scorer=None, max_pages=100):
+        """
+
+        Parameters
+        ----------
+        validator : callable
+            An async callable that takes a document instance (containing
+            the text from a PDF or a webpage) and returns a boolean
+            indicating whether the text passes the validation check.
+            This is used to determine whether or not to keep (i.e.
+            return) the document.
+        file_loader_kwargs : dict, optional
+            Additional keyword-value argument pairs to pass to the
+            :class:`~elm.web.file_loader.AsyncFileLoader` class.
+            By default, ``None``.
+        browser_config_kwargs : dict, optional
+            Additional keyword-value argument pairs to pass to the
+            :class:`crawl4ai.async_configs.BrowserConfig` class.
+            By default, ``None``.
+        crawler_config_kwargs : dict, optional
+            Additional keyword-value argument pairs to pass to the
+            :class:`crawl4ai.async_configs.CrawlerRunConfig` class.
+            By default, ``None``.
+        extra_url_filters : list, optional
+            Additional URL filters to apply during crawling. Each filter
+            must have a (non-async) ``apply`` method that takes a URL
+            and returns a boolean indicating whether the URL should be
+            included in the crawl. By default, ``None``.
+        include_external : bool, optional
+            Whether to include external links in the crawl.
+            By default, ``False``.
+        url_scorer : callable, optional
+            A URL scorer instance that takes a URL and returns a score.
+            Must have a (non-async) ``score`` method that takes a URL
+            and returns a numerical score. This is used to prioritize
+            URLs during crawling. The higher the score, the more
+            relevant the URL is considered to be for the purpose of
+            retrieving documents of interest. By default, ``None``.
+        max_pages : int, optional
+            Maximum number of pages to crawl. By default, ``100``.
+        """
+        self.validator = validator
+
+        flk = {"verify_ssl": False}
+        flk.update(file_loader_kwargs or {})
+        self.afl = AsyncFileLoader(**flk)
+
+        bck = {"headless": True, "verbose": False}
+        bck.update(browser_config_kwargs or {})
+        self.browser_config = BrowserConfig(**bck)
+
+        url_filters = [ELM_URL_FILTER,
+                       ContentTypeFilter(allowed_types=["text/html",
+                                                        "application/pdf"])]
+        url_filters += extra_url_filters or []
+        self.filter_chain = FilterChain(url_filters)
+
+        strategy_kwargs = {"max_depth": infinity,
+                           "include_external": include_external,
+                           "filter_chain": self.filter_chain,
+                           "url_scorer": url_scorer or ELMLinkScorer(),
+                           "max_pages": max_pages,
+                           "logger": logger}
+        self.crawl_strategy = ELMWebsiteCrawlingStrategy(**strategy_kwargs)
+
+        cck = {"deep_crawl_strategy": self.crawl_strategy,
+               "scraping_strategy": LXMLWebScrapingStrategy(),
+               "stream": True,
+               "verbose": False,
+               "pdf": False,
+               "log_console": False,
+               "exclude_social_media_domains": ["youtube.com"],
+               "exclude_social_media_links": True,
+               "semaphore_count": 1}
+        cck.update(crawler_config_kwargs or {})
+        self.config = CrawlerRunConfig(**cck)
+
+    async def run(self, base_url, termination_callback=None,
+                  return_c4ai_results=False):
+
+        results = []
+        out_docs = []
+        should_stop = termination_callback or _found_enough_docs
+        async with AsyncWebCrawler(config=self.browser_config) as crawler:
+            async for result in await crawler.arun(base_url,
+                                                   config=self.config):
+                results.append(result)
+                logger.trace("Crawled %s", result.url)
+                score = result.metadata.get("score", 0)
+                depth = result.metadata.get("depth", 0)
+                logger.trace("\t- Depth: %d | Score: %.2f", depth, score)
+                if result.markdown and len(md := result.markdown.strip()) > 3:
+                    doc = HTMLDocument([md])
+                    doc.attrs["source"] = result.url
+                    doc.attrs[_SCORE_KEY] = score
+                else:
+                    doc = await self.afl.fetch(result.url)
+                    doc.attrs[_SCORE_KEY] = score
+
+                if doc.empty:
+                    logger.trace("Empty document, skipping")
+                    continue
+
+                if await self.validator(doc):
+                    logger.trace("Document passed validation check")
+                    out_docs.append(doc)
+
+                if await should_stop(out_docs):
+                    break
+
+        logger.info("Crawled %d pages", len(results))
+        logger.info("Found %d potential documents", len(out_docs))
+        logger.debug("Average score: %.2f", _compute_avg_score(results))
+        logger.trace("Average score (normalized): %.2f",
+                     _compute_avg_score_normalized(
+                        results,
+                        self.crawl_strategy.url_scorer.keyword_points))
+
+        depth_counts = {}
+        for result in results:
+            depth = result.metadata.get("depth", 0)
+            depth_counts[depth] = depth_counts.get(depth, 0) + 1
+
+        logger.debug("Pages crawled by depth:")
+        for depth, count in sorted(depth_counts.items()):
+            logger.debug(f"  Depth {depth}: {count} pages")
+
+        if out_docs:
+            out_docs.sort(key=lambda x: -1 * x.attrs[_SCORE_KEY])
+
+        if return_c4ai_results:
+            return out_docs, results
+
+        return out_docs
+
+
+async def _found_enough_docs(out_docs):
+    """Check if enough documents have been found"""
+    return len(out_docs) >= 7
+
+
+def _compute_avg_score(results):
+    """Compute the average score of the crawled results"""
+    return sum(r.metadata.get('score', 0) for r in results) / len(results)
+
+
+def _compute_avg_score_normalized(results, keyword_points):
+    """Compute the normalized average score of the crawled results"""
+    normalizer = sum(keyword_points.values()) * 2
+    total_score  = sum(r.metadata.get('score', 0) / normalizer
+                       for r in results)
+    return total_score / len(results)
