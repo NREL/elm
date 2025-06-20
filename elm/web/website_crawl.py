@@ -141,7 +141,23 @@ class ELMWebsiteCrawlingStrategy(BestFirstCrawlingStrategy):
 
     @classmethod
     async def found_enough_docs(cls, out_docs):
-        """Check if enough documents have been found"""
+        """Check if enough documents have been found.
+
+        If :obj:`ELMWebsiteCrawlingStrategy.ONE_SCORE_AT_A_TIME` is
+        ``True``, this function returns ``True`` when 5 documents have
+        been found, otherwise it returns ``True`` when 8 documents
+        have been found.
+
+        Parameters
+        ----------
+        out_docs : list
+            List of documents found during the crawl.
+
+        Returns
+        -------
+        bool
+            Whether enough documents have been found to stop the crawl.
+        """
         doc_threshold = 5 if cls.ONE_SCORE_AT_A_TIME else 8
         return len(out_docs) >= doc_threshold
 
