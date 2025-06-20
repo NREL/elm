@@ -98,12 +98,12 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
     _SC = StealthConfig(navigator_user_agent=False)
     _EXCEPTION_TO_CATCH = PlaywrightTimeoutError
 
-    def __init__(self, use_homepage=False, **launch_kwargs):
+    def __init__(self, use_homepage=True, **launch_kwargs):
         """
 
         Parameters
         ----------
-        use_homepage : bool, default=False
+        use_homepage : bool, default=True
             If ``True``, the browser will be navigated to the search
             engine homepage and the query will be input into the search
             bar. If ``False``, the query will be embedded in the URL
