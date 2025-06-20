@@ -386,6 +386,43 @@ class ELMWebsiteCrawler:
 
     async def run(self, base_url, termination_callback=None,
                   on_result_hook=None, return_c4ai_results=False):
+        """Crawl a website for documents of interest
+
+        Parameters
+        ----------
+        base_url : str
+            The base URL to start crawling from.
+        termination_callback : callable, optional
+            An async callable that takes a list of documents and returns
+            a boolean indicating whether to stop crawling. If ``None``,
+            the :meth:`ELMWebsiteCrawlingStrategy.found_enough_docs` is
+            used, which simply terminates when roughly a handful of
+            documents have been found. By default, ``None``.
+        on_result_hook : callable, optional
+            An async callable that is called every time a result is
+            found during the crawl. This can be used to perform
+            additional processing on each result or to monitor the crawl
+            progress. The callable should accept a single argument,
+            which is the crawl result object. If ``None``, no additional
+            processing is done on the results. By default, ``None``.
+        return_c4ai_results : bool, optional
+            Whether to return the raw crawl4ai results along with the
+            documents. If ``True``, returns a tuple of (documents,
+            crawl4ai_results). If ``False``, returns only the documents.
+            By default, ``False``.
+
+        Returns
+        -------
+        out_docs
+            List of document instances that passed the validation
+            check. Each document contains the text from a PDF or a
+            webpage, and has an attribute `source` that contains the
+            URL of the document.
+        results : list, optional
+            List of crawl4ai results containing metadata about the
+            crawled pages. This is only returned if
+            `return_c4ai_results` is ``True``.
+        """
 
         results = []
         out_docs = []
