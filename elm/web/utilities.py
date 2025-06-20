@@ -363,7 +363,7 @@ class PWKwargs:
         platform_type = ua_info["type"].casefold()
 
         if cls.USE_REALISTIC_VIEWPORTS:
-            vp = deepcopy(choice(cls.VIEWPORTS[platform_type]))
+            vp = deepcopy(choice(cls._VIEWPORTS[platform_type]))
             dsf = vp.pop("device_scale_factor")
         else:
             vp = {"width": randint(800, 1400), "height": randint(800, 1400)}
