@@ -336,7 +336,7 @@ class ELMWebsiteCrawler:
         self.config = CrawlerRunConfig(**cck)
 
     async def run(self, base_url, termination_callback=None,
-                  return_c4ai_results=False):
+                  on_result_hook=None, return_c4ai_results=False):
 
         results = []
         out_docs = []
@@ -346,6 +346,9 @@ class ELMWebsiteCrawler:
                                                    config=self.config):
                 results.append(result)
                 logger.debug("Crawled %s", result.url)
+                if on_result_hook:
+                    await on_result_hook(result)
+
                 score = result.metadata.get("score", 0)
                 depth = result.metadata.get("depth", 0)
                 logger.trace("\t- Depth: %d | Score: %.2f", depth, score)
