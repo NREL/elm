@@ -357,10 +357,6 @@ class ELMWebsiteCrawler:
         logger.info("Crawled %d pages", len(results))
         logger.info("Found %d potential documents", len(out_docs))
         logger.debug("Average score: %.2f", _compute_avg_score(results))
-        logger.trace("Average score (normalized): %.2f",
-                     _compute_avg_score_normalized(
-                        results,
-                        self.crawl_strategy.url_scorer.keyword_points))
 
         depth_counts = {}
         for result in results:
