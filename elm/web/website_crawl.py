@@ -331,7 +331,7 @@ class ELMWebsiteCrawler:
             async for result in await crawler.arun(base_url,
                                                    config=self.config):
                 results.append(result)
-                logger.trace("Crawled %s", result.url)
+                logger.debug("Crawled %s", result.url)
                 score = result.metadata.get("score", 0)
                 depth = result.metadata.get("depth", 0)
                 logger.trace("\t- Depth: %d | Score: %.2f", depth, score)
@@ -344,11 +344,11 @@ class ELMWebsiteCrawler:
                     doc.attrs[_SCORE_KEY] = score
 
                 if doc.empty:
-                    logger.trace("Empty document, skipping")
+                    logger.debug("Empty document, skipping")
                     continue
 
                 if await self.validator(doc):
-                    logger.trace("Document passed validation check")
+                    logger.debug("Document passed validation check")
                     out_docs.append(doc)
 
                 if await should_stop(out_docs):
