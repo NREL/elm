@@ -78,7 +78,7 @@ class ELMLinkScorer:
         """
         self.keyword_points = keyword_points or BEST_ZONING_ORDINANCE_KEYWORDS
 
-    def score(self, link):
+    async def score(self, links):
         """Score a link based on its title text and URL.
 
         The score is calculated by summing the point values of the
@@ -88,20 +88,24 @@ class ELMLinkScorer:
 
         Parameters
         ----------
-        link : crawl4ai.Link
-            The link to be scored, which is expected to be a dictionary
-            containing at least the keys "text" and "href".
-            The "text" key should contain the link text, and the "href"
-            key should contain the URL.
+        links : list of dicts
+            A list of dictionaries representing links to be scored.
+            Each dictionary should contain at least the keys "text" and
+            "href". The "text" key should contain the link title text,
+            and the "href" key should contain the URL.
 
         Returns
         -------
-        int
-            Score for the link based on the presence of keywords
-            in the link text and URL.
+        links : list of dicts
+            The input list of links with an additional key "score" added
+            to each dictionary. Each "score" key contains the calculated
+            score for that link.
         """
-        return (self._assign_value(link.get("text", ""))
-                + self._assign_value(link.get("href", "")))
+        for link in links:
+            link["score"] = (self._assign_value(link.get("text", ""))
+                             + self._assign_value(link.get("href", "")))
+
+        return links
 
     def _assign_value(self, text):
         """Assign a score based on the presence of keywords in the text"""
@@ -119,7 +123,7 @@ class ELMWebsiteCrawlingStrategy(BestFirstCrawlingStrategy):
     """Number of URLs to process in each batch"""
 
     async def link_discovery(self, result, source_url, current_depth, visited,
-                             next_links, depths):
+                             next_links):
         """
         Extract links from the crawl result, validate them, and append new
         URLs (with their parent references) to next_links.
@@ -139,14 +143,21 @@ class ELMWebsiteCrawlingStrategy(BestFirstCrawlingStrategy):
                              "stopping link discovery")
             return
 
-        links = [(link, False) for link in result.links.get("internal", [])]
+        links = []
+        for link in result.links.get("internal", []):
+            link["is_external"] = False
+            links.append(link)
         if self.include_external:
-            links += [(link, True)
-                      for link in result.links.get("external", [])]
+            for link in result.links.get("external", []):
+                link["is_external"] = True
+                links.append(link)
 
         valid_links = []
-        for link, is_external in links:
+        for link in links:
             url = link.get("href")
+            if not url:
+                self.logger.debug("Link without href, skipping")
+                continue
             base_url = normalize_url_for_deep_crawl(url, source_url)
             if base_url in visited:
                 continue
@@ -154,12 +165,12 @@ class ELMWebsiteCrawlingStrategy(BestFirstCrawlingStrategy):
                 self.stats.urls_skipped += 1
                 continue
 
-            valid_links.append((link, is_external))
+            valid_links.append(link)
 
-        for link, is_external in valid_links:
-            url = link.get("href")
-            depths[url] = new_depth
-            next_links.append((link, url, source_url, is_external))
+        for link in valid_links:
+            link["source_url"] = source_url
+            link["depth"] = new_depth
+            next_links.append(link)
 
     async def _arun_best_first(self, start_url, crawler, config):
         """
@@ -180,7 +191,6 @@ class ELMWebsiteCrawlingStrategy(BestFirstCrawlingStrategy):
         queue = asyncio.PriorityQueue()
         await queue.put((0, 0, start_url, None, False))
         visited = set()
-        depths = {start_url: 0}
 
         while not queue.empty() and not self._cancel_event.is_set():
             if self._pages_crawled >= self.max_pages:
@@ -228,14 +238,17 @@ class ELMWebsiteCrawlingStrategy(BestFirstCrawlingStrategy):
                 if result.success and not is_external:
                     new_links = []
                     await self.link_discovery(result, result_url, depth,
-                                              visited, new_links, depths)
+                                              visited, new_links)
 
-                    for link, new_url, new_parent, is_external in new_links:
-                        new_depth = depths.get(new_url, depth + 1)
-                        new_score = (-1 * self.url_scorer.score(link)
-                                     if self.url_scorer else 0)
-                        await queue.put((new_score, new_depth, new_url,
-                                         new_parent, is_external))
+                    if self.url_scorer:
+                        new_links = await self.url_scorer(new_links)
+
+                    for link in new_links:
+                        await queue.put((-1 * link.get("score", 0),
+                                         link.get("depth", depth + 1),
+                                         link.get("href"),
+                                         link.get("source_url"),
+                                         link.get("is_external", False)))
 
 
 class ELMWebsiteCrawler:
@@ -276,12 +289,13 @@ class ELMWebsiteCrawler:
             Whether to include external links in the crawl.
             By default, ``False``.
         url_scorer : callable, optional
-            A URL scorer instance that takes a URL and returns a score.
-            Must have a (non-async) ``score`` method that takes a URL
-            and returns a numerical score. This is used to prioritize
-            URLs during crawling. The higher the score, the more
-            relevant the URL is considered to be for the purpose of
-            retrieving documents of interest. By default, ``None``.
+            An async callable that takes a list of dictionaries
+            containing URL information and assigns each dictionary a
+            `score` key representing the score for that URL. The input
+            URL dictionaries will each have at least one key: "href".
+            This key will contain the URL of the link. The dictionary
+            may also have other attributes such as "text", which
+            contains the link title text. By default, ``None``.
         max_pages : int, optional
             Maximum number of pages to crawl. By default, ``100``.
         """
@@ -384,11 +398,3 @@ async def _found_enough_docs(out_docs):
 def _compute_avg_score(results):
     """Compute the average score of the crawled results"""
     return sum(r.metadata.get('score', 0) for r in results) / len(results)
-
-
-def _compute_avg_score_normalized(results, keyword_points):
-    """Compute the normalized average score of the crawled results"""
-    normalizer = sum(keyword_points.values()) * 2
-    total_score  = sum(r.metadata.get('score', 0) / normalizer
-                       for r in results)
-    return total_score / len(results)
