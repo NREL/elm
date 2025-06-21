@@ -30,7 +30,8 @@ DEFAULT_HEADERS = {
     "Upgrade-Insecure-Requests": "1",
 }
 """Default HTML header template"""
-_BT_RENAME = {"chromium": "Chrome"}
+_BT_RENAME = {"chromium": "Chrome", "firefox": "Firefox",
+              "webkit": "Safari"}
 # block pages by resource type. e.g. image, stylesheet
 BLOCK_RESOURCE_TYPES = [
     "beacon",
