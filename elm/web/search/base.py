@@ -163,6 +163,9 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
     async def _close_browser(self):
         """Close browser instance and reset internal attributes"""
         logger.trace("Closing browser...")
+        if self._browser is None:
+            return
+
         await self._browser.close()
         self._browser = None
 
