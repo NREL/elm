@@ -93,8 +93,22 @@ class SearchEngineLinkSearch(ABC):
                      min_width, max_width, min_height, max_height)
 
         await page.mouse.move(random.randint(min_width, max_width),
-                              random.randint(min_height, max_height))
+                              random.randint(min_height, max_height),
+                              steps=10)
         await asyncio.sleep(random.uniform(1.5, 3.5))
+
+    async def _move_and_click(self, page, input_el):
+        """Move mouse to an element and click on it"""
+        box = await input_el.bounding_box()
+        if box is None:
+            return await input_el.click()
+
+        x = box["x"] + int(box["width"] / random.uniform(1.1, 10))
+        y = box["y"] + int(box["height"] / random.uniform(1.1, 10))
+
+        await page.mouse.move(x, y, steps=random.randint(5, 30))
+        await asyncio.sleep(random.uniform(0.2, 0.6))
+        return await page.mouse.click(x, y)
 
     @abstractmethod
     async def _search(self, query, num_results=10):
