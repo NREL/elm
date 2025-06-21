@@ -6,6 +6,7 @@ import asyncio
 import logging
 from urllib.parse import quote
 from abc import ABC, abstractmethod
+from contextlib import asynccontextmanager
 
 from rebrowser_playwright.async_api import (
     async_playwright,
@@ -169,16 +170,23 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
         await self._browser.close()
         self._browser = None
 
+    @asynccontextmanager
+    async def _browser_page(self):
+        """Get page to use for search"""
+        page_kwargs = {"browser": self._browser, "stealth_config": self._SC,
+                       "ignore_https_errors": True,  # no sensitive inputs
+                       "timeout": self.PAGE_LOAD_TIMEOUT,
+                       "use_scrapling_stealth": self.use_scrapling_stealth}
+
+        async with pw_page(**page_kwargs) as page:
+            yield page
+
     async def _search(self, query, num_results=10):
         """Search web for links related to a query"""
         logger.debug("Searching %s: %r", self._SE_NAME, query)
         num_results = min(num_results, self.MAX_RESULTS_CONSIDERED_PER_PAGE)
 
-        page_kwargs = {"browser": self._browser, "stealth_config": self._SC,
-                       "ignore_https_errors": True,  # no sensitive inputs
-                       "timeout": self.PAGE_LOAD_TIMEOUT,
-                       "use_scrapling_stealth": self.use_scrapling_stealth}
-        async with pw_page(**page_kwargs) as page:
+        async with self._browser_page() as page:
             if self.use_homepage:
                 logger.trace("Navigating to %s homepage", self._SE_NAME)
                 await _navigate_to_se_url(page, se_url=self._SE_URL,
