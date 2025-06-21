@@ -14,8 +14,7 @@ import elm.web.search.duckduckgo
 import elm.web.search.bing
 import elm.web.search.yahoo
 
-SE_TO_TEST = [(elm.web.search.duckduckgo.PlaywrightDuckDuckGoLinkSearch, {}),
-              (elm.web.search.bing.PlaywrightBingLinkSearch, {}),
+SE_TO_TEST = [(elm.web.search.bing.PlaywrightBingLinkSearch, {}),
               (elm.web.search.yahoo.PlaywrightYahooLinkSearch, {})]
 if CSE_ID := os.getenv("GOOGLE_CSE_ID"):
     SE_TO_TEST.append((elm.web.search.google.PlaywrightGoogleCSELinkSearch,
@@ -23,7 +22,9 @@ if CSE_ID := os.getenv("GOOGLE_CSE_ID"):
 
 if os.getenv("GITHUB_ACTIONS") != "true":
     # Google link searches fail in GHA for some reason (but not locally)
-    SE_TO_TEST.append((elm.web.search.google.PlaywrightGoogleLinkSearch, {}))
+    SE_TO_TEST += [
+        (elm.web.search.google.PlaywrightGoogleLinkSearch, {}),
+        (elm.web.search.duckduckgo.PlaywrightDuckDuckGoLinkSearch, {})]
 
 
 @flaky(max_runs=3, min_passes=1)
