@@ -98,7 +98,8 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
     _SC = StealthConfig(navigator_user_agent=False)
     _EXCEPTION_TO_CATCH = PlaywrightTimeoutError
 
-    def __init__(self, use_homepage=True, **launch_kwargs):
+    def __init__(self, use_homepage=True, use_scrapling_stealth=False,
+                 **launch_kwargs):
         """
 
         Parameters
@@ -109,6 +110,10 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
             bar. If ``False``, the query will be embedded in the URL
             and the browser will navigate directly to the filled-out
             URL. By default, ``False``.
+        use_scrapling_stealth : bool, default=False
+            Option to use scrapling stealth scripts instead of
+            tf-playwright-stealth. If set to ``True``, the `_SC` class
+            attribute will be ignored. By default, ``False``.
         **launch_kwargs
             Keyword arguments to be passed to
             `playwright.chromium.launch`. For example, you can pass
@@ -116,6 +121,7 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
             search.
         """
         self.use_homepage = use_homepage
+        self.use_scrapling_stealth = use_scrapling_stealth
         self.launch_kwargs = PWKwargs.launch_kwargs()
         self.launch_kwargs.update(launch_kwargs)
         self._browser = None
@@ -137,7 +143,8 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
 
         page_kwargs = {"browser": self._browser, "stealth_config": self._SC,
                        "ignore_https_errors": True,  # no sensitive inputs
-                       "timeout": self.PAGE_LOAD_TIMEOUT}
+                       "timeout": self.PAGE_LOAD_TIMEOUT,
+                       "use_scrapling_stealth": self.use_scrapling_stealth}
         async with pw_page(**page_kwargs) as page:
             if self.use_homepage:
                 logger.trace("Navigating to %s homepage", self._SE_NAME)

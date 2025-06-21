@@ -174,7 +174,8 @@ def write_url_doc_to_file(doc, file_content, out_dir, make_name_unique=False):
 
 @asynccontextmanager
 async def pw_page(browser, intercept_routes=False, stealth_config=None,
-                  ignore_https_errors=False, timeout=30000):
+                  ignore_https_errors=False, timeout=30000,
+                  use_scrapling_stealth=False):
     """Create new page from playwright browser context
 
     Parameters
@@ -198,6 +199,10 @@ async def pw_page(browser, intercept_routes=False, stealth_config=None,
     timeout : int, default=30,000
         Default navigation and page load timeout (in milliseconds) to
         assign to page instance. By default, ``30_000``.
+    use_scrapling_stealth : bool, default=False
+        Option to use scrapling stealth scripts instead of
+        tf-playwright-stealth. If set to ``True``, the `stealth_config`
+        argument will be ignored. By default, ``False``.
 
     Yields
     ------
@@ -217,10 +222,14 @@ async def pw_page(browser, intercept_routes=False, stealth_config=None,
         page.set_default_timeout(timeout)
 
         await page.set_extra_http_headers(DEFAULT_HEADERS)
-        for script in PWKwargs.stealth_scripts():
-            await page.add_init_script(path=script)
+        if use_scrapling_stealth:
+            logger.trace("Using scrapling stealth scripts")
+            for script in PWKwargs.stealth_scripts():
+                await page.add_init_script(path=script)
+        else:
+            logger.trace("Using tf-playwright-stealth stealth scripts")
+            await stealth_async(page, stealth_config)
 
-        await stealth_async(page, stealth_config)
         if intercept_routes:
             logger.trace("Intercepting requests and aborting blocked ones")
             await page.route("**/*", _intercept_route)

@@ -18,9 +18,9 @@ from elm.web.utilities import pw_page, PWKwargs
 logger = logging.getLogger(__name__)
 
 
-async def load_html_with_pw(  # pragma: no cover
-    url, browser_semaphore=None, timeout=90_000, **pw_launch_kwargs
-):
+async def load_html_with_pw(url, browser_semaphore=None, # pragma: no cover
+                            timeout=90_000, use_scrapling_stealth=False,
+                            **pw_launch_kwargs):
     """Extract HTML from URL using Playwright.
 
     Parameters
@@ -35,6 +35,9 @@ async def load_html_with_pw(  # pragma: no cover
         Maximum time to wait for page loading state time in
         milliseconds. Pass `0` to disable timeout.
         By default, ``90,000``.
+    use_scrapling_stealth : bool, default=False
+        Option to use scrapling stealth scripts instead of
+        tf-playwright-stealth. By default, ``False``.
     **pw_launch_kwargs
         Keyword-value argument pairs to pass to
         :meth:`async_playwright.chromium.launch`.
@@ -46,15 +49,17 @@ async def load_html_with_pw(  # pragma: no cover
     """
     try:
         text = await _load_html(url, browser_semaphore=browser_semaphore,
-                                timeout=timeout, **pw_launch_kwargs)
+                                timeout=timeout,
+                                use_scrapling_stealth=use_scrapling_stealth,
+                                **pw_launch_kwargs)
     except (PlaywrightError, PlaywrightTimeoutError):
         text = ""
     return text
 
 
-async def _load_html(  # pragma: no cover
-    url, browser_semaphore=None, timeout=90_000, **pw_launch_kwargs
-):
+async def _load_html( url, browser_semaphore=None, # pragma: no cover
+                     timeout=90_000, use_scrapling_stealth=False,
+                     **pw_launch_kwargs):
     """Load html using playwright"""
     logger.trace("`_load_html` pw_launch_kwargs=%r", pw_launch_kwargs)
     logger.trace("browser_semaphore=%r", browser_semaphore)
@@ -71,7 +76,8 @@ async def _load_html(  # pragma: no cover
                      browser_semaphore)
         browser = await p.chromium.launch(**launch_kwargs)
         page_kwargs = {"browser": browser, "intercept_routes": True,
-                       "timeout": timeout, "ignore_https_errors": True}
+                       "timeout": timeout, "ignore_https_errors": True,
+                       "use_scrapling_stealth": use_scrapling_stealth}
         async with pw_page(**page_kwargs) as page:
             logger.trace("Navigating to: %r", url)
             await page.goto(url)
