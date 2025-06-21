@@ -28,7 +28,6 @@ async def test_basic_website_crawl():
                                 url_scorer=ELMLinkScorer(kw).score)
 
     website = choice(["https://www.renocountyks.gov",
-                      "https://decaturcounty.in.gov",
                       "https://www.blackhawkcounty.iowa.gov",
                       "https://www.elpasoco.com"])
     out_docs = await crawler.run(website,
