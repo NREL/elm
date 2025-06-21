@@ -1,6 +1,7 @@
 openai>=1.1.0
 aiohttp
 beautifulsoup4
+camoufox
 click
 crawl4ai
 duckduckgo-search
