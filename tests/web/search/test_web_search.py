@@ -28,8 +28,8 @@ if os.getenv("GITHUB_ACTIONS") != "true":
 
 @flaky(max_runs=3, min_passes=1)
 @pytest.mark.parametrize("queries", [['1. "Python Programming Language"'],
-                                     ['1. "Python Programming Language"',
-                                      "Python"],])
+                                     ["best way to learn Python",
+                                      "how can I learn Python"],])
 @pytest.mark.parametrize("se", SE_TO_TEST)
 @pytest.mark.asyncio
 async def test_basic_search_query(queries, se):
@@ -62,8 +62,8 @@ async def test_search_query_with_timeout(monkeypatch, se):
                         raising=True)
 
     search_engine = se_class(chromium_sandbox=False, **kwargs)
-    out = await search_engine.results('1. "Python Programming Language"',
-                                      "Python", num_results=3)
+    out = await search_engine.results("best way to learn Python",
+                                      "how can I learn Python", num_results=3)
 
     assert len(out) == 2
     assert 0 < len(out[0]) <= 3
@@ -72,8 +72,8 @@ async def test_search_query_with_timeout(monkeypatch, se):
 
 
 @pytest.mark.parametrize("queries", [['1. "Python Programming Language"'],
-                                     ['1. "Python Programming Language"',
-                                      "Python"],])
+                                     ["best way to learn Python",
+                                      "how can I learn Python"],])
 @pytest.mark.parametrize("num_results_multiplier", [0, 1, 5])
 @pytest.mark.asyncio
 async def test_search_query_num_results(queries, num_results_multiplier):
