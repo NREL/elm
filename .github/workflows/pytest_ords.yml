@@ -46,7 +46,7 @@ jobs:
         python -m pip install boto3
         python -m pip install flaky
         python -m pip install .
-        rebrowser_playwright install --with-deps
+        playwright install --with-deps
     - name: Run pytest and Generate coverage report
       shell: bash -l {0}
       run: |

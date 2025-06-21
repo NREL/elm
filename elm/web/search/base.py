@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 """ELM Web Scraping - Base class for search engine search"""
 import os
+import random
 import asyncio
 import logging
+from urllib.parse import quote
 from abc import ABC, abstractmethod
+from contextlib import asynccontextmanager
 
 from rebrowser_playwright.async_api import (
     async_playwright,
@@ -79,6 +82,35 @@ class SearchEngineLinkSearch(ABC):
             logger.exception("Could not complete search for query=%r", query)
             return []
 
+    async def _move_mouse(self, page):
+        """Simulate mouse movement"""
+        logger.trace("Moving mouse")
+        vp = page.viewport_size or {}
+        logger.trace("VP: %r", vp)
+        width, height = vp.get('width', 300), vp.get('height', 300)
+        min_width, max_width = int(width * 0.1), int(width * 0.9)
+        min_height, max_height = int(height * 0.1), int(height * 0.9)
+        logger.trace("Moving mouse to random position within: %d-%d, %d-%d",
+                     min_width, max_width, min_height, max_height)
+
+        await page.mouse.move(random.randint(min_width, max_width),
+                              random.randint(min_height, max_height),
+                              steps=10)
+        await asyncio.sleep(random.uniform(1.5, 3.5))
+
+    async def _move_and_click(self, page, input_el):
+        """Move mouse to an element and click on it"""
+        box = await input_el.bounding_box()
+        if box is None:
+            return await input_el.click()
+
+        x = box["x"] + int(box["width"] / random.uniform(1.1, 10))
+        y = box["y"] + int(box["height"] / random.uniform(1.1, 10))
+
+        await page.mouse.move(x, y, steps=random.randint(5, 30))
+        await asyncio.sleep(random.uniform(0.2, 0.6))
+        return await page.mouse.click(x, y)
+
     @abstractmethod
     async def _search(self, query, num_results=10):
         """Search web for links related to a query"""
@@ -97,17 +129,30 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
     _SC = StealthConfig(navigator_user_agent=False)
     _EXCEPTION_TO_CATCH = PlaywrightTimeoutError
 
-    def __init__(self, **launch_kwargs):
+    def __init__(self, use_homepage=True, use_scrapling_stealth=False,
+                 **launch_kwargs):
         """
 
         Parameters
         ----------
+        use_homepage : bool, default=True
+            If ``True``, the browser will be navigated to the search
+            engine homepage and the query will be input into the search
+            bar. If ``False``, the query will be embedded in the URL
+            and the browser will navigate directly to the filled-out
+            URL. By default, ``False``.
+        use_scrapling_stealth : bool, default=False
+            Option to use scrapling stealth scripts instead of
+            tf-playwright-stealth. If set to ``True``, the `_SC` class
+            attribute will be ignored. By default, ``False``.
         **launch_kwargs
             Keyword arguments to be passed to
             `playwright.chromium.launch`. For example, you can pass
             ``headless=False, slow_mo=50`` for a visualization of the
             search.
         """
+        self.use_homepage = use_homepage
+        self.use_scrapling_stealth = use_scrapling_stealth
         self.launch_kwargs = PWKwargs.launch_kwargs()
         self.launch_kwargs.update(launch_kwargs)
         self._browser = None
@@ -119,23 +164,41 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
     async def _close_browser(self):
         """Close browser instance and reset internal attributes"""
         logger.trace("Closing browser...")
+        if self._browser is None:
+            return
+
         await self._browser.close()
         self._browser = None
+
+    @asynccontextmanager
+    async def _browser_page(self):
+        """Get page to use for search"""
+        page_kwargs = {"browser": self._browser, "stealth_config": self._SC,
+                       "ignore_https_errors": True,  # no sensitive inputs
+                       "timeout": self.PAGE_LOAD_TIMEOUT,
+                       "use_scrapling_stealth": self.use_scrapling_stealth}
+
+        async with pw_page(**page_kwargs) as page:
+            yield page
 
     async def _search(self, query, num_results=10):
         """Search web for links related to a query"""
         logger.debug("Searching %s: %r", self._SE_NAME, query)
         num_results = min(num_results, self.MAX_RESULTS_CONSIDERED_PER_PAGE)
 
-        page_kwargs = {"browser": self._browser, "stealth_config": self._SC,
-                       "ignore_https_errors": True,  # no sensitive inputs
-                       "timeout": self.PAGE_LOAD_TIMEOUT}
-        async with pw_page(**page_kwargs) as page:
-            await _navigate_to_search_engine(page, se_url=self._SE_URL,
-                                             timeout=self.PAGE_LOAD_TIMEOUT)
-            logger.trace("Performing %s search for query: %r", self._SE_NAME,
-                         query)
-            await self._perform_search(page, query)
+        async with self._browser_page() as page:
+            if self.use_homepage:
+                logger.trace("Navigating to %s homepage", self._SE_NAME)
+                await _navigate_to_se_url(page, se_url=self._SE_URL,
+                                          timeout=self.PAGE_LOAD_TIMEOUT)
+                logger.trace("Performing %s search for query: %r",
+                             self._SE_NAME, query)
+                await self._perform_homepage_search(page, query)
+            else:
+                url = self._SE_QUERY_URL.format(quote(query))
+                logger.trace("Submitting URL: %r", url)
+                await _navigate_to_se_url(page, se_url=url,
+                                          timeout=self.PAGE_LOAD_TIMEOUT)
             logger.trace("Extracting links for query: %r", query)
             return await self._extract_links(page, num_results, query)
 
@@ -194,9 +257,15 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
         """str: Search engine search results tag"""
         raise NotImplementedError
 
+    @property
     @abstractmethod
-    async def _perform_search(self, page, search_query):
-        """Search query using search engine"""
+    def _SE_QUERY_URL(self):
+        """str: Search engine query URL template"""
+        raise NotImplementedError
+
+    @abstractmethod
+    async def _perform_homepage_search(self, page, search_query):
+        """Search query using search engine homepage"""
         raise NotImplementedError
 
 
@@ -219,8 +288,8 @@ class APISearchEngineLinkSearch(SearchEngineLinkSearch):
         self.api_key = api_key or os.environ.get(self.API_KEY_VAR or "")
 
 
-async def _navigate_to_search_engine(page, se_url, timeout=90_000):
-    """Navigate to search engine domain"""
+async def _navigate_to_se_url(page, se_url, timeout=90_000):
+    """Navigate to search engine url"""
     await page.goto(se_url)
     logger.trace("Waiting for load")
     await page.wait_for_load_state("networkidle", timeout=timeout)

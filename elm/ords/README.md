@@ -23,7 +23,7 @@ At this point, you can install ELM per the [front-page README](https://github.co
 After ELM installs successfully, you must instantiate the playwright module, which is used for web scraping.
 To do so, simply run:
 
-    $ rebrowser_playwright install
+    $ playwright install
 
 Now you are ready to run ordinance retrieval and extraction. See the [example](https://github.com/NREL/elm/blob/main/examples/ordinance_gpt/README.rst) to get started. If you get additional import errors, just install additional packages as necessary, e.g.:
 

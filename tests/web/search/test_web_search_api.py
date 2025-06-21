@@ -43,6 +43,8 @@ def test_no_api_key_var():
     assert MockAPISearchEngine().api_key is None
 
 
+@pytest.mark.skipif(os.getenv("GITHUB_ACTIONS") == "true",
+                    reason="Fails in GHA due to rate limiting")
 @pytest.mark.parametrize("queries", [['1. "NREL elm"'],
                                      ['1. "NREL elm"', "NREL reV"],])
 @pytest.mark.parametrize("se", SE_API_TO_TEST)
