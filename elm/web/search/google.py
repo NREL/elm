@@ -2,6 +2,8 @@
 """ELM Web Scraping - Google search."""
 import os
 import json
+import random
+import asyncio
 import logging
 import requests
 
@@ -49,30 +51,42 @@ class PlaywrightGoogleLinkSearch(PlaywrightSearchEngineLinkSearch):
 
     async def _perform_homepage_search(self, page, search_query):
         """Fill in search bar with user query and hit enter"""
-        logger.trace("Finding search bar for query: %r", search_query)
+        await self._move_mouse(page)
+
+        logger.trace("Clicking on search bar for query: %r", search_query)
+        await self._click_on_search_bar(page)
+
+        logger.trace("Filling in search bar for query: %r", search_query)
         await self._fill_in_search_bar(page, search_query)
+
         logger.trace("Hitting enter for query: %r", search_query)
         await page.keyboard.press('Enter')
 
-    async def _fill_in_search_bar(self, page, search_query):
-        """Attempt to find and fill the search bar several ways"""
+    async def _click_on_search_bar(self, page):
+        """Find the search bar and click it"""
         try:
-            return await (page
-                          .get_by_label("Search", exact=True)
-                          .fill(search_query))
+            return await page.get_by_label("Search", exact=True).click()
         except PlaywrightTimeoutError:
             pass
 
         search_bar = page.locator('[name="q"]')
         try:
-            await search_bar.clear()
-            return await search_bar.fill(search_query)
+            await search_bar.click()
+            return await search_bar.clear()
         except PlaywrightTimeoutError:
             pass
 
         search_bar = page.locator('[autofocus]')
-        await search_bar.clear()
-        return await search_bar.fill(search_query)
+        await search_bar.click()
+        return await search_bar.clear()
+
+    async def _fill_in_search_bar(self, page, search_query):
+        """Attempt to find and fill the search bar several ways"""
+        await asyncio.sleep(random.uniform(0.5, 1.5))
+
+        logger.trace("Typing in query: %r", search_query)
+        await page.keyboard.type(search_query, delay=random.randint(80, 150))
+        return await asyncio.sleep(random.uniform(0.5, 1.5))
 
 
 class PlaywrightGoogleCSELinkSearch(PlaywrightSearchEngineLinkSearch):
