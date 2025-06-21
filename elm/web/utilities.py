@@ -11,7 +11,7 @@ from contextlib import asynccontextmanager
 
 from slugify import slugify
 from fake_useragent import UserAgent
-from playwright_stealth import Stealth
+from playwright_stealth import stealth_async
 from scrapling.engines import PlaywrightEngine
 
 from elm.web.document import PDFDocument
@@ -185,9 +185,9 @@ async def pw_page(browser, intercept_routes=False, stealth_config=None,
         Option to intercept all requests and abort blocked ones.
         Be default, ``False``.
     stealth_config : :class:`playwright_stealth.Stealth`, optional
-        Optional playwright-stealth Stealth configuration object
-        instance. By default, ``None``, which uses all the default
-        stealth options.
+        Optional tf-playwright-stealth StealthConfig configuration
+        object instance. By default, ``None``, which uses all the
+        default stealth options.
     ignore_https_errors : bool, default=False
         Option to ignore https errors (i.e. SSL cert errors). This is
         not generally safe to do - you are susceptible to MITM attacks.
@@ -209,9 +209,6 @@ async def pw_page(browser, intercept_routes=False, stealth_config=None,
                                  ignore_https_errors=ignore_https_errors)
 
     context = await browser.new_context(**ck)
-    if stealth_config is None:
-        stealth_config = Stealth()
-    await stealth_config.apply_stealth_async(context)
 
     try:
         logger.trace("Loading browser page")
@@ -223,6 +220,7 @@ async def pw_page(browser, intercept_routes=False, stealth_config=None,
         for script in PWKwargs.stealth_scripts():
             await page.add_init_script(path=script)
 
+        await stealth_async(page, stealth_config)
         if intercept_routes:
             logger.trace("Intercepting requests and aborting blocked ones")
             await page.route("**/*", _intercept_route)

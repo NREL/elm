@@ -10,7 +10,7 @@ from rebrowser_playwright.async_api import (
     async_playwright,
     TimeoutError as PlaywrightTimeoutError,
 )
-from playwright_stealth import Stealth
+from playwright_stealth import StealthConfig
 
 from elm.web.utilities import PWKwargs, clean_search_query, pw_page
 
@@ -95,7 +95,7 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
     PAGE_LOAD_TIMEOUT = 60_000
     """Default page load timeout value in milliseconds"""
 
-    _SC = Stealth(navigator_user_agent=False)
+    _SC = StealthConfig(navigator_user_agent=False)
     _EXCEPTION_TO_CATCH = PlaywrightTimeoutError
 
     def __init__(self, use_homepage=True, **launch_kwargs):
