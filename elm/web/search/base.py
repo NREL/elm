@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """ELM Web Scraping - Base class for search engine search"""
 import os
+import random
 import asyncio
 import logging
 from urllib.parse import quote
@@ -79,6 +80,21 @@ class SearchEngineLinkSearch(ABC):
         except self._EXCEPTION_TO_CATCH:
             logger.exception("Could not complete search for query=%r", query)
             return []
+
+    async def _move_mouse(self, page):
+        """Simulate mouse movement"""
+        logger.trace("Moving mouse")
+        vp = page.viewport_size or {}
+        logger.trace("VP: %r", vp)
+        width, height = vp.get('width', 300), vp.get('height', 300)
+        min_width, max_width = int(width * 0.1), int(width * 0.9)
+        min_height, max_height = int(height * 0.1), int(height * 0.9)
+        logger.trace("Moving mouse to random position within: %d-%d, %d-%d",
+                     min_width, max_width, min_height, max_height)
+
+        await page.mouse.move(random.randint(min_width, max_width),
+                              random.randint(min_height, max_height))
+        await asyncio.sleep(random.uniform(1.5, 3.5))
 
     @abstractmethod
     async def _search(self, query, num_results=10):
