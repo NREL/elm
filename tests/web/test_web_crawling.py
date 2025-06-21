@@ -27,7 +27,7 @@ async def test_basic_website_crawl():
     crawler = ELMWebsiteCrawler(validator=validation,
                                 url_scorer=ELMLinkScorer(kw).score)
 
-    out_docs = await crawler.run("https://www.renocountyks.gov",
+    out_docs = await crawler.run("https://www.elpasoco.com",
                                  termination_callback=found_enough_test_docs)
     assert out_docs
 
