@@ -31,7 +31,8 @@ class PlaywrightYahooLinkSearch(PlaywrightSearchEngineLinkSearch):
         await self._move_mouse(page)
 
         logger.trace("Clicking on search bar")
-        await page.locator('[id="yschsp"]').click()
+        search_bar = page.locator('[id="yschsp"]')
+        await self._move_and_click(page, search_bar)
         await asyncio.sleep(random.uniform(0.5, 1.5))
 
         logger.trace("Typing in query: %r", search_query)

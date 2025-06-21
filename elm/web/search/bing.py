@@ -29,7 +29,8 @@ class PlaywrightBingLinkSearch(PlaywrightSearchEngineLinkSearch):
         await self._move_mouse(page)
 
         logger.trace("Finding search bar for query: %r", search_query)
-        await page.locator('[id="sb_form_q"]').click()
+        search_bar = page.locator('[id="sb_form_q"]')
+        await self._move_and_click(page, search_bar)
         await asyncio.sleep(random.uniform(0.5, 1.5))
 
         logger.trace("Typing in query: %r", search_query)
