@@ -62,8 +62,8 @@ async def test_search_query_with_timeout(monkeypatch, se):
                         raising=True)
 
     search_engine = se_class(chromium_sandbox=False, **kwargs)
-    out = await search_engine.results("best way to learn Python",
-                                      "how can I learn Python", num_results=3)
+    out = await search_engine.results('1. "Python Programming Language"',
+                                      "Python", num_results=3)
 
     assert len(out) == 2
     assert 0 < len(out[0]) <= 3
