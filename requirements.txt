@@ -15,7 +15,7 @@ nrel-rex
 nltk
 numpy
 pandas
-playwright-stealth<2
+playwright-stealth>=2
 PyPDF2
 python-slugify
 rebrowser-playwright
