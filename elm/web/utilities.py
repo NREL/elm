@@ -383,7 +383,6 @@ class PWKwargs:
                    "ignore_https_errors": ignore_https_errors})
         return ck
 
-
     @classmethod
     def stealth_scripts(cls):
         """iterator: Iterator of scrapling scripts to use for stealth"""
