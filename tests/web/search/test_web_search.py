@@ -79,7 +79,7 @@ async def test_search_query_with_timeout(monkeypatch, se):
 async def test_search_query_num_results(queries, num_results_multiplier):
     """Test basic web search query returns correct number of links"""
 
-    search_engine = elm.web.search.duckduckgo.PlaywrightDuckDuckGoLinkSearch(
+    search_engine = elm.web.search.yahoo.PlaywrightYahooLinkSearch(
         chromium_sandbox=False
     )
     max_results = search_engine.MAX_RESULTS_CONSIDERED_PER_PAGE
