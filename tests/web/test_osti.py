@@ -5,9 +5,11 @@ Test
 import os
 import time
 import random
+import platform
 import tempfile
 
 from flaky import flaky
+import pytest
 
 from elm import OstiList
 
@@ -40,6 +42,8 @@ def test_osti_from_url():
 
 
 @flaky(max_runs=10, min_passes=1, rerun_filter=_random_delay)
+@pytest.mark.skipif(platform.system() == "Windows",
+                    reason="Too flaky on windows")
 def test_osti_from_oids():
     """Test osti list, make sure we can find specific oids from storage futures
     study"""
@@ -49,6 +53,8 @@ def test_osti_from_oids():
 
 
 @flaky(max_runs=5, min_passes=1)
+@pytest.mark.skipif(platform.system() == "Windows",
+                    reason="Too flaky on windows")
 def test_osti_download():
     """Test osti download"""
     oids = 1962806  # single small report
