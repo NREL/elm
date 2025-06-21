@@ -1,7 +1,9 @@
 openai>=1.1.0
 aiohttp
 beautifulsoup4
+camoufox
 click
+crawl4ai
 duckduckgo-search
 fake_useragent>=2.0.3
 google-api-python-client
@@ -14,7 +16,7 @@ nrel-rex
 nltk
 numpy
 pandas
-playwright-stealth
+tf-playwright-stealth
 PyPDF2
 python-slugify
 rebrowser-playwright

@@ -2,12 +2,15 @@
 """ELM Web Scraping - Google search."""
 import os
 import json
+import random
+import asyncio
 import logging
 import requests
+from contextlib import asynccontextmanager
 
+from camoufox.async_api import AsyncCamoufox
 from apiclient.discovery import build
-from rebrowser_playwright.async_api import (
-    TimeoutError as PlaywrightTimeoutError)
+from playwright.async_api import TimeoutError as PlaywrightTimeoutError
 
 from elm.web.search.base import (PlaywrightSearchEngineLinkSearch,
                                  APISearchEngineLinkSearch)
@@ -32,7 +35,7 @@ class PlaywrightGoogleLinkSearch(PlaywrightSearchEngineLinkSearch):
 
     .. end desc
     """
-    MAX_RESULTS_CONSIDERED_PER_PAGE = 5
+    MAX_RESULTS_CONSIDERED_PER_PAGE = 10
     """Number of results considered per Google page.
 
     This value used to be 10, but the addition of extra divs like a set
@@ -43,33 +46,78 @@ class PlaywrightGoogleLinkSearch(PlaywrightSearchEngineLinkSearch):
     _SE_URL = "https://www.google.com"
     _SE_SR_TAG = '[jsname="UWckNb"]'
     _SC = None
+    _SE_QUERY_URL = (
+        "https://www.google.com/search?q={}&gl=sg&hl=en&udm=14&start=0&num=10"
+    )
 
-    async def _perform_search(self, page, search_query):
+    def __init__(self, use_homepage=True, **launch_kwargs):
+        """
+
+        Parameters
+        ----------
+        use_homepage : bool, default=True
+            If ``True``, the browser will be navigated to the search
+            engine homepage and the query will be input into the search
+            bar. If ``False``, the query will be embedded in the URL
+            and the browser will navigate directly to the filled-out
+            URL. By default, ``False``.
+        **launch_kwargs
+            Keyword arguments to be passed to
+            `playwright.firefox.launch`. For example, you can pass
+            ``headless=False, slow_mo=50`` for a visualization of the
+            search.
+        """
+        self.use_homepage = use_homepage
+        self.launch_kwargs = {"humanize": 0.1, "headless": True}
+        self.launch_kwargs.update(launch_kwargs)
+        self._browser = None
+
+    async def _load_browser(self, pw_instance):
+        """Empty implementation since we are using camoufox"""
+
+    @asynccontextmanager
+    async def _browser_page(self):
+        """Get page to use for search"""
+        async with AsyncCamoufox(**self.launch_kwargs) as browser:
+            yield await browser.new_page()
+
+    async def _perform_homepage_search(self, page, search_query):
         """Fill in search bar with user query and hit enter"""
-        logger.trace("Finding search bar for query: %r", search_query)
+        await self._move_mouse(page)
+
+        logger.trace("Clicking on search bar for query: %r", search_query)
+        await self._click_on_search_bar(page)
+
+        logger.trace("Filling in search bar for query: %r", search_query)
         await self._fill_in_search_bar(page, search_query)
+
         logger.trace("Hitting enter for query: %r", search_query)
         await page.keyboard.press('Enter')
 
-    async def _fill_in_search_bar(self, page, search_query):
-        """Attempt to find and fill the search bar several ways"""
+    async def _click_on_search_bar(self, page):
+        """Find the search bar and click it"""
         try:
-            return await (page
-                          .get_by_label("Search", exact=True)
-                          .fill(search_query))
+            search_bar = page.get_by_label("Search", exact=True)
+            return await self._move_and_click(page, search_bar)
         except PlaywrightTimeoutError:
             pass
 
         search_bar = page.locator('[name="q"]')
         try:
-            await search_bar.clear()
-            return await search_bar.fill(search_query)
+            return self._move_and_click(page, search_bar)
         except PlaywrightTimeoutError:
             pass
 
         search_bar = page.locator('[autofocus]')
-        await search_bar.clear()
-        return await search_bar.fill(search_query)
+        return self._move_and_click(page, search_bar)
+
+    async def _fill_in_search_bar(self, page, search_query):
+        """Attempt to find and fill the search bar several ways"""
+        await asyncio.sleep(random.uniform(0.5, 1.5))
+
+        logger.trace("Typing in query: %r", search_query)
+        await page.keyboard.type(search_query, delay=random.randint(80, 150))
+        return await asyncio.sleep(random.uniform(0.5, 1.5))
 
 
 class PlaywrightGoogleCSELinkSearch(PlaywrightSearchEngineLinkSearch):
@@ -83,22 +131,33 @@ class PlaywrightGoogleCSELinkSearch(PlaywrightSearchEngineLinkSearch):
     _SE_NAME = "Google CSE"
     _SE_SR_TAG = "a.gs-title[href]"
     PAGE_LOAD_TIMEOUT = 10_000
+    _SE_QUERY_URL = None
 
-    def __init__(self, cse_url, **launch_kwargs):
+    def __init__(self, cse_url, use_homepage=False, **launch_kwargs):
         """
 
         Parameters
         ----------
         cse_url : str
             URL of the custom google programmable search engine.
+        use_homepage : bool, default=False
+            If ``True``, the browser will be navigated to the search
+            engine homepage and the query will be input into the search
+            bar. If ``False``, the query will be embedded in the URL
+            and the browser will navigate directly to the filled-out
+            URL. By default, ``False``.
         **launch_kwargs
             Keyword arguments to be passed to
             `playwright.chromium.launch`. For example, you can pass
             ``headless=False, slow_mo=50`` for a visualization of the
             search.
         """
-        super().__init__(**launch_kwargs)
+        super().__init__(use_homepage=use_homepage, **launch_kwargs)
         self._cse_url = cse_url
+        self._SE_QUERY_URL = (
+            f"https://cse.google.com/cse?cx={cse_url}#gsc.tab=0"
+            "&gsc.q={}&gsc.sort="
+        )
 
     @property
     def _SE_URL(self):
@@ -107,7 +166,7 @@ class PlaywrightGoogleCSELinkSearch(PlaywrightSearchEngineLinkSearch):
             self._cse_url = f"{self._cse_url}#gsc.tab=0"
         return self._cse_url
 
-    async def _perform_search(self, page, search_query):
+    async def _perform_homepage_search(self, page, search_query):
         """Fill in search bar with user query and hit enter"""
         logger.trace("Finding search bar for query: %r", search_query)
         await page.get_by_label("search", exact=True).fill(search_query)

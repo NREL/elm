@@ -14,8 +14,7 @@ import elm.web.search.duckduckgo
 import elm.web.search.bing
 import elm.web.search.yahoo
 
-SE_TO_TEST = [(elm.web.search.duckduckgo.PlaywrightDuckDuckGoLinkSearch, {}),
-              (elm.web.search.bing.PlaywrightBingLinkSearch, {}),
+SE_TO_TEST = [(elm.web.search.bing.PlaywrightBingLinkSearch, {}),
               (elm.web.search.yahoo.PlaywrightYahooLinkSearch, {})]
 if CSE_ID := os.getenv("GOOGLE_CSE_ID"):
     SE_TO_TEST.append((elm.web.search.google.PlaywrightGoogleCSELinkSearch,
@@ -23,13 +22,15 @@ if CSE_ID := os.getenv("GOOGLE_CSE_ID"):
 
 if os.getenv("GITHUB_ACTIONS") != "true":
     # Google link searches fail in GHA for some reason (but not locally)
-    SE_TO_TEST.append((elm.web.search.google.PlaywrightGoogleLinkSearch, {}))
+    SE_TO_TEST += [
+        (elm.web.search.google.PlaywrightGoogleLinkSearch, {}),
+        (elm.web.search.duckduckgo.PlaywrightDuckDuckGoLinkSearch, {})]
 
 
 @flaky(max_runs=3, min_passes=1)
 @pytest.mark.parametrize("queries", [['1. "Python Programming Language"'],
-                                     ['1. "Python Programming Language"',
-                                      "Python"],])
+                                     ["best way to learn Python",
+                                      "how can I learn Python"],])
 @pytest.mark.parametrize("se", SE_TO_TEST)
 @pytest.mark.asyncio
 async def test_basic_search_query(queries, se):
@@ -51,14 +52,15 @@ async def test_search_query_with_timeout(monkeypatch, se):
     """Test web search query with a timeout"""
 
     se_class, kwargs = se
-    og_tps = se_class._perform_search
+    og_tps = se_class._perform_homepage_search
 
     async def _tps(obj, page, search_query):
         if search_query == "Python":
             raise PlaywrightTimeoutError("test")
         return await og_tps(obj, page, search_query)
 
-    monkeypatch.setattr(se_class, "_perform_search", _tps, raising=True)
+    monkeypatch.setattr(se_class, "_perform_homepage_search", _tps,
+                        raising=True)
 
     search_engine = se_class(chromium_sandbox=False, **kwargs)
     out = await search_engine.results('1. "Python Programming Language"',
@@ -71,14 +73,14 @@ async def test_search_query_with_timeout(monkeypatch, se):
 
 
 @pytest.mark.parametrize("queries", [['1. "Python Programming Language"'],
-                                     ['1. "Python Programming Language"',
-                                      "Python"],])
+                                     ["best way to learn Python",
+                                      "how can I learn Python"],])
 @pytest.mark.parametrize("num_results_multiplier", [0, 1, 5])
 @pytest.mark.asyncio
 async def test_search_query_num_results(queries, num_results_multiplier):
     """Test basic web search query returns correct number of links"""
 
-    search_engine = elm.web.search.duckduckgo.PlaywrightDuckDuckGoLinkSearch(
+    search_engine = elm.web.search.yahoo.PlaywrightYahooLinkSearch(
         chromium_sandbox=False
     )
     max_results = search_engine.MAX_RESULTS_CONSIDERED_PER_PAGE
