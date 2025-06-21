@@ -21,6 +21,8 @@ def _random_delay(*__):
 
 
 @flaky(max_runs=5, min_passes=1)
+@pytest.mark.skipif(platform.system() == "Windows",
+                    reason="Too flaky on windows")
 def test_osti_from_url():
     """Test osti list, make sure we can find LA100 documents"""
     url = ('https://www.osti.gov/api/v1/records?'
