@@ -302,7 +302,7 @@ class PWKwargs:
     SKIP_SCRIPS = []
     """List of scrapling stealth script names to skip"""
 
-    USE_REALISTIC_VIEWPORTS = False
+    USE_REALISTIC_VIEWPORTS = True
     """bool: Use realistic viewport sizes for the browser context"""
 
     _VIEWPORTS = {
