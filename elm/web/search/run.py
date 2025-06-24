@@ -91,9 +91,23 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
         By default, ``None``.
     **kwargs
         Keyword-argument pairs to initialize
-        :class:`elm.web.file_loader.AsyncFileLoader` and any of the
-        search engines in the `search_engines` input with. For example,
-        you may specify ``pw_launch_kwargs={"headless": False}`` to
+        :class:`elm.web.file_loader.AsyncFileLoader`. This input can
+        also include and any/all of the following keywords:
+
+            - ddg_api_kwargs
+            - google_cse_api_kwargs
+            - google_serper_api_kwargs
+            - tavily_api_kwargs
+            - pw_bing_se_kwargs
+            - pw_ddg_se_kwargs
+            - pw_google_cse_kwargs
+            - pw_google_se_kwargs
+            - pw_yahoo_se_kwargs
+
+        Each of these inputs should be a dictionary with
+        keyword-argument pairs that you can use to initialize the search
+        engines in the `search_engines` input. For example, you may
+        specify ``pw_launch_kwargs={"headless": False}`` to
         have all Playwright-based searches show the browser and _also_
         specify ``google_serper_api_kwargs={"api_key": "..."}`` to
         specify the API key for the Google Serper search.
