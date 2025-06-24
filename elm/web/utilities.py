@@ -9,6 +9,7 @@ from copy import deepcopy
 from random import randint, choice
 from contextlib import asynccontextmanager
 
+import httpx
 from slugify import slugify
 from fake_useragent import UserAgent
 from playwright_stealth import stealth_async
@@ -62,6 +63,32 @@ BLOCK_RESOURCE_NAMES = [
     "googletagmanager",
     "lit.connatix",  # <- not sure about this one
 ]
+
+
+async def get_redirected_url(url, **kwargs):
+    """Get the final URL after following redirects.
+
+    Parameters
+    ----------
+    url : str
+        URL to check for redirects.
+    **kwargs
+        Keyword-value arguments to pass to the
+        :class:`httpx.AsyncClient` client.
+
+    Returns
+    -------
+    str
+        The final URL after following redirects, or the original URL if
+        no redirects are found or an error occurs.
+    """
+    kwargs["follow_redirects"] = True
+    try:
+        async with httpx.AsyncClient(**kwargs) as client:
+            response = await client.head(url)
+            return str(response.url)
+    except httpx.RequestError as e:
+        return url
 
 
 def clean_search_query(query):

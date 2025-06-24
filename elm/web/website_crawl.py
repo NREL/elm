@@ -4,6 +4,7 @@
 import logging
 from asyncio import PriorityQueue
 from math import inf as infinity
+from contextlib import aclosing
 
 from crawl4ai import AsyncWebCrawler, CrawlerRunConfig, BrowserConfig
 from crawl4ai.utils import normalize_url_for_deep_crawl
@@ -429,34 +430,31 @@ class ELMWebsiteCrawler:
         should_stop = (termination_callback
                        or ELMWebsiteCrawlingStrategy.found_enough_docs)
         async with AsyncWebCrawler(config=self.browser_config) as crawler:
-            async for result in await crawler.arun(base_url,
-                                                   config=self.config):
-                results.append(result)
-                logger.debug("Crawled %s", result.url)
-                if on_result_hook:
-                    await on_result_hook(result)
+            crawl_results = await crawler.arun(base_url, config=self.config)
+            async with aclosing(crawl_results) as agen:
+                async for result in agen:
+                    results.append(result)
+                    logger.debug("Crawled %s", result.url)
+                    if on_result_hook:
+                        await on_result_hook(result)
 
-                score = result.metadata.get("score", 0)
-                depth = result.metadata.get("depth", 0)
-                logger.trace("\t- Depth: %d | Score: %.2f", depth, score)
-                if result.markdown and len(md := result.markdown.strip()) > 3:
-                    doc = HTMLDocument([md])
-                    doc.attrs["source"] = result.url
+                    score = result.metadata.get("score", 0)
+                    depth = result.metadata.get("depth", 0)
+                    logger.trace("\t- Depth: %d | Score: %.2f", depth, score)
+
+                    doc = await self._doc_from_result(result)
                     doc.attrs[_SCORE_KEY] = score
-                else:
-                    doc = await self.afl.fetch(result.url)
-                    doc.attrs[_SCORE_KEY] = score
+                    if doc.empty:
+                        logger.debug("Empty document, skipping")
+                        continue
 
-                if doc.empty:
-                    logger.debug("Empty document, skipping")
-                    continue
+                    if await self.validator(doc):
+                        logger.debug("Document passed validation check")
+                        out_docs.append(doc)
 
-                if await self.validator(doc):
-                    logger.debug("Document passed validation check")
-                    out_docs.append(doc)
-
-                if await should_stop(out_docs):
-                    break
+                    if await should_stop(out_docs):
+                        logger.debug("Exiting crawl early")
+                        break
 
         logger.info("Crawled %d pages", len(results))
         logger.info("Found %d potential documents", len(out_docs))
@@ -478,6 +476,15 @@ class ELMWebsiteCrawler:
             return out_docs, results
 
         return out_docs
+
+    async def _doc_from_result(self, result):
+        """Get document instance from crawling result"""
+        if result.markdown and len(md := result.markdown.strip()) > 3:
+            doc = HTMLDocument([md])
+            doc.attrs["source"] = result.url
+            return doc
+
+        return await self.afl.fetch(result.url)
 
 
 def _compute_avg_score(results):

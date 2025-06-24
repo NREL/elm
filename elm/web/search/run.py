@@ -34,15 +34,15 @@ SEARCH_ENGINE_OPTIONS = {
                                "google_serper_api_kwargs"),
     "APITavilySearch": _SE_OPT(APITavilySearch, False, "tavily_api_kwargs"),
     "PlaywrightBingLinkSearch": _SE_OPT(PlaywrightBingLinkSearch, True,
-                                        "pw_launch_kwargs"),
+                                        "pw_bing_se_kwargs"),
     "PlaywrightDuckDuckGoLinkSearch": _SE_OPT(PlaywrightDuckDuckGoLinkSearch,
-                                              True, "pw_launch_kwargs"),
+                                              True, "pw_ddg_se_kwargs"),
     "PlaywrightGoogleCSELinkSearch": _SE_OPT(PlaywrightGoogleCSELinkSearch,
-                                             True, "pw_launch_kwargs"),
+                                             True, "pw_google_cse_kwargs"),
     "PlaywrightGoogleLinkSearch": _SE_OPT(PlaywrightGoogleLinkSearch, True,
-                                          "pw_launch_kwargs"),
+                                          "pw_google_se_kwargs"),
     "PlaywrightYahooLinkSearch": _SE_OPT(PlaywrightYahooLinkSearch, True,
-                                         "pw_launch_kwargs")
+                                         "pw_yahoo_se_kwargs")
 }
 """Supported search engines"""
 _DEFAULT_SE = ("PlaywrightGoogleLinkSearch", "PlaywrightDuckDuckGoLinkSearch",
@@ -91,9 +91,23 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
         By default, ``None``.
     **kwargs
         Keyword-argument pairs to initialize
-        :class:`elm.web.file_loader.AsyncFileLoader` and any of the
-        search engines in the `search_engines` input with. For example,
-        you may specify ``pw_launch_kwargs={"headless": False}`` to
+        :class:`elm.web.file_loader.AsyncFileLoader`. This input can
+        also include and any/all of the following keywords:
+
+            - ddg_api_kwargs
+            - google_cse_api_kwargs
+            - google_serper_api_kwargs
+            - tavily_api_kwargs
+            - pw_bing_se_kwargs
+            - pw_ddg_se_kwargs
+            - pw_google_cse_kwargs
+            - pw_google_se_kwargs
+            - pw_yahoo_se_kwargs
+
+        Each of these inputs should be a dictionary with
+        keyword-argument pairs that you can use to initialize the search
+        engines in the `search_engines` input. For example, you may
+        specify ``pw_launch_kwargs={"headless": False}`` to
         have all Playwright-based searches show the browser and _also_
         specify ``google_serper_api_kwargs={"api_key": "..."}`` to
         specify the API key for the Google Serper search.
@@ -197,11 +211,13 @@ async def _single_query_api(search_engine, question):
 def _init_se(se_name, kwargs):
     """Initialize a search engine class"""
     se_class, uses_browser, kwarg_key = SEARCH_ENGINE_OPTIONS[se_name]
-    if kwarg_key == "pw_launch_kwargs":
-        se_kwargs = kwargs.get(kwarg_key, {})
-    else:
-        se_kwargs = kwargs.pop(kwarg_key, {})
-    return se_class(**se_kwargs), uses_browser
+    init_kwargs = {}
+    if uses_browser:
+        init_kwargs = kwargs.get("pw_launch_kwargs", {})
+
+    init_kwargs.update(kwargs.pop(kwarg_key, {}))
+
+    return se_class(**init_kwargs), uses_browser
 
 
 def _down_select_urls(search_results, num_urls=5, ignore_url_parts=None):
