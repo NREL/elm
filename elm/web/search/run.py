@@ -211,11 +211,13 @@ async def _single_query_api(search_engine, question):
 def _init_se(se_name, kwargs):
     """Initialize a search engine class"""
     se_class, uses_browser, kwarg_key = SEARCH_ENGINE_OPTIONS[se_name]
-    if kwarg_key == "pw_launch_kwargs":
-        se_kwargs = kwargs.get(kwarg_key, {})
-    else:
-        se_kwargs = kwargs.pop(kwarg_key, {})
-    return se_class(**se_kwargs), uses_browser
+    init_kwargs = {}
+    if uses_browser:
+        init_kwargs = kwargs.get("pw_launch_kwargs", {})
+
+    init_kwargs.update(kwargs.pop(kwarg_key, {}))
+
+    return se_class(**init_kwargs), uses_browser
 
 
 def _down_select_urls(search_results, num_urls=5, ignore_url_parts=None):
