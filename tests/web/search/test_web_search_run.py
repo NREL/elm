@@ -49,15 +49,15 @@ def test_init_se():
     assert test_kwargs == {"pw_launch_kwargs": {"test": 1}}
 
 
-def test_init_se_pop_kwargs():
-    """Test that kwargs are correctly popped in func"""
+def test_init_se_does_not_pop_kwargs():
+    """Test that kwargs are not popped in _init_se"""
     test_kwargs = {"pw_launch_kwargs": {"test": 1},
                    "google_cse_api_kwargs": {"api_key": "test_key"}}
-
+    original_kwargs = test_kwargs.copy()
     se, *__ = _init_se("APIGoogleCSESearch", test_kwargs)
     assert isinstance(se, APIGoogleCSESearch)
     assert se.api_key == "test_key"
-    assert test_kwargs == {"pw_launch_kwargs": {"test": 1}}
+    assert test_kwargs == original_kwargs
 
 
 @pytest.mark.asyncio

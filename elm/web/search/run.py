@@ -215,6 +215,7 @@ def _init_se(se_name, kwargs):
     if uses_browser:
         init_kwargs = kwargs.get("pw_launch_kwargs", {})
 
+    # Cannot use 'pop' here because _run_search is invoked once per query.
     init_kwargs.update(kwargs.get(kwarg_key, {}))
     return se_class(**init_kwargs), uses_browser
 
