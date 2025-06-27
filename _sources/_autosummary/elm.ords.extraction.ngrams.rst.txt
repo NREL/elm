@@ -1,0 +1,31 @@
+elm.ords.extraction.ngrams
+==========================
+
+.. automodule:: elm.ords.extraction.ngrams
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      convert_text_to_sentence_ngrams
+      sentence_ngram_containment
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

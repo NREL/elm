@@ -1,0 +1,31 @@
+elm.web.search.base.PlaywrightSearchEngineLinkSearch
+====================================================
+
+.. currentmodule:: elm.web.search.base
+
+.. autoclass:: PlaywrightSearchEngineLinkSearch
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PlaywrightSearchEngineLinkSearch.results
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PlaywrightSearchEngineLinkSearch.MAX_RESULTS_CONSIDERED_PER_PAGE
+      ~PlaywrightSearchEngineLinkSearch.PAGE_LOAD_TIMEOUT
+   
+   

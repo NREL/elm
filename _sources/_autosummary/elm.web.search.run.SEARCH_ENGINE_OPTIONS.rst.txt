@@ -1,0 +1,6 @@
+elm.web.search.run.SEARCH\_ENGINE\_OPTIONS
+==========================================
+
+.. currentmodule:: elm.web.search.run
+
+.. autodata:: SEARCH_ENGINE_OPTIONS

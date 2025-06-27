@@ -1,0 +1,41 @@
+elm.utilities.parse
+===================
+
+.. automodule:: elm.utilities.parse
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      clean_headers
+      combine_pages
+      format_html_tables
+      html_to_text
+      is_multi_col
+      read_pdf
+      read_pdf_ocr
+      remove_blank_pages
+      remove_empty_lines_or_page_footers
+      replace_common_pdf_conversion_chars
+      replace_excessive_newlines
+      replace_multi_dot_lines
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

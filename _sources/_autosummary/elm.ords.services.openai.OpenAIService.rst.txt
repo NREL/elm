@@ -1,0 +1,36 @@
+elm.ords.services.openai.OpenAIService
+======================================
+
+.. currentmodule:: elm.ords.services.openai
+
+.. autoclass:: OpenAIService
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~OpenAIService.acquire_resources
+      ~OpenAIService.call
+      ~OpenAIService.process
+      ~OpenAIService.process_using_futures
+      ~OpenAIService.release_resources
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OpenAIService.MAX_CONCURRENT_JOBS
+      ~OpenAIService.can_process
+      ~OpenAIService.name
+   
+   

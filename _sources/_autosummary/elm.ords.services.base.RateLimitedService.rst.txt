@@ -1,0 +1,36 @@
+elm.ords.services.base.RateLimitedService
+=========================================
+
+.. currentmodule:: elm.ords.services.base
+
+.. autoclass:: RateLimitedService
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~RateLimitedService.acquire_resources
+      ~RateLimitedService.call
+      ~RateLimitedService.process
+      ~RateLimitedService.process_using_futures
+      ~RateLimitedService.release_resources
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RateLimitedService.MAX_CONCURRENT_JOBS
+      ~RateLimitedService.can_process
+      ~RateLimitedService.name
+   
+   
