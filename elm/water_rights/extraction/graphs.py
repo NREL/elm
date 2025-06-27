@@ -482,7 +482,7 @@ def setup_graph_well_spacing(**kwargs):
         "init",
         prompt=(
             "Does the following text mention restrictions related to well spacing? "
-            "Such information typically dictates how far apart two well must be and "
+            "Such information typically dictates how far apart two wells must be and "
             "could prohibit an individual from drilling a well with a certain distance "
             "of another well. "
             "Begin your response with either 'Yes' or 'No' and explain your "
@@ -490,7 +490,7 @@ def setup_graph_well_spacing(**kwargs):
             '\n\n"""\n{text}\n"""'
         ),
         db_query=(
-            'Does {DISTRICT_NAME} have restrictions related to well spacing? ' # TODO: what exactly are we trying to capture? spacing to another well? spacing from property line?
+            'Does {DISTRICT_NAME} have restrictions related to well spacing? ' 
             'Such information typically dictates how far apart two wells must be and '
             'could prohibit an individual from drilling a well with a certain distance '
             'of another well or feature. '
@@ -783,3 +783,27 @@ def setup_graph_plugging_reqs(**kwargs):
     )
 
     return G
+
+    def setup_graph_external_transfer(**kwargs):
+            
+            G = setup_graph_no_nodes(**kwargs)
+            G.add_node(
+            "init",
+            prompt=(
+                "Does the following text mention restrictions related to "
+                "the external transfer of water? External transfer refers to "
+                "cases in which well owners sell or transport water to "
+                "a location outside of the district boundaries. "
+                "Begin your response with either 'Yes' or 'No' and explain your "
+                "answer."
+                '\n\n"""\n{text}\n"""'
+            ),
+            db_query=(
+                "Does {DISTRICT_NAME} implement restrictions related to "
+                "the external transfer of water? External transfer refers to "
+                "cases in which well owners sell or transport water to "
+                "a location outside of the district boundaries. "
+                "Begin your response with either 'Yes' or 'No' and explain your "
+                "answer."
+            )
+        )

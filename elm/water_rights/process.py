@@ -213,31 +213,32 @@ async def process_counties_with_openai(
     out_dir, log_dir, clean_dir, county_ords_dir, county_dbs_dir = dirs
     async with log_listener as ll:
         _setup_main_logging(log_dir, log_level, ll)
-        db = await _process_with_logs(
-            out_dir,
-            log_dir,
-            clean_dir,
-            county_ords_dir,
-            county_dbs_dir,
-            ll,
-            county_fp=county_fp,
-            model=model,
-            azure_api_key=azure_api_key,
-            azure_version=azure_version,
-            azure_endpoint=azure_endpoint,
-            llm_call_kwargs=llm_call_kwargs,
-            llm_service_rate_limit=llm_service_rate_limit,
-            text_splitter_chunk_size=text_splitter_chunk_size,
-            text_splitter_chunk_overlap=text_splitter_chunk_overlap,
-            num_urls_to_check_per_county=num_urls_to_check_per_county,
-            max_num_concurrent_browsers=max_num_concurrent_browsers,
-            file_loader_kwargs=file_loader_kwargs,
-            pytesseract_exe_fp=pytesseract_exe_fp,
-            td_kwargs=td_kwargs,
-            tpe_kwargs=tpe_kwargs,
-            ppe_kwargs=ppe_kwargs,
-            log_level=log_level,
-        )
+        # db = await _process_with_logs(
+        #     out_dir,
+        #     log_dir,
+        #     clean_dir,
+        #     county_ords_dir,
+        #     county_dbs_dir,
+        #     ll,
+        #     county_fp=county_fp,
+        #     model=model,
+        #     azure_api_key=azure_api_key,
+        #     azure_version=azure_version,
+        #     azure_endpoint=azure_endpoint,
+        #     llm_call_kwargs=llm_call_kwargs,
+        #     llm_service_rate_limit=llm_service_rate_limit,
+        #     text_splitter_chunk_size=text_splitter_chunk_size,
+        #     text_splitter_chunk_overlap=text_splitter_chunk_overlap,
+        #     num_urls_to_check_per_county=num_urls_to_check_per_county,
+        #     max_num_concurrent_browsers=max_num_concurrent_browsers,
+        #     file_loader_kwargs=file_loader_kwargs,
+        #     pytesseract_exe_fp=pytesseract_exe_fp,
+        #     td_kwargs=td_kwargs,
+        #     tpe_kwargs=tpe_kwargs,
+        #     ppe_kwargs=ppe_kwargs,
+        #     log_level=log_level,
+        # )
+        db = await download_county_ordinance
     _record_total_time(out_dir / "usage.json", time.time() - start_time)
     return db
 
@@ -527,36 +528,36 @@ async def process_county(
         **kwargs,
     )
 
-    if doc is None:
-        await _record_time_and_usage(start_time, **kwargs)
-        return None
+    # if doc is None:
+    #     await _record_time_and_usage(start_time, **kwargs)
+    #     return None
 
-    doc.attrs["location"] = county
-    doc.attrs["location_name"] = county.full_name
-    await _record_usage(**kwargs)
+    # doc.attrs["location"] = county
+    # doc.attrs["location_name"] = county.full_name
+    # await _record_usage(**kwargs)
 
-    doc = await extract_ordinance_text_with_ngram_validation(
-        doc, text_splitter, **kwargs
-    )
-    await _record_usage(**kwargs)
+    # doc = await extract_ordinance_text_with_ngram_validation(
+    #     doc, text_splitter, **kwargs
+    # )
+    # await _record_usage(**kwargs)
 
-    doc = await _write_cleaned_text(doc)
-    doc = await extract_ordinance_values(doc, **kwargs)
+    # doc = await _write_cleaned_text(doc)
+    # doc = await extract_ordinance_values(doc, **kwargs)
 
-    ord_count = _num_ords_in_doc(doc)
-    if ord_count > 0:
-        doc = await _move_file_to_out_dir(doc)
-        doc = await _write_ord_db(doc)
-        logger.info(
-            "%d ordinance value(s) found for %s. Outputs are here: '%s'",
-            ord_count,
-            county.full_name,
-            doc.attrs["ord_db_fp"],
-        )
-    else:
-        logger.info("No ordinances found for %s.", county.full_name)
+    # ord_count = _num_ords_in_doc(doc)
+    # if ord_count > 0:
+    #     doc = await _move_file_to_out_dir(doc)
+    #     doc = await _write_ord_db(doc)
+    #     logger.info(
+    #         "%d ordinance value(s) found for %s. Outputs are here: '%s'",
+    #         ord_count,
+    #         county.full_name,
+    #         doc.attrs["ord_db_fp"],
+    #     )
+    # else:
+    #     logger.info("No ordinances found for %s.", county.full_name)
 
-    await _record_time_and_usage(start_time, **kwargs)
+    # await _record_time_and_usage(start_time, **kwargs)
     return doc
 
 

@@ -1,0 +1,34 @@
+{
+  "requirements": {
+    "permit_required": "true",
+    "requirements": [
+      "Application must be complete; incomplete applications will not be processed.",
+      "Permit issuance is contingent upon the accuracy of the information provided.",
+      "Certain wells must be equipped with a meter or flow measurement device.",
+      "No plugging can commence until application has been processed and approved.",
+      "Notification to nearby property owners within a 1/4 mile radius is required.",
+      "Compliance with the District\u2019s Management Plan and any drought-related production reductions.",
+      "Baseline water quality test required for wells producing 150 gallons per minute or more.",
+      "Legal documents required for water transfer outside the District."
+    ],
+    "exemptions": "Yes, certain wells are exempt from the permitting process.",
+    "explanation": "The Panola County Groundwater Conservation District requires permits for most water wells to ensure sustainable management and protection of groundwater resources, but there are specific exemptions for wells used for domestic purposes, livestock, agricultural irrigation, and other defined uses."
+  },
+  "daily_limits": {},
+  "annual_limits": {},
+  "well_spacing": {
+    "spacing": 30,
+    "units": "feet",
+    "explanation": "The text specifies that all new wells must be drilled within 30 feet of the location specified in the registration or permit application, indicating a spacing requirement for well placement."
+  },
+  "drilling_window": {},
+  "metering_device": {
+    "device": true,
+    "explanation": "A metering device is required for certain types of wells as specified in the text, including new non-exempt wells and those used for specific purposes like oil and gas operations."
+  },
+  "drought_mgmt_plan": {},
+  "plugging_requirements": {
+    "plugging_requirements": true,
+    "explanation": "The conservation district implements plugging requirements as it mandates that no water well plugging can commence without prior written approval and requires notification at least 24 hours before the initiation of the plugging operation."
+  }
+}

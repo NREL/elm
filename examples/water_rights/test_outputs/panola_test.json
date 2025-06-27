@@ -1,0 +1,36 @@
+{
+  "requirements": {
+    "permit_required": "true",
+    "requirements": [
+      "Complete application with all required information.",
+      "Documentation establishing authority to operate the well if the owner/operator differs from the property owner.",
+      "Location map showing proposed well location and existing wells within a quarter-mile radius.",
+      "Legal description of the land where the well is located.",
+      "Drought contingency plan if required by law.",
+      "Legal documents for water transfer if applicable.",
+      "Notices to property and well owners within a quarter-mile radius.",
+      "Compliance with district rules and groundwater use permits.",
+      "Adherence to well plugging and capping guidelines.",
+      "Metering requirements for certain wells.",
+      "Baseline water quality test for wells producing 150 gallons per minute or more."
+    ],
+    "explanation": "The conservation district requires water well permits to ensure proper management and regulation of groundwater resources, as outlined in the provided text."
+  },
+  "daily_limits": {},
+  "annual_limits": {},
+  "well_spacing": {
+    "spacing": 30,
+    "units": "feet",
+    "explanation": "The text specifies that all new wells must be drilled within 30 feet (10 yards) of the location specified in the registration or permit application, indicating a spacing requirement of 30 feet."
+  },
+  "drilling_window": {},
+  "metering_device": {
+    "device": true,
+    "explanation": "The text specifies that certain wells must be equipped with a meter or flow measurement device to monitor water usage, indicating that a device is required for compliance with conservation district regulations."
+  },
+  "drought_mgmt_plan": {},
+  "plugging_requirements": {
+    "plugging_requirements": true,
+    "explanation": "The text specifies that no water well plugging can commence without prior written approval from the District and requires notification at least 24 hours before the plugging operation begins, indicating that the conservation district implements formal plugging requirements."
+  }
+}

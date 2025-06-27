@@ -8,6 +8,7 @@ from elm.ords.services.openai import OpenAIService
 from elm.utilities import validate_azure_api_params
 from elm import EnergyWizard
 
+
 from elm.water_rights.extraction.apply import extract_ordinance_values
 from elm.ords.services.provider import RunningAsyncServices as ARun
 
@@ -45,11 +46,11 @@ EnergyWizard.EMBEDDING_MODEL = 'egswaterord-openai-embedding'
 EnergyWizard.EMBEDDING_TYPE = 'azure new'
 
 # MODEL = 'egswaterord-openai-embedding'
-MODEL = 'egswaterord-gpt4-turbo'
+MODEL = 'egswaterord-gpt4-mini'
 GWCD_NAME = 'Trinity Glen Rose'
 fp = GWCD_NAME.lower().replace(' ', '_')
 
-VECTOR_STORE = (f'./{fp}_embed_250/*.json')
+VECTOR_STORE = (f'./{fp}_embed/*.json')
 GWCD_full = f'{GWCD_NAME} Groundwater Conservation District'
 if __name__ == '__main__':
 
@@ -69,6 +70,6 @@ if __name__ == '__main__':
 
     breakpoint()
     # out_fp = './panhandle_test.json'
-    out_fp = f'./{fp}_test_250.json'
+    out_fp = f'./{fp}_test.json'
     with open(out_fp, 'w') as f:
         json.dump(values, f, indent=2)

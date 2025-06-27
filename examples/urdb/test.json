@@ -1,0 +1,52 @@
+{
+  "electricity_costs": {
+    "summer": {
+      "peak": {
+        "bundled_rate": 0.44885,
+        "generation_component": 0.16337,
+        "distribution_component": 0.20645
+      },
+      "part_peak": {
+        "bundled_rate": 0.44885,
+        "generation_component": 0.16337,
+        "distribution_component": 0.20645
+      },
+      "off_peak": {
+        "bundled_rate": 0.42415,
+        "generation_component": 0.13867,
+        "distribution_component": 0.20645
+      }
+    },
+    "winter": {
+      "part_peak": {
+        "bundled_rate": 0.40127,
+        "generation_component": 0.13263,
+        "distribution_component": 0.18961
+      },
+      "off_peak": {
+        "bundled_rate": 0.40069,
+        "generation_component": 0.13205,
+        "distribution_component": 0.18961
+      }
+    },
+    "credits": {
+      "california_climate_credit": 0.0,
+      "recovery_bond_credit": -0.0065
+    },
+    "baseline_usage": {
+      "wildfire_fund_charge": 0.00561,
+      "wildfire_hardening_charge": 0.00519,
+      "recovery_bond_charge": 0.0065,
+      "bundled_power_charge_indifference_adjustment": 0.00765
+    },
+    "units": "kWh",
+    "explanation": "The JSON file includes all Time of Use periods (Peak, Part-Peak, Off-Peak) for both Summer and Winter seasons, along with their associated bundled rates and unbundled components (Generation and Distribution). Additionally, credits and baseline usage charges are included as they are mentioned in the text and apply to all usage. The unit of measurement is kWh, as the costs are provided per kilowatt-hour."
+  },
+  "fixed_costs": {
+    "fixed_cost": 0.32854,
+    "units": "dollars per day",
+    "type": "fixed charge",
+    "explanation": "The text explicitly mentions a fixed cost labeled as a 'Customer Charge,' which is $0.32854 per meter per day for single-phase service. This is a fixed charge applied daily and does not depend on electricity usage. The text does not mention a minimum cost."
+  },
+  "usage": {}
+}

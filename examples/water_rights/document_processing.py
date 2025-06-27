@@ -1,31 +1,36 @@
 """RAG set up for water rights"""
-from elm.web.search import web_search_links_as_docs
+from functools import partial
 import asyncio
 import os
 import pandas as pd
 import time
 import logging
 import openai
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 from rex import init_logger
 
+from elm.base import ApiBase
+from elm.ords.utilities import RTS_SEPARATORS
+from elm.utilities import validate_azure_api_params
+from elm.ords.services.openai import OpenAIService
 from elm.embed import ChunkAndEmbed
 from elm.chunk import Chunker
-from elm.web.utilities import filter_documents
-from elm.ords.llm import StructuredLLMCaller
-from elm.ords.utilities.location import County
-from elm.water_rights.validation.location import CountyValidator
+from elm.ords.llm import StructuredLLMCaller 
 from elm.water_rights.download import download_county_ordinance
+from elm.water_rights.utilities.location import County
+from elm.ords.services.provider import RunningAsyncServices
+from elm.ords.services.threaded import TempFileCache
 
 logger = logging.getLogger(__name__)
 init_logger(__name__, log_level='DEBUG')
-init_logger('elm', log_level='INFO')
+init_logger('elm', log_level='DEBUG')
 
 openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
 openai.api_key = os.getenv("AZURE_OPENAI_KEY")
 openai.api_type = 'azure'
 # openai.api_version = os.getenv("AZURE_OPENAI_VERSION")
-openai.api_version = '2024-08-01'
+openai.api_version = '2024-08-01-preview'
 
 ChunkAndEmbed.EMBEDDING_MODEL = 'egswaterord-openai-embedding'
 
@@ -43,44 +48,62 @@ Chunker.URL= ('https://aoai-prod-eastus-egswaterord-001.'
 ChunkAndEmbed.EMBEDDING_TYPE ='azure new'
 
 
-GWCD_NAME = 'Panola'
-# GWCD_NAME = 'Panola'
-# QUERIES = [f"{GWCD_NAME} groundwater conservation district",
-#            f"{GWCD_NAME} groundwater conservation district rules",
-#            f"{GWCD_NAME} groundwater conservation district management plan",
-#            f"{GWCD_NAME} groundwater conservation district well permits",
-#            f"{GWCD_NAME} groundwater conservation district well permit requirements",]
-
-QUERIES = [
-           f"{GWCD_NAME} County groundwater conservation district rules",
-           f"{GWCD_NAME} County groundwater conservation district management plan",
-        #    f"{GWCD_NAME} County groundwater conservation district well permits",
-        #    f"{GWCD_NAME} County groundwater conservation district well permit requirements",
-]
+# GWCD_NAME = 'Lower Trinity'
+GWCD_NAME = 'Panola County'
 
 MODEL = 'egswaterord-openai-embedding'
-
-# EMBED_DIR = f"./{GWCD_NAME.lower().replace(' ', '_')}_embed_250/"
 EMBED_DIR = f"./{GWCD_NAME.lower().replace(' ', '_')}_embed/"
 
+async def process(location, text_splitter, **kwargs):
+
+    llm_service_rate_limit =  50000
+    td_kwargs = dict(dir=".")
+    tpe_kwargs = dict(max_workers= 10)
+    azure_api_key, azure_version, azure_endpoint = validate_azure_api_params()
+    client = openai.AsyncAzureOpenAI(api_key=azure_api_key,
+                                     api_version=azure_version,
+                                     azure_endpoint=azure_endpoint)
+
+    services = [
+        OpenAIService(client, rate_limit=llm_service_rate_limit),
+        TempFileCache(td_kwargs=td_kwargs, tpe_kwargs=tpe_kwargs)
+    ]
+
+    async with RunningAsyncServices(services):
+        docs = await download_county_ordinance(location,
+                                              text_splitter,
+                                              **kwargs)
+        
+    return docs
+
 if __name__ == '__main__':
-    init_logger('elm', log_level='DEBUG')
     os.makedirs(EMBED_DIR, exist_ok=True)
+    text_splitter = RecursiveCharacterTextSplitter(
+        RTS_SEPARATORS,
+        chunk_size=3000,
+        chunk_overlap=300,
+        length_function=partial(ApiBase.count_tokens, model='gpt-4'),
+    )
+    
+    azure_api_key, azure_version, azure_endpoint = validate_azure_api_params()
+    client = openai.AsyncAzureOpenAI(api_key=azure_api_key,
+                                     api_version=azure_version,
+                                     azure_endpoint=azure_endpoint)
+    llm_service = OpenAIService(client, rate_limit=1e9)
+    services = [llm_service]
+    kwargs = dict(llm_service=llm_service, model='egswaterord-gpt4-mini', temperature=0)
+    location = County(name=GWCD_NAME, state='Texas')
+
     loop = asyncio.get_event_loop()
-    docs = asyncio.run(web_search_links_as_docs(
-        QUERIES,
-        pdf_read_kwargs={"verbose": False},
-        ))
+    docs = asyncio.run(process(location, text_splitter, **kwargs))
+
     client = openai.AzureOpenAI(
         api_key = os.getenv("AZURE_OPENAI_API_KEY"), 
         api_version = os.getenv('AZURE_OPENAI_VERSION'),
         azure_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT") 
         )
-    
 
-    
     breakpoint()
-
     for i, d in enumerate(docs):
         url = d.attrs.get('source')
         fn = os.path.basename(url)
@@ -99,6 +122,7 @@ if __name__ == '__main__':
             # obj = ChunkAndEmbed(d.text, model=MODEL, tokens_per_chunk=500, overlap=1)
             # obj = ChunkAndEmbed(d.text, client, model=MODEL, tokens_per_chunk=250, overlap=1)
             obj = ChunkAndEmbed(d.text, client, model=MODEL, tokens_per_chunk=500, overlap=1)
+            breakpoint()
             try:
                 embeddings = asyncio.run(obj.run_async(rate_limit=3e4))
                 if any(e is None for e in embeddings):
@@ -108,6 +132,8 @@ if __name__ == '__main__':
                                        'embedding': embeddings,
                                         'source': url,
                                     })
+                    
+                    breakpoint()
                     df.to_json(embed_fp, indent=2)
                     logger.info(f'Saving {embed_fp}')
             except Exception as e:
@@ -115,3 +141,7 @@ if __name__ == '__main__':
 
             time.sleep(5)
 
+    logger.info('finished')
+
+    breakpoint()
+ 

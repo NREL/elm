@@ -3,9 +3,9 @@
 import logging
 
 from elm.ords.llm import StructuredLLMCaller
-from elm.ords.extraction import check_for_ordinance_info
+from elm.water_rights.extraction import check_for_ordinance_info
 from elm.ords.services.threaded import TempFileCache
-from elm.ords.validation.location import CountyValidator
+from elm.water_rights.validation.location import CountyValidator
 from elm.web.document import PDFDocument
 from elm.web.search import web_search_links_as_docs
 from elm.web.utilities import filter_documents
@@ -21,15 +21,18 @@ logger = logging.getLogger(__name__)
 #     'ordinances for commercial wind energy conversion systems in {location}?"',
 # ]
 
-QUESTION_TEMPLATES = ['panola county groundwater conservation district',
-           "panola county groundwater conservation district well permits",
-           "panola county groundwater conservation district well requirements"]
+QUESTION_TEMPLATES = [
+    "0. {location} groundwater conservation district rules",
+    "1. {location} groundwater conservation district management plan",
+    "2. {location} groundwater conservation district well permits",
+    "3. {location} groundwater conservation district well permit requirements",
+    ]
 
 
 async def download_county_ordinance(
     location,
     text_splitter,
-    num_urls=5,
+    num_urls=10,
     file_loader_kwargs=None,
     browser_semaphore=None,
     **kwargs
@@ -77,17 +80,21 @@ async def download_county_ordinance(
         browser_semaphore,
         **(file_loader_kwargs or {})
     )
+    logger.debug(f'processing {len(docs)}')
+
     # docs = await _down_select_docs_correct_location(
     #     docs, location=location, **kwargs
     # )
+
     # docs = await _down_select_docs_correct_content(
     #     docs, location=location, text_splitter=text_splitter, **kwargs
     # )
-    logger.info(
-        "Found %d potential ordinance documents for %s",
-        len(docs),
-        location.full_name,
-    )
+    # logger.info(
+    #     "Found %d potential ordinance documents for %s",
+    #     len(docs),
+    #     location.full_name,
+    # )
+
     return _sort_final_ord_docs(docs)
 
 
@@ -96,10 +103,10 @@ async def _docs_from_google_search(
 ):
     """Download docs from google location queries. """
     queries = [
-        QUESTION_TEMPLATES
-        # question.format(location=location.full_name)
-        # for question in QUESTION_TEMPLATES
+        question.format(location=location.name)
+        for question in QUESTION_TEMPLATES
     ]
+
     file_loader_kwargs.update(
         {
             "html_read_kwargs": {"text_splitter": text_splitter},
@@ -149,7 +156,7 @@ def _sort_final_ord_docs(all_ord_docs):
     if not all_ord_docs:
         return None
 
-    return sorted(all_ord_docs, key=_ord_doc_sorting_key)[-1]
+    return sorted(all_ord_docs, key=_ord_doc_sorting_key)#[-1]
 
 
 def _ord_doc_sorting_key(doc):

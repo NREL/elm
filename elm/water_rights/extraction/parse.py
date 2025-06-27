@@ -193,7 +193,7 @@ class StructuredOrdinanceParser(BaseLLMCaller):
         prompt = setup_graph_permits().nodes['init'].get('db_query')
         prompt = prompt.format(DISTRICT_NAME=self.location)
         wizard = self._init_wizard(vector_store)
-        response, _, idx = wizard.query_vector_db(prompt)
+        response, _, idx = wizard.query_vector_db(prompt, limit=50)
         text = response.tolist()
         all_text = '\n'.join(text)
 
@@ -213,7 +213,7 @@ class StructuredOrdinanceParser(BaseLLMCaller):
 
         prompt = setup_graph_daily_limits().nodes['init'].get('db_query')
         wizard = self._init_wizard(vector_store)
-        response, _, idx = wizard.query_vector_db(prompt)
+        response, _, idx = wizard.query_vector_db(prompt, limit=50)
         text = response.tolist()
         all_text = '\n'.join(text)
 
@@ -233,7 +233,7 @@ class StructuredOrdinanceParser(BaseLLMCaller):
 
         prompt = setup_graph_annual_limits().nodes['init'].get('db_query')
         wizard = self._init_wizard(vector_store)
-        response, _, idx = wizard.query_vector_db(prompt)
+        response, _, idx = wizard.query_vector_db(prompt, limit=50)
         text = response.tolist()
         all_text = '\n'.join(text)
 
@@ -253,7 +253,7 @@ class StructuredOrdinanceParser(BaseLLMCaller):
 
         prompt = setup_graph_well_spacing().nodes['init'].get('db_query')
         wizard = self._init_wizard(vector_store)
-        response, _, idx = wizard.query_vector_db(prompt)
+        response, _, idx = wizard.query_vector_db(prompt, limit=50)
         text = response.tolist()
         all_text = '\n'.join(text)
 
@@ -273,7 +273,7 @@ class StructuredOrdinanceParser(BaseLLMCaller):
 
         prompt = setup_graph_time().nodes['init'].get('db_query')
         wizard = self._init_wizard(vector_store)
-        response, _, idx = wizard.query_vector_db(prompt)
+        response, _, idx = wizard.query_vector_db(prompt, limit=50)
         text = response.tolist()
         all_text = '\n'.join(text)
 
@@ -293,7 +293,7 @@ class StructuredOrdinanceParser(BaseLLMCaller):
 
         prompt = setup_graph_metering_device().nodes['init'].get('db_query')
         wizard = self._init_wizard(vector_store)
-        response, _, idx = wizard.query_vector_db(prompt)
+        response, _, idx = wizard.query_vector_db(prompt, limit=50)
         text = response.tolist()
         all_text = '\n'.join(text)
 
@@ -313,7 +313,7 @@ class StructuredOrdinanceParser(BaseLLMCaller):
 
         prompt = setup_graph_drought().nodes['init'].get('db_query')
         wizard = self._init_wizard(vector_store)
-        response, _, idx = wizard.query_vector_db(prompt)
+        response, _, idx = wizard.query_vector_db(prompt, limit=50)
         text = response.tolist()
         all_text = '\n'.join(text)
 
@@ -333,7 +333,7 @@ class StructuredOrdinanceParser(BaseLLMCaller):
 
         prompt = setup_graph_plugging_reqs().nodes['init'].get('db_query')
         wizard = self._init_wizard(vector_store)
-        response, _, idx = wizard.query_vector_db(prompt)
+        response, _, idx = wizard.query_vector_db(prompt, limit=50)
         text = response.tolist()
         all_text = '\n'.join(text)
 

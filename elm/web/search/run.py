@@ -233,6 +233,7 @@ async def _load_docs(urls, browser_semaphore=None, **kwargs):
     logger.trace("kwargs for AsyncFileLoader:\n%s",
                  pprint.PrettyPrinter().pformat(kwargs))
     file_loader = AsyncFileLoader(browser_semaphore=browser_semaphore,
+                                  verify_ssl=False,
                                   **kwargs)
     docs = await file_loader.fetch_all(*urls)
 

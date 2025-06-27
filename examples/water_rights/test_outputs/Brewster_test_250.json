@@ -1,0 +1,18 @@
+{
+  "requirements": {
+    "permit_required": "true",
+    "requirements": [
+      "An application must be submitted to the Brewster County Groundwater Conservation District to obtain a permit for drilling a groundwater well.",
+      "Contact the Brewster County Groundwater Conservation District for specific details and guidance regarding the application process."
+    ],
+    "exemptions": "No specific exemptions mentioned in the text; further inquiry with the BCGWCD is needed to determine if any wells are exempt.",
+    "explanation": "The text indicates that well drilling permits are required and handled by the Brewster County Groundwater Conservation District, but it does not provide information on any exemptions from this requirement."
+  },
+  "daily_limits": {},
+  "annual_limits": {},
+  "well_spacing": {},
+  "drilling_window": {},
+  "metering_device": {},
+  "drought_mgmt_plan": {},
+  "plugging_requirements": {}
+}

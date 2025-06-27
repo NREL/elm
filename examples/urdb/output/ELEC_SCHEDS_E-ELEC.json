@@ -1,0 +1,30 @@
+{
+  "rate_name": "Electric Schedule E-ELEC",
+  "description": "This optional schedule applies to individually-metered electric service to residential customers who have one or more of the following qualifying electric technologies: Electric vehicle charging; Energy storage; or Electric heat pump for water heating or climate control (space heating and/or cooling). The rate structure is based on time-of-use (TOU) pricing, with different rates for peak, part-peak, and off-peak hours.",
+  "rate_structure": null,
+  "service_type": "Bundled",
+  "phase_wiring": null,
+  "rate_periods": null,
+  "effective_date": "2024-03-08",
+  "electricity_costs": {
+    "summer": {
+      "peak": 0.61578,
+      "partial_peak": 0.4539,
+      "off_peak": 0.39722
+    },
+    "winter": {
+      "peak": 0.38426,
+      "partial_peak": 0.36217,
+      "off_peak": 0.34831
+    },
+    "units": "kWh",
+    "explanation": "The kWh costs for each period are based on the provided text, which specifies the costs for summer and winter usage during peak, partial-peak, and off-peak hours."
+  },
+  "usage": {},
+  "fixed_costs": {
+    "fixed_cost": 0.49281,
+    "units": "dollars per day",
+    "type": "fixed charge",
+    "explanation": "The text mentions a fixed cost called the 'Base Services Charge' which is billed at a rate of $0.49281 per meter per day, regardless of the amount of electricity used by the consumer."
+  }
+}

@@ -1,0 +1,30 @@
+{
+    "requirements": {
+        "permit_required": "true",
+        "requirements": [
+            "Completion of Application Form",
+            "Submission of Documentation (authority to operate, location map, legal description, drought contingency plan, legal documents for water transfer)",
+            "Compliance Statements (acknowledgment of rules and guidelines)",
+            "Payment of Required Fees",
+            "Well Specifications (withdrawal rate, method, depth, diameter, static water level, casing information)",
+            "Metering Requirements (for non-exempt wells)",
+            "Baseline Water Quality Test (for high-capacity wells)",
+            "Signature and Certification of Accuracy"
+        ],
+        "explanation": "The text clearly states that an application is required to drill a groundwater well, indicating that permits are necessary for compliance with local regulations."
+    },
+    "daily_limits": {},
+    "annual_limits": {},
+    "well_spacing": {
+        "spacing": null,
+        "units": null,
+        "explanation": "The text indicates that wells producing more than 17.5 gpm must be drilled a minimum distance from the nearest well site, but it does not specify a numerical value for the spacing requirement."
+    },
+    "drilling_window": {},
+    "metering_device": {},
+    "drought_mgmt_plan": {},
+    "plugging_requirements": {
+        "plugging_requirements": true,
+        "explanation": "The text specifies that no water well plugging can commence until the application has been processed and written approval has been provided, and that the District must be notified at least 24 hours prior to the initiation of the plugging operation. This indicates that the conservation district implements specific plugging requirements."
+    }
+}

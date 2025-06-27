@@ -1,0 +1,35 @@
+{
+  "requirements": {
+    "permit_required": "true",
+    "requirements": [
+      "Application completeness is required for processing.",
+      "Permit approval is necessary before drilling, altering, or operating a well.",
+      "Permits are granted for two or five years based on the accuracy of the application.",
+      "Certain wells must be equipped with a meter or flow measurement device.",
+      "No plugging can commence without prior approval from the District.",
+      "Notices must be provided to property and well owners within a \u00bc mile radius.",
+      "Compliance with the District's Management Plan is required.",
+      "Baseline water quality testing is required for high-capacity wells.",
+      "Legal documents must be attached if water is to be sold, leased, or transferred."
+    ],
+    "exemptions": "true",
+    "explanation": "The conservation district requires water well permits for most wells, but there are specific exemptions for wells used for domestic purposes, livestock, agricultural irrigation, active oil and gas operations, monitoring, remediation, aquifer storage and recovery, and high-capacity wells that do not exceed certain production limits."
+  },
+  "daily_limits": {},
+  "annual_limits": {},
+  "well_spacing": {
+    "spacing": 30,
+    "units": "feet",
+    "explanation": "The text specifies that all new wells must be drilled within 30 feet of the location specified in the registration or permit application, indicating a spacing requirement for well placement."
+  },
+  "drilling_window": {},
+  "metering_device": {
+    "device": true,
+    "explanation": "A metering device is required for certain types of wells as specified in the text, including new non-exempt wells and those used for specific purposes like oil and gas operations."
+  },
+  "drought_mgmt_plan": {},
+  "plugging_requirements": {
+    "plugging_requirements": true,
+    "explanation": "The text specifies that no water well plugging can commence until the application has been processed and written approval has been provided, and that the district must be notified at least 24 hours prior to the initiation of the plugging operation, indicating that the conservation district implements plugging requirements."
+  }
+}
