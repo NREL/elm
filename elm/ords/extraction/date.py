@@ -106,13 +106,3 @@ def _parse_date_element(json_list, key, max_len, min_val, max_val):
         return -1 * float("inf")
 
     return date_elements
-
-
-def _generate_date(date_elements):
-    """Return the most recent date tuple."""
-    date_objects = []
-    for year, month, day in date_elements:
-        new_date = tuple([year, month, day])
-        date_objects.append(new_date)
-
-    return max(date_objects)
