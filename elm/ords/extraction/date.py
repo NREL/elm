@@ -86,7 +86,7 @@ def _parse_date(json_list):
         json_list, key="day", max_len=2, min_val=1, max_val=31
     )
 
-    year, month, day = _generate_date(zip(years, months, days))
+    year, month, day = max(zip(years, months, days))
 
     return year, month, day
 
