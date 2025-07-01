@@ -50,6 +50,12 @@ class County(Location):
         """str: Full county name in format '{name} County, {state}'"""
         # loc_id = "Parish" if self.is_parish else "County"
         return f"{self.name}, {self.state}"
+    
+    @property
+    def acronym(self):
+        """str: Acronym for the county, e.g., 'Harris County' -> 'HC'"""
+        loc = "".join(part[0].upper() for part in self.name.split())
+        return loc + 'GCD'
 
     def __repr__(self):
         return f"County({self.name}, {self.state}, is_parish={self.is_parish})"

@@ -23,16 +23,16 @@ logger = logging.getLogger(__name__)
 
 QUESTION_TEMPLATES = [
     "0. {location} groundwater conservation district rules",
-    "1. {location} groundwater conservation district management plan",
-    "2. {location} groundwater conservation district well permits",
-    "3. {location} groundwater conservation district well permit requirements",
+    # "1. {location} groundwater conservation district management plan",
+    # "2. {location} groundwater conservation district well permits",
+    # "3. {location} groundwater conservation district well permit requirements",
     ]
 
 
 async def download_county_ordinance(
     location,
     text_splitter,
-    num_urls=10,
+    num_urls=5,
     file_loader_kwargs=None,
     browser_semaphore=None,
     **kwargs
@@ -82,19 +82,22 @@ async def download_county_ordinance(
     )
     logger.debug(f'processing {len(docs)}')
 
+    breakpoint()
+
     # docs = await _down_select_docs_correct_location(
     #     docs, location=location, **kwargs
     # )
 
-    # docs = await _down_select_docs_correct_content(
-    #     docs, location=location, text_splitter=text_splitter, **kwargs
-    # )
-    # logger.info(
-    #     "Found %d potential ordinance documents for %s",
-    #     len(docs),
-    #     location.full_name,
-    # )
+    docs = await _down_select_docs_correct_content(
+        docs, location=location, text_splitter=text_splitter, **kwargs
+    )
+    logger.info(
+        "Found %d potential ordinance documents for %s",
+        len(docs),
+        location.full_name,
+    )
 
+    breakpoint()
     return _sort_final_ord_docs(docs)
 
 
@@ -131,6 +134,7 @@ async def _down_select_docs_correct_location(docs, location, **kwargs):
         validation_coroutine=county_validator.check,
         task_name=location.full_name,
         county=location.name,
+        county_acronym=location.acronym,
         state=location.state,
     )
 

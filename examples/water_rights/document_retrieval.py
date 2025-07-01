@@ -24,8 +24,8 @@ init_logger('elm', log_level='INFO')
 openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
 openai.api_key = os.getenv("AZURE_OPENAI_KEY")
 openai.api_type = 'azure'
-# openai.api_version = os.getenv("AZURE_OPENAI_VERSION")
-openai.api_version = '2024-08-01'
+openai.api_version = os.getenv("AZURE_OPENAI_VERSION")
+# openai.api_version = '2024-08-01'
 
 ChunkAndEmbed.EMBEDDING_MODEL = 'egswaterord-openai-embedding'
 
@@ -98,7 +98,9 @@ if __name__ == '__main__':
             logger.info(f'Embedding {url}')
             # obj = ChunkAndEmbed(d.text, model=MODEL, tokens_per_chunk=500, overlap=1)
             # obj = ChunkAndEmbed(d.text, client, model=MODEL, tokens_per_chunk=250, overlap=1)
-            obj = ChunkAndEmbed(d.text, client, model=MODEL, tokens_per_chunk=500, overlap=1)
+            breakpoint()
+            obj = ChunkAndEmbed(d.text, client, model=MODEL, tokens_per_chunk=500,overlap=1, split_on='\n')
+            
             try:
                 embeddings = asyncio.run(obj.run_async(rate_limit=3e4))
                 if any(e is None for e in embeddings):
@@ -108,6 +110,8 @@ if __name__ == '__main__':
                                        'embedding': embeddings,
                                         'source': url,
                                     })
+                    
+                    breakpoint()
                     df.to_json(embed_fp, indent=2)
                     logger.info(f'Saving {embed_fp}')
             except Exception as e:

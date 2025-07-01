@@ -182,7 +182,7 @@ class CountyValidator:
         self.cn_validator = CountyNameValidator(structured_llm_caller)
         self.cj_validator = CountyJurisdictionValidator(structured_llm_caller)
 
-    async def check(self, doc, county, state):
+    async def check(self, doc, county, county_acronym, state):
         """Check if the document belongs to the county.
 
         Parameters
@@ -222,7 +222,7 @@ class CountyValidator:
             source or "Unknown",
         )
         correct_county_heuristic = _heuristic_check_for_county_and_state(
-            doc, county, state
+            doc, county, county_acronym, state
         )
         logger.debug(
             "Found county name in text (heuristic): %s",
@@ -244,12 +244,13 @@ class CountyValidator:
         )
 
 
-def _heuristic_check_for_county_and_state(doc, county, state):
+def _heuristic_check_for_county_and_state(doc, county, county_acronym, state):
     """Check if county and state names are in doc"""
+    county = county.lower().replace(" county", "")
     return any(
         any(
-            # (county.lower() in fg and state.lower() in fg) # TODO: removing state for now
-            (county.lower() in fg)
+            (county.lower() in fg or county_acronym.lower() in fg) # TODO: removing state for now
+            #(county.lower().replace(' county', '') in fg)
             for fg in convert_text_to_sentence_ngrams(t.lower(), 5)
         )
         for t in doc.pages

@@ -4,7 +4,7 @@ import logging
 from warnings import warn
 
 from elm.ords.llm import LLMCaller, StructuredLLMCaller
-# from elm.water_rights.extraction.date import DateExtractor
+from elm.ords.extraction.date import DateExtractor
 # from elm.water_rights.extraction.state import StateExtractor
 from elm.water_rights.extraction.ordinance import (
     OrdinanceValidator,
@@ -58,7 +58,7 @@ async def check_for_ordinance_info(doc, text_splitter, **kwargs):
     validator = OrdinanceValidator(llm_caller, chunks)
     doc.attrs["contains_ord_info"] = await validator.parse()
     if doc.attrs["contains_ord_info"]:
-        # doc.attrs["date"] = await DateExtractor(llm_caller).parse(doc)
+        doc.attrs["date"] = await DateExtractor(llm_caller).parse(doc)
         # doc.attrs["state"] = await StateExtractor(llm_caller).parse(doc)
         doc.attrs["ordinance_text"] = validator.ordinance_text
 
