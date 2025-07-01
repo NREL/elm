@@ -72,19 +72,21 @@ class DateExtractor:
 
 def _parse_date(json_list):
     """Parse all date elements."""
-    year = _parse_date_element(
+    years = _parse_date_element(
         json_list,
         key="year",
         max_len=4,
         min_val=2000,
         max_val=float("inf"),
     )
-    month = _parse_date_element(
+    months = _parse_date_element(
         json_list, key="month", max_len=2, min_val=1, max_val=12
     )
-    day = _parse_date_element(
+    days = _parse_date_element(
         json_list, key="day", max_len=2, min_val=1, max_val=31
     )
+
+    year, month, day = _generate_date(zip(years, months, days))
 
     return year, month, day
 
@@ -102,4 +104,15 @@ def _parse_date_element(json_list, key, max_len, min_val, max_val):
     ]
     if not date_elements:
         return -1 * float("inf")
-    return max(date_elements)
+
+    return date_elements
+
+
+def _generate_date(date_elements):
+    """Return the most recent date tuple."""
+    date_objects = []
+    for year, month, day in date_elements:
+        new_date = tuple([year, month, day])
+        date_objects.append(new_date)
+
+    return max(date_objects)
