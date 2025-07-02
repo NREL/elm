@@ -72,6 +72,9 @@ class DateExtractor:
 
 def _parse_date(json_list):
     """Parse all date elements."""
+    if not json_list:
+        return None, None, None
+
     years = _parse_date_element(
         json_list,
         key="year",
