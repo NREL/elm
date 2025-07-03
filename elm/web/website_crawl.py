@@ -5,13 +5,14 @@ import logging
 from asyncio import PriorityQueue
 from math import inf as infinity
 from contextlib import aclosing
+from functools import lru_cache
 
 from crawl4ai import AsyncWebCrawler, CrawlerRunConfig, BrowserConfig
 from crawl4ai.utils import normalize_url_for_deep_crawl
 from crawl4ai.content_scraping_strategy import LXMLWebScrapingStrategy
 from crawl4ai.deep_crawling import BestFirstCrawlingStrategy
 from crawl4ai.deep_crawling.filters import (FilterChain, URLPatternFilter,
-                                            ContentTypeFilter)
+                                            ContentTypeFilter, URLFilter)
 
 from elm.web.file_loader import AsyncFileLoader
 from elm.web.document import HTMLDocument
@@ -127,6 +128,75 @@ class ELMLinkScorer:
         return score
 
 
+class ContentTypeExcludeFilter(URLFilter):
+    """Content type to exclude filter using fast lookups"""
+
+    __slots__ = ("exclude_ext", )
+
+    # Fast extension to mime type mapping
+    EXCLUDE_EXTENSIONS = {# Images
+                          'bmp', 'gif', 'ico', 'jpeg', 'jpg', 'png', 'svg',
+                          'tiff', 'webp',
+                          # Audio
+                          'aac', 'm4a', 'mp3', 'ogg', 'wav',
+                          # Video
+                          'avi', 'flv', 'mkv', 'mp4', 'mpeg', 'mov', 'webm',
+                          'wmv',
+                          # Applications
+                          '7z', 'exe', 'gz', 'json', 'msi', 'pdf', 'rar',
+                          'tar', 'xml', 'zip',
+                          # Fonts
+                          'otf', 'ttf', 'woff', 'woff2',
+                          # OpenDocument Formats
+                          'odp', 'ods', 'odt',
+                          # Archives
+                          'bz2', 'tar.gz', 'tgz',
+                          # Others
+                          'ai', 'apk', 'bin', 'deb', 'dmg', 'eps', 'epub',
+                          'iso', 'jar', 'mid', 'midi', 'ps', 'rpm', 'rtf',
+                          'sqlite', 'swf'}
+    """File extensions to exclude from the crawl."""
+
+    def __init__(self, exclude_extensions=None):
+        """
+
+        Parameters
+        ----------
+        exclude_extensions : str or list of str, optional
+            File extensions to exclude from the crawl. If a string is
+            provided, it is treated as a single extension. If a list is
+            provided, each item in the list is treated as an extension.
+            If ``None``, uses the default set of excluded extensions
+            defined in
+            :obj:`ContentTypeExcludeFilter.EXCLUDE_EXTENSIONS`.
+            By default, ``None``.
+        """
+        super().__init__()
+
+        if isinstance(exclude_extensions, str):
+            exclude_extensions = [exclude_extensions]
+
+        self.exclude_ext = frozenset(t.casefold()
+                                     for t in (exclude_extensions
+                                               or self.EXCLUDE_EXTENSIONS))
+
+    @lru_cache(maxsize=1000)
+    def _check_url_cached(self, url: str) -> bool:
+        """Cached URL checking"""
+
+        ext = ContentTypeFilter._extract_extension(url)
+        if not ext:
+            return True
+
+        return ext not in self.exclude_ext
+
+    def apply(self, url: str) -> bool:
+        """Fast extension check with caching"""
+        result = self._check_url_cached(url)
+        self._update_stats(result)
+        return result
+
+
 class ELMWebsiteCrawlingStrategy(BestFirstCrawlingStrategy):
     """Custom crawling strategy for ELM website searching"""
 
@@ -161,7 +231,6 @@ class ELMWebsiteCrawlingStrategy(BestFirstCrawlingStrategy):
         """
         doc_threshold = 5 if cls.ONE_SCORE_AT_A_TIME else 8
         return len(out_docs) >= doc_threshold
-
 
     async def link_discovery(self, result, source_url, current_depth, visited,
                              next_links):
@@ -305,7 +374,8 @@ class ELMWebsiteCrawler:
     """Crawl a website for documents of interest"""
 
     def __init__(self, validator, file_loader_kwargs=None,
-                 browser_config_kwargs=None, crawler_config_kwargs=None,
+                 browser_config_kwargs=None, crawl_strategy_kwargs=None,
+                 crawler_config_kwargs=None, cte_kwargs=None,
                  extra_url_filters=None, include_external=False,
                  url_scorer=None, max_pages=100):
         """
@@ -326,9 +396,18 @@ class ELMWebsiteCrawler:
             Additional keyword-value argument pairs to pass to the
             :class:`crawl4ai.async_configs.BrowserConfig` class.
             By default, ``None``.
+        crawl_strategy_kwargs : dict, optional
+            Additional keyword-value argument pairs to pass to the
+            :class:`ELMWebsiteCrawlingStrategy` class.
+            By default, ``None``.
         crawler_config_kwargs : dict, optional
             Additional keyword-value argument pairs to pass to the
             :class:`crawl4ai.async_configs.CrawlerRunConfig` class.
+            By default, ``None``.
+        cte_kwargs : dict, optional
+            Additional keyword-value argument pairs to pass to the
+            :class:`ContentTypeExcludeFilter` class. This filter is used
+            to exclude URLs based on their content type.
             By default, ``None``.
         extra_url_filters : list, optional
             Additional URL filters to apply during crawling. Each filter
@@ -345,7 +424,9 @@ class ELMWebsiteCrawler:
             URL dictionaries will each have at least one key: "href".
             This key will contain the URL of the link. The dictionary
             may also have other attributes such as "text", which
-            contains the link title text. By default, ``None``.
+            contains the link title text. If ``None``, uses the
+            :meth:`ELMLinkScorer.score` method to score the URLs.
+            By default, ``None``.
         max_pages : int, optional
             Maximum number of pages to crawl. By default, ``100``.
         """
@@ -359,18 +440,18 @@ class ELMWebsiteCrawler:
         bck.update(browser_config_kwargs or {})
         self.browser_config = BrowserConfig(**bck)
 
-        url_filters = [ELM_URL_FILTER,
-                       ContentTypeFilter(allowed_types=["text/html",
-                                                        "application/pdf"])]
+        cte_kwargs = cte_kwargs or {}
+        url_filters = [ELM_URL_FILTER, ContentTypeExcludeFilter(**cte_kwargs)]
         url_filters += extra_url_filters or []
         self.filter_chain = FilterChain(url_filters)
 
         strategy_kwargs = {"max_depth": infinity,
                            "include_external": include_external,
                            "filter_chain": self.filter_chain,
-                           "url_scorer": url_scorer or ELMLinkScorer(),
+                           "url_scorer": url_scorer or ELMLinkScorer().score,
                            "max_pages": max_pages,
                            "logger": logger}
+        strategy_kwargs.update(crawl_strategy_kwargs or {})
         self.crawl_strategy = ELMWebsiteCrawlingStrategy(**strategy_kwargs)
 
         cck = {"deep_crawl_strategy": self.crawl_strategy,
