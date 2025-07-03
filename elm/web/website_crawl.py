@@ -134,27 +134,28 @@ class ContentTypeExcludeFilter(URLFilter):
     __slots__ = ("exclude_ext", )
 
     # Fast extension to mime type mapping
-    _EXCLUDE_EXTENSIONS = {# Images
-                           'bmp', 'gif', 'ico', 'jpeg', 'jpg', 'png', 'svg',
-                           'tiff', 'webp',
-                           # Audio
-                           'aac', 'm4a', 'mp3', 'ogg', 'wav',
-                           # Video
-                           'avi', 'flv', 'mkv', 'mp4', 'mpeg', 'mov', 'webm',
-                           'wmv',
-                           # Applications
-                           '7z', 'exe', 'gz', 'json', 'msi', 'pdf', 'rar',
-                           'tar', 'xml', 'zip'
-                           # Fonts
-                           'otf', 'ttf', 'woff', 'woff2',
-                           # OpenDocument Formats
-                           'odp', 'ods', 'odt',
-                           # Archives
-                           'bz2', 'tar.gz', 'tgz',
-                           # Others
-                           'ai', 'apk', 'bin', 'deb', 'dmg', 'eps', 'epub',
-                           'iso', 'jar', 'mid', 'midi', 'ps', 'rpm', 'rtf',
-                           'sqlite', 'swf'}
+    EXCLUDE_EXTENSIONS = {# Images
+                          'bmp', 'gif', 'ico', 'jpeg', 'jpg', 'png', 'svg',
+                          'tiff', 'webp',
+                          # Audio
+                          'aac', 'm4a', 'mp3', 'ogg', 'wav',
+                          # Video
+                          'avi', 'flv', 'mkv', 'mp4', 'mpeg', 'mov', 'webm',
+                          'wmv',
+                          # Applications
+                          '7z', 'exe', 'gz', 'json', 'msi', 'pdf', 'rar',
+                          'tar', 'xml', 'zip'
+                          # Fonts
+                          'otf', 'ttf', 'woff', 'woff2',
+                          # OpenDocument Formats
+                          'odp', 'ods', 'odt',
+                          # Archives
+                          'bz2', 'tar.gz', 'tgz',
+                          # Others
+                          'ai', 'apk', 'bin', 'deb', 'dmg', 'eps', 'epub',
+                          'iso', 'jar', 'mid', 'midi', 'ps', 'rpm', 'rtf',
+                          'sqlite', 'swf'}
+    """File extensions to exclude from the crawl."""
 
     def __init__(self, exclude_extensions=None):
         """
@@ -167,7 +168,7 @@ class ContentTypeExcludeFilter(URLFilter):
             provided, each item in the list is treated as an extension.
             If ``None``, uses the default set of excluded extensions
             defined in
-            :obj:`ContentTypeExcludeFilter._EXCLUDE_EXTENSIONS`.
+            :obj:`ContentTypeExcludeFilter.EXCLUDE_EXTENSIONS`.
             By default, ``None``.
         """
         super().__init__()
@@ -177,7 +178,7 @@ class ContentTypeExcludeFilter(URLFilter):
 
         self.exclude_ext = frozenset(t.casefold()
                                      for t in (exclude_extensions
-                                               or self._EXCLUDE_EXTENSIONS))
+                                               or self.EXCLUDE_EXTENSIONS))
 
     @lru_cache(maxsize=1000)
     def _check_url_cached(self, url: str) -> bool:
