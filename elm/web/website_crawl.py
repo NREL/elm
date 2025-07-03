@@ -419,7 +419,9 @@ class ELMWebsiteCrawler:
             URL dictionaries will each have at least one key: "href".
             This key will contain the URL of the link. The dictionary
             may also have other attributes such as "text", which
-            contains the link title text. By default, ``None``.
+            contains the link title text. If ``None``, uses the
+            :meth:`ELMLinkScorer.score` method to score the URLs.
+            By default, ``None``.
         max_pages : int, optional
             Maximum number of pages to crawl. By default, ``100``.
         """
@@ -441,7 +443,7 @@ class ELMWebsiteCrawler:
         strategy_kwargs = {"max_depth": infinity,
                            "include_external": include_external,
                            "filter_chain": self.filter_chain,
-                           "url_scorer": url_scorer or ELMLinkScorer(),
+                           "url_scorer": url_scorer or ELMLinkScorer().score,
                            "max_pages": max_pages,
                            "logger": logger}
         self.crawl_strategy = ELMWebsiteCrawlingStrategy(**strategy_kwargs)
