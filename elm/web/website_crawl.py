@@ -374,9 +374,10 @@ class ELMWebsiteCrawler:
     """Crawl a website for documents of interest"""
 
     def __init__(self, validator, file_loader_kwargs=None,
-                 browser_config_kwargs=None, crawler_config_kwargs=None,
-                 cte_kwargs=None, extra_url_filters=None,
-                 include_external=False, url_scorer=None, max_pages=100):
+                 browser_config_kwargs=None, crawl_strategy_kwargs=None,
+                 crawler_config_kwargs=None, cte_kwargs=None,
+                 extra_url_filters=None, include_external=False,
+                 url_scorer=None, max_pages=100):
         """
 
         Parameters
@@ -394,6 +395,10 @@ class ELMWebsiteCrawler:
         browser_config_kwargs : dict, optional
             Additional keyword-value argument pairs to pass to the
             :class:`crawl4ai.async_configs.BrowserConfig` class.
+            By default, ``None``.
+        crawl_strategy_kwargs : dict, optional
+            Additional keyword-value argument pairs to pass to the
+            :class:`ELMWebsiteCrawlingStrategy` class.
             By default, ``None``.
         crawler_config_kwargs : dict, optional
             Additional keyword-value argument pairs to pass to the
@@ -446,6 +451,7 @@ class ELMWebsiteCrawler:
                            "url_scorer": url_scorer or ELMLinkScorer().score,
                            "max_pages": max_pages,
                            "logger": logger}
+        strategy_kwargs.update(crawl_strategy_kwargs or {})
         self.crawl_strategy = ELMWebsiteCrawlingStrategy(**strategy_kwargs)
 
         cck = {"deep_crawl_strategy": self.crawl_strategy,
