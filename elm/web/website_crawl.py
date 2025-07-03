@@ -231,7 +231,6 @@ class ELMWebsiteCrawlingStrategy(BestFirstCrawlingStrategy):
         doc_threshold = 5 if cls.ONE_SCORE_AT_A_TIME else 8
         return len(out_docs) >= doc_threshold
 
-
     async def link_discovery(self, result, source_url, current_depth, visited,
                              next_links):
         """
