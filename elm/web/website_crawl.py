@@ -144,7 +144,7 @@ class ContentTypeExcludeFilter(URLFilter):
                           'wmv',
                           # Applications
                           '7z', 'exe', 'gz', 'json', 'msi', 'pdf', 'rar',
-                          'tar', 'xml', 'zip'
+                          'tar', 'xml', 'zip',
                           # Fonts
                           'otf', 'ttf', 'woff', 'woff2',
                           # OpenDocument Formats
