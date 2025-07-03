@@ -15,3 +15,7 @@ In this directory, we provide a set of examples that demonstrate how to use ELM 
 
 
 - [`Website information retrieval`](./example_website_retrieval_atb.ipynb)
+
+    In this example, we demonstrate how to set up your own website information retrieval using the 2024 ATb as an example.
+    Specifically, we set up a crawler to pull all pages from the 2024 ATB, and then take a look at a more advanced example
+    of applying LLM's to parse content as the website crawl is performed.
