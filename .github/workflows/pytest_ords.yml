@@ -33,7 +33,6 @@ jobs:
          fi
       shell: bash
     - name: Install dependencies
-      shell: bash -l {0}
       run: |
         conda install -c conda-forge poppler
         python -m pip install --upgrade pip
@@ -46,9 +45,10 @@ jobs:
         python -m pip install boto3
         python -m pip install flaky
         python -m pip install .
-        rebrowser_playwright install
+    - name: Install Playwright Browsers
+      run: |
+        rebrowser_playwright install --with-deps
     - name: Run pytest and Generate coverage report
-      shell: bash -l {0}
       run: |
         python -m pytest -v --disable-warnings --cov=./ --cov-report=xml:coverage.xml
     - name: Upload coverage to Codecov
