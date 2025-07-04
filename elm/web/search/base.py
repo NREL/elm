@@ -8,10 +8,7 @@ from urllib.parse import quote
 from abc import ABC, abstractmethod
 from contextlib import asynccontextmanager
 
-from rebrowser_playwright.async_api import (
-    async_playwright,
-    TimeoutError as PlaywrightTimeoutError,
-)
+from rebrowser_playwright.async_api import async_playwright
 from playwright_stealth import StealthConfig
 
 from elm.web.utilities import PWKwargs, clean_search_query, pw_page
@@ -24,7 +21,6 @@ class SearchEngineLinkSearch(ABC):
     """Abstract class to retrieve links for a query using a search engine"""
 
     _SE_NAME = "<unknown se>"
-    _EXCEPTION_TO_CATCH = Exception
 
     async def results(self, *queries, num_results=10):
         """Retrieve links for the first `num_results` of each query
@@ -78,8 +74,11 @@ class SearchEngineLinkSearch(ABC):
         """Perform search while ignoring errors"""
         try:
             return await self._search(query, num_results=num_results)
-        except self._EXCEPTION_TO_CATCH:
-            logger.exception("Could not complete search for query=%r", query)
+        except KeyboardInterrupt:
+            raise
+        except Exception as e:
+            msg = "Could not complete search for query=%r\nGot error type: %r"
+            logger.exception(msg, query, type(e))
             return []
 
     async def _move_mouse(self, page):
@@ -127,7 +126,6 @@ class PlaywrightSearchEngineLinkSearch(SearchEngineLinkSearch):
     """Default page load timeout value in milliseconds"""
 
     _SC = StealthConfig(navigator_user_agent=False)
-    _EXCEPTION_TO_CATCH = PlaywrightTimeoutError
 
     def __init__(self, use_homepage=True, use_scrapling_stealth=False,
                  **launch_kwargs):
