@@ -125,7 +125,7 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
     urls = await search_with_fallback(queries, search_engines=search_engines,
                                       num_urls=num_urls,
                                       ignore_url_parts=ignore_url_parts,
-                                      browser_sem=browser_semaphore,
+                                      browser_semaphore=browser_semaphore,
                                       task_name=task_name, **kwargs)
     logger.debug("Downloading documents for URLS: \n\t-%s", "\n\t-".join(urls))
     docs = await _load_docs(urls, browser_semaphore, **kwargs)
