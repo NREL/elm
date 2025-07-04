@@ -1,0 +1,31 @@
+elm.web.search.yahoo.PlaywrightYahooLinkSearch
+==============================================
+
+.. currentmodule:: elm.web.search.yahoo
+
+.. autoclass:: PlaywrightYahooLinkSearch
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PlaywrightYahooLinkSearch.results
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PlaywrightYahooLinkSearch.MAX_RESULTS_CONSIDERED_PER_PAGE
+      ~PlaywrightYahooLinkSearch.PAGE_LOAD_TIMEOUT
+   
+   

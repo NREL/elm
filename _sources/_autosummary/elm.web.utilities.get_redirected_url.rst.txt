@@ -1,0 +1,6 @@
+elm.web.utilities.get\_redirected\_url
+======================================
+
+.. currentmodule:: elm.web.utilities
+
+.. autofunction:: get_redirected_url

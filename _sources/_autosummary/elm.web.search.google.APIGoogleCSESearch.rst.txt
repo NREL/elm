@@ -1,0 +1,31 @@
+elm.web.search.google.APIGoogleCSESearch
+========================================
+
+.. currentmodule:: elm.web.search.google
+
+.. autoclass:: APIGoogleCSESearch
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~APIGoogleCSESearch.results
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~APIGoogleCSESearch.API_KEY_VAR
+      ~APIGoogleCSESearch.CSE_ID_VAR
+   
+   

@@ -1,0 +1,24 @@
+elm.ords.utilities.queued\_logging.LocationFilter
+=================================================
+
+.. currentmodule:: elm.ords.utilities.queued_logging
+
+.. autoclass:: LocationFilter
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~LocationFilter.filter
+   
+   
+
+   
+   
+   
