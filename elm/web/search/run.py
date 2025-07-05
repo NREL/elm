@@ -2,6 +2,7 @@
 """ELM Web Scraping - functions to run a search"""
 import pprint
 import asyncio
+import random
 import logging
 from collections import namedtuple
 from itertools import zip_longest, chain
@@ -259,6 +260,8 @@ async def _single_query_search(se_name, query, browser_sem, kwargs):
         return [[]]
 
     if uses_browser:
+        # help avoid some detection by staggering the browser launches
+        await asyncio.sleep(random.uniform(1, 10))
         return await _single_query_pw(search_engine, query,
                                       browser_sem=browser_sem)
 
