@@ -230,7 +230,7 @@ class AsyncFileLoader:
         max_retries=3,
         errors=(
             aiohttp.ClientConnectionError,
-            aiohttp.client_exceptions.ClientConnectorCertificateError,
+            aiohttp.client_exceptions.ClientError,
         ),
     )
     async def _fetch_content_with_retry(self, url, session):

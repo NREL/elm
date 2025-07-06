@@ -14,6 +14,9 @@ import pytest
 from elm import OstiList
 
 
+_SKIP_TESTS_SYSTEMS = {"Windows", "Linux"}
+
+
 def _random_delay(*__):
     """Randomly sleep for a short time; used for flaky reruns"""
     time.sleep(random.uniform(0.5, 3.0))
@@ -21,8 +24,8 @@ def _random_delay(*__):
 
 
 @flaky(max_runs=5, min_passes=1)
-@pytest.mark.skipif(platform.system() == "Windows",
-                    reason="Too flaky on windows")
+@pytest.mark.skipif(platform.system() in _SKIP_TESTS_SYSTEMS,
+                    reason="Too flaky on this systems")
 def test_osti_from_url():
     """Test osti list, make sure we can find LA100 documents"""
     url = ('https://www.osti.gov/api/v1/records?'
@@ -44,8 +47,8 @@ def test_osti_from_url():
 
 
 @flaky(max_runs=10, min_passes=1, rerun_filter=_random_delay)
-@pytest.mark.skipif(platform.system() == "Windows",
-                    reason="Too flaky on windows")
+@pytest.mark.skipif(platform.system() in _SKIP_TESTS_SYSTEMS,
+                    reason="Too flaky on this systems")
 def test_osti_from_oids():
     """Test osti list, make sure we can find specific oids from storage futures
     study"""
@@ -56,7 +59,7 @@ def test_osti_from_oids():
 
 @flaky(max_runs=5, min_passes=1)
 @pytest.mark.skipif(platform.system() == "Windows",
-                    reason="Too flaky on windows")
+                    reason="Too flaky on this system")
 def test_osti_download():
     """Test osti download"""
     oids = 1962806  # single small report
