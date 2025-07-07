@@ -54,6 +54,7 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
                                    num_urls=None, ignore_url_parts=None,
                                    search_semaphore=None,
                                    browser_semaphore=None, task_name=None,
+                                   on_search_complete_hook=None,
                                    **kwargs):
     """Retrieve top ``N`` search results as document instances
 
@@ -98,6 +99,12 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
     task_name : str, optional
         Optional task name to use in :func:`asyncio.create_task`.
         By default, ``None``.
+    on_search_complete_hook : callable, optional
+        If provided, this async callable will be called after the search
+        engine links have been retrieved. A single argument will be
+        passed to this function containing a list of URL's that were the
+        result of the search queries (this list cna be empty if the
+        search failed). By default, ``None``.
     **kwargs
         Keyword-argument pairs to initialize
         :class:`elm.web.file_loader.AsyncFileLoader`. This input can
@@ -140,6 +147,9 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
                                       ignore_url_parts=ignore_url_parts,
                                       browser_semaphore=search_semaphore,
                                       task_name=task_name, **kwargs)
+    if on_search_complete_hook is not None:
+        await on_search_complete_hook(urls)
+
     logger.debug("Downloading documents for URLS: \n\t-%s", "\n\t-".join(urls))
     docs = await _load_docs(urls, browser_semaphore, **kwargs)
     return docs
