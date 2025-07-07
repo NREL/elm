@@ -52,7 +52,9 @@ _DEFAULT_SE = ("PlaywrightGoogleLinkSearch", "PlaywrightDuckDuckGoLinkSearch",
 
 async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
                                    num_urls=None, ignore_url_parts=None,
+                                   search_semaphore=None,
                                    browser_semaphore=None, task_name=None,
+                                   on_search_complete_hook=None,
                                    **kwargs):
     """Retrieve top ``N`` search results as document instances
 
@@ -83,13 +85,26 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
         Optional URL components to blacklist. For example, supplying
         `ignore_url_parts={"wikipedia.org"}` will ignore all URLs that
         contain "wikipedia.org". By default, ``None``.
+    search_semaphore : :class:`asyncio.Semaphore`, optional
+        Semaphore instance that can be used to limit the number of
+        playwright browsers used to submit search engine queries open
+        concurrently. For backwards-compatibility, if this input is
+        ``None``, the input from `browser_semaphore` will be used in its
+        place (i.e. the searches and file downloads will be limited
+        using the same semaphore). By default, ``None``.
     browser_semaphore : :class:`asyncio.Semaphore`, optional
         Semaphore instance that can be used to limit the number of
-        playwright browsers open concurrently. If ``None``, no limits
-        are applied. By default, ``None``.
+        playwright browsers used to download files open concurrently.
+        If ``None``, no limits are applied. By default, ``None``.
     task_name : str, optional
         Optional task name to use in :func:`asyncio.create_task`.
         By default, ``None``.
+    on_search_complete_hook : callable, optional
+        If provided, this async callable will be called after the search
+        engine links have been retrieved. A single argument will be
+        passed to this function containing a list of URL's that were the
+        result of the search queries (this list cna be empty if the
+        search failed). By default, ``None``.
     **kwargs
         Keyword-argument pairs to initialize
         :class:`elm.web.file_loader.AsyncFileLoader`. This input can
@@ -123,11 +138,18 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
         List of documents representing the top `num_urls` results from
         the google searches across all `queries`.
     """
+    if search_semaphore is None:
+        # backward-compatibility
+        search_semaphore = browser_semaphore
+
     urls = await search_with_fallback(queries, search_engines=search_engines,
                                       num_urls=num_urls,
                                       ignore_url_parts=ignore_url_parts,
-                                      browser_semaphore=browser_semaphore,
+                                      browser_semaphore=search_semaphore,
                                       task_name=task_name, **kwargs)
+    if on_search_complete_hook is not None:
+        await on_search_complete_hook(urls)
+
     logger.debug("Downloading documents for URLS: \n\t-%s", "\n\t-".join(urls))
     docs = await _load_docs(urls, browser_semaphore, **kwargs)
     return docs
