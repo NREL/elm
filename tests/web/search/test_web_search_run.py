@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 from elm.web.search.run import (_single_se_search, _down_select_urls,
-                                _init_se, _load_docs)
+                                _init_se, load_docs)
 from elm.web.search.google import (APIGoogleCSESearch,
                                    PlaywrightGoogleLinkSearch)
 from elm.exceptions import ELMKeyError
@@ -63,7 +63,7 @@ def test_init_se_does_not_pop_kwargs():
 @pytest.mark.asyncio
 async def test_load_docs_empty():
     """Test loading docs for no URLs"""
-    assert await _load_docs(set()) == []
+    assert await load_docs(set()) == []
 
 
 @pytest.mark.asyncio

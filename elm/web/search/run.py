@@ -8,7 +8,6 @@ from collections import namedtuple
 from itertools import zip_longest, chain
 from contextlib import AsyncExitStack
 
-
 from elm.web.file_loader import AsyncFileLoader
 from elm.web.search.bing import PlaywrightBingLinkSearch
 from elm.web.search.duckduckgo import (APIDuckDuckGoSearch,
@@ -151,7 +150,7 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
         await on_search_complete_hook(urls)
 
     logger.debug("Downloading documents for URLS: \n\t-%s", "\n\t-".join(urls))
-    docs = await _load_docs(urls, browser_semaphore, **kwargs)
+    docs = await load_docs(urls, browser_semaphore, **kwargs)
     return docs
 
 
@@ -250,6 +249,42 @@ async def search_with_fallback(queries, search_engines=_DEFAULT_SE,
     return set()
 
 
+async def load_docs(urls, browser_semaphore=None, **kwargs):
+    """Load a document for each input URL
+
+    Parameters
+    ----------
+    urls : iterable of str
+        Iterable of URL's (as strings) to fetch.
+    browser_semaphore : :class:`asyncio.Semaphore`, optional
+        Semaphore instance that can be used to limit the number of
+        playwright browsers open concurrently for document retrieval. If
+        ``None``, no limits are applied. By default, ``None``.
+    kwargs
+        Keyword-argument pairs to initialize
+        :class:`elm.web.file_loader.AsyncFileLoader`.
+
+    Returns
+    -------
+    list
+        List of non-empty document instances containing information from
+        the URL's. If a URL could not be fetched (i.e. document instance
+        is empty), it will not be included in the output list.
+    """
+    logger.trace("Downloading docs for the following URL's:\n%r", urls)
+    logger.trace("kwargs for AsyncFileLoader:\n%s",
+                 pprint.PrettyPrinter().pformat(kwargs))
+    file_loader = AsyncFileLoader(browser_semaphore=browser_semaphore,
+                                  **kwargs)
+    docs = await file_loader.fetch_all(*urls)
+
+    page_lens = {doc.attrs.get("source", "Unknown"): len(doc.pages)
+                 for doc in docs}
+    logger.debug("Loaded the following number of pages for docs:\n%s",
+                 pprint.PrettyPrinter().pformat(page_lens))
+    return [doc for doc in docs if not doc.empty]
+
+
 async def _single_se_search(se_name, queries, num_urls, ignore_url_parts,
                             browser_sem, task_name, kwargs):
     """Search for links using a single search engine"""
@@ -343,19 +378,3 @@ def _as_set(user_input):
     if isinstance(user_input, str):
         user_input = {user_input}
     return set(user_input or [])
-
-
-async def _load_docs(urls, browser_semaphore=None, **kwargs):
-    """Load a document for each input URL"""
-    logger.trace("Downloading docs for the following URL's:\n%r", urls)
-    logger.trace("kwargs for AsyncFileLoader:\n%s",
-                 pprint.PrettyPrinter().pformat(kwargs))
-    file_loader = AsyncFileLoader(browser_semaphore=browser_semaphore,
-                                  **kwargs)
-    docs = await file_loader.fetch_all(*urls)
-
-    page_lens = {doc.attrs.get("source", "Unknown"): len(doc.pages)
-                 for doc in docs}
-    logger.debug("Loaded the following number of pages for docs:\n%s",
-                 pprint.PrettyPrinter().pformat(page_lens))
-    return [doc for doc in docs if not doc.empty]

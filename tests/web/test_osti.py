@@ -25,7 +25,7 @@ def _random_delay(*__):
 
 @flaky(max_runs=5, min_passes=1)
 @pytest.mark.skipif(platform.system() in _SKIP_TESTS_SYSTEMS,
-                    reason="Too flaky on this systems")
+                    reason="Too flaky on this system")
 def test_osti_from_url():
     """Test osti list, make sure we can find LA100 documents"""
     url = ('https://www.osti.gov/api/v1/records?'
@@ -48,7 +48,7 @@ def test_osti_from_url():
 
 @flaky(max_runs=10, min_passes=1, rerun_filter=_random_delay)
 @pytest.mark.skipif(platform.system() in _SKIP_TESTS_SYSTEMS,
-                    reason="Too flaky on this systems")
+                    reason="Too flaky on this system")
 def test_osti_from_oids():
     """Test osti list, make sure we can find specific oids from storage futures
     study"""
@@ -58,7 +58,7 @@ def test_osti_from_oids():
 
 
 @flaky(max_runs=5, min_passes=1)
-@pytest.mark.skipif(platform.system() == "Windows",
+@pytest.mark.skipif(platform.system() in _SKIP_TESTS_SYSTEMS,
                     reason="Too flaky on this system")
 def test_osti_download():
     """Test osti download"""
