@@ -1,0 +1,6 @@
+elm.ords.utilities.counties.load\_counties\_from\_fp
+====================================================
+
+.. currentmodule:: elm.ords.utilities.counties
+
+.. autofunction:: load_counties_from_fp
