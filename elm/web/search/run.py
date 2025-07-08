@@ -354,8 +354,8 @@ async def load_docs(urls, browser_semaphore=None, **kwargs):
         Iterable of URL's (as strings) to fetch.
     browser_semaphore : :class:`asyncio.Semaphore`, optional
         Semaphore instance that can be used to limit the number of
-        playwright browsers open concurrently. If ``None``, no limits
-        are applied. By default, ``None``.
+        playwright browsers open concurrently for document retrieval. If
+        ``None``, no limits are applied. By default, ``None``.
     kwargs
         Keyword-argument pairs to initialize
         :class:`elm.web.file_loader.AsyncFileLoader`.
