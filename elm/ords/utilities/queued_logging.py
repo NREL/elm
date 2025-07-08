@@ -87,7 +87,11 @@ class LocalProcessQueueHandler(QueueHandler):
             added, with a value equal to the name of the current asyncio
             task (i.e. ``asyncio.current_task().get_name()``).
         """
-        record.location = asyncio.current_task().get_name()
+        try:
+            record.location = asyncio.current_task().get_name()
+        except RuntimeError:
+            record.location = None
+
         try:
             self.enqueue(record)
         except asyncio.CancelledError:
