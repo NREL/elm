@@ -8,7 +8,6 @@ from collections import namedtuple
 from itertools import zip_longest, chain
 from contextlib import AsyncExitStack
 
-
 from elm.web.file_loader import AsyncFileLoader
 from elm.web.search.bing import PlaywrightBingLinkSearch
 from elm.web.search.duckduckgo import (APIDuckDuckGoSearch,
