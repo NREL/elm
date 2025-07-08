@@ -180,7 +180,17 @@ class AsyncFileLoader:
             Document instance containing text, if the fetch was
             successful.
         """
-        doc, raw_content = await self._fetch_doc_with_url_in_metadata(url)
+        try:
+            doc, raw_content = await self._fetch_doc_with_url_in_metadata(url)
+        except KeyboardInterrupt:
+            raise
+        except Exception as e:
+            msg = ("Encountered error of type %r while fetching document from "
+                   "%s:")
+            err_type = type(e)
+            logger.exception(msg, err_type, url)
+            return HTMLDocument(pages=[])
+
         doc = await self._cache_doc(doc, raw_content)
         return doc
 
