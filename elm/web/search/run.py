@@ -151,7 +151,7 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
         await on_search_complete_hook(urls)
 
     logger.debug("Downloading documents for URLS: \n\t-%s", "\n\t-".join(urls))
-    docs = await _load_docs(urls, browser_semaphore, **kwargs)
+    docs = await load_docs(urls, browser_semaphore, **kwargs)
     return docs
 
 
@@ -345,8 +345,28 @@ def _as_set(user_input):
     return set(user_input or [])
 
 
-async def _load_docs(urls, browser_semaphore=None, **kwargs):
-    """Load a document for each input URL"""
+async def load_docs(urls, browser_semaphore=None, **kwargs):
+    """Load a document for each input URL
+
+    Parameters
+    ----------
+    urls : iterable of str
+        Iterable of URL's (as strings) to fetch.
+    browser_semaphore : :class:`asyncio.Semaphore`, optional
+        Semaphore instance that can be used to limit the number of
+        playwright browsers open concurrently. If ``None``, no limits
+        are applied. By default, ``None``.
+    kwargs
+        Keyword-argument pairs to initialize
+        :class:`elm.web.file_loader.AsyncFileLoader`.
+
+    Returns
+    -------
+    list
+        List of non-empty document instances containing information from
+        the URL's. If a URL could not be fetched (i.e. document instance
+        is empty), it will not be included in the output list.
+    """
     logger.trace("Downloading docs for the following URL's:\n%r", urls)
     logger.trace("kwargs for AsyncFileLoader:\n%s",
                  pprint.PrettyPrinter().pformat(kwargs))
