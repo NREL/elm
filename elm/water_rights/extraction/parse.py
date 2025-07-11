@@ -15,12 +15,15 @@ from elm.utilities import validate_azure_api_params
 from elm.water_rights.extraction.graphs import (
     EXTRACT_ORIGINAL_TEXT_PROMPT,
     setup_graph_permits,
+    setup_graph_geothermal,
+    setup_graph_limits,
     setup_graph_daily_limits,
     setup_graph_annual_limits,
     setup_graph_well_spacing,
     setup_graph_time,
     setup_graph_metering_device,
     setup_graph_drought,
+    setup_graph_contingency,
     setup_graph_plugging_reqs,
     llm_response_starts_with_yes,
 )
@@ -152,37 +155,51 @@ class StructuredOrdinanceParser(BaseLLMCaller):
         values = {}
         self.location = location
         
-        reqs = await self._check_reqs(vector_store)
-        logger.info("Requirements found in text: %s", reqs)
-        values['requirements'] = reqs
+        # reqs = await self._check_reqs(vector_store)
+        # logger.info("Requirements found in text: %s", reqs)
+        # values['requirements'] = reqs
 
-        daily_lims = await self._check_daily_limits(vector_store)
-        logger.info("Definition type found in text: %s", daily_lims)
-        values['daily_limits'] = daily_lims
+        # geo_reqs = await self._check_geothermal(vector_store)
+        # logger.info("Requirements found in text: %s", reqs)
+        # values['geothermal_requirements'] = geo_reqs
 
-        annual_lims = await self._check_annual_limits(vector_store)
-        logger.info("Definition type found in text: %s", annual_lims)
-        values['annual_limits'] = annual_lims
+        # intervals = ['daily', 'monthly', 'annual']
+        # for interval in intervals:
+        #     lims = await self._check_limits(vector_store, interval)
+        #     logger.info("Definition type found in text: %s", lims)
+        #     values[f'{interval}_limits'] = lims
+
+        # daily_lims = await self._check_daily_limits(vector_store)
+        # logger.info("Definition type found in text: %s", daily_lims)
+        # values['daily_limits'] = daily_lims
+
+        # annual_lims = await self._check_annual_limits(vector_store)
+        # logger.info("Definition type found in text: %s", annual_lims)
+        # values['annual_limits'] = annual_lims
 
         well_spacing = await self._check_spacing(vector_store)
         logger.info("Definition type found in text: %s", well_spacing)
         values['well_spacing'] = well_spacing
 
-        time = await self._check_time(vector_store)
-        logger.info("Definition type found in text: %s", time)
-        values['drilling_window'] = time
+        # time = await self._check_time(vector_store)
+        # logger.info("Definition type found in text: %s", time)
+        # values['drilling_window'] = time
         
-        metering_device = await self._check_metering_device(vector_store)
-        logger.info("Definition type found in text: %s", metering_device)
-        values['metering_device'] = metering_device
+        # metering_device = await self._check_metering_device(vector_store)
+        # logger.info("Definition type found in text: %s", metering_device)
+        # values['metering_device'] = metering_device
 
-        drought = await self._check_drought(vector_store)
-        logger.info("Definition type found in text: %s", drought)
-        values['drought_mgmt_plan'] = drought
+        # district_drought = await self._check_drought(vector_store)
+        # logger.info("Definition type found in text: %s", district_drought)
+        # values['district_drought_mgmt_plan'] = district_drought
+
+        well_drought = await self._check_well_drought(vector_store)
+        logger.info("Definition type found in text: %s", well_drought)
+        values['well_drought_mgmt_plan'] = well_drought
         
-        plugging = await self._check_plugging(vector_store)
-        logger.info("Definition type found in text: %s", plugging)
-        values['plugging_requirements'] = plugging
+        # plugging = await self._check_plugging(vector_store)
+        # logger.info("Definition type found in text: %s", plugging)
+        # values['plugging_requirements'] = plugging
 
         return values    
 
@@ -207,11 +224,55 @@ class StructuredOrdinanceParser(BaseLLMCaller):
 
         return dtree_def_type_out
     
+    async def _check_geothermal(self, vector_store):
+        """Get the requirements mentioned in the text."""
+        logger.debug("Checking requirements")
+
+        prompt = setup_graph_geothermal().nodes['init'].get('db_query')
+        prompt = prompt.format(DISTRICT_NAME=self.location)
+        wizard = self._init_wizard(vector_store)
+        response, _, idx = wizard.query_vector_db(prompt, limit=50)
+        text = response.tolist()
+        all_text = '\n'.join(text)
+
+        tree = _setup_async_decision_tree(
+            setup_graph_permits,
+            text=all_text,
+            chat_llm_caller=self._init_chat_llm_caller(DEFAULT_SYSTEM_MESSAGE),
+        )
+
+        dtree_def_type_out = await _run_async_tree(tree)
+
+        return dtree_def_type_out
+    
+    async def _check_limits(self, vector_store, interval):
+        """Get the extraction limits mentioned in the text."""
+        logger.debug("Checking daily extraction limits")
+
+        prompt = setup_graph_limits(interval).nodes['init'].get('db_query')
+        prompt = prompt.format(DISTRICT_NAME=self.location, interval=interval)
+        wizard = self._init_wizard(vector_store)
+        response, _, idx = wizard.query_vector_db(prompt, limit=50)
+        text = response.tolist()
+        all_text = '\n'.join(text)
+
+        tree = _setup_async_decision_tree(
+            setup_graph_limits,
+            interval=interval,
+            text=all_text,
+            chat_llm_caller=self._init_chat_llm_caller(DEFAULT_SYSTEM_MESSAGE),
+        )
+
+        dtree_def_type_out = await _run_async_tree(tree)
+
+        return dtree_def_type_out
+
     async def _check_daily_limits(self, vector_store):
         """Get the extraction limits mentioned in the text."""
         logger.debug("Checking daily extraction limits")
 
         prompt = setup_graph_daily_limits().nodes['init'].get('db_query')
+        prompt = prompt.format(DISTRICT_NAME=self.location, interval='daily')
         wizard = self._init_wizard(vector_store)
         response, _, idx = wizard.query_vector_db(prompt, limit=50)
         text = response.tolist()
@@ -253,7 +314,7 @@ class StructuredOrdinanceParser(BaseLLMCaller):
 
         prompt = setup_graph_well_spacing().nodes['init'].get('db_query')
         wizard = self._init_wizard(vector_store)
-        response, _, idx = wizard.query_vector_db(prompt, limit=50)
+        response, _, idx = wizard.query_vector_db(prompt, limit=20)
         text = response.tolist()
         all_text = '\n'.join(text)
 
@@ -307,7 +368,7 @@ class StructuredOrdinanceParser(BaseLLMCaller):
 
         return dtree_def_type_out
     
-    async def _check_drought(self, vector_store):
+    async def _check_district_drought(self, vector_store):
         """Get the drought management plan mentioned in the text."""
         logger.debug("Checking drought management plan")
 
@@ -319,6 +380,26 @@ class StructuredOrdinanceParser(BaseLLMCaller):
 
         tree = _setup_async_decision_tree(
             setup_graph_drought,
+            text=all_text,
+            chat_llm_caller=self._init_chat_llm_caller(DEFAULT_SYSTEM_MESSAGE),
+        )
+
+        dtree_def_type_out = await _run_async_tree(tree)
+
+        return dtree_def_type_out
+    
+    async def _check_well_drought(self, vector_store):
+        """Get the drought management plan mentioned in the text."""
+        logger.debug("Checking drought management plan")
+
+        prompt = setup_graph_contingency().nodes['init'].get('db_query')
+        wizard = self._init_wizard(vector_store)
+        response, _, idx = wizard.query_vector_db(prompt, limit=50)
+        text = response.tolist()
+        all_text = '\n'.join(text)
+
+        tree = _setup_async_decision_tree(
+            setup_graph_contingency,
             text=all_text,
             chat_llm_caller=self._init_chat_llm_caller(DEFAULT_SYSTEM_MESSAGE),
         )

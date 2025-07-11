@@ -86,7 +86,10 @@ def _parse_date(json_list):
         json_list, key="day", max_len=2, min_val=1, max_val=31
     )
 
-    year, month, day = max(zip(years, months, days))
+    try:
+        year, month, day = max(zip(years, months, days))
+    except:
+        breakpoint()
 
     return year, month, day
 
@@ -103,19 +106,6 @@ def _parse_date_element(json_list, key, max_len, min_val, max_val):
         and (min_val <= int(y) <= max_val)
     ]
     if not date_elements:
-        return -1 * float("inf")
+        return [None] * len(json_list)#-1 * float("inf")
 
     return date_elements
-
-
-def _generate_date(date_elements):
-    """Return the most recent date tuple."""
-
-    date_objects = []
-    for year, month, day in date_elements:
-        new_date = tuple([year, month, day])
-        date_objects.append(new_date)
-
-    return max(date_objects)
-
-

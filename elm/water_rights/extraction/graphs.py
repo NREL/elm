@@ -217,7 +217,7 @@ def setup_graph_permits(**kwargs):
 
     return G
 
-def setup_graph_geothermal(**kwargs): ## TODO: finish this one --> water wells specifically for geothermal systems
+def setup_graph_geothermal(**kwargs):
     """Setup Graph to get permit requirements 
 
     Parameters
@@ -236,15 +236,44 @@ def setup_graph_geothermal(**kwargs): ## TODO: finish this one --> water wells s
     G.add_node(
         "init",
         prompt=(
-            "Does the following text mention a requirement for geothermal systems specifically? "
+            "Does the following text mention provisions that apply to geothermal systems specifically? "
             "Begin your response with either 'Yes' or 'No' and explain your "
             "answer."
             '\n\n"""\n{text}\n"""'
         ),
         # db_query=("Does {DISTRICT_NAME} require a permit or application to drill a water well?"),
         # db_query=("Is there an application process to drill a water well in {DISTRICT_NAME}?"),
-        db_query=("Is an application or permit required to drill a water well in {DISTRICT_NAME}?"),
+        db_query=("Does {DISTRICT_NAME} implement requirements that are specific to geothermal systems?"),
     )
+
+    G.add_edge("init", "get_reqs", condition=llm_response_starts_with_yes)
+
+    G.add_node(
+        "get_reqs", 
+        prompt=(
+            "Summarize the requirements for geothermal systems mentioned in the text. "
+        ),
+    )
+
+    G.add_edge("get_reqs", "final")
+
+    G.add_node(
+        "final",
+        prompt=(
+            "Respond based on our entire conversation so far. Return your "
+            "answer in JSON format (not markdown). Your JSON file must "
+            'include exactly three keys. The keys are "geothermal_requirements" '
+            '"summary", and "explanation". '
+            'The value of the "geothermal_requirements" key should be either "True" or "False" '
+            'based on whether or not the conservation district has specific requirements for geothermal systems. '
+            'The value "summary" should summarize the requirements mentioned above if applicable. '
+            'The value of the "explanation" '
+            "key should be a string containing a short explanation for your "
+            "choice."
+        ),
+    )
+
+    return G
 
 def setup_graph_gas(**kwargs): ## TODO: finish this one --> water wells specifically for oil and gas
     """Setup Graph to get permit requirements 
@@ -275,6 +304,97 @@ def setup_graph_gas(**kwargs): ## TODO: finish this one --> water wells specific
         db_query=("Is an application or permit required to drill a water well in {DISTRICT_NAME}?"),
     ) 
 
+
+def setup_graph_limits(interval, **kwargs):
+    """Setup Graph to get permit requirements 
+
+    Parameters
+    ----------
+    **kwargs
+        Keyword-value pairs to add to graph.
+
+    Returns
+    -------
+    nx.DiGraph
+        Graph instance that can be used to initialize an
+        `elm.tree.DecisionTree`.
+    """
+    G = _setup_graph_no_nodes(**kwargs)
+
+    G.add_node(
+        "init",
+        prompt=(
+            f"Does the following text mention {interval} water well production or extraction limits? "
+            "Limits may be defined as an acre-foot "
+            "or a gallon limit."
+            "Begin your response with either 'Yes' or 'No' and explain your "
+            "answer."
+            '\n\n"""\n{text}\n"""'
+        ),
+        db_query=(
+            "Does {DISTRICT_NAME} have {interval} water well production or extraction limits? "
+    ),
+    )
+
+    G.add_edge("init", "get_type", condition=llm_response_starts_with_yes)
+
+
+    G.add_node(
+        "get_type",
+        prompt=(
+            "Does the text mention an explicit, numerical limit such as a gallons or acre-foot figure?  "
+            "Begin your response with either 'Yes' or 'No' and explain your "
+            "answer. Some limits maybe permit specific in which case your answer should be 'No'."
+        ),
+    )
+
+    G.add_edge("get_type", "get_limit", condition=llm_response_starts_with_yes)
+    G.add_edge("get_type", "permit_final", condition=llm_response_starts_with_no)
+
+
+    G.add_node(
+        "get_limit",
+        prompt=(
+            f"What is the {interval} extraction limit mentioned in the text? "
+            "Include the units associated with the limit (example: gallons or acre-feet). "
+        ),
+    )
+
+    G.add_node(
+        "permit_final",
+        prompt=(
+            "Summarize the production limit described in the text and "
+            "respond based on our entire conversation so far. Return your "
+            "answer in JSON format (not markdown). Your JSON file must "
+            'include exactly two keys. The keys are "limit_type" '
+            'and "explanation". '
+            'The value of the "limit_type" key should be either "explicit" or "permit specific". '
+            'The value of the "explanation" '
+            "key should be a string containing a short explanation for your "
+            "choice."
+        ),
+    )
+
+    G.add_edge("get_limit", "final")
+
+    G.add_node(
+        "final",
+        prompt=(
+            "Respond based on our entire conversation so far. Return your "
+            "answer in JSON format (not markdown). Your JSON file must "
+            'include exactly three keys. The keys are "limit_type", "extraction_limit", "units", '
+            'and "explanation". '
+            'The value of the "limit_type" key should be either "explicit" or "permit specific". '
+            'The value of the "extraction_limit" key should be the numerical value associated '
+            'with the extraction limit the "units" key should describe the units associated with '
+            'the extraction limit. The value of the "explanation" '
+            "key should be a string containing a short explanation for your "
+            "choice."
+        ),
+    )
+
+    return G
+
 def setup_graph_daily_limits(**kwargs):
     """Setup Graph to get permit requirements 
 
@@ -294,20 +414,32 @@ def setup_graph_daily_limits(**kwargs):
     G.add_node(
         "init",
         prompt=(
-            "Does the following text mention daily water well extraction limits? "
-            "Extraction limits may be defined as an acre-foot "
+            "Does the following text mention daily water well production or extraction limits? "
+            "Limits may be defined as an acre-foot "
             "or a gallon limit."
             "Begin your response with either 'Yes' or 'No' and explain your "
             "answer."
             '\n\n"""\n{text}\n"""'
         ),
         db_query=(
-            "Does {DISTRICT_NAME} have daily water well extraction limits? "
-            "Extraction limits might be defined as an acre-foot "
-            "or a gallon limit."),
+            "Does {DISTRICT_NAME} have daily water well production or extraction limits? "
+    ),
     ) 
 
-    G.add_edge("init", "get_daily", condition=llm_response_starts_with_yes)
+    G.add_edge("init", "get_type", condition=llm_response_starts_with_yes)
+
+
+    G.add_node(
+        "get_type",
+        prompt=(
+            "Does the text mention an explicit, numerical limit such as a gallons per day figure?  "
+            "Begin your response with either 'Yes' or 'No' and explain your "
+            "answer. Some limits maybe permit specific in which case your answer should be 'No'."
+        ),
+    )
+
+    G.add_edge("get_type", "get_daily", condition=llm_response_starts_with_yes)
+    G.add_edge("get_type", "permit_final", condition=llm_response_starts_with_no)
 
 
     G.add_node(
@@ -318,6 +450,21 @@ def setup_graph_daily_limits(**kwargs):
         ),
     )
 
+    G.add_node(
+        "permit_final",
+        prompt=(
+            "Summarize the production limit described in the text and "
+            "respond based on our entire conversation so far. Return your "
+            "answer in JSON format (not markdown). Your JSON file must "
+            'include exactly two keys. The keys are "limit_type" '
+            'and "explanation". '
+            'The value of the "limit_type" key should be either "explicit" or "permit specific". '
+            'The value of the "explanation" '
+            "key should be a string containing a short explanation for your "
+            "choice."
+        ),
+    )
+
     G.add_edge("get_daily", "final")
 
     G.add_node(
@@ -325,8 +472,9 @@ def setup_graph_daily_limits(**kwargs):
         prompt=(
             "Respond based on our entire conversation so far. Return your "
             "answer in JSON format (not markdown). Your JSON file must "
-            'include exactly three keys. The keys are "extraction_limit", "units", '
+            'include exactly three keys. The keys are "limit_type", "extraction_limit", "units", '
             'and "explanation". '
+            'The value of the "limit_type" key should be either "explicit" or "permit specific". '
             'The value of the "extraction_limit" key should be the numerical value associated '
             'with the extraction limit the "units" key should describe the units associated with '
             'the extraction limit. The value of the "explanation" '
@@ -356,7 +504,7 @@ def setup_graph_monthly_limits(**kwargs):
     G.add_node(
         "init",
         prompt=(
-            "Does the following text mention monthly water well extraction limits? "
+            "Does the following text mention monthly water well production or extraction limits? "
             "Extraction limits may be defined as an acre-foot "
             "or a gallon limit."
             "Begin your response with either 'Yes' or 'No' and explain your "
@@ -364,7 +512,7 @@ def setup_graph_monthly_limits(**kwargs):
             '\n\n"""\n{text}\n"""'
         ),
         db_query=(
-            "Does {DISTRICT_NAME} have monthly water well extraction limits? "
+            "Does {DISTRICT_NAME} have monthly water well production or extraction limits? "
             "Extraction limits might be defined as an acre-foot "
             "or a gallon limit."),
     ) 
@@ -418,7 +566,7 @@ def setup_graph_annual_limits(**kwargs):
     G.add_node(
         "init",
         prompt=(
-            "Does the following text mention annual water well extraction limits? "
+            "Does the following text mention annual water well production or extraction limits? "
             "Extraction limits may be defined as an acre-foot "
             "or a gallon limit."
             "Begin your response with either 'Yes' or 'No' and explain your "
@@ -426,7 +574,7 @@ def setup_graph_annual_limits(**kwargs):
             '\n\n"""\n{text}\n"""'
         ),
         db_query=(
-            "Does {DISTRICT_NAME} have annual water well extraction limits? "
+            "Does {DISTRICT_NAME} have annual water well production or extraction limits? "
             "Extraction limits may be defined as an acre-foot "
             "or a gallon limit."
         )
@@ -477,23 +625,22 @@ def setup_graph_well_spacing(**kwargs):
         `elm.tree.DecisionTree`.
     """
     G = _setup_graph_no_nodes(**kwargs)
-
     G.add_node(
         "init",
         prompt=(
-            "Does the following text mention restrictions related to well spacing? "
-            "Such information typically dictates how far apart two wells must be and "
-            "could prohibit an individual from drilling a well with a certain distance "
-            "of another well. "
+            # "Does the following text mention restrictions related to well spacing? "
+            "Does the following text mention how far a new well must be from "
+            "another well? "
+            "Well spacing refers to how far apart two wells must be and "
+            "could prohibit an individual from drilling a well within a certain distance "
+            "of a different well. "
             "Begin your response with either 'Yes' or 'No' and explain your "
             "answer."
             '\n\n"""\n{text}\n"""'
         ),
         db_query=(
-            'Does {DISTRICT_NAME} have restrictions related to well spacing? ' 
-            'Such information typically dictates how far apart two wells must be and '
-            'could prohibit an individual from drilling a well with a certain distance '
-            'of another well or feature. '
+            'Does {DISTRICT_NAME} have restrictions related to well spacing or '
+            'a required distance between wells? '
         )   
     ) 
 
@@ -508,18 +655,31 @@ def setup_graph_well_spacing(**kwargs):
         ),
     )
 
-    G.add_edge("get_spacing", "final")
+    G.add_edge("get_spacing", "get_qualifier")
+    
+    G.add_node(
+        "get_qualifier",
+        prompt=(
+            "Is the spacing limit dependent upon well characteristics "
+            "such as depth or production capability?"
+            "If so, include that metric in the response (example: gallons per minute). "
+        ),
+    )
+
+    G.add_edge("get_qualifier", "final")
 
     G.add_node(
         "final",
         prompt=(
             "Respond based on our entire conversation so far. Return your "
             "answer in JSON format (not markdown). Your JSON file must "
-            'include exactly three keys. The keys are "spacing", "units", '
-            'and "explanation". '
+            'include exactly four keys. The keys are "spacing", "units", '
+            '"qualifier", and "explanation". '
             'The value of the "spacing" key should be the numerical value associated '
             'with the spacing requirements the "units" key should describe the units associated with '
-            'the spacing. The value of the "explanation" '
+            'the spacing. The value of the "qualifier" key should be the '
+            'well characteristic metric that qualifies the spacing if applicable. '
+            'The value of the "explanation" '
             "key should be a string containing a short explanation for your "
             "choice."
         ),
@@ -556,9 +716,8 @@ def setup_graph_time(**kwargs):
             '\n\n"""\n{text}\n"""'
         ),
         db_query=(
-            'Do the documents mention a drilling window?'
-            'Such a value specifies how long after permit approval '
-            'that drilling must commence. '
+            'In {DISTRICT_NAME}, how long after permit approval '
+            'must drilling must commence? '
         ),
     ) 
 
@@ -620,10 +779,7 @@ def setup_graph_metering_device(**kwargs):
             '\n\n"""\n{text}\n"""'
         ),
         db_query=(
-            'Do the documents mention a requirement for a metering device? '
-            'Metering devices are typically utilized to monitor '
-            'water usage and might be required by the conservation '
-            'district. '
+            'Is a metering device that monitors water usage required in {DISTRICT_NAME}? '
         ),
 
     ) 
@@ -684,10 +840,7 @@ def setup_graph_drought(**kwargs):
             '\n\n"""\n{text}\n"""'
         ),
         db_query=(
-            'Do the documents mention a drought management plan? '
-            'Drought management plans might specify actions or policies '
-            'that could be implemented in the event of a drought and '
-            'could impose additional restrictions on well users. '
+            'Does {DISTRICT_NAME} have a drought management plan?'
         ),
     ) 
 
@@ -695,9 +848,71 @@ def setup_graph_drought(**kwargs):
 
 
     G.add_node(
-        "get_device",
+        "get_plan",
         prompt=(
             "Summarize the drought management plan mentioned in the text? "
+        ),
+    )
+
+    G.add_edge("get_plan", "final")
+
+    G.add_node(
+        "final",
+        prompt=(
+            "Respond based on our entire conversation so far. Return your "
+            "answer in JSON format (not markdown). Your JSON file must "
+            'include exactly two keys. The keys are "drought_plan" and '
+            'and "explanation". '
+            'The value of the "drought_plan" key should be a boolean value with the '
+            'the value "True" if a drought management plan is in place. '
+            'The value of the "explanation" '
+            "key should be a string containing a short explanation for your "
+            "choice."
+        ),
+    )
+
+    return G
+
+def setup_graph_contingency(**kwargs):
+    """Setup Graph to get permit requirements 
+
+    Parameters
+    ----------
+    **kwargs
+        Keyword-value pairs to add to graph.
+
+    Returns
+    -------
+    nx.DiGraph
+        Graph instance that can be used to initialize an
+        `elm.tree.DecisionTree`.
+    """
+    G = _setup_graph_no_nodes(**kwargs)
+
+    G.add_node(
+        "init",
+        prompt=(
+            "Does the following text mention a requirement for well owners "
+            "to develop a drought management or contingency plan? "
+            "Drought contingency plans might specify actions "
+            "that well owners and users should take in the event of a drought. "
+            "Begin your response with either 'Yes' or 'No' and explain your "
+            "answer."
+            '\n\n"""\n{text}\n"""'
+        ),
+        db_query=(
+            'Does {DISTRICT_NAME} require well owners, users, or applicants '
+            'to develop a drought management or contingency plan?'
+        ),
+    ) 
+
+    G.add_edge("init", "get_plan", condition=llm_response_starts_with_yes)
+
+
+    G.add_node(
+        "get_plan",
+        prompt=(
+            "Summarize the drought management plan requirements mentioned in the text? "
         ),
     )
 
@@ -748,10 +963,8 @@ def setup_graph_plugging_reqs(**kwargs):
             '\n\n"""\n{text}\n"""'
         ),
         db_query=(
-            'Do the documents mention plugging requirements specific '
-            'to water wells? Plugging requirements generally detail the  '
-            'steps an individual needs to take when they no longer intend to '
-            'use the well. '
+            'Does {DISTRICT_NAME} implement plugging requirements specific '
+            'to water wells?'
         )
     ) 
 
@@ -784,26 +997,30 @@ def setup_graph_plugging_reqs(**kwargs):
 
     return G
 
-    def setup_graph_external_transfer(**kwargs):
-            
-            G = setup_graph_no_nodes(**kwargs)
-            G.add_node(
-            "init",
-            prompt=(
-                "Does the following text mention restrictions related to "
-                "the external transfer of water? External transfer refers to "
-                "cases in which well owners sell or transport water to "
-                "a location outside of the district boundaries. "
-                "Begin your response with either 'Yes' or 'No' and explain your "
-                "answer."
-                '\n\n"""\n{text}\n"""'
+def setup_graph_external_transfer(**kwargs):
+    
+    G = _setup_graph_no_nodes(**kwargs)
+    
+    G.add_node(
+        "init",
+        prompt=(
+            "Does the following text mention restrictions related to "
+            "the external transport or export of water? External transport refers to "
+            "cases in which well owners sell or transport water to "
+            "a location outside of the district boundaries. "
+            "Begin your response with either 'Yes' or 'No' and explain your "
+            "answer."
+            '\n\n"""\n{text}\n"""'
             ),
-            db_query=(
-                "Does {DISTRICT_NAME} implement restrictions related to "
-                "the external transfer of water? External transfer refers to "
-                "cases in which well owners sell or transport water to "
-                "a location outside of the district boundaries. "
-                "Begin your response with either 'Yes' or 'No' and explain your "
-                "answer."
-            )
+        db_query=(
+            "Does {DISTRICT_NAME} implement restrictions related to "
+            "the external transport or export of water? External transport refers to "
+            "cases in which well owners sell or transport water to "
+            "a location outside of the district boundaries. "
+            "Begin your response with either 'Yes' or 'No' and explain your "
+            "answer."
         )
+    )
+
+    G.add_edge("")
+

@@ -47,7 +47,7 @@ EnergyWizard.EMBEDDING_TYPE = 'azure new'
 
 # MODEL = 'egswaterord-openai-embedding'
 MODEL = 'egswaterord-gpt4-mini'
-GWCD_NAME = 'Trinity Glen Rose'
+GWCD_NAME = 'Panola County'
 fp = GWCD_NAME.lower().replace(' ', '_')
 
 VECTOR_STORE = (f'./{fp}_embed/*.json')

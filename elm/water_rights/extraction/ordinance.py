@@ -60,16 +60,28 @@ class OrdinanceValidator(ValidationWithMemory):
         "and False otherwise."
     )
 
+    # WELL_PERMITS_PROMPT = (
+    #     "You extract structured data from text. Return your answer in JSON "
+    #     "format (not markdown). Your JSON file must include exactly three "
+    #     "keys. The first key is 'district_rules' which is a string summarizes "
+    #     "the rules associated with the ground water conservation district. "
+    #     "The second key is 'well_requirements', which is a string that "
+    #     "summarizes the requirements for drilling a groundwater well. The "
+    #     "last key is '{key}', which is a boolean that is set to True if the "
+    #     "text excerpt provides enough info to determine what is required to "
+    #     "drill a water well and False otherwise. "
+    # )
+
     WELL_PERMITS_PROMPT = (
         "You extract structured data from text. Return your answer in JSON "
         "format (not markdown). Your JSON file must include exactly three "
         "keys. The first key is 'district_rules' which is a string summarizes "
-        "the rules associated with the ground water conservation district. "
+        "the rules associated with the groundwater conservation district. "
         "The second key is 'well_requirements', which is a string that "
         "summarizes the requirements for drilling a groundwater well. The "
         "last key is '{key}', which is a boolean that is set to True if the "
-        "text excerpt provides enough info to determine what is required to "
-        "drill a water well and False otherwise. "
+        "text excerpt provides substantive information related to the groundwater "
+        "conservation district's rules or plans. "
     )
 
     def __init__(self, structured_llm_caller, text_chunks, num_to_recall=2):
