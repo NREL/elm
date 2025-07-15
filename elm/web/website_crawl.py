@@ -517,11 +517,13 @@ class ELMWebsiteCrawler:
         out_docs = []
         should_stop = (termination_callback
                        or ELMWebsiteCrawlingStrategy.found_enough_docs)
+        page_count = 0
         async with AsyncWebCrawler(config=self.browser_config) as crawler:
             crawl_results = await crawler.arun(base_url, config=self.config)
             async with aclosing(crawl_results) as agen:
-                async for ind, result in enumerate(agen):
-                    if ind >= self.page_limit:
+                async for result in agen:
+                    page_count += 1
+                    if page_count > self.page_limit:
                         logger.debug("Exiting crawl due to page limit")
                         break
                     if not result.success:
