@@ -377,7 +377,7 @@ class ELMWebsiteCrawler:
                  browser_config_kwargs=None, crawl_strategy_kwargs=None,
                  crawler_config_kwargs=None, cte_kwargs=None,
                  extra_url_filters=None, include_external=False,
-                 url_scorer=None, max_pages=100):
+                 url_scorer=None, max_pages=100, page_limit=None):
         """
 
         Parameters
@@ -428,9 +428,16 @@ class ELMWebsiteCrawler:
             :meth:`ELMLinkScorer.score` method to score the URLs.
             By default, ``None``.
         max_pages : int, optional
-            Maximum number of pages to crawl. By default, ``100``.
+            Maximum number of **successful** pages to crawl.
+            By default, ``100``.
+        page_limit : int, optional
+            Maximum number of pages to crawl regardless of success
+            status. If ``None``, a page limit of 2 * `max_pages` is
+            used. To set no limit (not recommended), use ``math.inf``.
+            By default, ``None``.
         """
         self.validator = validator
+        self.page_limit = page_limit or 2 * max_pages
 
         flk = {"verify_ssl": False}
         flk.update(file_loader_kwargs or {})
@@ -510,10 +517,17 @@ class ELMWebsiteCrawler:
         out_docs = []
         should_stop = (termination_callback
                        or ELMWebsiteCrawlingStrategy.found_enough_docs)
+        page_count = 0
         async with AsyncWebCrawler(config=self.browser_config) as crawler:
             crawl_results = await crawler.arun(base_url, config=self.config)
             async with aclosing(crawl_results) as agen:
                 async for result in agen:
+                    page_count += 1
+                    if page_count > self.page_limit:
+                        logger.debug("Exiting crawl due to page limit")
+                        break
+                    if not result.success:
+                        continue
                     results.append(result)
                     logger.debug("Crawled %s", result.url)
                     if on_result_hook:
