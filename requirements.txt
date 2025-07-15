@@ -4,7 +4,7 @@ beautifulsoup4
 camoufox
 click
 crawl4ai
-duckduckgo-search
+ddgs
 fake_useragent>=2.0.3
 google-api-python-client
 html2text
