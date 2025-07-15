@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""ELM Web Scraping - DuckDuckGo search"""
+"""ELM Web Scraping - DuxDistributedGlobalSearch"""
 import logging
 
 from ddgs import DDGS
