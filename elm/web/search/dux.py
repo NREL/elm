@@ -16,7 +16,8 @@ class DuxDistributedGlobalSearch(SearchEngineLinkSearch):
     _SE_NAME = "DuxDistributedGlobalSearch"
 
     def __init__(self, region="us-en", safesearch="moderate", timelimit=None,
-                 page=1, backend="auto", timeout=10, verify=True):
+                 page=1, backend=("google", "bing", "yahoo", "duckduckgo"),
+                 timeout=10, verify=True):
         """
 
         Parameters
@@ -38,7 +39,7 @@ class DuxDistributedGlobalSearch(SearchEngineLinkSearch):
             By default, ``None``.
         page : int, default=1
             The page of results to return. By default, ``1``.
-        backend : str, optional
+        backend : str or iter of str, optional
             Option for DuxDistributedGlobalSearch backend:
 
                 - auto: Randomly select 3 search engines to use
@@ -52,7 +53,8 @@ class DuxDistributedGlobalSearch(SearchEngineLinkSearch):
                 - yandex: Yandex
                 - duckduckgo: Duckduckgo
 
-            By default, ``"auto"``.
+            Can also be a list or tuple of a combination of these.
+            By default, ``("google", "bing", "yahoo", "duckduckgo")``.
         timeout : int, optional
             Timeout for HTTP requests, in seconds. By default, ``10``.
         verify : bool, optional
