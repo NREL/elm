@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# flake8: noqa
+# pylint: disable=no-member
 """ELM Document retrieval from a website"""
 
 import logging
