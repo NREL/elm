@@ -1,0 +1,6 @@
+elm.web.search.run.load\_docs
+=============================
+
+.. currentmodule:: elm.web.search.run
+
+.. autofunction:: load_docs

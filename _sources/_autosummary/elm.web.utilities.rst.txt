@@ -1,0 +1,50 @@
+elm.web.utilities
+=================
+
+.. automodule:: elm.web.utilities
+
+   
+   
+   .. rubric:: Module attributes
+
+   .. autosummary::
+      :toctree:
+   
+      DEFAULT_HEADERS
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      clean_search_query
+      compute_fn_from_url
+      filter_documents
+      get_redirected_url
+      pw_page
+      write_url_doc_to_file
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      PWKwargs
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,45 @@
+elm.base.ApiBase
+================
+
+.. currentmodule:: elm.base
+
+.. autoclass:: ApiBase
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ApiBase.call_api
+      ~ApiBase.call_api_async
+      ~ApiBase.chat
+      ~ApiBase.clear
+      ~ApiBase.count_tokens
+      ~ApiBase.generic_async_query
+      ~ApiBase.generic_query
+      ~ApiBase.get_embedding
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ApiBase.DEFAULT_MODEL
+      ~ApiBase.EMBEDDING_MODEL
+      ~ApiBase.EMBEDDING_URL
+      ~ApiBase.HEADERS
+      ~ApiBase.MODEL_ROLE
+      ~ApiBase.TOKENIZER_ALIASES
+      ~ApiBase.TOKENIZER_PATTERNS
+      ~ApiBase.URL
+      ~ApiBase.all_messages_txt
+   
+   

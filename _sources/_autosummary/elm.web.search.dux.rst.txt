@@ -1,0 +1,31 @@
+elm.web.search.dux
+==================
+
+.. automodule:: elm.web.search.dux
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      DuxDistributedGlobalSearch
+   
+   
+
+   
+   
+   
+
+
+

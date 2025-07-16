@@ -1,0 +1,36 @@
+elm.ords.services.cpu.ProcessPoolService
+========================================
+
+.. currentmodule:: elm.ords.services.cpu
+
+.. autoclass:: ProcessPoolService
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ProcessPoolService.acquire_resources
+      ~ProcessPoolService.call
+      ~ProcessPoolService.process
+      ~ProcessPoolService.process_using_futures
+      ~ProcessPoolService.release_resources
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ProcessPoolService.MAX_CONCURRENT_JOBS
+      ~ProcessPoolService.can_process
+      ~ProcessPoolService.name
+   
+   

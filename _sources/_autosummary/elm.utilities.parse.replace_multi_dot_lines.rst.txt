@@ -1,0 +1,6 @@
+elm.utilities.parse.replace\_multi\_dot\_lines
+==============================================
+
+.. currentmodule:: elm.utilities.parse
+
+.. autofunction:: replace_multi_dot_lines

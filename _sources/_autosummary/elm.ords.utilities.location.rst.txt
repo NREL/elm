@@ -1,0 +1,32 @@
+elm.ords.utilities.location
+===========================
+
+.. automodule:: elm.ords.utilities.location
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      County
+      Location
+   
+   
+
+   
+   
+   
+
+
+

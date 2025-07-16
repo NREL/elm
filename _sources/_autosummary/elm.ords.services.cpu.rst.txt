@@ -1,0 +1,40 @@
+elm.ords.services.cpu
+=====================
+
+.. automodule:: elm.ords.services.cpu
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      read_pdf_doc
+      read_pdf_doc_ocr
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      PDFLoader
+      ProcessPoolService
+   
+   
+
+   
+   
+   
+
+
+
