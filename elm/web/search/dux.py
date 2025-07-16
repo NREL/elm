@@ -17,7 +17,7 @@ class DuxDistributedGlobalSearch(SearchEngineLinkSearch):
 
     def __init__(self, region="us-en", safesearch="moderate", timelimit=None,
                  page=1, backend=("google", "bing", "yahoo", "duckduckgo"),
-                 timeout=10, verify=True):
+                 timeout=10, verify=False):
         """
 
         Parameters
@@ -59,7 +59,7 @@ class DuxDistributedGlobalSearch(SearchEngineLinkSearch):
             Timeout for HTTP requests, in seconds. By default, ``10``.
         verify : bool, optional
             Apply SSL verification when making the request.
-            By default, ``True``.
+            By default, ``False``.
         """
         self.region = region
         self.safesearch = safesearch

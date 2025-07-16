@@ -52,7 +52,7 @@ class APIDuckDuckGoSearch(SearchEngineLinkSearch):
 
     _SE_NAME = "DuckDuckGo API"
 
-    def __init__(self, region="us-en", timeout=10, verify=True,
+    def __init__(self, region="us-en", timeout=10, verify=False,
                  sleep_min_seconds=10, sleep_max_seconds=20):
         """
 
@@ -64,7 +64,7 @@ class APIDuckDuckGoSearch(SearchEngineLinkSearch):
             Timeout for HTTP requests, in seconds. By default, ``10``.
         verify : bool, optional
             Apply SSL verification when making the request.
-            By default, ``True``.
+            By default, ``False``.
         sleep_min_seconds : int, optional
             Minimum number of seconds to sleep between queries. We
             recommend not setting this below ``5`` seconds to avoid
