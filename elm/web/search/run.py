@@ -116,6 +116,7 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
             - google_cse_api_kwargs
             - google_serper_api_kwargs
             - tavily_api_kwargs
+            - ddgs_kwargs
             - pw_bing_se_kwargs
             - pw_ddg_se_kwargs
             - pw_google_cse_kwargs
@@ -205,6 +206,7 @@ async def search_with_fallback(queries, search_engines=_DEFAULT_SE,
             - google_cse_api_kwargs
             - google_serper_api_kwargs
             - tavily_api_kwargs
+            - ddgs_kwargs
             - pw_bing_se_kwargs
             - pw_ddg_se_kwargs
             - pw_google_cse_kwargs
