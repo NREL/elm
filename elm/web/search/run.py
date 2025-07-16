@@ -12,6 +12,7 @@ from elm.web.file_loader import AsyncFileLoader
 from elm.web.search.bing import PlaywrightBingLinkSearch
 from elm.web.search.duckduckgo import (APIDuckDuckGoSearch,
                                        PlaywrightDuckDuckGoLinkSearch)
+from elm.web.search.dux import DuxDistributedGlobalSearch
 from elm.web.search.google import (APIGoogleCSESearch, APISerperSearch,
                                    PlaywrightGoogleCSELinkSearch,
                                    PlaywrightGoogleLinkSearch)
@@ -33,6 +34,8 @@ SEARCH_ENGINE_OPTIONS = {
     "APISerperSearch": _SE_OPT(APISerperSearch, False,
                                "google_serper_api_kwargs"),
     "APITavilySearch": _SE_OPT(APITavilySearch, False, "tavily_api_kwargs"),
+    "DuxDistributedGlobalSearch": _SE_OPT(DuxDistributedGlobalSearch, False,
+                                          "ddgs_kwargs"),
     "PlaywrightBingLinkSearch": _SE_OPT(PlaywrightBingLinkSearch, True,
                                         "pw_bing_se_kwargs"),
     "PlaywrightDuckDuckGoLinkSearch": _SE_OPT(PlaywrightDuckDuckGoLinkSearch,
@@ -46,7 +49,7 @@ SEARCH_ENGINE_OPTIONS = {
 }
 """Supported search engines"""
 _DEFAULT_SE = ("PlaywrightGoogleLinkSearch", "PlaywrightDuckDuckGoLinkSearch",
-               "APIDuckDuckGoSearch")
+               "DuxDistributedGlobalSearch")
 
 
 async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
@@ -113,6 +116,7 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
             - google_cse_api_kwargs
             - google_serper_api_kwargs
             - tavily_api_kwargs
+            - ddgs_kwargs
             - pw_bing_se_kwargs
             - pw_ddg_se_kwargs
             - pw_google_cse_kwargs
@@ -202,6 +206,7 @@ async def search_with_fallback(queries, search_engines=_DEFAULT_SE,
             - google_cse_api_kwargs
             - google_serper_api_kwargs
             - tavily_api_kwargs
+            - ddgs_kwargs
             - pw_bing_se_kwargs
             - pw_ddg_se_kwargs
             - pw_google_cse_kwargs

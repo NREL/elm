@@ -4,7 +4,7 @@ import random
 import asyncio
 import logging
 
-from duckduckgo_search import DDGS
+from ddgs import DDGS
 
 from elm.web.search.base import (PlaywrightSearchEngineLinkSearch,
                                  SearchEngineLinkSearch)
@@ -52,28 +52,19 @@ class APIDuckDuckGoSearch(SearchEngineLinkSearch):
 
     _SE_NAME = "DuckDuckGo API"
 
-    def __init__(self, region="wt-wt", backend="auto", timeout=10,
-                 verify=True, sleep_min_seconds=10, sleep_max_seconds=20):
+    def __init__(self, region="us-en", timeout=10, verify=False,
+                 sleep_min_seconds=10, sleep_max_seconds=20):
         """
 
         Parameters
         ----------
         region : str, optional
-            DDG search region param. By default, ``"wt-wt"``, which
-            signifies no region.
-        backend : {auto, html, lite}, optional
-            Option for DDG search type.
-
-                - auto: select randomly between HTML and Lite backends
-                - html: collect data from https://html.duckduckgo.com
-                - lite: collect data from https://lite.duckduckgo.com
-
-            By default, ``"auto"``.
+            DDG search region param. By default, ``"us-en"``.
         timeout : int, optional
             Timeout for HTTP requests, in seconds. By default, ``10``.
         verify : bool, optional
             Apply SSL verification when making the request.
-            By default, ``True``.
+            By default, ``False``.
         sleep_min_seconds : int, optional
             Minimum number of seconds to sleep between queries. We
             recommend not setting this below ``5`` seconds to avoid
@@ -84,7 +75,6 @@ class APIDuckDuckGoSearch(SearchEngineLinkSearch):
             By default, ``20``.
         """
         self.region = region
-        self.backend = backend
         self.timeout = timeout
         self.verify = verify
         self.sleep_min_seconds = sleep_min_seconds
@@ -95,8 +85,8 @@ class APIDuckDuckGoSearch(SearchEngineLinkSearch):
 
         ddgs = DDGS(timeout=self.timeout, verify=self.verify)
         results = ddgs.text(query, region=self.region,
-                            backend=self.backend,
-                            max_results=num_results)
+                            backend="duckduckgo",
+                            num_results=num_results)
 
         return list(filter(None, (info.get('href', "").replace("+", "%20")
                                   for info in results)))
