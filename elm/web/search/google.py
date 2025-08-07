@@ -9,7 +9,7 @@ import requests
 from contextlib import asynccontextmanager
 
 from camoufox.async_api import AsyncCamoufox
-from apiclient.discovery import build
+from googleapiclient.discovery import build
 from playwright.async_api import TimeoutError as PlaywrightTimeoutError
 
 from elm.web.search.base import (PlaywrightSearchEngineLinkSearch,
@@ -244,6 +244,22 @@ class APISerperSearch(APISearchEngineLinkSearch):
     API_KEY_VAR = "SERPER_API_KEY"
     """Environment variable that should contain the Google Serper API key"""
 
+    def __init__(self, api_key=None, verify=False):
+        """
+
+        Parameters
+        ----------
+        api_key : str, optional
+            API key for serper search API. If ``None``, will look up the
+            API key using the ``"SERPER_API_KEY"`` environment variable.
+            By default, ``None``.
+        verify : bool, default=False
+            Option to use SSL verification when making request to API
+            endpoint. By default, ``False``.
+        """
+        super().__init__(api_key=api_key)
+        self.verify = verify
+
     async def _search(self, query, num_results=10):
         """Search web for links related to a query"""
 
@@ -252,7 +268,7 @@ class APISerperSearch(APISearchEngineLinkSearch):
                    'Content-Type': 'application/json'}
 
         response = requests.request("POST", self._URL, headers=headers,
-                                    data=payload)
+                                    data=payload, verify=self.verify)
         results = json.loads(response.text).get('organic', {})
         return list(filter(None, (result.get("link", "").replace("+", "%20")
                                   for result in results)))

@@ -56,6 +56,7 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
                                    num_urls=None, ignore_url_parts=None,
                                    search_semaphore=None,
                                    browser_semaphore=None, task_name=None,
+                                   use_fallback_per_query=True,
                                    on_search_complete_hook=None,
                                    **kwargs):
     """Retrieve top ``N`` search results as document instances
@@ -75,7 +76,9 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
         is used and so on. If all web searches fail, an empty list is
         returned. See :obj:`~elm.web.search.run.SEARCH_ENGINE_OPTIONS`
         for supported search engine options.
-        By default, ``("PlaywrightGoogleLinkSearch", )``.
+        By default, ``("PlaywrightGoogleLinkSearch",
+        "PlaywrightDuckDuckGoLinkSearch",
+        "DuxDistributedGlobalSearch")``.
     num_urls : int, optional
         Number of unique top Google search result to return as docs. The
         google search results from all queries are interleaved and the
@@ -101,6 +104,13 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
     task_name : str, optional
         Optional task name to use in :func:`asyncio.create_task`.
         By default, ``None``.
+    use_fallback_per_query : bool, default=True
+        Option to use the fallback list of search engines on a per-query
+        basis. This means if a single query fails with one search
+        engine, the fallback search engines will be attempted for that
+        query. If this input is ``False``, the fallback search engines
+        are only used if *all* search queries fail for a single search
+        engine. By default, ``True``.
     on_search_complete_hook : callable, optional
         If provided, this async callable will be called after the search
         engine links have been retrieved. A single argument will be
@@ -145,11 +155,13 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
         # backward-compatibility
         search_semaphore = browser_semaphore
 
+    fpq = use_fallback_per_query
     urls = await search_with_fallback(queries, search_engines=search_engines,
                                       num_urls=num_urls,
                                       ignore_url_parts=ignore_url_parts,
                                       browser_semaphore=search_semaphore,
-                                      task_name=task_name, **kwargs)
+                                      task_name=task_name,
+                                      use_fallback_per_query=fpq, **kwargs)
     if on_search_complete_hook is not None:
         await on_search_complete_hook(urls)
 
@@ -161,7 +173,7 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
 async def search_with_fallback(queries, search_engines=_DEFAULT_SE,
                                num_urls=None, ignore_url_parts=None,
                                browser_semaphore=None, task_name=None,
-                               **kwargs):
+                               use_fallback_per_query=True, **kwargs):
     """Retrieve search query URLs using multiple search engines if needed
 
     Parameters
@@ -198,6 +210,13 @@ async def search_with_fallback(queries, search_engines=_DEFAULT_SE,
     task_name : str, optional
         Optional task name to use in :func:`asyncio.create_task`.
         By default, ``None``.
+    use_fallback_per_query : bool, default=True
+        Option to use the fallback list of search engines on a per-query
+        basis. This means if a single query fails with one search
+        engine, the fallback search engines will be attempted for that
+        query. If this input is ``False``, the fallback search engines
+        are only used if *all* search queries fail for a single search
+        engine. By default, ``True``.
     **kwargs
         Keyword-argument pairs to initialize search engines. This input
         can include and any/all of the following keywords:
@@ -241,13 +260,20 @@ async def search_with_fallback(queries, search_engines=_DEFAULT_SE,
         logger.error(msg)
         raise ELMInputError(msg)
 
-    for se_name in search_engines:
-        logger.debug("Searching web using %r", se_name)
-        urls = await _single_se_search(se_name, queries, num_urls,
-                                       ignore_url_parts, browser_semaphore,
-                                       task_name, kwargs)
+    if use_fallback_per_query:
+        urls = await _multi_se_search(search_engines, queries, num_urls,
+                                      ignore_url_parts, browser_semaphore,
+                                      task_name, kwargs)
         if urls:
             return urls
+    else:
+        for se_name in search_engines:
+            logger.debug("Searching web using %r", se_name)
+            urls = await _single_se_search(se_name, queries, num_urls,
+                                           ignore_url_parts, browser_semaphore,
+                                           task_name, kwargs)
+            if urls:
+                return urls
 
     logger.warning("No web results found using %d search engines: %r",
                    len(search_engines), search_engines)
@@ -293,13 +319,40 @@ async def load_docs(urls, browser_semaphore=None, **kwargs):
 async def _single_se_search(se_name, queries, num_urls, ignore_url_parts,
                             browser_sem, task_name, kwargs):
     """Search for links using a single search engine"""
-    if se_name not in SEARCH_ENGINE_OPTIONS:
-        msg = (f"'se_name' must be one of: {list(SEARCH_ENGINE_OPTIONS)}\n"
-               f"Got {se_name=}")
-        logger.error(msg)
-        raise ELMKeyError(msg)
-
+    _validate_se_name(se_name)
     links = await _run_search(se_name, queries, browser_sem, task_name, kwargs)
+    return _down_select_urls(links, num_urls=num_urls,
+                             ignore_url_parts=ignore_url_parts)
+
+
+async def _multi_se_search(search_engines, queries, num_urls,
+                           ignore_url_parts, browser_sem, task_name, kwargs):
+    """Search for links using one or more search engines as fallback"""
+    outputs = {q: None for q in queries}
+    remaining_queries = list(queries)
+    for se_name in search_engines:
+        _validate_se_name(se_name)
+
+        logger.debug("Searching web using %r", se_name)
+        links = await _run_search(se_name, remaining_queries, browser_sem,
+                                  task_name, kwargs)
+        logger.trace("Links: %r", links)
+
+        failed_queries = []
+        for q, se_result in zip(remaining_queries, links):
+            if not se_result or not se_result[0]:
+                failed_queries.append(q)
+                continue
+            outputs[q] = se_result
+
+        remaining_queries = failed_queries
+        logger.trace("Remaining queries to search: %r", remaining_queries)
+
+        if not remaining_queries:
+            break
+
+    links = [link or [[]] for link in outputs.values()]
+
     return _down_select_urls(links, num_urls=num_urls,
                              ignore_url_parts=ignore_url_parts)
 
@@ -383,3 +436,12 @@ def _as_set(user_input):
     if isinstance(user_input, str):
         user_input = {user_input}
     return set(user_input or [])
+
+
+def _validate_se_name(se_name):
+    """Validate user search engine name input"""
+    if se_name not in SEARCH_ENGINE_OPTIONS:
+        msg = (f"'se_name' must be one of: {list(SEARCH_ENGINE_OPTIONS)}\n"
+               f"Got {se_name=}")
+        logger.error(msg)
+        raise ELMKeyError(msg)

@@ -586,4 +586,6 @@ class ELMWebsiteCrawler:
 
 def _compute_avg_score(results):
     """Compute the average score of the crawled results"""
+    if len(results) <= 0:
+        return 0
     return sum(r.metadata.get('score', 0) for r in results) / len(results)
