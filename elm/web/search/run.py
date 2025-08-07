@@ -56,6 +56,7 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
                                    num_urls=None, ignore_url_parts=None,
                                    search_semaphore=None,
                                    browser_semaphore=None, task_name=None,
+                                   use_fallback_per_query=True,
                                    on_search_complete_hook=None,
                                    **kwargs):
     """Retrieve top ``N`` search results as document instances
@@ -101,6 +102,13 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
     task_name : str, optional
         Optional task name to use in :func:`asyncio.create_task`.
         By default, ``None``.
+    use_fallback_per_query : bool, default=True
+        Option to use the fallback list of search engines on a per-query
+        basis. This means if a single query fails with one search
+        engine, the fallback search engines will be attempted for that
+        query. If this input is ``False``, the fallback search engines
+        are only used if *all* search queries fail for a single search
+        engine. By default, ``True``.
     on_search_complete_hook : callable, optional
         If provided, this async callable will be called after the search
         engine links have been retrieved. A single argument will be
@@ -145,11 +153,13 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
         # backward-compatibility
         search_semaphore = browser_semaphore
 
+    fpq = use_fallback_per_query
     urls = await search_with_fallback(queries, search_engines=search_engines,
                                       num_urls=num_urls,
                                       ignore_url_parts=ignore_url_parts,
                                       browser_semaphore=search_semaphore,
-                                      task_name=task_name, **kwargs)
+                                      task_name=task_name,
+                                      use_fallback_per_query=fpq, **kwargs)
     if on_search_complete_hook is not None:
         await on_search_complete_hook(urls)
 
