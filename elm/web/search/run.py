@@ -319,12 +319,7 @@ async def load_docs(urls, browser_semaphore=None, **kwargs):
 async def _single_se_search(se_name, queries, num_urls, ignore_url_parts,
                             browser_sem, task_name, kwargs):
     """Search for links using a single search engine"""
-    if se_name not in SEARCH_ENGINE_OPTIONS:
-        msg = (f"'se_name' must be one of: {list(SEARCH_ENGINE_OPTIONS)}\n"
-               f"Got {se_name=}")
-        logger.error(msg)
-        raise ELMKeyError(msg)
-
+    _validate_se_name(se_name)
     links = await _run_search(se_name, queries, browser_sem, task_name, kwargs)
     return _down_select_urls(links, num_urls=num_urls,
                              ignore_url_parts=ignore_url_parts)
@@ -336,11 +331,7 @@ async def _multi_se_search(search_engines, queries, num_urls,
     outputs = {q: None for q in queries}
     remaining_queries = [q for q in queries]
     for se_name in search_engines:
-        if se_name not in SEARCH_ENGINE_OPTIONS:
-            msg = (f"'se_name' must be one of: {list(SEARCH_ENGINE_OPTIONS)}\n"
-                   f"Got {se_name=}")
-            logger.error(msg)
-            raise ELMKeyError(msg)
+        _validate_se_name(se_name)
 
         logger.debug("Searching web using %r", se_name)
         links = await _run_search(se_name, remaining_queries, browser_sem,
@@ -445,3 +436,12 @@ def _as_set(user_input):
     if isinstance(user_input, str):
         user_input = {user_input}
     return set(user_input or [])
+
+
+def _validate_se_name(se_name):
+    """Validate user search engine name input"""
+    if se_name not in SEARCH_ENGINE_OPTIONS:
+        msg = (f"'se_name' must be one of: {list(SEARCH_ENGINE_OPTIONS)}\n"
+               f"Got {se_name=}")
+        logger.error(msg)
+        raise ELMKeyError(msg)
