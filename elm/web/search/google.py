@@ -268,7 +268,7 @@ class APISerperSearch(APISearchEngineLinkSearch):
                    'Content-Type': 'application/json'}
 
         response = requests.request("POST", self._URL, headers=headers,
-                                    data=payload)
+                                    data=payload, verify=self.verify)
         results = json.loads(response.text).get('organic', {})
         return list(filter(None, (result.get("link", "").replace("+", "%20")
                                   for result in results)))
