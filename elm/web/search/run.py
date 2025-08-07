@@ -260,13 +260,20 @@ async def search_with_fallback(queries, search_engines=_DEFAULT_SE,
         logger.error(msg)
         raise ELMInputError(msg)
 
-    for se_name in search_engines:
-        logger.debug("Searching web using %r", se_name)
-        urls = await _single_se_search(se_name, queries, num_urls,
-                                       ignore_url_parts, browser_semaphore,
-                                       task_name, kwargs)
+    if use_fallback_per_query:
+        urls = await _multi_se_search(search_engines, queries, num_urls,
+                                      ignore_url_parts, browser_semaphore,
+                                      task_name, kwargs)
         if urls:
             return urls
+    else:
+        for se_name in search_engines:
+            logger.debug("Searching web using %r", se_name)
+            urls = await _single_se_search(se_name, queries, num_urls,
+                                           ignore_url_parts, browser_semaphore,
+                                           task_name, kwargs)
+            if urls:
+                return urls
 
     logger.warning("No web results found using %d search engines: %r",
                    len(search_engines), search_engines)
@@ -319,6 +326,42 @@ async def _single_se_search(se_name, queries, num_urls, ignore_url_parts,
         raise ELMKeyError(msg)
 
     links = await _run_search(se_name, queries, browser_sem, task_name, kwargs)
+    return _down_select_urls(links, num_urls=num_urls,
+                             ignore_url_parts=ignore_url_parts)
+
+
+async def _multi_se_search(search_engines, queries, num_urls,
+                           ignore_url_parts, browser_sem, task_name, kwargs):
+    """Search for links using one or more search engines as fallback"""
+    outputs = {q: None for q in queries}
+    remaining_queries = [q for q in queries]
+    for se_name in search_engines:
+        if se_name not in SEARCH_ENGINE_OPTIONS:
+            msg = (f"'se_name' must be one of: {list(SEARCH_ENGINE_OPTIONS)}\n"
+                   f"Got {se_name=}")
+            logger.error(msg)
+            raise ELMKeyError(msg)
+
+        logger.debug("Searching web using %r", se_name)
+        links = await _run_search(se_name, remaining_queries, browser_sem,
+                                  task_name, kwargs)
+        logger.trace("Links: %r", links)
+
+        failed_queries = []
+        for q, se_result in zip(remaining_queries, links):
+            if not se_result or not se_result[0]:
+                failed_queries.append(q)
+                continue
+            outputs[q] = se_result
+
+        remaining_queries = failed_queries
+        logger.trace("Remaining queries to search: %r", remaining_queries)
+
+        if not remaining_queries:
+            break
+
+    links = [l or [[]] for l in outputs.values()]
+
     return _down_select_urls(links, num_urls=num_urls,
                              ignore_url_parts=ignore_url_parts)
 
