@@ -1,0 +1,6 @@
+elm.ords.services.queues.tear\_down\_service\_queue
+===================================================
+
+.. currentmodule:: elm.ords.services.queues
+
+.. autofunction:: tear_down_service_queue

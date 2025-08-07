@@ -1,0 +1,32 @@
+elm.ords.services.queues
+========================
+
+.. automodule:: elm.ords.services.queues
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      get_service_queue
+      initialize_service_queue
+      tear_down_service_queue
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

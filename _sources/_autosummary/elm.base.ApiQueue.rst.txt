@@ -1,0 +1,32 @@
+elm.base.ApiQueue
+=================
+
+.. currentmodule:: elm.base
+
+.. autoclass:: ApiQueue
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ApiQueue.collect_jobs
+      ~ApiQueue.run
+      ~ApiQueue.submit_jobs
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ApiQueue.waiting_on
+   
+   
