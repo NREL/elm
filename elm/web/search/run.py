@@ -329,7 +329,7 @@ async def _multi_se_search(search_engines, queries, num_urls,
                            ignore_url_parts, browser_sem, task_name, kwargs):
     """Search for links using one or more search engines as fallback"""
     outputs = {q: None for q in queries}
-    remaining_queries = [q for q in queries]
+    remaining_queries = list(queries)
     for se_name in search_engines:
         _validate_se_name(se_name)
 
@@ -351,7 +351,7 @@ async def _multi_se_search(search_engines, queries, num_urls,
         if not remaining_queries:
             break
 
-    links = [l or [[]] for l in outputs.values()]
+    links = [link or [[]] for link in outputs.values()]
 
     return _down_select_urls(links, num_urls=num_urls,
                              ignore_url_parts=ignore_url_parts)
