@@ -9,7 +9,7 @@ import requests
 from contextlib import asynccontextmanager
 
 from camoufox.async_api import AsyncCamoufox
-from apiclient.discovery import build
+from googleapiclient.discovery import build
 from playwright.async_api import TimeoutError as PlaywrightTimeoutError
 
 from elm.web.search.base import (PlaywrightSearchEngineLinkSearch,
