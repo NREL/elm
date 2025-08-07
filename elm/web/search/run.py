@@ -76,7 +76,9 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
         is used and so on. If all web searches fail, an empty list is
         returned. See :obj:`~elm.web.search.run.SEARCH_ENGINE_OPTIONS`
         for supported search engine options.
-        By default, ``("PlaywrightGoogleLinkSearch", )``.
+        By default, ``("PlaywrightGoogleLinkSearch",
+        "PlaywrightDuckDuckGoLinkSearch",
+        "DuxDistributedGlobalSearch")``.
     num_urls : int, optional
         Number of unique top Google search result to return as docs. The
         google search results from all queries are interleaved and the
