@@ -14,6 +14,7 @@ from elm.web.search.duckduckgo import (APIDuckDuckGoSearch,
                                        PlaywrightDuckDuckGoLinkSearch)
 from elm.web.search.dux import DuxDistributedGlobalSearch
 from elm.web.search.google import (APIGoogleCSESearch, APISerperSearch,
+                                   CamoufoxGoogleLinkSearch,
                                    PlaywrightGoogleCSELinkSearch,
                                    PlaywrightGoogleLinkSearch)
 from elm.web.search.tavily import APITavilySearch
@@ -34,6 +35,8 @@ SEARCH_ENGINE_OPTIONS = {
     "APISerperSearch": _SE_OPT(APISerperSearch, False,
                                "google_serper_api_kwargs"),
     "APITavilySearch": _SE_OPT(APITavilySearch, False, "tavily_api_kwargs"),
+    "CamoufoxGoogleLinkSearch": _SE_OPT(CamoufoxGoogleLinkSearch, True,
+                                        "cf_google_se_kwargs"),
     "DuxDistributedGlobalSearch": _SE_OPT(DuxDistributedGlobalSearch, False,
                                           "ddgs_kwargs"),
     "PlaywrightBingLinkSearch": _SE_OPT(PlaywrightBingLinkSearch, True,
@@ -127,6 +130,7 @@ async def web_search_links_as_docs(queries, search_engines=_DEFAULT_SE,
             - google_serper_api_kwargs
             - tavily_api_kwargs
             - ddgs_kwargs
+            - cf_google_se_kwargs
             - pw_bing_se_kwargs
             - pw_ddg_se_kwargs
             - pw_google_cse_kwargs
@@ -226,6 +230,7 @@ async def search_with_fallback(queries, search_engines=_DEFAULT_SE,
             - google_serper_api_kwargs
             - tavily_api_kwargs
             - ddgs_kwargs
+            - cf_google_se_kwargs
             - pw_bing_se_kwargs
             - pw_ddg_se_kwargs
             - pw_google_cse_kwargs
