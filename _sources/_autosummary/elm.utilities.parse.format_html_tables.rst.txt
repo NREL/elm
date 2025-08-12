@@ -1,0 +1,6 @@
+elm.utilities.parse.format\_html\_tables
+========================================
+
+.. currentmodule:: elm.utilities.parse
+
+.. autofunction:: format_html_tables

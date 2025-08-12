@@ -1,0 +1,42 @@
+elm.ords.services.usage.UsageTracker
+====================================
+
+.. currentmodule:: elm.ords.services.usage
+
+.. autoclass:: UsageTracker
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~UsageTracker.add_to
+      ~UsageTracker.clear
+      ~UsageTracker.copy
+      ~UsageTracker.fromkeys
+      ~UsageTracker.get
+      ~UsageTracker.items
+      ~UsageTracker.keys
+      ~UsageTracker.pop
+      ~UsageTracker.popitem
+      ~UsageTracker.setdefault
+      ~UsageTracker.update
+      ~UsageTracker.update_from_model
+      ~UsageTracker.values
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~UsageTracker.totals
+   
+   

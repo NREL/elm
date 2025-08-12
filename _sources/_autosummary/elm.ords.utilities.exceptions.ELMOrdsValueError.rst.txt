@@ -1,0 +1,6 @@
+elm.ords.utilities.exceptions.ELMOrdsValueError
+===============================================
+
+.. currentmodule:: elm.ords.utilities.exceptions
+
+.. autoexception:: ELMOrdsValueError

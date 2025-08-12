@@ -1,0 +1,6 @@
+elm.ords.services.queues.get\_service\_queue
+============================================
+
+.. currentmodule:: elm.ords.services.queues
+
+.. autofunction:: get_service_queue
