@@ -14,6 +14,7 @@ from elm.web.search.duckduckgo import (APIDuckDuckGoSearch,
                                        PlaywrightDuckDuckGoLinkSearch)
 from elm.web.search.dux import DuxDistributedGlobalSearch
 from elm.web.search.google import (APIGoogleCSESearch, APISerperSearch,
+                                   SerpAPIGoogleSearch,
                                    CamoufoxGoogleLinkSearch,
                                    PlaywrightGoogleCSELinkSearch,
                                    PlaywrightGoogleLinkSearch)
@@ -34,6 +35,8 @@ SEARCH_ENGINE_OPTIONS = {
                                   "google_cse_api_kwargs"),
     "APISerperSearch": _SE_OPT(APISerperSearch, False,
                                "google_serper_api_kwargs"),
+    "SerpAPIGoogleSearch": _SE_OPT(SerpAPIGoogleSearch, False,
+                                   "google_serpapi_kwargs"),
     "APITavilySearch": _SE_OPT(APITavilySearch, False, "tavily_api_kwargs"),
     "CamoufoxGoogleLinkSearch": _SE_OPT(CamoufoxGoogleLinkSearch, True,
                                         "cf_google_se_kwargs"),
