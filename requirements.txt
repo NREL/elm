@@ -7,6 +7,7 @@ crawl4ai
 ddgs
 fake_useragent>=2.0.3
 google-api-python-client
+google-search-results
 html2text
 httpx
 langchain
