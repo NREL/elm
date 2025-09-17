@@ -13,7 +13,8 @@ from googleapiclient.discovery import build
 from playwright.async_api import TimeoutError as PlaywrightTimeoutError
 
 from elm.web.search.base import (PlaywrightSearchEngineLinkSearch,
-                                 APISearchEngineLinkSearch)
+                                 APISearchEngineLinkSearch,
+                                 PatchedSerpApiClient)
 
 
 logger = logging.getLogger(__name__)
@@ -237,6 +238,44 @@ class APIGoogleCSESearch(APISearchEngineLinkSearch):
         results = build(**build_args).cse().list(**search_args).execute()
         results = (results or {}).get('items', [])
         return list(filter(None, (info.get("link") for info in results)))
+
+
+class SerpAPIGoogleSearch(APISearchEngineLinkSearch):
+    """Search the google for links using the SerpAPI service"""
+
+    _SE_NAME = "SerpAPI (Google)"
+
+    API_KEY_VAR = "SERPAPI_KEY"
+    """Environment variable that should contain the SerpAPI key"""
+
+    def __init__(self, api_key=None, verify=False):
+        """
+
+        Parameters
+        ----------
+        api_key : str, optional
+            API key for serper search API. If ``None``, will look up the
+            API key using the ``"SERPAPI_KEY"`` environment variable.
+            By default, ``None``.
+        verify : bool, default=False
+            Option to use SSL verification when making request to API
+            endpoint. By default, ``False``.
+        """
+        super().__init__(api_key=api_key)
+        self.verify = verify
+
+    async def _search(self, query, num_results=10, **param_kwargs):
+        """Search web for links related to a query"""
+
+        params = {"q": query, "hl": "en", "gl": "us", "api_key": self.api_key}
+        params.update(param_kwargs)
+
+        client = PatchedSerpApiClient(params, engine="google",
+                                      verify=self.verify)
+        results = client.get_dict()
+        results = results.get("organic_results", [])
+        return list(filter(None, (info.get('link', "").replace("+", "%20")
+                                  for info in results)))[:num_results]
 
 
 class APISerperSearch(APISearchEngineLinkSearch):
