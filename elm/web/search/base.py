@@ -4,10 +4,12 @@ import os
 import random
 import asyncio
 import logging
+import requests
 from urllib.parse import quote
 from abc import ABC, abstractmethod
 from contextlib import asynccontextmanager
 
+from serpapi.serp_api_client import SerpApiClient
 from rebrowser_playwright.async_api import async_playwright
 from playwright_stealth import StealthConfig
 
@@ -284,6 +286,38 @@ class APISearchEngineLinkSearch(SearchEngineLinkSearch):
             By default, ``None``.
         """
         self.api_key = api_key or os.environ.get(self.API_KEY_VAR or "")
+
+
+class PatchedSerpApiClient(SerpApiClient):
+    """SerpApiClient patched to allow bypassing of SSL verification"""
+
+    def __init__(self, params_dict, engine=None, timeout=60000, verify=True):
+        super().__init__(params_dict=params_dict, engine=engine,
+                         timeout=timeout)
+        self.verify = verify
+
+    def get_response(self, path='/search'):
+        """Get search response
+
+        Parameters
+        ----------
+        path : str, default='/search'
+            API path to use for the search.
+
+        Returns
+        -------
+            Response object provided by ``requests.get``.
+        """
+        url = None
+        try:
+            url, parameter = self.construct_url(path)
+            response = requests.get(url, parameter, timeout=self.timeout,
+                                    verify=self.verify)
+            return response
+        except requests.HTTPError as e:
+            logger.error("fail: " + url)
+            logger.error(e, e.response.status_code)
+            raise e
 
 
 async def _navigate_to_se_url(page, se_url, timeout=90_000):
