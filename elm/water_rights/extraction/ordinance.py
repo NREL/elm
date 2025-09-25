@@ -154,27 +154,12 @@ class OrdinanceValidator(ValidationWithMemory):
         for ind, text in enumerate(self.text_chunks):
             self._wind_mention_mem.append(possibly_mentions_wind(text))
             if ind >= min_chunks_to_process:
-                # TODO: find another method to validate and/or bypass this, some info is not being recognized as legal text
-                # if not self.is_legal_text:
-                #     return False
-
                 # fmt: off
                 if not any(self._wind_mention_mem[-self.num_to_recall:]):
                     continue
 
             logger.debug("Processing text at ind %d", ind)
             logger.debug("Text:\n%s", text)
-
-            # if ind < min_chunks_to_process:
-            #     is_legal_text = await self.parse_from_ind(
-            #         ind, self.IS_LEGAL_TEXT_PROMPT, key="legal_text"
-            #     )
-            #     self._legal_text_mem.append(is_legal_text)
-            #     if not is_legal_text:
-            #         logger.debug("Text at ind %d is not legal text", ind)
-            #         continue
-
-            #     logger.debug("Text at ind %d is legal text", ind)
 
             contains_ord_info = await self.parse_from_ind(
                 # ind, self.CONTAINS_DEF_PROMPT, key="contains_ord_info"

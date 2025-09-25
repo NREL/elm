@@ -48,11 +48,8 @@ Chunker.URL= ('https://aoai-prod-eastus-egswaterord-001.'
 ChunkAndEmbed.EMBEDDING_TYPE ='azure new'
 
 
-# GWCD_NAME = 'Lower Trinity'
-GWCD_NAME = 'Panola County'
-
 MODEL = 'egswaterord-openai-embedding'
-EMBED_DIR = f"./{GWCD_NAME.lower().replace(' ', '_')}_embed/"
+# EMBED_DIR = f"./{GWCD_NAME.lower().replace(' ', '_')}_embed/"
 
 async def process(location, text_splitter, **kwargs):
 
@@ -77,71 +74,87 @@ async def process(location, text_splitter, **kwargs):
     return docs
 
 if __name__ == '__main__':
-    os.makedirs(EMBED_DIR, exist_ok=True)
-    text_splitter = RecursiveCharacterTextSplitter(
-        RTS_SEPARATORS,
-        chunk_size=3000,
-        chunk_overlap=300,
-        length_function=partial(ApiBase.count_tokens, model='gpt-4'),
-    )
-    
-    azure_api_key, azure_version, azure_endpoint = validate_azure_api_params()
-    client = openai.AsyncAzureOpenAI(api_key=azure_api_key,
-                                     api_version=azure_version,
-                                     azure_endpoint=azure_endpoint)
-    llm_service = OpenAIService(client, rate_limit=1e9)
-    services = [llm_service]
-    kwargs = dict(llm_service=llm_service, model='egswaterord-gpt4-mini', temperature=0)
-    location = County(name=GWCD_NAME, state='Texas')
+    districts = pd.read_csv('districts.csv')
+    # names = districts['district'].tolist()[76:]
+    import random
+    import time
+    names = random.sample(districts['district'].tolist(), 1)
 
-    loop = asyncio.get_event_loop()
-    docs = asyncio.run(process(location, text_splitter, **kwargs))
+    # names = ['Trinity Glen Rose Groundwater Conservation District',
+    # 'Lone Wolf Groundwater Conservation District',
+    # 'Cow Creek Groundwater Conservation District',
+    # 'Hickory Underground Water Conservation District',
+    # 'Comal Trinity Groundwater Conservation District']
 
     breakpoint()
-
-    client = openai.AzureOpenAI(
-        api_key = os.getenv("AZURE_OPENAI_API_KEY"), 
-        api_version = os.getenv('AZURE_OPENAI_VERSION'),
-        azure_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT") 
+    times = []
+    for dis in names:
+        start = time.time()
+        gwcd_name = dis.strip()
+        logger.info(f'Processing {gwcd_name}')
+        embed_dir = f"./embeddings/times/{gwcd_name.lower().replace('/', '_').replace(' ', '_')}_embed/"
+        os.makedirs(embed_dir, exist_ok=True)
+        text_splitter = RecursiveCharacterTextSplitter(
+            RTS_SEPARATORS,
+            chunk_size=3000,
+            chunk_overlap=300,
+            length_function=partial(ApiBase.count_tokens, model='gpt-4'),
         )
+        
+        azure_api_key, azure_version, azure_endpoint = validate_azure_api_params()
+        client = openai.AsyncAzureOpenAI(api_key=azure_api_key,
+                                        api_version=azure_version,
+                                        azure_endpoint=azure_endpoint)
+        llm_service = OpenAIService(client, rate_limit=1e9)
+        services = [llm_service]
+        kwargs = dict(llm_service=llm_service, model='egswaterord-gpt4.1-mini', temperature=0)
+        location = County(name=gwcd_name, state='Texas')
 
+        # loop = asyncio.get_event_loop()
+        docs = asyncio.run(process(location, text_splitter, **kwargs))
+
+        client = openai.AzureOpenAI(
+            api_key = os.getenv("AZURE_OPENAI_API_KEY"), 
+            api_version = os.getenv('AZURE_OPENAI_VERSION'),
+            azure_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT") 
+            )
+
+        for i, d in enumerate(docs):
+            url = d.attrs.get('source')
+            fn = os.path.basename(url)
+            if not fn:
+                fn =  url.replace('https://', '')
+                fn = fn.replace('/', '-')
+        
+            fn = fn.replace('.pdf', '').split('.')[0]
+            fn = f'{fn}_{i}'
+            assert fn, f'no file name generated for {url}'
+            embed_fp = os.path.join(embed_dir, fn)
+            embed_fp = embed_fp + '.json'
+
+            if not os.path.exists(embed_fp):
+                logger.info(f'Embedding {url}')
+                # obj = ChunkAndEmbed(d.text, model=MODEL, tokens_per_chunk=500, overlap=1)
+                # obj = ChunkAndEmbed(d.text, client, model=MODEL, tokens_per_chunk=250, overlap=1)
+                obj = ChunkAndEmbed(d.text, client, model=MODEL, tokens_per_chunk=500, overlap=1, split_on='\n')
+                try:
+                    embeddings = asyncio.run(obj.run_async(rate_limit=3e4))
+                    if any(e is None for e in embeddings):
+                        raise RuntimeError('Embeddings are None!')
+                    else:
+                        df = pd.DataFrame({'text': obj.text_chunks.chunks,
+                                        'embedding': embeddings,
+                                            'source': url,
+                                        })
+                        
+                        df.to_json(embed_fp, indent=2)
+                        logger.info(f'Saving {embed_fp}')
+                except Exception as e:
+                    logger.info(f'could not embed {fn} with error: {e}')
+
+                time.sleep(5)
+        finish = time.time()
+        completion_time = finish - start
+        times.append(completion_time)
     breakpoint()
-    for i, d in enumerate(docs):
-        url = d.attrs.get('source')
-        fn = os.path.basename(url)
-        if not fn:
-            fn =  url.replace('https://', '')
-            fn = fn.replace('/', '-')
-    
-        fn = fn.replace('.pdf', '').split('.')[0]
-        fn = f'{fn}_{i}'
-        assert fn, f'no file name generated for {url}'
-        embed_fp = os.path.join(EMBED_DIR, fn)
-        embed_fp = embed_fp + '.json'
-
-        if not os.path.exists(embed_fp):
-            logger.info(f'Embedding {url}')
-            # obj = ChunkAndEmbed(d.text, model=MODEL, tokens_per_chunk=500, overlap=1)
-            # obj = ChunkAndEmbed(d.text, client, model=MODEL, tokens_per_chunk=250, overlap=1)
-            obj = ChunkAndEmbed(d.text, client, model=MODEL, tokens_per_chunk=500, overlap=1, split_on='\n')
-            try:
-                embeddings = asyncio.run(obj.run_async(rate_limit=3e4))
-                if any(e is None for e in embeddings):
-                    raise RuntimeError('Embeddings are None!')
-                else:
-                    df = pd.DataFrame({'text': obj.text_chunks.chunks,
-                                       'embedding': embeddings,
-                                        'source': url,
-                                    })
-                    
-                    df.to_json(embed_fp, indent=2)
-                    logger.info(f'Saving {embed_fp}')
-            except Exception as e:
-                logger.info(f'could not embed {fn} with error: {e}')
-
-            time.sleep(5)
-
     logger.info('finished')
-
-    breakpoint()
- 

@@ -122,8 +122,8 @@ examples/research_hub/pdfs/
 examples/research_hub/embed/
 examples/research_hub/txt/
 examples/research_hub/meta.csv
-examples/water_rights/*embed*
-examples/water_rights/*.json
+examples/water_rights/embeddings/
+examples/water_rights/outputs/
 
 *ignore*.py
 

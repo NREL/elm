@@ -21,13 +21,21 @@ logger = logging.getLogger(__name__)
 #     'ordinances for commercial wind energy conversion systems in {location}?"',
 # ]
 
-QUESTION_TEMPLATES = [
-    "0. {location} groundwater conservation district rules",
-    "1. {location} groundwater conservation district management plan",
-    "2. {location} groundwater conservation district well permits",
-    "3. {location} groundwater conservation district well permit requirements",
-    ]
+# QUESTION_TEMPLATES = [
+#     "0. {location} groundwater conservation district rules",
+#     "1. {location} groundwater conservation district management plan",
+#     "2. {location} groundwater conservation district well permits",
+#     "3. {location} groundwater conservation district well permit requirements",
+#     "4. requirements to drill a water well in {location}",
+#     ]
 
+QUESTION_TEMPLATES = [
+    "0. {location} rules",
+    "1. {location} management plan",
+    "2. {location} well permits",
+    "3. {location} well permit requirements",
+    "4. requirements to drill a water well in {location}",
+    ]
 
 async def download_county_ordinance(
     location,
@@ -80,9 +88,6 @@ async def download_county_ordinance(
         browser_semaphore,
         **(file_loader_kwargs or {})
     )
-    logger.debug(f'processing {len(docs)}')
-
-    breakpoint()
     docs = await _down_select_docs_correct_location(
         docs, location=location, **kwargs
     )
@@ -97,8 +102,8 @@ async def download_county_ordinance(
         location.full_name,
     )
 
-    breakpoint()
-    return _sort_final_ord_docs(docs)
+    # return _sort_final_ord_docs(docs)
+    return docs
 
 
 async def _docs_from_google_search(
