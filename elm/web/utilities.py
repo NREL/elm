@@ -34,7 +34,7 @@ DEFAULT_HEADERS = {
 _BT_RENAME = {"chromium": "Chrome", "firefox": "Firefox",
               "webkit": "Safari"}
 # block pages by resource type. e.g. image, stylesheet
-BLOCK_RESOURCE_TYPES = [
+BLOCK_RESOURCE_TYPES = {
     "beacon",
     "csp_report",
     "font",
@@ -48,7 +48,7 @@ BLOCK_RESOURCE_TYPES = [
     # 'stylesheet',
     # 'script',
     # 'xhr',
-]
+}
 # block popular 3rd party resources like tracking and advertisements.
 BLOCK_RESOURCE_NAMES = [
     "adzerk",
@@ -58,7 +58,6 @@ BLOCK_RESOURCE_NAMES = [
     "exelator",
     "facebook",
     "fontawesome",
-    "google",
     "google-analytics",
     "googletagmanager",
     "lit.connatix",  # <- not sure about this one
