@@ -76,15 +76,17 @@ async def process(location, text_splitter, **kwargs):
 if __name__ == '__main__':
     districts = pd.read_csv('districts.csv')
     # names = districts['district'].tolist()[76:]
-    import random
-    import time
-    names = random.sample(districts['district'].tolist(), 1)
+    # import random
+    # import time
+    # names = random.sample(districts['district'].tolist(), 1)
 
     # names = ['Trinity Glen Rose Groundwater Conservation District',
     # 'Lone Wolf Groundwater Conservation District',
     # 'Cow Creek Groundwater Conservation District',
     # 'Hickory Underground Water Conservation District',
     # 'Comal Trinity Groundwater Conservation District']
+    names = districts['district'].tolist()
+    # names = [n for n in names if 'southeast' in n.lower()]
 
     breakpoint()
     times = []
@@ -118,6 +120,8 @@ if __name__ == '__main__':
             api_version = os.getenv('AZURE_OPENAI_VERSION'),
             azure_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT") 
             )
+        
+        breakpoint()
 
         for i, d in enumerate(docs):
             url = d.attrs.get('source')

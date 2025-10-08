@@ -130,7 +130,7 @@ class CountyNameValidator(FixedMessageValidator):
         "township, or otherwise and keep in mind that aquifer management zones "
         "should not be considered groundwater conservation districts. "
         "`False` if the text applies to {county} Groundwater Conservation District "
-        "County or if there is not enough information to determine the "
+        "or if there is not enough information to determine the "
         "answer. The second key is 'wrong_state', which is a boolean that is "
         "set to `True` if the legal text is not for a county in {state} "
         "State. Do not infer based on any information about any US county, "

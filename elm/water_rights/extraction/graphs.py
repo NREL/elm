@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """ELM Ordinance Decision Tree Graph setup functions."""
 import networkx as nx
-from elm.ords.extraction.graphs import (llm_response_does_not_start_with_no,
-                                        llm_response_starts_with_no,
+from elm.ords.extraction.graphs import (llm_response_starts_with_no,
                                         llm_response_starts_with_yes)
 
 
@@ -431,7 +430,7 @@ def setup_graph_well_spacing(**kwargs):
         "get_qualifier",
         prompt=(
             "Is the spacing limit dependent upon well characteristics "
-            "such as depth or production capability?"
+            "such as depth or production capacity? "
             "If so, include that metric in the response (example: gallons per minute). "
         ),
     )
@@ -488,7 +487,7 @@ def setup_graph_time(**kwargs):
         ),
         db_query=(
             'In {DISTRICT_NAME}, how long after permit approval '
-            'must drilling must commence? '
+            'must drilling must commence on a water well? '
         ),
     )
 
@@ -821,11 +820,10 @@ def setup_graph_external_transfer(**kwargs):
     G.add_node(
         "get_cost",
         prompt=(
-            'Is there a cost a associated with the external transfer of water? "'
-            'Focus on costs that are specific to the transfer itself '
-            '(dollars per gallon or acre-foot figures) rather than '
-            'permit costs. Begin your answer with either "Yes" or "No" '
-            'and explain your answer.'
+            'Is there a cost a associated with the external transfer of water? '
+            'Focus on costs that are specific to the transfer itself (dollars per '
+            'gallon or acre-foot figures) rather than permit or application costs. '
+            'Begin your answer with either "Yes" or "No" and explain your answer.'
         ),
     )
 
@@ -897,8 +895,6 @@ def setup_graph_production_reporting(**kwargs):
     )
 
     G.add_edge("init", "get_reporting", condition=llm_response_starts_with_yes)
-    G.add_edge("init", "final", condition=llm_response_starts_with_no)
-
 
     G.add_node(
         "get_reporting",
@@ -947,7 +943,7 @@ def setup_graph_production_cost(**kwargs):
             'extraction of water from wells? Such a cost would specify a cost per '
             'unit volume of water extracted. Focus on costs that are specific to '
             'the production or extraction itself (dollars per gallon or acre-foot '
-            'figures) rather than permit costs. Begin your response with '
+            'figures) rather than one-time permit costs. Begin your response with '
             'either "Yes" or "No" and explain your answer.'
             '\n\n"""\n{text}\n"""'
             ),
@@ -1023,9 +1019,8 @@ def setup_graph_setback_features(**kwargs):
             "Does the following text mention restrictions related to how "
             "close a groundwater well can be located relative to property "
             "lines, buildings, septic systems, or 'other sources of "
-            "contamination'?"
-            "Begin your response with either 'Yes' or 'No' and explain your "
-            "answer."
+            "contamination'? Begin your response with either 'Yes' or "
+            "'No' and explain your answer."
             '\n\n"""\n{text}\n"""'
         ),
         db_query=(

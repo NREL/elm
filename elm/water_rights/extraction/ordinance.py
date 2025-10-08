@@ -10,7 +10,6 @@ import logging
 from elm import ApiBase
 from elm.ords.validation.content import (
     ValidationWithMemory,
-    possibly_mentions_wind,
 )
 from elm.ords.utilities.parsing import merge_overlapping_texts
 
@@ -18,59 +17,8 @@ from elm.ords.utilities.parsing import merge_overlapping_texts
 logger = logging.getLogger(__name__)
 
 
-RESTRICTIONS = """- buildings / structures / residences
-- property lines / parcels / subdivisions
-- roads / rights-of-way
-- railroads
-- overhead electrical transmission wires
-- bodies of water including wetlands, lakes, reservoirs, streams, and rivers
-- natural, wildlife, and environmental conservation areas
-- noise restrictions
-- shadow flicker restrictions
-- density restrictions
-- turbine height restrictions
-- minimum/maximum lot size
-"""
-
-
 class OrdinanceValidator(ValidationWithMemory):
     """Check document text for wind ordinances."""
-
-    IS_LEGAL_TEXT_PROMPT = (
-        "You extract structured data from text. Return your answer in JSON "
-        "format (not markdown). Your JSON file must include exactly three "
-        "keys. The first key is 'summary', which is a string that provides a "
-        "short summary of the text. The second key is 'type', which is a "
-        "string that best represent the type of document this text belongs "
-        "to. The third key is '{key}', which is a boolean that is set to "
-        "True if the type of the text (as you previously determined) is a "
-        "legally-binding statute or code and False if the text is an excerpt "
-        "from other non-legal text such as a news article, survey, summary, "
-        "application, public notice, etc."
-    )
-
-    CONTAINS_DEF_PROMPT = (
-        "You extract structured data from text. Return your answer in JSON "
-        "format (not markdown). Your JSON file must include exactly two "
-        "keys. The first key is 'resource_def', which is a string that "
-        "summarizes the definition of a geothermal resource mentioned in the "
-        "text. The "
-        "last key is '{key}', which is a boolean that is set to True if the "
-        "text excerpt provides enough info to describe geothermal resources "
-        "and False otherwise."
-    )
-
-    # WELL_PERMITS_PROMPT = (
-    #     "You extract structured data from text. Return your answer in JSON "
-    #     "format (not markdown). Your JSON file must include exactly three "
-    #     "keys. The first key is 'district_rules' which is a string summarizes "
-    #     "the rules associated with the ground water conservation district. "
-    #     "The second key is 'well_requirements', which is a string that "
-    #     "summarizes the requirements for drilling a groundwater well. The "
-    #     "last key is '{key}', which is a boolean that is set to True if the "
-    #     "text excerpt provides enough info to determine what is required to "
-    #     "drill a water well and False otherwise. "
-    # )
 
     WELL_PERMITS_PROMPT = (
         "You extract structured data from text. Return your answer in JSON "
@@ -110,15 +58,8 @@ class OrdinanceValidator(ValidationWithMemory):
             num_to_recall=num_to_recall,
         )
         self._legal_text_mem = []
-        self._wind_mention_mem = []
+        # self._wind_mention_mem = []
         self._ordinance_chunks = []
-
-    @property
-    def is_legal_text(self):
-        """bool: ``True`` if text was found to be from a legal source."""
-        if not self._legal_text_mem:
-            return False
-        return sum(self._legal_text_mem) >= 0.5 * len(self._legal_text_mem)
 
     @property
     def ordinance_text(self):
@@ -152,11 +93,12 @@ class OrdinanceValidator(ValidationWithMemory):
             ``True`` if any ordinance text was found in the chunks.
         """
         for ind, text in enumerate(self.text_chunks):
-            self._wind_mention_mem.append(possibly_mentions_wind(text))
-            if ind >= min_chunks_to_process:
-                # fmt: off
-                if not any(self._wind_mention_mem[-self.num_to_recall:]):
-                    continue
+            # TODO: I got good results without a similar test for water but is it worth including for the sake of being thorough?
+            # self._wind_mention_mem.append(possibly_mentions_wind(text))
+            # if ind >= min_chunks_to_process:
+            #     # fmt: off
+            #     if not any(self._wind_mention_mem[-self.num_to_recall:]):
+            #         continue
 
             logger.debug("Processing text at ind %d", ind)
             logger.debug("Text:\n%s", text)
@@ -176,7 +118,7 @@ class OrdinanceValidator(ValidationWithMemory):
             self._ordinance_chunks.append({"text": text, "ind": ind})
             logger.debug("Added text at ind %d to ordinances", ind)
             # mask, since we got a good result
-            self._wind_mention_mem[-1] = False
+            # self._wind_mention_mem[-1] = False
 
         return bool(self._ordinance_chunks)
 

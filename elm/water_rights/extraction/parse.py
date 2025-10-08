@@ -2,18 +2,11 @@
 """ELM Ordinance structured parsing class."""
 import asyncio
 import logging
-from copy import deepcopy
-from itertools import chain
-
-import pandas as pd
 
 from elm.ords.llm.calling import BaseLLMCaller, ChatLLMCaller
 from elm.ords.utilities import llm_response_as_json
 from elm.ords.extraction.tree import AsyncDecisionTree
-from elm.utilities import validate_azure_api_params
-#from elm.ords.extraction.features import SetbackFeatures
 from elm.water_rights.extraction.graphs import (
-    EXTRACT_ORIGINAL_TEXT_PROMPT,
     setup_graph_permits,
     setup_graph_extraction,
     setup_graph_geothermal,
@@ -30,13 +23,7 @@ from elm.water_rights.extraction.graphs import (
     setup_graph_production_cost,
     setup_graph_setback_features,
     setup_graph_redrilling,
-    llm_response_starts_with_yes,
 )
-
-## extra imports for the wizard
-from elm import EnergyWizard
-import openai
-from glob import glob
 
 logger = logging.getLogger(__name__)
 
@@ -46,25 +33,12 @@ DEFAULT_SYSTEM_MESSAGE = (
     "energy developer."
 )
 
-# TODO: should I import all of these from elm.ords.extraction.parse
 def _setup_async_decision_tree(graph_setup_func, **kwargs):
     """Setup Async Decision tree dor ordinance extraction."""
     G = graph_setup_func(**kwargs)
     tree = AsyncDecisionTree(G)
     assert len(tree.chat_llm_caller.messages) == 1
     return tree
-
-
-def _found_ord(messages):
-    """Check if ordinance was found based on messages from the base graph.
-    IMPORTANT: This function may break if the base graph structure changes.
-    Always update the hardcoded values to match the base graph message
-    containing the LLM response about ordinance content.
-    """
-    if len(messages) < 3:
-        return False
-    return llm_response_starts_with_yes(messages[2].get("content", ""))
-
 
 async def _run_async_tree(tree, response_as_json=True):
     """Run Async Decision Tree and return output as dict."""
@@ -83,23 +57,6 @@ async def _run_async_tree(tree, response_as_json=True):
     return response
 
 
-async def _run_async_tree_with_bm(tree, base_messages):
-    """Run Async Decision Tree from base messages and return dict output."""
-    tree.chat_llm_caller.messages = base_messages
-    assert len(tree.chat_llm_caller.messages) == len(base_messages)
-    return await _run_async_tree(tree)
-
-
-def _empty_output(feature):
-    """Empty output for a feature (not found in text)."""
-    if feature in {"struct", "pline"}:
-        return [
-            {"feature": f"{feature} (participating)"},
-            {"feature": f"{feature} (non-participating)"},
-        ]
-    return [{"feature": feature}]
-
-
 class StructuredOrdinanceParser(BaseLLMCaller):
     """LLM ordinance document structured data scraping utility."""
 
@@ -111,8 +68,22 @@ class StructuredOrdinanceParser(BaseLLMCaller):
             usage_tracker=self.usage_tracker,
             **self.kwargs,
         )
-    
-    async def parse(self, wizard, location):
+
+    def __init__(self, wizard, location, **kwargs):
+        """
+        Parameters
+        ----------
+        wizard : elm.wizard.EnergyWizard
+            Instance of the EnergyWizard class used for RAG.
+        location : str
+            Name of the groundwater conservation district or county.
+        """
+        self.location = location
+        self.wizard = wizard
+
+        super().__init__(**kwargs)
+
+    async def parse(self, location):
         """Parse text and extract structured ordinance data."""
         self.location = location
         values = {"location": location}
@@ -133,34 +104,38 @@ class StructuredOrdinanceParser(BaseLLMCaller):
             "redrilling": self._check_redrilling,
         }
 
-        tasks = {name: func(wizard) for name, func in check_map.items()}
+        tasks = {name: asyncio.create_task(func()) for name, func in check_map.items()}
 
         limit_intervals = ["daily", "monthly", "annual"]
         for interval in limit_intervals:
-            tasks[f"{interval}_limits"] = self._check_limits(wizard, interval)
+            task_name = f"{interval}_limits"
+            tasks[task_name] = asyncio.create_task(self._check_limits(interval))
 
-        logger.debug("Starting value extraction.")
+        logger.debug("Starting value extraction with %d tasks.", len(tasks))
 
-        results = await asyncio.gather(*tasks.values())
+        results = await asyncio.gather(*tasks.values(), return_exceptions=True)
 
         for key, result in zip(tasks.keys(), results):
-            values[key] = result
+            if isinstance(result, Exception):
+                logger.warning("Task %s failed: %s", key, result)
+                values[key] = None
+            else:
+                values[key] = result
 
         logger.debug("Value extraction complete.")
+
         return values
-    
-    async def _check_with_graph(self, wizard, graph_setup_func,
-                                check_name, limit=50, **format_kwargs):
+
+    async def _check_with_graph(self, graph_setup_func,
+                                limit=50, **format_kwargs):
         """Generic method to check requirements using a graph setup function.
         
         Parameters
         ----------
-        wizard : elm.EnergyWizard # TODO confirm type
+        wizard : elm.wizard.EnergyWizard
             Instance of the EnergyWizard class used for RAG.
         graph_setup_func : callable
             Function that returns a graph for the decision tree
-        check_name : str
-            Name of what's being checked (for logging)
         limit : int, optional
             Limit for vector DB query, by default 50
         **format_kwargs
@@ -171,16 +146,14 @@ class StructuredOrdinanceParser(BaseLLMCaller):
         dict
             Extracted data as JSON dict
         """
-        logger.debug(f"Checking {check_name}")
-
         graph = graph_setup_func()
         prompt = graph.nodes['init'].get('db_query')
-        
+
         format_dict = {'DISTRICT_NAME': self.location}
         format_dict.update(format_kwargs)
         prompt = prompt.format(**format_dict)
 
-        response, _, _ = wizard.query_vector_db(prompt, limit=limit)
+        response, _, _ = self.wizard.query_vector_db(prompt, limit=limit)
         text = response.tolist()
         all_text = '\n'.join(text)
 
@@ -192,118 +165,100 @@ class StructuredOrdinanceParser(BaseLLMCaller):
         )
 
         return await _run_async_tree(tree)
-    
+
     async def _check_reqs(self):
         """Get the requirements mentioned in the text."""
         return await self._check_with_graph(
-            setup_graph_permits, 
-            "requirements"
+            setup_graph_permits,
         )
-    
+
     async def _check_extraction(self):
         """Get the extraction requirements mentioned in the text."""
         return await self._check_with_graph(
-            setup_graph_extraction, 
-            "extraction"
+            setup_graph_extraction,
         )
-    
+
     async def _check_geothermal(self):
         """Get the geothermal requirements mentioned in the text."""
         return await self._check_with_graph(
-            setup_graph_geothermal, 
-            "geothermal requirements"
+            setup_graph_geothermal,
         )
 
     async def _check_oil_and_gas(self):
         """Get the oil and gas requirements mentioned in the text."""
         return await self._check_with_graph(
-            setup_graph_oil_and_gas, 
-            "oil and gas requirements"
+            setup_graph_oil_and_gas,
         )
-    
+
     async def _check_limits(self, interval):
         """Get the extraction limits mentioned in the text."""
         return await self._check_with_graph(
-            setup_graph_limits, 
-            f"{interval} extraction limits",
+            setup_graph_limits,
             interval=interval
         )
-    
+
     async def _check_spacing(self):
         """Get the spacing requirements mentioned in the text."""
         return await self._check_with_graph(
-            setup_graph_well_spacing, 
-            "spacing requirements",
-            limit=20
+            setup_graph_well_spacing,
         )
 
     async def _check_time(self):
         """Get the time requirements mentioned in the text."""
         return await self._check_with_graph(
-            setup_graph_time, 
-            "time limits"
+            setup_graph_time,
         )
-    
+
     async def _check_metering_device(self):
         """Get the metering device mentioned in the text."""
         return await self._check_with_graph(
-            setup_graph_metering_device, 
-            "metering device requirements"
+            setup_graph_metering_device,
         )
-    
+
     async def _check_district_drought(self):
         """Get the drought management plan mentioned in the text."""
         return await self._check_with_graph(
-            setup_graph_drought, 
-            "drought management plan"
+            setup_graph_drought,
         )
-    
+
     async def _check_well_drought(self):
         """Get the well drought management plan mentioned in the text."""
         return await self._check_with_graph(
-            setup_graph_contingency, 
-            "well drought management plan"
+            setup_graph_contingency,
         )
 
     async def _check_plugging(self):
         """Get the plugging requirements mentioned in the text."""
         return await self._check_with_graph(
-            setup_graph_plugging_reqs, 
-            "plugging requirements"
+            setup_graph_plugging_reqs,
         )
 
     async def _check_transfer(self):
         """Get the transfer requirements mentioned in the text."""
         return await self._check_with_graph(
-            setup_graph_external_transfer, 
-            "transfer requirements"
+            setup_graph_external_transfer,
         )
-    
+
     async def _check_production_reporting(self):
         """Get the reporting requirements mentioned in the text."""
         return await self._check_with_graph(
-            setup_graph_production_reporting, 
-            "production reporting requirements"
+            setup_graph_production_reporting,
         )
-    
+
     async def _check_production_cost(self):
         """Get the production cost requirements mentioned in the text."""
         return await self._check_with_graph(
-            setup_graph_production_cost, 
-            "production cost requirements"
+            setup_graph_production_cost,
         )
 
     async def _check_setbacks(self):
         """Get the setback requirements mentioned in the text."""
         return await self._check_with_graph(
-            setup_graph_setback_features, 
-            "setback requirements"
+            setup_graph_setback_features,
         )
-    
+
     async def _check_redrilling(self):
         """Get the redrilling requirements mentioned in the text."""
         return await self._check_with_graph(
-            setup_graph_redrilling, 
-            "redrilling requirements"
+            setup_graph_redrilling,
         )
-    

@@ -4,6 +4,7 @@ import logging
 
 from elm.ords.llm import StructuredLLMCaller
 from elm.water_rights.extraction import check_for_ordinance_info
+# from elm.ords.extraction.apply import check_for_ordinance_info
 from elm.ords.services.threaded import TempFileCache
 from elm.water_rights.validation.location import CountyValidator
 from elm.web.document import PDFDocument
@@ -12,22 +13,6 @@ from elm.web.utilities import filter_documents
 
 
 logger = logging.getLogger(__name__)
-# QUESTION_TEMPLATES = [
-#     '0. "wind energy conversion system zoning ordinances {location}"',
-#     '1. "{location} wind WECS zoning ordinance"',
-#     '2. "Where can I find the legal text for commercial wind energy '
-#     'conversion system zoning ordinances in {location}?"',
-#     '3. "What is the specific legal information regarding zoning '
-#     'ordinances for commercial wind energy conversion systems in {location}?"',
-# ]
-
-# QUESTION_TEMPLATES = [
-#     "0. {location} groundwater conservation district rules",
-#     "1. {location} groundwater conservation district management plan",
-#     "2. {location} groundwater conservation district well permits",
-#     "3. {location} groundwater conservation district well permit requirements",
-#     "4. requirements to drill a water well in {location}",
-#     ]
 
 QUESTION_TEMPLATES = [
     "0. {location} rules",
@@ -88,6 +73,7 @@ async def download_county_ordinance(
         browser_semaphore,
         **(file_loader_kwargs or {})
     )
+
     docs = await _down_select_docs_correct_location(
         docs, location=location, **kwargs
     )
@@ -95,6 +81,8 @@ async def download_county_ordinance(
     docs = await _down_select_docs_correct_content(
         docs, location=location, text_splitter=text_splitter, **kwargs
     )
+
+    breakpoint()
 
     logger.info(
         "Found %d potential ordinance documents for %s",

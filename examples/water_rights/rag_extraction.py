@@ -86,7 +86,6 @@ if __name__ == '__main__':
         
         wizard = EnergyWizard(corpus, azure_client=azure_client, model='egswaterord-gpt4-mini')
 
-
         azure_api_key, azure_version, azure_endpoint = validate_azure_api_params()
         client = openai.AsyncAzureOpenAI(api_key=azure_api_key,
                                         api_version=azure_version,
@@ -102,6 +101,8 @@ if __name__ == '__main__':
                                                                 location=name, **kwargs))
         except ValueError:
             continue
+
+        breakpoint()
 
         # out_fp = f'./outputs/{fp}.json'
         # with open(out_fp, 'w') as f:
