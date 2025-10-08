@@ -58,7 +58,6 @@ BLOCK_RESOURCE_NAMES = [
     "exelator",
     "facebook",
     "fontawesome",
-    "google",
     "google-analytics",
     "googletagmanager",
     "lit.connatix",  # <- not sure about this one
