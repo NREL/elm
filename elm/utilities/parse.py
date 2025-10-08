@@ -397,7 +397,12 @@ def _load_pdf_possibly_multi_col(pdf_bytes):
     return pages
 
 
-def read_pdf_ocr(pdf_bytes, verbose=True):  # pragma: no cover
+def read_pdf_ocr(  # pragma: no cover
+    pdf_bytes,
+    image_to_string_kwargs=None,
+    convert_from_bytes_kwargs=None,
+    verbose=True
+):
     """Read PDF contents from bytes using Optical Character recognition (OCR).
 
     This method attempt to read the PDF document using OCR. This is one
@@ -417,6 +422,14 @@ def read_pdf_ocr(pdf_bytes, verbose=True):  # pragma: no cover
     ----------
     pdf_bytes : bytes
         Bytes corresponding to a PDF file.
+    image_to_string_kwargs : dictionary, optional
+        Optional dictionary of keyword-value pairs to pass as arguments
+        to the :func:`pytesseract.image_to_string` function.
+        By default, ``None``.
+    convert_from_bytes_kwargs : dictionary, optional
+        Optional dictionary of keyword-value pairs to pass as arguments
+        to the :func:`pdf2image.convert_from_bytes` function.
+        By default, ``None``.
     verbose : bool, optional
         Option to log errors during parsing. By default, ``True``.
 
@@ -427,7 +440,11 @@ def read_pdf_ocr(pdf_bytes, verbose=True):  # pragma: no cover
         may be empty if there was an error reading the PDF file.
     """
     try:
-        pages = _load_pdf_with_pytesseract(pdf_bytes)
+        pages = _load_pdf_with_pytesseract(
+            pdf_bytes,
+            image_to_string_kwargs=image_to_string_kwargs,
+            convert_from_bytes_kwargs=convert_from_bytes_kwargs
+        )
     except Exception as e:
         if verbose:
             logger.error("Failed to decode PDF content!")
@@ -437,7 +454,9 @@ def read_pdf_ocr(pdf_bytes, verbose=True):  # pragma: no cover
     return pages
 
 
-def _load_pdf_with_pytesseract(pdf_bytes):  # pragma: no cover
+def _load_pdf_with_pytesseract(  # pragma: no cover
+    pdf_bytes, image_to_string_kwargs=None, convert_from_bytes_kwargs=None
+):
     """Load PDF bytes using Optical Character recognition (OCR)"""
 
     try:
@@ -469,7 +488,12 @@ def _load_pdf_with_pytesseract(pdf_bytes):  # pragma: no cover
         pytesseract.pytesseract.tesseract_cmd,
     )
 
+    its = {"timeout": 60 * 5}
+    its.update(image_to_string_kwargs or {})
+
+    cfb = {"grayscale": True}
+    cfb.update(convert_from_bytes_kwargs or {})
     return [
-        str(pytesseract.image_to_string(page_data).encode("utf-8"))
-        for page_data in convert_from_bytes(bytes(pdf_bytes))
+        str(pytesseract.image_to_string(page_data, **its).encode("utf-8"))
+        for page_data in convert_from_bytes(bytes(pdf_bytes), **cfb)
     ]

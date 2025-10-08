@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """ELM Ordinance date extraction logic."""
 import logging
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -72,12 +73,15 @@ class DateExtractor:
 
 def _parse_date(json_list):
     """Parse all date elements."""
+    if not json_list:
+        return None, None, None
+
     years = _parse_date_element(
         json_list,
         key="year",
         max_len=4,
         min_val=2000,
-        max_val=float("inf"),
+        max_val=datetime.now().year,
     )
     months = _parse_date_element(
         json_list, key="month", max_len=2, min_val=1, max_val=12
@@ -86,26 +90,19 @@ def _parse_date(json_list):
         json_list, key="day", max_len=2, min_val=1, max_val=31
     )
 
-    try:
-        year, month, day = max(zip(years, months, days))
-    except:
-        breakpoint()
-
-    return year, month, day
+    latest_date = max(zip(years, months, days))
+    return tuple(None if d < 0 else d for d in latest_date)
 
 
 def _parse_date_element(json_list, key, max_len, min_val, max_val):
     """Parse out a single date element."""
     date_elements = [info.get(key) for info in json_list]
     logger.debug(f"{key=}, {date_elements=}")
-    date_elements = [
+    return [
         int(y)
-        for y in date_elements
         if y is not None
         and len(str(y)) <= max_len
         and (min_val <= int(y) <= max_val)
+        else -1 * float("inf")
+        for y in date_elements
     ]
-    if not date_elements:
-        return [None] * len(json_list)#-1 * float("inf")
-
-    return date_elements

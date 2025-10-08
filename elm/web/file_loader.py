@@ -46,7 +46,7 @@ class AsyncFileLoader:
     .. end desc
     """
 
-    PAGE_LOAD_TIMEOUT = 90_000
+    PAGE_LOAD_TIMEOUT = 60_000
     """Default page load timeout value in milliseconds"""
 
     def __init__(
@@ -62,6 +62,8 @@ class AsyncFileLoader:
         pdf_ocr_read_coroutine=None,
         file_cache_coroutine=None,
         browser_semaphore=None,
+        use_scrapling_stealth=False,
+        **__,  # consume any extra kwargs
     ):
         """
 
@@ -117,6 +119,9 @@ class AsyncFileLoader:
             Semaphore instance that can be used to limit the number of
             playwright browsers open concurrently. If ``None``, no
             limits are applied. By default, ``None``.
+        use_scrapling_stealth : bool, default=False
+            Option to use scrapling stealth scripts instead of
+            tf-playwright-stealth. By default, ``False``.
         """
         self.pw_launch_kwargs = pw_launch_kwargs or {}
         self.pdf_read_kwargs = pdf_read_kwargs or {}
@@ -131,6 +136,7 @@ class AsyncFileLoader:
         self.pdf_ocr_read_coroutine = pdf_ocr_read_coroutine
         self.file_cache_coroutine = file_cache_coroutine
         self.browser_semaphore = browser_semaphore
+        self.uss = use_scrapling_stealth
 
     def _header_from_template(self, header_template):
         """Compile header from user or default template"""
@@ -174,7 +180,17 @@ class AsyncFileLoader:
             Document instance containing text, if the fetch was
             successful.
         """
-        doc, raw_content = await self._fetch_doc_with_url_in_metadata(url)
+        try:
+            doc, raw_content = await self._fetch_doc_with_url_in_metadata(url)
+        except KeyboardInterrupt:
+            raise
+        except Exception as e:
+            msg = ("Encountered error of type %r while fetching document from "
+                   "%s:")
+            err_type = type(e)
+            logger.exception(msg, err_type, url)
+            return HTMLDocument(pages=[])
+
         doc = await self._cache_doc(doc, raw_content)
         return doc
 
@@ -189,25 +205,28 @@ class AsyncFileLoader:
 
         async with aiohttp.ClientSession() as session:
             try:
-                logger.trace("Fetching content from %r", url)
+                logger.debug("Fetching content from %r", url)
                 url_bytes = await self._fetch_content_with_retry(url, session)
             except ELMRuntimeError:
+                logger.exception("Could not fetch content from %r", url)
                 return PDFDocument(pages=[]), None
 
-        logger.trace("Got content from %r", url)
+        logger.debug("Got content from %r", url)
         doc = await self.pdf_read_coroutine(url_bytes, **self.pdf_read_kwargs)
-        if doc.pages:
+        if not doc.empty:
             return doc, url_bytes
 
-        logger.trace("PDF read failed; fetching HTML content from %r", url)
+        logger.debug("PDF read failed; fetching HTML content from %r", url)
         text = await load_html_with_pw(url, self.browser_semaphore,
                                        timeout=self.PAGE_LOAD_TIMEOUT,
+                                       use_scrapling_stealth=self.uss,
                                        **self.pw_launch_kwargs)
         doc = await self.html_read_coroutine(text, **self.html_read_kwargs)
-        if doc.pages:
+        if not doc.empty:
             return doc, doc.text
 
         if self.pdf_ocr_read_coroutine:
+            logger.debug("HTML read failed; fetching OCR content from %r", url)
             doc = await self.pdf_ocr_read_coroutine(
                 url_bytes, **self.pdf_read_kwargs
             )
@@ -221,7 +240,7 @@ class AsyncFileLoader:
         max_retries=3,
         errors=(
             aiohttp.ClientConnectionError,
-            aiohttp.client_exceptions.ClientConnectorCertificateError,
+            aiohttp.client_exceptions.ClientError,
         ),
     )
     async def _fetch_content_with_retry(self, url, session):

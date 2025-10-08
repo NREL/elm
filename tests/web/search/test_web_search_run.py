@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 from elm.web.search.run import (_single_se_search, _down_select_urls,
-                                _init_se, _load_docs)
+                                _init_se, load_docs)
 from elm.web.search.google import (APIGoogleCSESearch,
                                    PlaywrightGoogleLinkSearch)
 from elm.exceptions import ELMKeyError
@@ -15,7 +15,7 @@ from elm.exceptions import ELMKeyError
 async def test_single_se_search_name_dne():
     """Test error for unknown search engine"""
     with pytest.raises(ELMKeyError) as err:
-        await _single_se_search("DNE", None, None, None, None, None)
+        await _single_se_search("DNE", None, None, None, None, None, None)
 
     assert "'se_name' must be one of" in str(err)
 
@@ -45,25 +45,25 @@ def test_init_se():
     test_kwargs = {"pw_launch_kwargs": {"test": 1}}
     se, *__ = _init_se("PlaywrightGoogleLinkSearch", test_kwargs)
     assert isinstance(se, PlaywrightGoogleLinkSearch)
-    assert se.launch_kwargs == {"test": 1}
+    assert se.launch_kwargs["test"] == 1
     assert test_kwargs == {"pw_launch_kwargs": {"test": 1}}
 
 
-def test_init_se_pop_kwargs():
-    """Test that kwargs are correctly popped in func"""
+def test_init_se_does_not_pop_kwargs():
+    """Test that kwargs are not popped in _init_se"""
     test_kwargs = {"pw_launch_kwargs": {"test": 1},
                    "google_cse_api_kwargs": {"api_key": "test_key"}}
-
+    original_kwargs = test_kwargs.copy()
     se, *__ = _init_se("APIGoogleCSESearch", test_kwargs)
     assert isinstance(se, APIGoogleCSESearch)
     assert se.api_key == "test_key"
-    assert test_kwargs == {"pw_launch_kwargs": {"test": 1}}
+    assert test_kwargs == original_kwargs
 
 
 @pytest.mark.asyncio
 async def test_load_docs_empty():
     """Test loading docs for no URLs"""
-    assert await _load_docs(set()) == []
+    assert await load_docs(set()) == []
 
 
 @pytest.mark.asyncio
@@ -71,7 +71,7 @@ async def test_single_se_search_bad_build():
     """Test that bad init of SE gives no results"""
     test_kwargs = {"google_cse_api_kwargs": {"dne_arg": "test_key"}}
     results = await _single_se_search("APIGoogleCSESearch", [""], None, None,
-                                      None, test_kwargs)
+                                      None, None, test_kwargs)
     assert results == set()
 
 
