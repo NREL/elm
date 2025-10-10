@@ -28,8 +28,8 @@ class OrdinanceValidator(ValidationWithMemory):
         "The second key is 'well_requirements', which is a string that "
         "summarizes the requirements for drilling a groundwater well. The "
         "last key is '{key}', which is a boolean that is set to True if the "
-        "text excerpt provides substantive information related to the groundwater "
-        "conservation district's rules or plans. "
+        "text excerpt provides substantive information related to the "
+        "groundwater conservation district's rules or plans. "
     )
 
     def __init__(self, structured_llm_caller, text_chunks, num_to_recall=2):
@@ -93,7 +93,7 @@ class OrdinanceValidator(ValidationWithMemory):
             ``True`` if any ordinance text was found in the chunks.
         """
         for ind, text in enumerate(self.text_chunks):
-            # TODO: I got good results without a similar test for water but 
+            # TODO: I got good results without a similar test for water but
             # is it worth including for the sake of being thorough?
 
             # self._wind_mention_mem.append(possibly_mentions_wind(text))
@@ -123,100 +123,3 @@ class OrdinanceValidator(ValidationWithMemory):
             # self._wind_mention_mem[-1] = False
 
         return bool(self._ordinance_chunks)
-
-
-# class OrdinanceExtractor:
-#     """Extract succinct ordinance text from input"""
-
-#     SYSTEM_MESSAGE = (
-#         "You extract one or more direct excerpts from a given text based on "
-#         "the user's request. Maintain all original formatting and characters "
-#         "without any paraphrasing. If the relevant text is inside of a "
-#         "space-delimited table, return the entire table with the original "
-#         "space-delimited formatting. Never paraphrase! Only return portions "
-#         "of the original text directly."
-#     )
-
-#     MODEL_INSTRUCTIONS_PERMITS = (
-#         "Extract one or more direct text excerpts related to the requirements "
-#         "needed to drill a water well. The text should include any information "
-#         "related to the permit application process and requirements specified "
-#         "in order to obtain permission to drill a water well. Include section "
-#         "headers (if any) for the "
-#         "text excerpts. If there is no text related to well permits "
-#         'simply say: "No relevant text."'
-#     )
-
-#     def __init__(self, llm_caller):
-#         """
-
-#         Parameters
-#         ----------
-#         llm_caller : elm.ords.llm.LLMCaller
-#             LLM Caller instance used to extract ordinance info with.
-#         """
-#         self.llm_caller = llm_caller
-
-#     async def _process(self, text_chunks, instructions, valid_chunk):
-#         """Perform extraction processing."""
-#         logger.info(
-#             "Extracting ordinance text from %d text chunks asynchronously...",
-#             len(text_chunks),
-#         )
-#         outer_task_name = asyncio.current_task().get_name()
-#         summaries = [
-#             asyncio.create_task(
-#                 self.llm_caller.call(
-#                     sys_msg=self.SYSTEM_MESSAGE,
-#                     content=f"Text:\n{chunk}\n{instructions}",
-#                     usage_sub_label="document_ordinance_summary",
-#                 ),
-#                 name=outer_task_name,
-#             )
-#             for chunk in text_chunks
-#         ]
-#         summary_chunks = await asyncio.gather(*summaries)
-#         summary_chunks = [
-#             chunk for chunk in summary_chunks if valid_chunk(chunk)
-#         ]
-
-#         text_summary = "\n".join(summary_chunks)
-#         logger.debug(
-#             "Final summary contains %d tokens",
-#             ApiBase.count_tokens(
-#                 text_summary,
-#                 model=self.llm_caller.kwargs.get("model", "gpt-4"),
-#             ),
-#         )
-#         return text_summary
-
-#     async def check_for_definition(self, text_chunks):
-#         """Extract definition ordinance text from input text chunks.
-
-#         Parameters
-#         ----------
-#         text_chunks : list of str
-#             List of strings, each of which represent a chunk of text.
-#             The order of the strings should be the order of the text
-#             chunks.
-
-#         Returns
-#         -------
-#         str
-#             Ordinance text extracted from text chunks.
-#         """
-#         return await self._process(
-#             text_chunks=text_chunks,
-#             instructions=self.MODEL_INSTRUCTIONS_PERMITS,
-#             valid_chunk=_valid_chunk_not_short,
-#         )
-
-
-# def _valid_chunk(chunk):
-#     """True if chunk has content."""
-#     return chunk and "no relevant text" not in chunk.lower()
-
-
-# def _valid_chunk_not_short(chunk):
-#     """True if chunk has content and is not too short."""
-#     return _valid_chunk(chunk) and len(chunk) > 20

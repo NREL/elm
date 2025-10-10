@@ -13,7 +13,6 @@ from rex import init_logger
 from elm.base import ApiBase
 from elm.ords.utilities import RTS_SEPARATORS
 from elm.ords.services.openai import OpenAIService
-from elm.ords.services.provider import RunningAsyncServices
 from elm.ords.services.threaded import TempFileCache
 from elm.ords.services.provider import RunningAsyncServices as ARun
 from elm.utilities import validate_azure_api_params
@@ -63,10 +62,8 @@ EnergyWizard.HEADERS = {"Content-Type": "application/json",
                         "api-key": f"{openai.api_key}"}
 
 EnergyWizard.MODEL_ROLE = ('You are a water rights expert helping geothermal '
-                           'developers understand water permitting and access. Use the '
-                           'information below to answer the question. If '
-                           'documents do not provide enough information to '
-                           'answer the question, say "I do not know."')
+                           'developers understand water permitting and access. '
+                           'Use the information below to answer the question.')
 EnergyWizard.MODEL_INSTRUCTION = EnergyWizard.MODEL_ROLE
 EnergyWizard.EMBEDDING_MODEL = 'egswaterord-openai-embedding'
 EnergyWizard.EMBEDDING_TYPE = 'azure new'
@@ -75,31 +72,32 @@ EnergyWizard.EMBEDDING_TYPE = 'azure new'
 EMBEDDING_MODEL = 'egswaterord-openai-embedding'
 MODEL = 'egswaterord-gpt4.1-mini'
 
-async def process(location, text_splitter, **kwargs):
+async def process(location, text_splitter, client, **kwargs):
+    """Download water rights documents for a location."""
 
-    llm_service_rate_limit =  50000
+    llm_service_rate_limit =  500000
     td_kwargs = dict(dir=".")
     tpe_kwargs = dict(max_workers= 10)
-    azure_api_key, azure_version, azure_endpoint = validate_azure_api_params()
-    client = openai.AsyncAzureOpenAI(api_key=azure_api_key,
-                                     api_version=azure_version,
-                                     azure_endpoint=azure_endpoint)
+    # azure_api_key, azure_version, azure_endpoint = validate_azure_api_params()
+    # client = openai.AsyncAzureOpenAI(api_key=azure_api_key,
+    #                                  api_version=azure_version,
+    #                                  azure_endpoint=azure_endpoint)
 
     services = [
         OpenAIService(client, rate_limit=llm_service_rate_limit),
         TempFileCache(td_kwargs=td_kwargs, tpe_kwargs=tpe_kwargs)
     ]
 
-    async with RunningAsyncServices(services):
+    async with ARun(services):
         docs = await download_county_ordinance(location,
                                               text_splitter,
                                               **kwargs)
-        
+
     return docs
 
 if __name__ == '__main__':
     districts = pd.read_csv('districts.csv')
-    names = districts['district'].tolist()
+    names = districts['district'].tolist()[:2]
 
     results = pd.DataFrame()
     for dis in names:
@@ -115,12 +113,12 @@ if __name__ == '__main__':
         client = openai.AsyncAzureOpenAI(api_key=azure_api_key,
                                         api_version=azure_version,
                                         azure_endpoint=azure_endpoint)
-        llm_service = OpenAIService(client, rate_limit=1e9)
+        llm_service = OpenAIService(client, rate_limit=5e5)
         services = [llm_service]
         kwargs = dict(llm_service=llm_service, model=MODEL, temperature=0)
         location = WaterDistrict(name=gwcd_name, state='Texas')
 
-        docs = asyncio.run(process(location, text_splitter, **kwargs))
+        docs = asyncio.run(process(location, text_splitter, client, **kwargs))
 
         corpus = pd.DataFrame(columns=['text', 'embedding'])
         for i, d in enumerate(docs):
@@ -136,20 +134,35 @@ if __name__ == '__main__':
                     row = {'text': obj.text_chunks.chunks,
                            'embedding': embeddings,
                            }
-                    corpus = pd.concat([corpus, pd.DataFrame(row)], ignore_index=True)
+                    corpus = pd.concat([corpus, pd.DataFrame(row)],
+                                       ignore_index=True)
             except Exception as e:
                 logger.info(f'could not embed {url} with error: {e}')
             time.sleep(5)
-        breakpoint()
-        wizard = EnergyWizard(corpus, azure_client=client, model='egswaterord-gpt4-mini')
         
+        if len(corpus) == 0:
+            logger.info(f'No documents returned for {gwcd_name}, skipping')
+            continue
+
+        extraction_client = openai.AsyncAzureOpenAI(api_key=azure_api_key,
+                                        api_version=azure_version,
+                                        azure_endpoint=azure_endpoint)
+        llm_service = OpenAIService(extraction_client, rate_limit=5e5)
+        services = [llm_service]
+        kwargs = dict(llm_service=llm_service, model=MODEL, temperature=0)
+        
+        wizard = EnergyWizard(corpus, azure_client=extraction_client,
+                              model='egswaterord-gpt4-mini')
+
         try:
             values = ARun.run(services,
                               extract_ordinance_values(wizard=wizard,
                                                        location=dis,
                                                        **kwargs))
-            values = pd.concat([results, pd.DataFrame(values)], ignore_index=True)
+            results = pd.concat([results, pd.DataFrame(values)],
+                                ignore_index=True)
         except ValueError:
             continue
-    
+
+    results.to_csv('wr_results.csv', index=False)
     logger.info('finished')

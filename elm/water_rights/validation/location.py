@@ -29,12 +29,12 @@ class CountyJurisdictionValidator(FixedMessageValidator):
         "apply at the {county} level or if there is not enough information to "
         "determine the answer. The second key is 'y', which is a boolean "
         "that is set to `True` if the text excerpt explicitly mentions that "
-        "the regulations within apply to more than one groundwater conservation "
-        "district. `False` if the regulations in the text excerpt apply to a "
-        "single groundwater conservation district only or if there is not enough "
-        "information to determine the answer. The third key is 'explanation', "
-        "which is a string that contains a short explanation if you chose `True` "
-        "for any answers above."
+        "the regulations within apply to more than one groundwater "
+        "conservation district. `False` if the regulations in the text "
+        "excerpt apply to a single groundwater conservation district only "
+        "or if there is not enough information to determine the answer. "
+        "The third key is 'explanation', which is a string that contains "
+        "a short explanation if you chose `True` for any answers above."
     )
 
     def _parse_output(self, props):
@@ -48,25 +48,27 @@ class CountyJurisdictionValidator(FixedMessageValidator):
 
 class CountyNameValidator(FixedMessageValidator):
     """Validator that checks whether text applies to a particular county."""
-    # TODO: there are only some minor differences here ('gcd' instead of 'county')
-    # minor enough to just import?
+    # TODO: there are only some minor differences here
+    # ('gcd' instead of 'county') minor enough to just import?
     SYSTEM_MESSAGE = (
         "You extract structured data from legal text. Return "
         "your answer in JSON format. Your JSON file must include exactly "
         "three keys. The first key is 'wrong_county', which is a boolean that "
         "is set to `True` if the legal text is not for {county}. Do "
         "not infer based on any information about any US state, city, "
-        "township, or otherwise and keep in mind that aquifer management zones "
-        "should not be considered groundwater conservation districts. "
+        "township, or otherwise and keep in mind that aquifer management "
+        "zones should not be considered groundwater conservation districts. "
         "`False` if the text applies to {county} or if there is not enough "
-        "information to determine the answer. The second key is 'wrong_state', "
-        "which is a boolean that is set to `True` if the legal text is not for "
-        "a conservation district in the state of {state}. Do not infer based "
-        "on any information about any US county, city, township, or otherwise. "
-        "`False` if the text applies to a conservation district in the state of "
-        "{state} or if there is not enough information to determine the answer. "
-        "The third key is 'explanation', which is a string that contains a short "
-        "explanation if you chose `True` for any answers above."
+        "information to determine the answer. The second key is "
+        "'wrong_state', which is a boolean that is set to `True` if the " 
+        "legal text is not for which is a boolean that is set to `True` if "
+        "the legal text is not for a conservation district in the state of "
+        "{state}. Do not infer based on any information about any US county, "
+        "city, township, or otherwise. `False` if the text applies to a "
+        "conservation district in the state of {state} or if there is not "
+        "enough information to determine the answer. The third key is "
+        "'explanation', which is a string that contains a short explanation "
+        "if you chose `True` for any answers above."
     )
 
     def _parse_output(self, props):

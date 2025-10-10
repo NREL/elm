@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """ELM Ordinance location specification utilities"""
-from abc import ABC, abstractmethod
 from elm.ords.utilities.location import County
 
 
@@ -23,11 +22,11 @@ class WaterDistrict(County):
             a parish. By default, ``False``.
         """
         super().__init__(name, state=state, fips=fips, is_parish=is_parish)
-    
+
     @property
     def acronym(self):
         """str: Acronym for the GCD"""
         loc = "".join(part[0].upper() for part in self.name.split())
         loc = loc.replace('&', '')
-        
+
         return loc
