@@ -4,10 +4,8 @@ import logging
 
 from elm.ords.llm import StructuredLLMCaller
 from elm.water_rights.extraction import check_for_ordinance_info
-# from elm.ords.extraction.apply import check_for_ordinance_info
 from elm.ords.services.threaded import TempFileCache
 from elm.water_rights.validation.location import CountyValidator
-from elm.web.document import PDFDocument
 from elm.web.search import web_search_links_as_docs
 from elm.web.utilities import filter_documents
 
@@ -15,11 +13,11 @@ from elm.web.utilities import filter_documents
 logger = logging.getLogger(__name__)
 
 QUESTION_TEMPLATES = [
-    "0. {location} rules",
-    "1. {location} management plan",
-    "2. {location} well permits",
-    "3. {location} well permit requirements",
-    "4. requirements to drill a water well in {location}",
+    "{location} rules",
+    "{location} management plan",
+    "{location} well permits",
+    "{location} well permit requirements",
+    "requirements to drill a water well in {location}",
     ]
 
 async def download_county_ordinance(
@@ -30,12 +28,12 @@ async def download_county_ordinance(
     browser_semaphore=None,
     **kwargs
 ):
-    """Download the ordinance document(s) for a single county.
+    """Download ordinance documents for a single conservation district.
 
     Parameters
     ----------
     location : :class:`elm.ords.utilities.location.Location`
-        Location objects representing the county.
+        Location objects representing the conservation district.
     text_splitter : obj, optional
         Instance of an object that implements a `split_text` method.
         The method should take text as input (str) and return a list
@@ -82,15 +80,12 @@ async def download_county_ordinance(
         docs, location=location, text_splitter=text_splitter, **kwargs
     )
 
-    breakpoint()
-
     logger.info(
         "Found %d potential ordinance documents for %s",
         len(docs),
         location.full_name,
     )
 
-    # return _sort_final_ord_docs(docs)
     return docs
 
 
@@ -121,7 +116,7 @@ async def _docs_from_google_search(
 async def _down_select_docs_correct_location(docs, location, **kwargs):
     """Remove all documents not pertaining to the location."""
     llm_caller = StructuredLLMCaller(**kwargs)
-    county_validator = CountyValidator(llm_caller)
+    county_validator = CountyValidator(llm_caller, score_thresh=0.6)
     return await filter_documents(
         docs,
         validation_coroutine=county_validator.check,
@@ -146,17 +141,3 @@ async def _contains_ords(doc, **kwargs):
     """Helper coroutine that checks for ordinance info. """
     doc = await check_for_ordinance_info(doc, **kwargs)
     return doc.attrs.get("contains_ord_info", False)
-
-
-def _sort_final_ord_docs(all_ord_docs):
-    """Sort the final list of documents by year, type, and text length."""
-    if not all_ord_docs:
-        return None
-
-    return sorted(all_ord_docs, key=_ord_doc_sorting_key)#[-1]
-
-
-def _ord_doc_sorting_key(doc):
-    """All text sorting key"""
-    year, month, day = doc.attrs.get("date", (-1, -1, -1))
-    return year, isinstance(doc, PDFDocument), -1 * len(doc.text), month, day

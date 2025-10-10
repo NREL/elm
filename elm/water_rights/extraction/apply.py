@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 """ELM Ordinance function to apply ordinance extraction on a document """
 import logging
-from warnings import warn
 
-from elm.ords.llm import LLMCaller, StructuredLLMCaller
+from elm.ords.llm import StructuredLLMCaller
 from elm.ords.extraction.date import DateExtractor
 from elm.water_rights.extraction.ordinance import OrdinanceValidator
 
@@ -82,4 +81,4 @@ async def extract_ordinance_values(wizard, location, **kwargs):
                                        **kwargs)
     values  = await parser.parse(location=location)
 
-    return values 
+    return values

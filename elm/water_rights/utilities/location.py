@@ -1,29 +1,11 @@
 # -*- coding: utf-8 -*-
 """ELM Ordinance location specification utilities"""
 from abc import ABC, abstractmethod
+from elm.ords.utilities.location import County
 
 
-class Location(ABC):
-    """Abstract location representation."""
-
-    def __init__(self, name):
-        """
-
-        Parameters
-        ----------
-        name : str
-            Name of location.
-        """
-        self.name = name
-
-    @property
-    @abstractmethod
-    def full_name(self):
-        """str: Full name of location"""
-
-
-class County(Location):
-    """Class representing a county"""
+class WaterDistrict(County):
+    """Class representing a conservation district"""
 
     def __init__(self, name, state, fips=None, is_parish=False):
         """
@@ -40,39 +22,12 @@ class County(Location):
             Flag indicating wether or not this county is classified as
             a parish. By default, ``False``.
         """
-        super().__init__(name)
-        self.state = state
-        self.fips = fips
-        self.is_parish = is_parish
-
-    @property
-    def full_name(self):
-        """str: Full county name in format '{name} County, {state}'"""
-        # loc_id = "Parish" if self.is_parish else "County"
-        return f"{self.name}, {self.state}"
+        super().__init__(name, state=state, fips=fips, is_parish=is_parish)
     
     @property
     def acronym(self):
-        """str: Acronym for the county, e.g., 'Harris County' -> 'HC'"""
+        """str: Acronym for the GCD"""
         loc = "".join(part[0].upper() for part in self.name.split())
-        return loc + 'GCD'
-
-    def __repr__(self):
-        return f"County({self.name}, {self.state}, is_parish={self.is_parish})"
-
-    def __str__(self):
-        return self.full_name
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return (
-                self.name.casefold() == other.name.casefold()
-                and self.state.casefold() == other.state.casefold()
-                and self.is_parish == other.is_parish
-            )
-        if isinstance(other, str):
-            return (
-                self.full_name.casefold() == other.casefold()
-                or f"{self.name}, {self.state}".casefold() == other.casefold()
-            )
-        return False
+        loc = loc.replace('&', '')
+        
+        return loc

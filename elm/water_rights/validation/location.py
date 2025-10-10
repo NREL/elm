@@ -6,84 +6,12 @@ particular location.
 """
 import asyncio
 import logging
-from abc import ABC, abstractmethod
 
 from elm.ords.extraction.ngrams import convert_text_to_sentence_ngrams
+from elm.ords.validation.location import FixedMessageValidator
 
 
 logger = logging.getLogger(__name__)
-
-
-class FixedMessageValidator(ABC):
-    """Validation base class using a static system prompt."""
-
-    SYSTEM_MESSAGE = None
-    """LLM system message describing validation task. """
-
-    def __init__(self, structured_llm_caller):
-        """
-
-        Parameters
-        ----------
-        structured_llm_caller : :class:`elm.ords.llm.StructuredLLMCaller`
-            StructuredLLMCaller instance. Used for structured validation
-            queries.
-        """
-        self.slc = structured_llm_caller
-
-    async def check(self, content, **fmt_kwargs):
-        """Check if the content passes the validation.
-
-        The exact validation is outlined in the class `SYSTEM_MESSAGE`.
-
-        Parameters
-        ----------
-        content : str
-            Document content to validate.
-        **fmt_kwargs
-            Keyword arguments to be passed to `SYSTEM_MESSAGE.format()`.
-
-        Returns
-        -------
-        bool
-            ``True`` if the content passes the validation check,
-            ``False`` otherwise.
-        """
-        if not content:
-            return False
-        sys_msg = self.SYSTEM_MESSAGE.format(**fmt_kwargs)
-        out = await self.slc.call(
-            sys_msg, content, usage_sub_label="document_location_validation"
-        )
-        return self._parse_output(out)
-
-    @abstractmethod
-    def _parse_output(self, props):
-        """Parse LLM response and return `True` if the document passes."""
-        raise NotImplementedError
-
-
-class URLValidator(FixedMessageValidator):
-    """Validator that checks wether a URL matches a county."""
-
-    SYSTEM_MESSAGE = (
-        "You extract structured data from a URL. Return your "
-        "answer in JSON format. Your JSON file must include exactly two keys. "
-        "The first key is 'correct_county', which is a boolean that is set to "
-        "`True` if the URL mentions {county} County in some way. DO NOT infer "
-        "based on information in the URL about any US state, city, township, "
-        "or otherwise. `False` if not sure. The second key is "
-        "'correct_state', which is a boolean that is set to `True` if the URL "
-        "mentions {state} State in some way. DO NOT infer based on "
-        "information in the URL about any US county, city, township, or "
-        "otherwise. `False` if not sure."
-    )
-
-    def _parse_output(self, props):
-        """Parse LLM response and return `True` if the document passes."""
-        logger.debug("Parsing URL validation output:\n\t%s", props)
-        check_vars = ("correct_county", "correct_state")
-        return all(props.get(var) for var in check_vars)
 
 
 class CountyJurisdictionValidator(FixedMessageValidator):
@@ -94,19 +22,19 @@ class CountyJurisdictionValidator(FixedMessageValidator):
         "your answer in JSON format. Your JSON file must include exactly "
         "three keys. The first key is 'x', which is a boolean that is set to "
         "`True` if the text excerpt explicitly mentions that the regulations "
-        "within apply to a jurisdiction scope other than {county} Groundwater Conservation District "
+        "within apply to a jurisdiction scope other than {county} "
         "(i.e. they apply to a subdivision like a township or a city, or "
-        "they apply more broadly, like to a state, the full country, or an aquifer management zone). "
-        "`False` if the regulations in the text apply at the {county} Groundwater Conservation District "
-        "level, if the regulations in the text apply to all unincorporated "
-        "areas of {county} Groundwater Conservation District, or if there is not enough information to "
+        "they apply more broadly, like to a state, the full country, or an "
+        "aquifer management zone). `False` if the regulations in the text "
+        "apply at the {county} level or if there is not enough information to "
         "determine the answer. The second key is 'y', which is a boolean "
         "that is set to `True` if the text excerpt explicitly mentions that "
-        "the regulations within apply to more than one groundwater conservation district. `False` if "
-        "the regulations in the text excerpt apply to a single groundwater conservation district only "
-        "or if there is not enough information to determine the answer. The "
-        "third key is 'explanation', which is a string that contains a short "
-        "explanation if you chose `True` for any answers above."
+        "the regulations within apply to more than one groundwater conservation "
+        "district. `False` if the regulations in the text excerpt apply to a "
+        "single groundwater conservation district only or if there is not enough "
+        "information to determine the answer. The third key is 'explanation', "
+        "which is a string that contains a short explanation if you chose `True` "
+        "for any answers above."
     )
 
     def _parse_output(self, props):
@@ -120,25 +48,25 @@ class CountyJurisdictionValidator(FixedMessageValidator):
 
 class CountyNameValidator(FixedMessageValidator):
     """Validator that checks whether text applies to a particular county."""
-
+    # TODO: there are only some minor differences here ('gcd' instead of 'county')
+    # minor enough to just import?
     SYSTEM_MESSAGE = (
         "You extract structured data from legal text. Return "
         "your answer in JSON format. Your JSON file must include exactly "
         "three keys. The first key is 'wrong_county', which is a boolean that "
-        "is set to `True` if the legal text is not for {county} Groundwater Conservation District. Do "
+        "is set to `True` if the legal text is not for {county}. Do "
         "not infer based on any information about any US state, city, "
         "township, or otherwise and keep in mind that aquifer management zones "
         "should not be considered groundwater conservation districts. "
-        "`False` if the text applies to {county} Groundwater Conservation District "
-        "or if there is not enough information to determine the "
-        "answer. The second key is 'wrong_state', which is a boolean that is "
-        "set to `True` if the legal text is not for a county in {state} "
-        "State. Do not infer based on any information about any US county, "
-        "city, township, or otherwise. `False` if the text applies to "
-        "a county in {state} State or if there is not enough information to "
-        "determine the answer. The third key is 'explanation', which is a "
-        "string that contains a short explanation if you chose `True` for "
-        "any answers above."
+        "`False` if the text applies to {county} or if there is not enough "
+        "information to determine the answer. The second key is 'wrong_state', "
+        "which is a boolean that is set to `True` if the legal text is not for "
+        "a conservation district in the state of {state}. Do not infer based "
+        "on any information about any US county, city, township, or otherwise. "
+        "`False` if the text applies to a conservation district in the state of "
+        "{state} or if there is not enough information to determine the answer. "
+        "The third key is 'explanation', which is a string that contains a short "
+        "explanation if you chose `True` for any answers above."
     )
 
     def _parse_output(self, props):
@@ -251,8 +179,8 @@ def _heuristic_check_for_county_and_state(doc, county, county_acronym, state):
     county = county.lower().replace(" county", "")
     return any(
         any(
-            (county.lower() in fg or county_acronym.lower() in fg) # TODO: removing state for now
-            #(county.lower().replace(' county', '') in fg)
+            ((county.lower() in fg or county_acronym.lower() in fg) and
+             state.lower() in fg)
             for fg in convert_text_to_sentence_ngrams(t.lower(), 5)
         )
         for t in doc.pages

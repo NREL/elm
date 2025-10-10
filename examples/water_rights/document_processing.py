@@ -18,7 +18,8 @@ from elm.embed import ChunkAndEmbed
 from elm.chunk import Chunker
 from elm.ords.llm import StructuredLLMCaller 
 from elm.water_rights.download import download_county_ordinance
-from elm.water_rights.utilities.location import County
+# from elm.water_rights.utilities.location import County
+from elm.water_rights.utilities.location import WaterDistrict
 from elm.ords.services.provider import RunningAsyncServices
 from elm.ords.services.threaded import TempFileCache
 
@@ -110,7 +111,7 @@ if __name__ == '__main__':
         llm_service = OpenAIService(client, rate_limit=1e9)
         services = [llm_service]
         kwargs = dict(llm_service=llm_service, model='egswaterord-gpt4.1-mini', temperature=0)
-        location = County(name=gwcd_name, state='Texas')
+        location = WaterDistrict(name=gwcd_name, state='Texas')
 
         # loop = asyncio.get_event_loop()
         docs = asyncio.run(process(location, text_splitter, **kwargs))
