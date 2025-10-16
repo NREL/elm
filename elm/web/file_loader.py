@@ -241,9 +241,9 @@ class AsyncFileLoader:
         """Fetch HTML content with several retry attempts"""
         for attempt in range(self.num_pw_html_retries):
             text = await load_html_with_pw(url, self.browser_semaphore,
-                                        timeout=self.PAGE_LOAD_TIMEOUT,
-                                        use_scrapling_stealth=self.uss,
-                                        **self.pw_launch_kwargs)
+                                           timeout=self.PAGE_LOAD_TIMEOUT,
+                                           use_scrapling_stealth=self.uss,
+                                           **self.pw_launch_kwargs)
             doc = await self.html_read_coroutine(text, **self.html_read_kwargs)
             if not doc.empty:
                 return doc
