@@ -128,7 +128,9 @@ class AsyncFileLoader:
             because the playwright parameters are stochastic, and
             sometimes a combination of them can fail to load HTML. The
             default value is likely a good balance between processing
-            attempts and retrieval success. By default, ``3``.
+            attempts and retrieval success. Note that the minimum number
+            of attempts will always be 2, even if the user provides a
+            value smaller than this. By default, ``3``.
         """
         self.pw_launch_kwargs = pw_launch_kwargs or {}
         self.pdf_read_kwargs = pdf_read_kwargs or {}
