@@ -63,6 +63,7 @@ class AsyncFileLoader:
         file_cache_coroutine=None,
         browser_semaphore=None,
         use_scrapling_stealth=False,
+        num_pw_html_retries=3,
         **__,  # consume any extra kwargs
     ):
         """
