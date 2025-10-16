@@ -224,11 +224,7 @@ class AsyncFileLoader:
             return doc, url_bytes
 
         logger.debug("PDF read failed; fetching HTML content from %r", url)
-        text = await load_html_with_pw(url, self.browser_semaphore,
-                                       timeout=self.PAGE_LOAD_TIMEOUT,
-                                       use_scrapling_stealth=self.uss,
-                                       **self.pw_launch_kwargs)
-        doc = await self.html_read_coroutine(text, **self.html_read_kwargs)
+        doc = await self._fetch_html_using_pw_with_retry(url)
         if not doc.empty:
             return doc, doc.text
 
