@@ -143,6 +143,7 @@ class AsyncFileLoader:
         self.file_cache_coroutine = file_cache_coroutine
         self.browser_semaphore = browser_semaphore
         self.uss = use_scrapling_stealth
+        self.num_pw_html_retries = num_pw_html_retries
 
     def _header_from_template(self, header_template):
         """Compile header from user or default template"""
