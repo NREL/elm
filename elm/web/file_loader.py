@@ -122,13 +122,13 @@ class AsyncFileLoader:
         use_scrapling_stealth : bool, default=False
             Option to use scrapling stealth scripts instead of
             tf-playwright-stealth. By default, ``False``.
-        """
         num_pw_html_retries : int, default=3
             Number of attempts to load HTML content. This is useful
             because the playwright parameters are stochastic, and
             sometimes a combination of them can fail to load HTML. The
             default value is likely a good balance between processing
             attempts and retrieval success. By default, ``3``.
+        """
         self.pw_launch_kwargs = pw_launch_kwargs or {}
         self.pdf_read_kwargs = pdf_read_kwargs or {}
         self.html_read_kwargs = html_read_kwargs or {}
