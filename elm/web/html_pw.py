@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 async def load_html_with_pw(url, browser_semaphore=None, # pragma: no cover
                             timeout=90_000, use_scrapling_stealth=False,
-                            **pw_launch_kwargs):
+                            load_state="networkidle", **pw_launch_kwargs):
     """Extract HTML from URL using Playwright.
 
     Parameters
@@ -38,6 +38,19 @@ async def load_html_with_pw(url, browser_semaphore=None, # pragma: no cover
     use_scrapling_stealth : bool, default=False
         Option to use scrapling stealth scripts instead of
         tf-playwright-stealth. By default, ``False``.
+    load_state : str, default="networkidle"
+        The load state to wait for. One of:
+
+            - "load" - consider navigation to be finished when the load
+                       event is fired.
+            - "domcontentloaded" - consider navigation to be finished
+                                   when the ``DOMContentLoaded`` event
+                                   is fired.
+            - "networkidle" - consider navigation to be finished when
+                              there are no network connections for at
+                              least 500 ms.
+
+        By default, ``"networkidle"``.
     **pw_launch_kwargs
         Keyword-value argument pairs to pass to
         :meth:`async_playwright.chromium.launch`.
@@ -51,13 +64,14 @@ async def load_html_with_pw(url, browser_semaphore=None, # pragma: no cover
         text = await _load_html(url, browser_semaphore=browser_semaphore,
                                 timeout=timeout,
                                 use_scrapling_stealth=use_scrapling_stealth,
+                                load_state=load_state,
                                 **pw_launch_kwargs)
     except (PlaywrightError, PlaywrightTimeoutError):
         text = ""
     return text
 
 
-async def _load_html( url, browser_semaphore=None, # pragma: no cover
+async def _load_html(url, browser_semaphore=None, # pragma: no cover
                      timeout=90_000, use_scrapling_stealth=False,
                      load_state="networkidle", **pw_launch_kwargs):
     """Load html using playwright"""
