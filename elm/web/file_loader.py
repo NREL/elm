@@ -250,7 +250,14 @@ class AsyncFileLoader:
 
             logger.debug("HTML read failed; retrying %r (attempt %d of %d)",
                          url, attempt + 1, self.num_pw_html_retries)
-        return doc
+
+        logger.debug("Attempting HTML read with load_state='domcontentloaded'")
+        text = await load_html_with_pw(url, self.browser_semaphore,
+                                       timeout=self.PAGE_LOAD_TIMEOUT,
+                                       use_scrapling_stealth=self.uss,
+                                       load_state="domcontentloaded",
+                                       **self.pw_launch_kwargs)
+        return await self.html_read_coroutine(text, **self.html_read_kwargs)
 
     @async_retry_with_exponential_backoff(
         base_delay=2,
