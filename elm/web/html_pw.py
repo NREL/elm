@@ -59,7 +59,7 @@ async def load_html_with_pw(url, browser_semaphore=None, # pragma: no cover
 
 async def _load_html( url, browser_semaphore=None, # pragma: no cover
                      timeout=90_000, use_scrapling_stealth=False,
-                     **pw_launch_kwargs):
+                     load_state="networkidle", **pw_launch_kwargs):
     """Load html using playwright"""
     logger.trace("`_load_html` pw_launch_kwargs=%r", pw_launch_kwargs)
     logger.trace("browser_semaphore=%r", browser_semaphore)
@@ -81,8 +81,9 @@ async def _load_html( url, browser_semaphore=None, # pragma: no cover
         async with pw_page(**page_kwargs) as page:
             logger.trace("Navigating to: %r", url)
             await page.goto(url)
-            logger.trace("Waiting for load with timeout: %r", timeout)
-            await page.wait_for_load_state("networkidle", timeout=timeout)
+            logger.trace("Waiting for load state %r with timeout: %r",
+                         load_state, timeout)
+            await page.wait_for_load_state(load_state, timeout=timeout)
             text = await page.content()
 
     return text
