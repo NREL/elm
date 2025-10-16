@@ -63,6 +63,7 @@ class AsyncFileLoader:
         file_cache_coroutine=None,
         browser_semaphore=None,
         use_scrapling_stealth=False,
+        num_pw_html_retries=3,
         **__,  # consume any extra kwargs
     ):
         """
@@ -122,6 +123,14 @@ class AsyncFileLoader:
         use_scrapling_stealth : bool, default=False
             Option to use scrapling stealth scripts instead of
             tf-playwright-stealth. By default, ``False``.
+        num_pw_html_retries : int, default=3
+            Number of attempts to load HTML content. This is useful
+            because the playwright parameters are stochastic, and
+            sometimes a combination of them can fail to load HTML. The
+            default value is likely a good balance between processing
+            attempts and retrieval success. Note that the minimum number
+            of attempts will always be 2, even if the user provides a
+            value smaller than this. By default, ``3``.
         """
         self.pw_launch_kwargs = pw_launch_kwargs or {}
         self.pdf_read_kwargs = pdf_read_kwargs or {}
@@ -137,6 +146,7 @@ class AsyncFileLoader:
         self.file_cache_coroutine = file_cache_coroutine
         self.browser_semaphore = browser_semaphore
         self.uss = use_scrapling_stealth
+        self.num_pw_html_retries = num_pw_html_retries
 
     def _header_from_template(self, header_template):
         """Compile header from user or default template"""
@@ -217,11 +227,7 @@ class AsyncFileLoader:
             return doc, url_bytes
 
         logger.debug("PDF read failed; fetching HTML content from %r", url)
-        text = await load_html_with_pw(url, self.browser_semaphore,
-                                       timeout=self.PAGE_LOAD_TIMEOUT,
-                                       use_scrapling_stealth=self.uss,
-                                       **self.pw_launch_kwargs)
-        doc = await self.html_read_coroutine(text, **self.html_read_kwargs)
+        doc = await self._fetch_html_using_pw_with_retry(url)
         if not doc.empty:
             return doc, doc.text
 
@@ -232,6 +238,31 @@ class AsyncFileLoader:
             )
 
         return doc, url_bytes
+
+    async def _fetch_html_using_pw_with_retry(self, url):
+        """Fetch HTML content with several retry attempts"""
+        num_attempts = max(1, int(self.num_pw_html_retries) - 1)
+        max_attempts = num_attempts + 1
+        for attempt in range(num_attempts):
+            logger.debug("HTML read for %r (attempt %d of %d)",
+                         url, attempt + 1, max_attempts)
+            text = await load_html_with_pw(url, self.browser_semaphore,
+                                           timeout=self.PAGE_LOAD_TIMEOUT,
+                                           use_scrapling_stealth=self.uss,
+                                           **self.pw_launch_kwargs)
+            doc = await self.html_read_coroutine(text, **self.html_read_kwargs)
+            if not doc.empty:
+                return doc
+
+        logger.debug("HTML read for %r (attempt %d of %d) with "
+                     "load_state='domcontentloaded'",
+                     url, max_attempts, max_attempts)
+        text = await load_html_with_pw(url, self.browser_semaphore,
+                                       timeout=self.PAGE_LOAD_TIMEOUT,
+                                       use_scrapling_stealth=self.uss,
+                                       load_state="domcontentloaded",
+                                       **self.pw_launch_kwargs)
+        return await self.html_read_coroutine(text, **self.html_read_kwargs)
 
     @async_retry_with_exponential_backoff(
         base_delay=2,
