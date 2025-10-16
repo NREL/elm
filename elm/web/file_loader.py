@@ -239,7 +239,11 @@ class AsyncFileLoader:
 
     async def _fetch_html_using_pw_with_retry(self, url):
         """Fetch HTML content with several retry attempts"""
-        for attempt in range(self.num_pw_html_retries):
+        num_attempts = max(1, int(self.num_pw_html_retries) - 1)
+        max_attempts = num_attempts + 1
+        for attempt in range(num_attempts):
+            logger.debug("HTML read for %r (attempt %d of %d)",
+                         url, attempt + 1, max_attempts)
             text = await load_html_with_pw(url, self.browser_semaphore,
                                            timeout=self.PAGE_LOAD_TIMEOUT,
                                            use_scrapling_stealth=self.uss,
@@ -248,10 +252,9 @@ class AsyncFileLoader:
             if not doc.empty:
                 return doc
 
-            logger.debug("HTML read failed; retrying %r (attempt %d of %d)",
-                         url, attempt + 1, self.num_pw_html_retries)
-
-        logger.debug("Attempting HTML read with load_state='domcontentloaded'")
+        logger.debug("HTML read for %r (attempt %d of %d) with "
+                     "load_state='domcontentloaded'",
+                     url, max_attempts, max_attempts)
         text = await load_html_with_pw(url, self.browser_semaphore,
                                        timeout=self.PAGE_LOAD_TIMEOUT,
                                        use_scrapling_stealth=self.uss,
