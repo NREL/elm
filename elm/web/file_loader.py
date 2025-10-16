@@ -240,6 +240,21 @@ class AsyncFileLoader:
 
         return doc, url_bytes
 
+    async def _fetch_html_using_pw_with_retry(self, url):
+        """Fetch HTML content with several retry attempts"""
+        for attempt in range(self.num_pw_html_retries):
+            text = await load_html_with_pw(url, self.browser_semaphore,
+                                        timeout=self.PAGE_LOAD_TIMEOUT,
+                                        use_scrapling_stealth=self.uss,
+                                        **self.pw_launch_kwargs)
+            doc = await self.html_read_coroutine(text, **self.html_read_kwargs)
+            if not doc.empty:
+                return doc
+
+            logger.debug("HTML read failed; retrying %r (attempt %d of %d)",
+                         url, attempt + 1, self.num_pw_html_retries)
+        return doc
+
     @async_retry_with_exponential_backoff(
         base_delay=2,
         exponential_base=1.5,
