@@ -289,7 +289,7 @@ class AsyncFileLoader:
         """Fetch content from URL with several retry attempts"""
         async with session.get(url, **self.get_kwargs) as response:
             body = await response.read()
-            ct = response.content_type
+            ct = response.content_type.casefold()
             charset = response.charset or 'utf-8'
             return body, ct, charset
 
