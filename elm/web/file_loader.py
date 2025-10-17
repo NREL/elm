@@ -216,7 +216,7 @@ class AsyncFileLoader:
         async with aiohttp.ClientSession() as session:
             try:
                 logger.debug("Fetching content from %r", url)
-                url_bytes = await self._fetch_content_with_retry(url, session)
+                out = await self._fetch_content_with_retry(url, session)
             except ELMRuntimeError:
                 logger.exception("Could not fetch content from %r", url)
                 return PDFDocument(pages=[]), None
@@ -277,7 +277,10 @@ class AsyncFileLoader:
     async def _fetch_content_with_retry(self, url, session):
         """Fetch content from URL with several retry attempts"""
         async with session.get(url, **self.get_kwargs) as response:
-            return await response.read()
+            body = await response.read()
+            ct = response.content_type
+            charset = response.charset or 'utf-8'
+            return body, ct, charset
 
     async def _cache_doc(self, doc, raw_content):
         """Cache doc if user provided a coroutine"""
