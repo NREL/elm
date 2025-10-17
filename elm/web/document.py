@@ -13,6 +13,7 @@ from elm.utilities.parse import (
     clean_headers,
     html_to_text,
     remove_blank_pages,
+    resembles_html,
     format_html_tables,
     read_pdf,
     read_pdf_ocr,
@@ -263,6 +264,7 @@ class HTMLDocument(BaseDocument):
     """Default :func:`~elm.utilities.parse.format_html_tables` arguments"""
     WRITE_KWARGS = {"mode": "w", "encoding": "utf-8"}
     FILE_EXTENSION = "txt"
+    NUM_HTML_PARSE_ATTEMPTS = 3
 
     def __init__(
         self,
@@ -311,9 +313,16 @@ class HTMLDocument(BaseDocument):
     def _cleaned_text(self):
         """Compute cleaned text from document"""
         text = combine_pages(self.pages)
-        text = html_to_text(text, self.ignore_html_links)
-        text = format_html_tables(text, **self.html_table_to_markdown_kwargs)
+        for ind in range(self.NUM_HTML_PARSE_ATTEMPTS):
+            if ind > 0 and not resembles_html(text):
+                break
+            text = self._process_html_text(text)
         return text
+
+    def _process_html_text(self, text):
+        """Process HTML text to plain text with formatted tables"""
+        text = html_to_text(text, self.ignore_html_links)
+        return format_html_tables(text, **self.html_table_to_markdown_kwargs)
 
     def _raw_pages(self):
         """Get raw pages from document"""

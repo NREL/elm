@@ -10,7 +10,7 @@ from functools import partial
 
 import openai
 import pandas as pd
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters.character import RecursiveCharacterTextSplitter
 
 from elm import ApiBase
 from elm.utilities import validate_azure_api_params
@@ -137,11 +137,11 @@ async def process_counties_with_openai(
         By default, ``4000``.
     text_splitter_chunk_size : int, optional
         Chunk size input to
-        `langchain.text_splitter.RecursiveCharacterTextSplitter`.
+        `langchain_text_splitters.character.RecursiveCharacterTextSplitter`.
         By default, ``3000``.
     text_splitter_chunk_overlap : int, optional
         Chunk overlap input to
-        `langchain.text_splitter.RecursiveCharacterTextSplitter`.
+        `langchain_text_splitters.character.RecursiveCharacterTextSplitter`.
         By default, ``300``.
     num_urls_to_check_per_county : int, optional
         Number of unique Google search result URL's to check for

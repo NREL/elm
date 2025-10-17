@@ -216,28 +216,39 @@ class AsyncFileLoader:
         async with aiohttp.ClientSession() as session:
             try:
                 logger.debug("Fetching content from %r", url)
-                url_bytes = await self._fetch_content_with_retry(url, session)
+                out = await self._fetch_content_with_retry(url, session)
             except ELMRuntimeError:
                 logger.exception("Could not fetch content from %r", url)
                 return PDFDocument(pages=[]), None
 
+        raw_content, ct, charset = out
         logger.debug("Got content from %r", url)
-        doc = await self.pdf_read_coroutine(url_bytes, **self.pdf_read_kwargs)
+        doc = await self.pdf_read_coroutine(raw_content,
+                                            **self.pdf_read_kwargs)
         if not doc.empty:
-            return doc, url_bytes
+            return doc, raw_content
 
         logger.debug("PDF read failed; fetching HTML content from %r", url)
         doc = await self._fetch_html_using_pw_with_retry(url)
         if not doc.empty:
             return doc, doc.text
 
-        if self.pdf_ocr_read_coroutine:
+        if "text" in ct:
+            logger.debug("HTML read with playwright failed; fetching HTML "
+                         "content from response with content type %r and "
+                         "charset %r for %r", ct, charset, url)
+            doc = await self._try_load_doc_from_response_text(raw_content,
+                                                              charset)
+            if not doc.empty:
+                return doc, doc.text
+
+        elif self.pdf_ocr_read_coroutine:
             logger.debug("HTML read failed; fetching OCR content from %r", url)
             doc = await self.pdf_ocr_read_coroutine(
-                url_bytes, **self.pdf_read_kwargs
+                raw_content, **self.pdf_read_kwargs
             )
 
-        return doc, url_bytes
+        return doc, raw_content
 
     async def _fetch_html_using_pw_with_retry(self, url):
         """Fetch HTML content with several retry attempts"""
@@ -277,7 +288,19 @@ class AsyncFileLoader:
     async def _fetch_content_with_retry(self, url, session):
         """Fetch content from URL with several retry attempts"""
         async with session.get(url, **self.get_kwargs) as response:
-            return await response.read()
+            body = await response.read()
+            ct = response.content_type.casefold()
+            charset = response.charset or 'utf-8'
+            return body, ct, charset
+
+    async def _try_load_doc_from_response_text(self, raw_content, charset):
+        """Try to load document by decoding response text"""
+        try:
+            text = raw_content.decode(charset)
+        except Exception:
+            return HTMLDocument(pages=[])
+
+        return await self.html_read_coroutine(text, **self.html_read_kwargs)
 
     async def _cache_doc(self, doc, raw_content):
         """Cache doc if user provided a coroutine"""

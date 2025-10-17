@@ -2,7 +2,7 @@
 from functools import partial
 
 import openai
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters.character import RecursiveCharacterTextSplitter
 
 from rex import init_logger
 from elm.base import ApiBase
