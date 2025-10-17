@@ -1,0 +1,6 @@
+elm.web.search.run.web\_search\_links\_as\_docs
+===============================================
+
+.. currentmodule:: elm.web.search.run
+
+.. autofunction:: web_search_links_as_docs

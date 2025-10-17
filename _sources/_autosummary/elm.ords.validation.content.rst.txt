@@ -1,0 +1,38 @@
+elm.ords.validation.content
+===========================
+
+.. automodule:: elm.ords.validation.content
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      possibly_mentions_wind
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      ValidationWithMemory
+   
+   
+
+   
+   
+   
+
+
+

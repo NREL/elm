@@ -1,0 +1,6 @@
+elm.exceptions.ELMInputError
+============================
+
+.. currentmodule:: elm.exceptions
+
+.. autoexception:: ELMInputError

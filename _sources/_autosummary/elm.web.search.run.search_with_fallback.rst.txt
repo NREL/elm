@@ -1,0 +1,6 @@
+elm.web.search.run.search\_with\_fallback
+=========================================
+
+.. currentmodule:: elm.web.search.run
+
+.. autofunction:: search_with_fallback

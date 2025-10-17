@@ -1,0 +1,6 @@
+elm.utilities.parse.replace\_excessive\_newlines
+================================================
+
+.. currentmodule:: elm.utilities.parse
+
+.. autofunction:: replace_excessive_newlines

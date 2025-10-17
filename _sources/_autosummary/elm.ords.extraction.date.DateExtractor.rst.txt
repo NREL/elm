@@ -1,0 +1,30 @@
+elm.ords.extraction.date.DateExtractor
+======================================
+
+.. currentmodule:: elm.ords.extraction.date
+
+.. autoclass:: DateExtractor
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~DateExtractor.parse
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DateExtractor.SYSTEM_MESSAGE
+   
+   

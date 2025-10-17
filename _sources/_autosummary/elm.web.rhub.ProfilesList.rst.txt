@@ -1,0 +1,36 @@
+elm.web.rhub.ProfilesList
+=========================
+
+.. currentmodule:: elm.web.rhub
+
+.. autoclass:: ProfilesList
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ProfilesList.append
+      ~ProfilesList.clear
+      ~ProfilesList.copy
+      ~ProfilesList.count
+      ~ProfilesList.download
+      ~ProfilesList.extend
+      ~ProfilesList.index
+      ~ProfilesList.insert
+      ~ProfilesList.meta
+      ~ProfilesList.pop
+      ~ProfilesList.remove
+      ~ProfilesList.reverse
+      ~ProfilesList.sort
+   
+   
+
+   
+   
+   
