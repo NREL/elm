@@ -27,6 +27,8 @@ class MockResponse:
     def __init__(self, read_return):
         """Store the desired read response."""
         self.read_return = read_return
+        self.content_type = "application/pdf"
+        self.charset = "utf-8"
 
     async def read(self):
         """Return what class was initialized with."""

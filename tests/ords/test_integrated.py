@@ -31,6 +31,8 @@ WHATCOM_DOC_PATH = Path(TEST_DATA_DIR) / "Whatcom.txt"
 class MockResponse:
     def __init__(self, read_return):
         self.read_return = read_return
+        self.content_type = "application/pdf"
+        self.charset = "utf-8"
 
     async def read(self):
         return self.read_return
