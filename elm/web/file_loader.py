@@ -284,6 +284,15 @@ class AsyncFileLoader:
             charset = response.charset or 'utf-8'
             return body, ct, charset
 
+    async def _try_load_doc_from_response_text(self, raw_content, charset):
+        """Try to load document by decoding response text"""
+        try:
+            text = raw_content.decode(charset)
+        except Exception:
+            return HTMLDocument(pages=[])
+
+        return await self.html_read_coroutine(text, **self.html_read_kwargs)
+
     async def _cache_doc(self, doc, raw_content):
         """Cache doc if user provided a coroutine"""
         if doc.empty or not raw_content:
