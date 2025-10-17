@@ -6,7 +6,7 @@ from functools import partial
 
 import pytest
 import openai
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters.character import RecursiveCharacterTextSplitter
 
 from elm import TEST_DATA_DIR, ApiBase
 from elm.web.document import PDFDocument, HTMLDocument

@@ -10,7 +10,7 @@ google-api-python-client
 google-search-results
 html2text
 httpx
-langchain
+langchain-text-splitters
 lxml
 matplotlib
 networkx

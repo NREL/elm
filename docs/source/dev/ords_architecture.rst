@@ -561,7 +561,7 @@ for multiprocessing tasks.
 
     import asyncio
     import openai
-    from langchain.text_splitter import RecursiveCharacterTextSplitter
+    from langchain_text_splitters.character import RecursiveCharacterTextSplitter
     from elm.ords.extraction.ordinance import OrdinanceValidator
     from elm.ords.services.provider import RunningAsyncServices
     from elm.ords.services.openai import OpenAIService
@@ -616,7 +616,7 @@ for multiprocessing tasks.
 
     import asyncio
     import openai
-    from langchain.text_splitter import RecursiveCharacterTextSplitter
+    from langchain_text_splitters.character import RecursiveCharacterTextSplitter
     from elm.ords.extraction.ordinance import OrdinanceExtractor
     from elm.ords.services.provider import RunningAsyncServices
     from elm.ords.services.openai import OpenAIService
