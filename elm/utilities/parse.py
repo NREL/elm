@@ -8,6 +8,7 @@ from warnings import warn
 import html2text
 import numpy as np
 import pandas as pd
+from bs4 import BeautifulSoup
 
 
 logger = logging.getLogger(__name__)
@@ -58,6 +59,22 @@ def remove_blank_pages(pages):
         List of strings with content, or empty list.
     """
     return [page for page in pages if any(page.strip())]
+
+
+def resembles_html(text):
+    """Check if text resembles HTML
+
+    Parameters
+    ----------
+    text : str
+        Input text which may be plaintext or HTML.
+
+    Returns
+    -------
+    bool
+        ``True`` if the text resembles HTML, ``False`` otherwise.
+    """
+    return bool(BeautifulSoup(text, 'html.parser').find())
 
 
 def html_to_text(html, ignore_links=True):
