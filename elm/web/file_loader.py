@@ -221,10 +221,12 @@ class AsyncFileLoader:
                 logger.exception("Could not fetch content from %r", url)
                 return PDFDocument(pages=[]), None
 
+        raw_content, ct, charset = out
         logger.debug("Got content from %r", url)
-        doc = await self.pdf_read_coroutine(url_bytes, **self.pdf_read_kwargs)
+        doc = await self.pdf_read_coroutine(raw_content,
+                                            **self.pdf_read_kwargs)
         if not doc.empty:
-            return doc, url_bytes
+            return doc, raw_content
 
         logger.debug("PDF read failed; fetching HTML content from %r", url)
         doc = await self._fetch_html_using_pw_with_retry(url)
@@ -237,7 +239,7 @@ class AsyncFileLoader:
                 url_bytes, **self.pdf_read_kwargs
             )
 
-        return doc, url_bytes
+        return doc, raw_content
 
     async def _fetch_html_using_pw_with_retry(self, url):
         """Fetch HTML content with several retry attempts"""
