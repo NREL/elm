@@ -233,6 +233,15 @@ class AsyncFileLoader:
         if not doc.empty:
             return doc, doc.text
 
+        if "text" in ct:
+            logger.debug("HTML read with playwright failed; fetching HTML "
+                         "content from response with content type %r and "
+                         "charset %r for %r", ct, charset, url)
+            doc = await self._try_load_doc_from_response_text(raw_content,
+                                                              charset)
+            if not doc.empty:
+                return doc, doc.text
+
         if self.pdf_ocr_read_coroutine:
             logger.debug("HTML read failed; fetching OCR content from %r", url)
             doc = await self.pdf_ocr_read_coroutine(
