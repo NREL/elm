@@ -236,7 +236,7 @@ class AsyncFileLoader:
         if self.pdf_ocr_read_coroutine:
             logger.debug("HTML read failed; fetching OCR content from %r", url)
             doc = await self.pdf_ocr_read_coroutine(
-                url_bytes, **self.pdf_read_kwargs
+                raw_content, **self.pdf_read_kwargs
             )
 
         return doc, raw_content
