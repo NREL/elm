@@ -87,7 +87,7 @@ class ELMLinkScorer:
         keyword_points : dict, optional
             Dictionary mapping keywords to their associated point values
             for scoring URLs. If ``None``, uses
-            :obj:`BEST_ZONING_ORDINANCE_KEYWORDS`.
+            :obj:`elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS`.
             By default, ``None``.
         """
         self.keyword_points = keyword_points or BEST_ZONING_ORDINANCE_KEYWORDS
@@ -102,7 +102,7 @@ class ELMLinkScorer:
 
         Parameters
         ----------
-        links : list of dicts
+        links : list of dict
             A list of dictionaries representing links to be scored.
             Each dictionary should contain at least the keys "text" and
             "href". The "text" key should contain the link title text,
@@ -110,7 +110,7 @@ class ELMLinkScorer:
 
         Returns
         -------
-        links : list of dicts
+        links : list of dict
             The input list of links with an additional key "score" added
             to each dictionary. Each "score" key contains the calculated
             score for that link.
