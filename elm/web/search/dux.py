@@ -16,8 +16,7 @@ class DuxDistributedGlobalSearch(SearchEngineLinkSearch):
     _SE_NAME = "DuxDistributedGlobalSearch"
 
     def __init__(self, region="us-en", safesearch="moderate", timelimit=None,
-                 page=1, backend=("google", "bing", "yahoo", "duckduckgo"),
-                 timeout=10, verify=False):
+                 page=1, backend="all", timeout=10, verify=False):
         """
 
         Parameters
@@ -78,7 +77,7 @@ class DuxDistributedGlobalSearch(SearchEngineLinkSearch):
                             timelimit=self.timelimit,
                             page=self.page,
                             backend=self.backend,
-                            num_results=num_results)
+                            max_results=num_results)
 
         return list(filter(None, (info.get('href', "").replace("+", "%20")
                                   for info in results)))
