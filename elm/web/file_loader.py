@@ -30,6 +30,23 @@ async def _read_html_doc(text, **kwargs):
     return HTMLDocument([text], **kwargs)
 
 
+async def _read_pdf_file(pdf_fp, **kwargs):
+    """Default read PDF file function (runs in main thread)"""
+    verbose = kwargs.pop("verbose", True)
+    with open(pdf_fp, "rb") as fh:
+        pdf_bytes = fh.read()
+    pages = read_pdf(pdf_bytes, verbose=verbose)
+    return PDFDocument(pages, **kwargs), pdf_bytes
+
+
+async def _read_html_file(html_fp, **kwargs):
+    """Default read HTML function (runs in main thread)"""
+    with open(html_fp, "r") as fh:
+        text = fh.read()
+    return HTMLDocument([text], **kwargs), text
+
+
+
 class BaseAsyncFileLoader(ABC):
     """Base class for async file loading"""
 
