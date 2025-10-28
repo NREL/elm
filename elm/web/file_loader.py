@@ -35,10 +35,10 @@ class BaseAsyncFileLoader(ABC):
 
     def __init__(
         self,
+        pdf_read_coroutine,
+        html_read_coroutine,
         pdf_read_kwargs=None,
         html_read_kwargs=None,
-        pdf_read_coroutine=None,
-        html_read_coroutine=None,
         pdf_ocr_read_coroutine=None,
         file_cache_coroutine=None,
         **__,  # consume any extra kwargs
@@ -47,24 +47,18 @@ class BaseAsyncFileLoader(ABC):
 
         Parameters
         ----------
+        pdf_read_coroutine : callable
+            PDF file read coroutine. Must by an async function.
+            Must return a :obj:`elm.web.document.PDFDocument`.
+        html_read_coroutine : callable, optional
+            HTML file read coroutine. Must by an async function.
+            Must return a :obj:`elm.web.document.HTMLDocument`.
         pdf_read_kwargs : dict, optional
             Keyword-value argument pairs to pass to the
             `pdf_read_coroutine`. By default, ``None``.
         html_read_kwargs : dict, optional
             Keyword-value argument pairs to pass to the
             `html_read_coroutine`. By default, ``None``.
-        pdf_read_coroutine : callable, optional
-            PDF file read coroutine. Must by an async function. Should
-            accept PDF bytes as the first argument and kwargs as the
-            rest. Must return a :obj:`elm.web.document.PDFDocument`.
-            If ``None``, a default function that runs in the main thread
-            is used. By default, ``None``.
-        html_read_coroutine : callable, optional
-            HTML file read coroutine. Must by an async function. Should
-            accept HTML text as the first argument and kwargs as the
-            rest. Must return a :obj:`elm.web.document.HTMLDocument`.
-            If ``None``, a default function that runs in the main thread
-            is used. By default, ``None``.
         pdf_ocr_read_coroutine : callable, optional
             PDF OCR file read coroutine. Must by an async function.
             Should accept PDF bytes as the first argument and kwargs as
