@@ -13,7 +13,7 @@ import pytest
 import pdftotext
 
 from elm import TEST_DATA_DIR
-from elm.web.file_loader import AsyncFileLoader
+from elm.web.file_loader import AsyncWebFileLoader, AsyncLocalFileLoader
 from elm.web.document import PDFDocument, HTMLDocument
 import elm.web.html_pw
 
@@ -67,7 +67,7 @@ async def test_async_file_loader_basic_pdf(monkeypatch):
         raising=True,
     )
 
-    loader = AsyncFileLoader()
+    loader = AsyncWebFileLoader()
     doc = await loader.fetch("gpt-4")
 
     with open(GPT4_DOC_PATH, "rb") as fh:
@@ -97,7 +97,7 @@ async def test_async_file_loader_basic_html(monkeypatch):
         raising=True,
     )
 
-    loader = AsyncFileLoader()
+    loader = AsyncWebFileLoader()
     doc = await loader.fetch("Whatcom")
 
     with open(WHATCOM_DOC_PATH, "r", encoding="utf-8") as fh:
@@ -112,7 +112,7 @@ async def test_async_file_loader_basic_html(monkeypatch):
 
 @pytest.mark.asyncio
 async def test_async_file_loader_fetch_all(monkeypatch, tmp_path):
-    """Test `AsyncFileLoader.fetch_all` function for basic docs"""
+    """Test `AsyncWebFileLoader.fetch_all` function for basic docs"""
 
     monkeypatch.setattr(
         aiohttp.ClientSession,
@@ -146,7 +146,7 @@ async def test_async_file_loader_fetch_all(monkeypatch, tmp_path):
     assert not list(tmp_path.glob("*"))
 
     with ThreadPoolExecutor() as pool:
-        loader = AsyncFileLoader(file_cache_coroutine=_cache_file)
+        loader = AsyncWebFileLoader(file_cache_coroutine=_cache_file)
         docs = await loader.fetch_all("gpt-4", "Whatcom")
 
     assert len(docs) == 2
@@ -176,6 +176,42 @@ async def test_async_file_loader_fetch_all(monkeypatch, tmp_path):
     assert not filecmp.cmp(WHATCOM_DOC_PATH, html_file)
     with open(html_file, "r", encoding="utf-8") as fh:
         assert truth_html.text == fh.read()
+
+
+@pytest.mark.asyncio
+async def test_async_local_file_loader_basic_html():
+    """Test `AsyncLocalFileLoader` for a basic HTML doc"""
+
+    loader = AsyncLocalFileLoader(doc_attrs={"test_1": 1})
+    doc = await loader.fetch(WHATCOM_DOC_PATH)
+
+    with open(WHATCOM_DOC_PATH, "r", encoding="utf-8") as fh:
+        content = fh.read()
+
+    truth = HTMLDocument([content])
+
+    assert doc.text == truth.text
+    assert doc.attrs["source_fp"] == WHATCOM_DOC_PATH
+    assert doc.attrs["test_1"] == 1
+    assert "cache_fn" not in doc.attrs
+
+
+@pytest.mark.asyncio
+async def test_async_local_file_loader_basic_pdf():
+    """Test `AsyncLocalFileLoader` for a basic PDF doc"""
+
+    loader = AsyncLocalFileLoader()
+    doc = await loader.fetch(GPT4_DOC_PATH)
+
+    with open(GPT4_DOC_PATH, "rb") as fh:
+        pdf = pdftotext.PDF(fh, physical=True)
+
+    truth = PDFDocument(pdf)
+
+    assert doc.text == truth.text
+    assert doc.attrs["source_fp"] == GPT4_DOC_PATH
+    assert "test_1" not in doc.attrs
+    assert "cache_fn" not in doc.attrs
 
 
 if __name__ == "__main__":
