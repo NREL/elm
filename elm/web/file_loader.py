@@ -2,6 +2,7 @@
 """ELM Web file loader class."""
 import asyncio
 import logging
+from pathlib import Path
 from abc import ABC, abstractmethod
 
 import aiohttp
@@ -393,6 +394,109 @@ class AsyncWebFileLoader(BaseAsyncFileLoader):
             return HTMLDocument(pages=[])
 
         return await self.html_read_coroutine(text, **self.html_read_kwargs)
+
+
+class AsyncLocalFileLoader(BaseAsyncFileLoader):
+    """Async local file (PDF or HTML) loader"""
+
+    def __init__(
+        self,
+        pdf_read_kwargs=None,
+        html_read_kwargs=None,
+        pdf_read_coroutine=None,
+        html_read_coroutine=None,
+        pdf_ocr_read_coroutine=None,
+        file_cache_coroutine=None,
+        doc_attrs=None,
+        **__,  # consume any extra kwargs
+    ):
+        """
+
+        Parameters
+        ----------
+        pdf_read_kwargs : dict, optional
+            Keyword-value argument pairs to pass to the
+            `pdf_read_coroutine`. By default, ``None``.
+        html_read_kwargs : dict, optional
+            Keyword-value argument pairs to pass to the
+            `html_read_coroutine`. By default, ``None``.
+        pdf_read_coroutine : callable, optional
+            PDF file read coroutine. Must by an async function. Should
+            accept a PDF filepath as the first argument and kwargs as
+            the rest. Must return a :obj:`elm.web.document.PDFDocument`
+            along with the raw PDF bytes (for caching purposes).
+            If ``None``, a default function that runs in the main thread
+            is used. By default, ``None``.
+        html_read_coroutine : callable, optional
+            HTML file read coroutine. Must by an async function. Should
+            accept an HTML filepath as the first argument and kwargs as
+            the rest. Must return a :obj:`elm.web.document.HTMLDocument`
+            along with the raw text (for caching purposes).
+            If ``None``, a default function that runs in the main thread
+            is used. By default, ``None``.
+        pdf_ocr_read_coroutine : callable, optional
+            PDF OCR file read coroutine. Must by an async function.
+            Should accept a PDF filepath as the first argument and
+            kwargs as the rest. Must return a
+            :obj:`elm.web.document.PDFDocument` along with the raw PDF
+            bytes (for caching purposes).
+            If ``None``, PDF OCR parsing is not attempted, and any
+            scanned PDF URL's will return a blank document.
+            By default, ``None``.
+        file_cache_coroutine : callable, optional
+            File caching coroutine. Can be used to cache files
+            downloaded by this class. Must accept an
+            :obj:`~elm.web.document.Document` instance as the first
+            argument and the file content to be written as the second
+            argument. If this method is not provided, no document
+            caching is performed. By default, ``None``.
+        doc_attrs : dict, optional
+            Additional document attributes to add to each loaded
+            document. By default, ``None``.
+        """
+        super().__init__(
+            pdf_read_coroutine=pdf_read_coroutine or _read_pdf_file,
+            html_read_coroutine=html_read_coroutine or _read_html_file,
+            pdf_read_kwargs=pdf_read_kwargs,
+            html_read_kwargs=html_read_kwargs,
+            pdf_ocr_read_coroutine=pdf_ocr_read_coroutine,
+            file_cache_coroutine=file_cache_coroutine
+        )
+        self.doc_attrs = doc_attrs or {}
+
+    async def _fetch_doc(self, source):
+        """Load a doc by reading file base don extension"""
+        fp = Path(source)
+        if fp.suffix.lower() == ".pdf":
+            logger.debug("Trying to read PDF file: %r", source)
+            doc, raw = await self.pdf_read_coroutine(fp,
+                                                     **self.pdf_read_kwargs)
+            if not doc.empty:
+                return doc, raw
+            elif self.pdf_ocr_read_coroutine:
+                logger.debug("PDF read failed; fetching OCR content from %r",
+                             source)
+                doc, raw = await self.pdf_ocr_read_coroutine(
+                    fp, **self.pdf_read_kwargs)
+                if not doc.empty:
+                    return doc, raw
+
+        if fp.suffix.lower() == ".txt":
+            logger.debug("Trying to read HTML file: %r", source)
+            doc = await self.html_read_coroutine(fp, **self.html_read_kwargs)
+            if not doc.empty:
+                return doc, raw
+
+        logger.error("Failed to read file file: %r", source)
+        return PDFDocument(pages=[]), None
+
+    async def _fetch_doc_with_url_in_metadata(self, source):
+        """Fetch doc contents and add source to metadata"""
+        doc, raw_content = await self._fetch_doc(source)
+        for key, value in self.doc_attrs.items():
+            doc.attrs[key] = value
+        doc.attrs["source_fp"] = source
+        return doc, raw_content
 
 
 class AsyncFileLoader(AsyncWebFileLoader):
