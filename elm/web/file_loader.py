@@ -483,7 +483,8 @@ class AsyncLocalFileLoader(BaseAsyncFileLoader):
 
         if fp.suffix.lower() == ".txt":
             logger.debug("Trying to read HTML file: %r", source)
-            doc = await self.html_read_coroutine(fp, **self.html_read_kwargs)
+            doc, raw = await self.html_read_coroutine(fp,
+                                                      **self.html_read_kwargs)
             if not doc.empty:
                 return doc, raw
 
