@@ -81,4 +81,3 @@ class DuxDistributedGlobalSearch(SearchEngineLinkSearch):
 
         return list(filter(None, (info.get('href', "").replace("+", "%20")
                                   for info in results)))
-
