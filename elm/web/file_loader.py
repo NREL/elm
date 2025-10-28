@@ -275,13 +275,14 @@ class AsyncWebFileLoader(BaseAsyncFileLoader):
             of attempts will always be 2, even if the user provides a
             value smaller than this. By default, ``3``.
         """
-
-        super().__init__(pdf_read_kwargs=pdf_read_kwargs,
-                         html_read_kwargs=html_read_kwargs,
-                         pdf_read_coroutine=pdf_read_coroutine,
-                         html_read_coroutine=html_read_coroutine,
-                         pdf_ocr_read_coroutine=pdf_ocr_read_coroutine,
-                         file_cache_coroutine=file_cache_coroutine)
+        super().__init__(
+            pdf_read_coroutine=pdf_read_coroutine or _read_pdf_doc,
+            html_read_coroutine=html_read_coroutine or _read_html_doc,
+            pdf_read_kwargs=pdf_read_kwargs,
+            html_read_kwargs=html_read_kwargs,
+            pdf_ocr_read_coroutine=pdf_ocr_read_coroutine,
+            file_cache_coroutine=file_cache_coroutine
+        )
 
         self.pw_launch_kwargs = pw_launch_kwargs or {}
         self.get_kwargs = {
