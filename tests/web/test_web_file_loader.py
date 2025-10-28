@@ -68,7 +68,7 @@ async def test_async_file_loader_basic_pdf(monkeypatch):
     )
 
     loader = AsyncFileLoader()
-    doc = await loader.fetch(url="gpt-4")
+    doc = await loader.fetch("gpt-4")
 
     with open(GPT4_DOC_PATH, "rb") as fh:
         pdf = pdftotext.PDF(fh, physical=True)
@@ -98,7 +98,7 @@ async def test_async_file_loader_basic_html(monkeypatch):
     )
 
     loader = AsyncFileLoader()
-    doc = await loader.fetch(url="Whatcom")
+    doc = await loader.fetch("Whatcom")
 
     with open(WHATCOM_DOC_PATH, "r", encoding="utf-8") as fh:
         content = fh.read()
