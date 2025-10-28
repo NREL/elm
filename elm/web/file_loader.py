@@ -47,7 +47,6 @@ async def _read_html_file(html_fp, **kwargs):
     return HTMLDocument([text], **kwargs), text
 
 
-
 class BaseAsyncFileLoader(ABC):
     """Base class for async file loading"""
 
@@ -284,7 +283,6 @@ class AsyncWebFileLoader(BaseAsyncFileLoader):
             pdf_ocr_read_coroutine=pdf_ocr_read_coroutine,
             file_cache_coroutine=file_cache_coroutine
         )
-
         self.pw_launch_kwargs = pw_launch_kwargs or {}
         self.get_kwargs = {
             "headers": self._header_from_template(header_template),
@@ -465,7 +463,7 @@ class AsyncLocalFileLoader(BaseAsyncFileLoader):
         self.doc_attrs = doc_attrs or {}
 
     async def _fetch_doc(self, source):
-        """Load a doc by reading file base don extension"""
+        """Load a doc by reading file based on extension"""
         fp = Path(source)
         if fp.suffix.lower() == ".pdf":
             logger.debug("Trying to read PDF file: %r", source)
@@ -488,7 +486,7 @@ class AsyncLocalFileLoader(BaseAsyncFileLoader):
             if not doc.empty:
                 return doc, raw
 
-        logger.error("Failed to read file file: %r", source)
+        logger.error("Failed to read file: %r", source)
         return PDFDocument(pages=[]), None
 
     async def _fetch_doc_with_url_in_metadata(self, source):

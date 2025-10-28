@@ -53,7 +53,7 @@ class DuxDistributedGlobalSearch(SearchEngineLinkSearch):
                 - duckduckgo: Duckduckgo
 
             Can also be a comma-separated combination of these.
-            By default, ``"all``.
+            By default, ``"all"``.
         timeout : int, optional
             Timeout for HTTP requests, in seconds. By default, ``10``.
         verify : bool, optional
