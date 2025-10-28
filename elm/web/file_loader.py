@@ -74,10 +74,10 @@ class BaseAsyncFileLoader(ABC):
             argument. If this method is not provided, no document
             caching is performed. By default, ``None``.
         """
+        self.pdf_read_coroutine = pdf_read_coroutine
+        self.html_read_coroutine = html_read_coroutine
         self.pdf_read_kwargs = pdf_read_kwargs or {}
         self.html_read_kwargs = html_read_kwargs or {}
-        self.pdf_read_coroutine = pdf_read_coroutine or _read_pdf_doc
-        self.html_read_coroutine = html_read_coroutine or _read_html_doc
         self.pdf_ocr_read_coroutine = pdf_ocr_read_coroutine
         self.file_cache_coroutine = file_cache_coroutine
 
