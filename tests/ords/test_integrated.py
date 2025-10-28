@@ -221,7 +221,7 @@ async def test_async_file_loader_with_temp_cache(monkeypatch):
 
     async with RunningAsyncServices([TempFileCache()]):
         loader = AsyncFileLoader(file_cache_coroutine=TempFileCache.call)
-        doc = await loader.fetch(url="Whatcom")
+        doc = await loader.fetch("Whatcom")
         assert doc.text == truth.text
         assert doc.attrs["source"] == "Whatcom"
         cached_fp = doc.attrs["cache_fn"]

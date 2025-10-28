@@ -38,7 +38,7 @@ class DuxDistributedGlobalSearch(SearchEngineLinkSearch):
             By default, ``None``.
         page : int, default=1
             The page of results to return. By default, ``1``.
-        backend : str or iter of str, optional
+        backend : str, optional
             Option for DuxDistributedGlobalSearch backend:
 
                 - auto: Randomly select 3 search engines to use
@@ -52,8 +52,8 @@ class DuxDistributedGlobalSearch(SearchEngineLinkSearch):
                 - yandex: Yandex
                 - duckduckgo: Duckduckgo
 
-            Can also be a list or tuple of a combination of these.
-            By default, ``("google", "bing", "yahoo", "duckduckgo")``.
+            Can also be a comma-separated combination of these.
+            By default, ``"all"``.
         timeout : int, optional
             Timeout for HTTP requests, in seconds. By default, ``10``.
         verify : bool, optional
@@ -81,4 +81,3 @@ class DuxDistributedGlobalSearch(SearchEngineLinkSearch):
 
         return list(filter(None, (info.get('href', "").replace("+", "%20")
                                   for info in results)))
-
