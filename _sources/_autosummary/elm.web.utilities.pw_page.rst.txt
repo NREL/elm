@@ -1,0 +1,6 @@
+elm.web.utilities.pw\_page
+==========================
+
+.. currentmodule:: elm.web.utilities
+
+.. autofunction:: pw_page

@@ -1,0 +1,6 @@
+elm.ords.extraction.graphs.setup\_multiplier
+============================================
+
+.. currentmodule:: elm.ords.extraction.graphs
+
+.. autofunction:: setup_multiplier

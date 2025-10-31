@@ -1,0 +1,6 @@
+elm.ords.utilities.counties.load\_all\_county\_info
+===================================================
+
+.. currentmodule:: elm.ords.utilities.counties
+
+.. autofunction:: load_all_county_info

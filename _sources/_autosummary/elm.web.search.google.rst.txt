@@ -1,0 +1,36 @@
+elm.web.search.google
+=====================
+
+.. automodule:: elm.web.search.google
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      APIGoogleCSESearch
+      APISerperSearch
+      CamoufoxGoogleLinkSearch
+      PlaywrightGoogleCSELinkSearch
+      PlaywrightGoogleLinkSearch
+      SerpAPIGoogleSearch
+   
+   
+
+   
+   
+   
+
+
+

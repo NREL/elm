@@ -1,0 +1,30 @@
+elm.web.search.base.APISearchEngineLinkSearch
+=============================================
+
+.. currentmodule:: elm.web.search.base
+
+.. autoclass:: APISearchEngineLinkSearch
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~APISearchEngineLinkSearch.results
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~APISearchEngineLinkSearch.API_KEY_VAR
+   
+   

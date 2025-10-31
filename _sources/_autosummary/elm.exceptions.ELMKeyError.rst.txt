@@ -1,0 +1,6 @@
+elm.exceptions.ELMKeyError
+==========================
+
+.. currentmodule:: elm.exceptions
+
+.. autoexception:: ELMKeyError

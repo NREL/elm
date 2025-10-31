@@ -1,0 +1,24 @@
+elm.ords.llm.calling.LLMCaller
+==============================
+
+.. currentmodule:: elm.ords.llm.calling
+
+.. autoclass:: LLMCaller
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~LLMCaller.call
+   
+   
+
+   
+   
+   

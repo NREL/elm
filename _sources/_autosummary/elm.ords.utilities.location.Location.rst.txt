@@ -1,0 +1,29 @@
+elm.ords.utilities.location.Location
+====================================
+
+.. currentmodule:: elm.ords.utilities.location
+
+.. autoclass:: Location
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Location.full_name
+   
+   

@@ -1,0 +1,6 @@
+elm.ords.services.queues.initialize\_service\_queue
+===================================================
+
+.. currentmodule:: elm.ords.services.queues
+
+.. autofunction:: initialize_service_queue

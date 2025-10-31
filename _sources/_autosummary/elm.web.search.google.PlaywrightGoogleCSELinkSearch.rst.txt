@@ -1,0 +1,31 @@
+elm.web.search.google.PlaywrightGoogleCSELinkSearch
+===================================================
+
+.. currentmodule:: elm.web.search.google
+
+.. autoclass:: PlaywrightGoogleCSELinkSearch
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PlaywrightGoogleCSELinkSearch.results
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PlaywrightGoogleCSELinkSearch.MAX_RESULTS_CONSIDERED_PER_PAGE
+      ~PlaywrightGoogleCSELinkSearch.PAGE_LOAD_TIMEOUT
+   
+   

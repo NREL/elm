@@ -1,0 +1,23 @@
+elm.ords.utilities.queued\_logging.LocationFileLog
+==================================================
+
+.. currentmodule:: elm.ords.utilities.queued_logging
+
+.. autoclass:: LocationFileLog
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+
+   
+   
+   

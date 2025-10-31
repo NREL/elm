@@ -1,0 +1,24 @@
+elm.ords.validation.location.CountyValidator
+============================================
+
+.. currentmodule:: elm.ords.validation.location
+
+.. autoclass:: CountyValidator
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~CountyValidator.check
+   
+   
+
+   
+   
+   

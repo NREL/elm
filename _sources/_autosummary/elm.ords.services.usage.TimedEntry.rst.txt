@@ -1,0 +1,23 @@
+elm.ords.services.usage.TimedEntry
+==================================
+
+.. currentmodule:: elm.ords.services.usage
+
+.. autoclass:: TimedEntry
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+
+   
+   
+   

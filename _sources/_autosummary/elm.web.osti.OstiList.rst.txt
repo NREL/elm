@@ -1,0 +1,45 @@
+elm.web.osti.OstiList
+=====================
+
+.. currentmodule:: elm.web.osti
+
+.. autoclass:: OstiList
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~OstiList.append
+      ~OstiList.clean_escape_sequences
+      ~OstiList.clear
+      ~OstiList.copy
+      ~OstiList.count
+      ~OstiList.download
+      ~OstiList.extend
+      ~OstiList.from_osti_ids
+      ~OstiList.index
+      ~OstiList.insert
+      ~OstiList.parse_json_safely
+      ~OstiList.pop
+      ~OstiList.remove
+      ~OstiList.reverse
+      ~OstiList.sort
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OstiList.BASE_URL
+      ~OstiList.meta
+   
+   

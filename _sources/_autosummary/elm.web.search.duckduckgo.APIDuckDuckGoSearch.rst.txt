@@ -1,0 +1,24 @@
+elm.web.search.duckduckgo.APIDuckDuckGoSearch
+=============================================
+
+.. currentmodule:: elm.web.search.duckduckgo
+
+.. autoclass:: APIDuckDuckGoSearch
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~APIDuckDuckGoSearch.results
+   
+   
+
+   
+   
+   

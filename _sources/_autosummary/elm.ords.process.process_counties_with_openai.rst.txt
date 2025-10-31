@@ -1,0 +1,6 @@
+elm.ords.process.process\_counties\_with\_openai
+================================================
+
+.. currentmodule:: elm.ords.process
+
+.. autofunction:: process_counties_with_openai

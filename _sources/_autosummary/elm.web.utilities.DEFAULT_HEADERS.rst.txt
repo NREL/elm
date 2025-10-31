@@ -1,0 +1,6 @@
+elm.web.utilities.DEFAULT\_HEADERS
+==================================
+
+.. currentmodule:: elm.web.utilities
+
+.. autodata:: DEFAULT_HEADERS

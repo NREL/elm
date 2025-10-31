@@ -1,0 +1,33 @@
+elm.ords.utilities.exceptions
+=============================
+
+.. automodule:: elm.ords.utilities.exceptions
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+      :toctree:
+   
+      ELMOrdsError
+      ELMOrdsNotInitializedError
+      ELMOrdsRuntimeError
+      ELMOrdsValueError
+   
+   
+
+
+

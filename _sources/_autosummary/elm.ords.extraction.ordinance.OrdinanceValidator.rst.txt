@@ -1,0 +1,35 @@
+elm.ords.extraction.ordinance.OrdinanceValidator
+================================================
+
+.. currentmodule:: elm.ords.extraction.ordinance
+
+.. autoclass:: OrdinanceValidator
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~OrdinanceValidator.parse
+      ~OrdinanceValidator.parse_from_ind
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OrdinanceValidator.CONTAINS_ORD_PROMPT
+      ~OrdinanceValidator.IS_LEGAL_TEXT_PROMPT
+      ~OrdinanceValidator.IS_UTILITY_SCALE_PROMPT
+      ~OrdinanceValidator.is_legal_text
+      ~OrdinanceValidator.ordinance_text
+   
+   

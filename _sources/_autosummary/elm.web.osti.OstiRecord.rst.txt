@@ -1,0 +1,48 @@
+elm.web.osti.OstiRecord
+=======================
+
+.. currentmodule:: elm.web.osti
+
+.. autoclass:: OstiRecord
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~OstiRecord.clear
+      ~OstiRecord.copy
+      ~OstiRecord.download
+      ~OstiRecord.fromkeys
+      ~OstiRecord.get
+      ~OstiRecord.items
+      ~OstiRecord.keys
+      ~OstiRecord.pop
+      ~OstiRecord.popitem
+      ~OstiRecord.setdefault
+      ~OstiRecord.strip_nested_brackets
+      ~OstiRecord.update
+      ~OstiRecord.values
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OstiRecord.authors
+      ~OstiRecord.date
+      ~OstiRecord.doi
+      ~OstiRecord.osti_id
+      ~OstiRecord.title
+      ~OstiRecord.url
+      ~OstiRecord.year
+   
+   

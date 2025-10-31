@@ -1,0 +1,6 @@
+elm.ords.extraction.graphs.setup\_graph\_extra\_restriction
+===========================================================
+
+.. currentmodule:: elm.ords.extraction.graphs
+
+.. autofunction:: setup_graph_extra_restriction

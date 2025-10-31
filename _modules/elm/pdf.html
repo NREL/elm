@@ -1,0 +1,801 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>elm.pdf &mdash; elm 0.0.34 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=9dd25805"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            elm
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.energy_wizard.html">The Energy Wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.energy_wizard.html#downloading-and-embedding-pdfs">Downloading and Embedding PDFs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.energy_wizard.html#running-the-streamlit-app">Running the Streamlit App</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.ordinance_gpt.html">Ordinance GPT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.ordinance_gpt.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.ordinance_gpt.html#running-from-python">Running from Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.ordinance_gpt.html#running-from-the-command-line-utility">Running from the Command Line Utility</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../examples.ordinance_gpt.html#execution">Execution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../examples.ordinance_gpt.html#debugging">Debugging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.ordinance_gpt.html#source-ordinance-documents">Source Ordinance Documents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.ordinance_gpt.html#extension-to-other-technologies">Extension to Other Technologies</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../dev/ords_architecture.html"><strong>OrdinanceGPT: Architectural Design Document</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../dev/ords_architecture.html#introduction"><strong>1. Introduction</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dev/ords_architecture.html#purpose"><strong>1.1 Purpose</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dev/ords_architecture.html#audience"><strong>1.2 Audience</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dev/ords_architecture.html#scope"><strong>1.3 Scope</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../dev/ords_architecture.html#high-level-architecture"><strong>2. High-Level Architecture</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dev/ords_architecture.html#system-context"><strong>2.1 System Context</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../dev/ords_architecture.html#detailed-design"><strong>3. Detailed Design</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dev/ords_architecture.html#web-scraper"><strong>3.1 Web Scraper</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dev/ords_architecture.html#document-parser"><strong>3.2 Document Parser</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../dev/ords_architecture.html#key-concepts-and-classes"><strong>4 Key Concepts and Classes</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dev/ords_architecture.html#key-concept-services"><strong>4.1 Key Concept: Services</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dev/ords_architecture.html#key-classes"><strong>4.2 Key Classes</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../dev/ords_architecture.html#workflows"><strong>5. Workflows</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dev/ords_architecture.html#downloading-documents-from-google"><strong>5.1 Downloading documents from Google</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dev/ords_architecture.html#querying-openai"><strong>5.2 Querying OpenAI</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../dev/ords_architecture.html#appendix"><strong>6. Appendix</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dev/ords_architecture.html#tools-and-libraries"><strong>6.1 Tools and Libraries</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../dev/ords_architecture.html#deliverables"><strong>7. Deliverables</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary/elm.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.base.html">elm.base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.base.ApiBase.html">elm.base.ApiBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.base.ApiBase.html#elm.base.ApiBase"><code class="docutils literal notranslate"><span class="pre">ApiBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.base.ApiQueue.html">elm.base.ApiQueue</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.base.ApiQueue.html#elm.base.ApiQueue"><code class="docutils literal notranslate"><span class="pre">ApiQueue</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.chunk.html">elm.chunk</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.chunk.Chunker.html">elm.chunk.Chunker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker"><code class="docutils literal notranslate"><span class="pre">Chunker</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.cli.html">elm.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.embed.html">elm.embed</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.embed.ChunkAndEmbed.html">elm.embed.ChunkAndEmbed</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed"><code class="docutils literal notranslate"><span class="pre">ChunkAndEmbed</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.exceptions.html">elm.exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.exceptions.ELMError.html">elm.exceptions.ELMError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.exceptions.ELMError.html#elm.exceptions.ELMError"><code class="docutils literal notranslate"><span class="pre">ELMError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.exceptions.ELMInputError.html">elm.exceptions.ELMInputError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.exceptions.ELMInputError.html#elm.exceptions.ELMInputError"><code class="docutils literal notranslate"><span class="pre">ELMInputError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.exceptions.ELMKeyError.html">elm.exceptions.ELMKeyError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.exceptions.ELMKeyError.html#elm.exceptions.ELMKeyError"><code class="docutils literal notranslate"><span class="pre">ELMKeyError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.exceptions.ELMRuntimeError.html">elm.exceptions.ELMRuntimeError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.exceptions.ELMRuntimeError.html#elm.exceptions.ELMRuntimeError"><code class="docutils literal notranslate"><span class="pre">ELMRuntimeError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.ords.html">elm.ords</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.ords.download.html">elm.ords.download</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.download.download_county_ordinance.html">elm.ords.download.download_county_ordinance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.ords.extraction.html">elm.ords.extraction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.extraction.apply.html">elm.ords.extraction.apply</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.extraction.date.html">elm.ords.extraction.date</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.extraction.features.html">elm.ords.extraction.features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.extraction.graphs.html">elm.ords.extraction.graphs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.extraction.ngrams.html">elm.ords.extraction.ngrams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.extraction.ordinance.html">elm.ords.extraction.ordinance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.extraction.parse.html">elm.ords.extraction.parse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.extraction.tree.html">elm.ords.extraction.tree</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.ords.llm.html">elm.ords.llm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.llm.calling.html">elm.ords.llm.calling</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.ords.process.html">elm.ords.process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.process.process_counties_with_openai.html">elm.ords.process.process_counties_with_openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.process.process_county.html">elm.ords.process.process_county</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.process.process_county_with_logging.html">elm.ords.process.process_county_with_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.ords.services.html">elm.ords.services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.services.base.html">elm.ords.services.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.services.cpu.html">elm.ords.services.cpu</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.services.openai.html">elm.ords.services.openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.services.provider.html">elm.ords.services.provider</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.services.queues.html">elm.ords.services.queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.services.threaded.html">elm.ords.services.threaded</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.services.usage.html">elm.ords.services.usage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.ords.utilities.html">elm.ords.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.utilities.counties.html">elm.ords.utilities.counties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.utilities.exceptions.html">elm.ords.utilities.exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.utilities.location.html">elm.ords.utilities.location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.utilities.parsing.html">elm.ords.utilities.parsing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.utilities.queued_logging.html">elm.ords.utilities.queued_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.ords.validation.html">elm.ords.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.validation.content.html">elm.ords.validation.content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.validation.location.html">elm.ords.validation.location</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.pdf.html">elm.pdf</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.pdf.PDFtoTXT.html">elm.pdf.PDFtoTXT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT"><code class="docutils literal notranslate"><span class="pre">PDFtoTXT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.summary.html">elm.summary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.summary.Summary.html">elm.summary.Summary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.summary.Summary.html#elm.summary.Summary"><code class="docutils literal notranslate"><span class="pre">Summary</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.tree.html">elm.tree</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.tree.DecisionTree.html">elm.tree.DecisionTree</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.tree.DecisionTree.html#elm.tree.DecisionTree"><code class="docutils literal notranslate"><span class="pre">DecisionTree</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.utilities.html">elm.utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.html">elm.utilities.parse</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.clean_headers.html">elm.utilities.parse.clean_headers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.combine_pages.html">elm.utilities.parse.combine_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.format_html_tables.html">elm.utilities.parse.format_html_tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.html_to_text.html">elm.utilities.parse.html_to_text</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.is_multi_col.html">elm.utilities.parse.is_multi_col</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.read_pdf.html">elm.utilities.parse.read_pdf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.read_pdf_ocr.html">elm.utilities.parse.read_pdf_ocr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.remove_blank_pages.html">elm.utilities.parse.remove_blank_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.remove_empty_lines_or_page_footers.html">elm.utilities.parse.remove_empty_lines_or_page_footers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.replace_common_pdf_conversion_chars.html">elm.utilities.parse.replace_common_pdf_conversion_chars</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.replace_excessive_newlines.html">elm.utilities.parse.replace_excessive_newlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.replace_multi_dot_lines.html">elm.utilities.parse.replace_multi_dot_lines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.resembles_html.html">elm.utilities.parse.resembles_html</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.utilities.retry.html">elm.utilities.retry</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.retry.async_retry_with_exponential_backoff.html">elm.utilities.retry.async_retry_with_exponential_backoff</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.retry.retry_with_exponential_backoff.html">elm.utilities.retry.retry_with_exponential_backoff</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.utilities.try_import.html">elm.utilities.try_import</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.try_import.try_import.html">elm.utilities.try_import.try_import</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.utilities.validation.html">elm.utilities.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.validation.validate_azure_api_params.html">elm.utilities.validation.validate_azure_api_params</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.version.html">elm.version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.web.html">elm.web</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.web.document.html">elm.web.document</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.document.BaseDocument.html">elm.web.document.BaseDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.document.HTMLDocument.html">elm.web.document.HTMLDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.document.PDFDocument.html">elm.web.document.PDFDocument</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.web.file_loader.html">elm.web.file_loader</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.file_loader.AsyncFileLoader.html">elm.web.file_loader.AsyncFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.file_loader.AsyncLocalFileLoader.html">elm.web.file_loader.AsyncLocalFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.file_loader.AsyncWebFileLoader.html">elm.web.file_loader.AsyncWebFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.file_loader.BaseAsyncFileLoader.html">elm.web.file_loader.BaseAsyncFileLoader</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.web.html_pw.html">elm.web.html_pw</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.html_pw.load_html_with_pw.html">elm.web.html_pw.load_html_with_pw</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.web.osti.html">elm.web.osti</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.osti.OstiList.html">elm.web.osti.OstiList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.osti.OstiRecord.html">elm.web.osti.OstiRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.web.rhub.html">elm.web.rhub</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.rhub.ProfilesList.html">elm.web.rhub.ProfilesList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.rhub.ProfilesRecord.html">elm.web.rhub.ProfilesRecord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.rhub.PublicationsList.html">elm.web.rhub.PublicationsList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.rhub.PublicationsRecord.html">elm.web.rhub.PublicationsRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.web.search.html">elm.web.search</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.search.base.html">elm.web.search.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.search.bing.html">elm.web.search.bing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.search.duckduckgo.html">elm.web.search.duckduckgo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.search.dux.html">elm.web.search.dux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.search.google.html">elm.web.search.google</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.search.run.html">elm.web.search.run</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.search.tavily.html">elm.web.search.tavily</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.search.yahoo.html">elm.web.search.yahoo</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.web.utilities.html">elm.web.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.utilities.DEFAULT_HEADERS.html">elm.web.utilities.DEFAULT_HEADERS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.utilities.clean_search_query.html">elm.web.utilities.clean_search_query</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.utilities.compute_fn_from_url.html">elm.web.utilities.compute_fn_from_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.utilities.filter_documents.html">elm.web.utilities.filter_documents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.utilities.get_redirected_url.html">elm.web.utilities.get_redirected_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.utilities.pw_page.html">elm.web.utilities.pw_page</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.utilities.write_url_doc_to_file.html">elm.web.utilities.write_url_doc_to_file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.utilities.PWKwargs.html">elm.web.utilities.PWKwargs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.web.website_crawl.html">elm.web.website_crawl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS.html">elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.website_crawl.ELM_URL_FILTER.html">elm.web.website_crawl.ELM_URL_FILTER</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.website_crawl.ContentTypeExcludeFilter.html">elm.web.website_crawl.ContentTypeExcludeFilter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.website_crawl.ELMLinkScorer.html">elm.web.website_crawl.ELMLinkScorer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawler.html">elm.web.website_crawl.ELMWebsiteCrawler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html">elm.web.website_crawl.ELMWebsiteCrawlingStrategy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html">elm.web.website_crawl.PeekablePriorityQueue</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.wizard.html">elm.wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.wizard.EnergyWizard.html">elm.wizard.EnergyWizard</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard"><code class="docutils literal notranslate"><span class="pre">EnergyWizard</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.wizard.EnergyWizardBase.html">elm.wizard.EnergyWizardBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase"><code class="docutils literal notranslate"><span class="pre">EnergyWizardBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.wizard.EnergyWizardPostgres.html">elm.wizard.EnergyWizardPostgres</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres"><code class="docutils literal notranslate"><span class="pre">EnergyWizardPostgres</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../_cli/cli.html">CLI reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../_cli/elm.html">elm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_cli/elm.html#elm-ords">ords</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">elm</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">elm.pdf</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for elm.pdf</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># fmt: off</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">ELM PDF to text parser</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyPDF2</span><span class="w"> </span><span class="kn">import</span> <span class="n">PdfReader</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">ApiBase</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.utilities.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_multi_col</span><span class="p">,</span> <span class="n">combine_pages</span><span class="p">,</span> <span class="n">clean_headers</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="PDFtoTXT">
+<a class="viewcode-back" href="../../_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PDFtoTXT</span><span class="p">(</span><span class="n">ApiBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class to parse text from a PDF document.&quot;&quot;&quot;</span>
+
+    <span class="n">MODEL_ROLE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;You clean up poorly formatted text &#39;</span>
+                  <span class="s1">&#39;extracted from PDF documents.&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;High level model role.&quot;&quot;&quot;</span>
+
+    <span class="n">MODEL_INSTRUCTION</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Text extracted from a PDF: &#39;</span>
+                         <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&quot;&quot;&quot;</span><span class="se">\n</span><span class="si">{}</span><span class="se">\n</span><span class="s1">&quot;&quot;&quot;</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+                         <span class="s1">&#39;The text above was extracted from a PDF document. &#39;</span>
+                         <span class="s1">&#39;Can you make it nicely formatted? &#39;</span>
+                         <span class="s1">&#39;Please only return the formatted text &#39;</span>
+                         <span class="s1">&#39;without comments or added information.&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Instructions to the model with python format braces for pdf text&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">page_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fp : str</span>
+<span class="sd">            Filepath to .pdf file to extract.</span>
+<span class="sd">        page_range : None | list</span>
+<span class="sd">            Optional 2-entry list/tuple to set starting and ending pages</span>
+<span class="sd">            (python indexing)</span>
+<span class="sd">        model : None | str</span>
+<span class="sd">            Optional specification of OpenAI model to use. Default is</span>
+<span class="sd">            cls.DEFAULT_MODEL</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fp</span> <span class="o">=</span> <span class="n">fp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raw_pages</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_pdf</span><span class="p">(</span><span class="n">page_range</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pages</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_pages</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">full</span> <span class="o">=</span> <span class="n">combine_pages</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_pages</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PDFtoTXT.load_pdf">
+<a class="viewcode-back" href="../../_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.load_pdf">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_range</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Basic load of pdf to text strings</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        page_range : None | list</span>
+<span class="sd">            Optional 2-entry list/tuple to set starting and ending pages</span>
+<span class="sd">            (python indexing)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : list</span>
+<span class="sd">            List of strings where each entry is a page. This is the raw PDF</span>
+<span class="sd">            text before GPT cleaning</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Loading PDF: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fp</span><span class="p">))</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">pdf</span> <span class="o">=</span> <span class="n">PdfReader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fp</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">page_range</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">page_range</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+            <span class="n">page_range</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="o">*</span><span class="n">page_range</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">page_range</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">page</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pdf</span><span class="o">.</span><span class="n">pages</span><span class="p">[</span><span class="n">page_range</span><span class="p">]):</span>
+            <span class="n">page_text</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">extract_text</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">page_text</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Skipping empty page </span><span class="si">{}</span><span class="s1"> out of </span><span class="si">{}</span><span class="s1">&#39;</span>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">page_range</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">pdf</span><span class="o">.</span><span class="n">pages</span><span class="p">)))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">page_text</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Finished loading PDF.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="PDFtoTXT.make_gpt_messages">
+<a class="viewcode-back" href="../../_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.make_gpt_messages">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_gpt_messages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pdf_raw_text</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Make the chat completion messages list for input to GPT</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pdf_raw_text : str</span>
+<span class="sd">            Raw PDF text to be cleaned</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        messages : list</span>
+<span class="sd">            Messages for OpenAI chat completion model. Typically this looks</span>
+<span class="sd">            like this:</span>
+<span class="sd">                [{&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;You do this...&quot;},</span>
+<span class="sd">                 {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Please do this: {}&quot;}]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MODEL_INSTRUCTION</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pdf_raw_text</span><span class="p">)</span>
+        <span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">MODEL_ROLE</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">query</span><span class="p">}]</span>
+
+        <span class="k">return</span> <span class="n">messages</span></div>
+
+
+<div class="viewcode-block" id="PDFtoTXT.clean_txt">
+<a class="viewcode-back" href="../../_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.clean_txt">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clean_txt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Use GPT to clean raw pdf text in serial calls to the OpenAI API.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        clean_pages : list</span>
+<span class="sd">            List of clean text strings where each list entry is a page from the</span>
+<span class="sd">            PDF</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Cleaning PDF text...&#39;</span><span class="p">)</span>
+        <span class="n">clean_pages</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">raw_page</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_pages</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_gpt_messages</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">raw_page</span><span class="p">))</span>
+            <span class="n">req</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="n">msg</span><span class="p">,</span> <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">}</span>
+
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">URL</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">HEADERS</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">req</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Error in OpenAI API call!&#39;</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}</span>
+
+            <span class="n">choice</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;choices&#39;</span><span class="p">,</span> <span class="p">[{</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}}])[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">choice</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">})</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">clean_pages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Cleaned page </span><span class="si">{}</span><span class="s1"> out of </span><span class="si">{}</span><span class="s1">&#39;</span>
+                         <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_pages</span><span class="p">)))</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Finished cleaning PDF.&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pages</span> <span class="o">=</span> <span class="n">clean_pages</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">full</span> <span class="o">=</span> <span class="n">combine_pages</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validate_clean</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">clean_pages</span></div>
+
+
+<div class="viewcode-block" id="PDFtoTXT.clean_txt_async">
+<a class="viewcode-back" href="../../_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.clean_txt_async">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">clean_txt_async</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ignore_error</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rate_limit</span><span class="o">=</span><span class="mf">40e3</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Use GPT to clean raw pdf text in parallel calls to the OpenAI API.</span>
+
+<span class="sd">        NOTE: you need to call this using the await command in ipython or</span>
+<span class="sd">        jupyter, e.g.: `out = await PDFtoTXT.clean_txt_async()`</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ignore_error : None | callable</span>
+<span class="sd">            Optional callable to parse API error string. If the callable</span>
+<span class="sd">            returns True, the error will be ignored, the API call will not be</span>
+<span class="sd">            tried again, and the output will be an empty string.</span>
+<span class="sd">        rate_limit : float</span>
+<span class="sd">            OpenAI API rate limit (tokens / minute). Note that the</span>
+<span class="sd">            gpt-3.5-turbo limit is 90k as of 4/2023, but we&#39;re using a large</span>
+<span class="sd">            factor of safety (~1/2) because we can only count the tokens on the</span>
+<span class="sd">            input side and assume the output is about the same count.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        clean_pages : list</span>
+<span class="sd">            List of clean text strings where each list entry is a page from the</span>
+<span class="sd">            PDF</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Cleaning PDF text asyncronously...&#39;</span><span class="p">)</span>
+
+        <span class="n">all_request_jsons</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_pages</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_gpt_messages</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+            <span class="n">req</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="n">msg</span><span class="p">,</span> <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">}</span>
+            <span class="n">all_request_jsons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+
+        <span class="n">clean_pages</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_api_async</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">URL</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">HEADERS</span><span class="p">,</span>
+                                                <span class="n">all_request_jsons</span><span class="p">,</span>
+                                                <span class="n">ignore_error</span><span class="o">=</span><span class="n">ignore_error</span><span class="p">,</span>
+                                                <span class="n">rate_limit</span><span class="o">=</span><span class="n">rate_limit</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">page</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">clean_pages</span><span class="p">):</span>
+            <span class="n">choice</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;choices&#39;</span><span class="p">,</span> <span class="p">[{</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}}])[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">choice</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">})</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">clean_pages</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">content</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Finished cleaning PDF.&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pages</span> <span class="o">=</span> <span class="n">clean_pages</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">full</span> <span class="o">=</span> <span class="n">combine_pages</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validate_clean</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">clean_pages</span></div>
+
+
+<div class="viewcode-block" id="PDFtoTXT.clean_poppler">
+<a class="viewcode-back" href="../../_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.clean_poppler">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clean_poppler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clean the pdf using the poppler pdftotxt utility</span>
+
+<span class="sd">        Requires the `pdftotext` command line utility from this software:</span>
+<span class="sd">            https://poppler.freedesktop.org/</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        layout : bool</span>
+<span class="sd">            Layout flag for poppler pdftotxt utility: &quot;maintain original</span>
+<span class="sd">            physical layout&quot;. Layout=True works well for single column text,</span>
+<span class="sd">            layout=False collapses the double columns into single columns which</span>
+<span class="sd">            works better for downstream chunking and LLM work.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : str</span>
+<span class="sd">            Joined cleaned pages</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">td</span><span class="p">:</span>
+            <span class="n">fp_out</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">td</span><span class="p">,</span> <span class="s1">&#39;poppler_out.txt&#39;</span><span class="p">)</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;pdftotext&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fp</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fp_out</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">layout</span><span class="p">:</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;-layout&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">fp_out</span><span class="p">)):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">fp_out</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">stdout</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                        <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;PDF cleaning with poppler failed! This usually &#39;</span>
+                       <span class="s1">&#39;because you have not installed the poppler utility &#39;</span>
+                       <span class="s1">&#39;(see https://poppler.freedesktop.org/). &#39;</span>
+                       <span class="sa">f</span><span class="s1">&#39;Full error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">stdout</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Poppler raised return code </span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1">&#39;</span>
+                           <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">stdout</span><span class="o">.</span><span class="n">returncode</span><span class="p">,</span> <span class="n">stdout</span><span class="p">))</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fp_out</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">clean_txt</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+        <span class="c1"># break on poppler page break</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pages</span> <span class="o">=</span> <span class="n">clean_txt</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\x0c</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">remove</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">page</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">strip</span><span class="p">()):</span>
+                <span class="n">remove</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">remove</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">full</span> <span class="o">=</span> <span class="n">combine_pages</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">full</span></div>
+
+
+<div class="viewcode-block" id="PDFtoTXT.validate_clean">
+<a class="viewcode-back" href="../../_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.validate_clean">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run some basic checks on the GPT cleaned text vs. the raw text&quot;&quot;&quot;</span>
+        <span class="n">repl</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Didnt get ANY clean output text!&#39;</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">replace_chars_for_clean</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">repl</span><span class="p">:</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">text</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">clean</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_pages</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="p">)):</span>
+            <span class="n">raw_words</span> <span class="o">=</span> <span class="n">replace_chars_for_clean</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+            <span class="n">clean_words</span> <span class="o">=</span> <span class="n">replace_chars_for_clean</span><span class="p">(</span><span class="n">clean</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+
+            <span class="n">raw_words</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">raw_words</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">}</span>
+            <span class="n">clean_words</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">clean_words</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">}</span>
+
+            <span class="n">isin</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">x</span> <span class="ow">in</span> <span class="n">clean_words</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">raw_words</span><span class="p">)</span>
+
+            <span class="n">perc</span> <span class="o">=</span> <span class="mi">100</span>
+            <span class="k">if</span> <span class="n">isin</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw_words</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">perc</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">isin</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw_words</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">perc</span> <span class="o">&lt;</span> <span class="mi">70</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Page </span><span class="si">{}</span><span class="s1"> of </span><span class="si">{}</span><span class="s1"> has a </span><span class="si">{:.2f}</span><span class="s1">% match with </span><span class="si">{}</span><span class="s1"> &#39;</span>
+                               <span class="s1">&#39;unique words in the raw text.&#39;</span>
+                               <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_pages</span><span class="p">),</span> <span class="n">perc</span><span class="p">,</span>
+                                       <span class="nb">len</span><span class="p">(</span><span class="n">raw_words</span><span class="p">)))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Page </span><span class="si">{}</span><span class="s1"> of </span><span class="si">{}</span><span class="s1"> has a </span><span class="si">{:.2f}</span><span class="s1">% match with </span><span class="si">{}</span><span class="s1"> &#39;</span>
+                            <span class="s1">&#39;unique words in the raw text.&#39;</span>
+                            <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_pages</span><span class="p">),</span> <span class="n">perc</span><span class="p">,</span>
+                                    <span class="nb">len</span><span class="p">(</span><span class="n">raw_words</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="PDFtoTXT.clean_headers">
+<a class="viewcode-back" href="../../_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.clean_headers">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clean_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">char_thresh</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">page_thresh</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">split_on</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+                      <span class="n">iheaders</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clean headers/footers that are duplicated across pages</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        char_thresh : float</span>
+<span class="sd">            Fraction of characters in a given header that are similar between</span>
+<span class="sd">            pages to be considered for removal</span>
+<span class="sd">        page_thresh : float</span>
+<span class="sd">            Fraction of pages that share the header to be considered for</span>
+<span class="sd">            removal</span>
+<span class="sd">        split_on : str</span>
+<span class="sd">            Chars to split lines of a page on</span>
+<span class="sd">        iheaders : list | tuple</span>
+<span class="sd">            Integer indices to look for headers after splitting a page into</span>
+<span class="sd">            lines based on split_on. This needs to go from the start of the</span>
+<span class="sd">            page to the end.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : str</span>
+<span class="sd">            Clean text with all pages joined</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pages</span> <span class="o">=</span> <span class="n">clean_headers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="p">,</span> <span class="n">char_thresh</span><span class="o">=</span><span class="n">char_thresh</span><span class="p">,</span>
+                                   <span class="n">page_thresh</span><span class="o">=</span><span class="n">page_thresh</span><span class="p">,</span> <span class="n">split_on</span><span class="o">=</span><span class="n">split_on</span><span class="p">,</span>
+                                   <span class="n">iheaders</span><span class="o">=</span><span class="n">iheaders</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">full</span> <span class="o">=</span> <span class="n">combine_pages</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pages</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">full</span></div>
+
+
+<div class="viewcode-block" id="PDFtoTXT.convert_to_txt">
+<a class="viewcode-back" href="../../_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.convert_to_txt">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">convert_to_txt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txt_fp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s1">&#39;    &#39;</span><span class="p">,</span>
+                       <span class="n">clean_header_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to convert contents of pdf document to txt file using</span>
+<span class="sd">        poppler.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        txt_fp: str, optional</span>
+<span class="sd">            Optional Directory for output txt file.</span>
+<span class="sd">        separator : str, optional</span>
+<span class="sd">            Heuristic split string to look for spaces between columns</span>
+<span class="sd">        clean_header_kwargs : dict, optional</span>
+<span class="sd">            Optional kwargs to override clean_headers kwargs</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        text : str</span>
+<span class="sd">            Text string containing contents from pdf</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clean_poppler</span><span class="p">(</span><span class="n">layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_multi_col</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="n">separator</span><span class="p">):</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clean_poppler</span><span class="p">(</span><span class="n">layout</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">clean_header_kwargs</span> <span class="o">=</span> <span class="n">clean_header_kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clean_headers</span><span class="p">(</span><span class="o">**</span><span class="n">clean_header_kwargs</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">txt_fp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">txt_fp</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Saved: </span><span class="si">{</span><span class="n">txt_fp</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">text</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alliance for Sustainable Energy, LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

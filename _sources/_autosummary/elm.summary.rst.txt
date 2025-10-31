@@ -1,0 +1,31 @@
+elm.summary
+===========
+
+.. automodule:: elm.summary
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      Summary
+   
+   
+
+   
+   
+   
+
+
+

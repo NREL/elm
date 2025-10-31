@@ -1,0 +1,37 @@
+elm.ords.extraction
+===================
+
+.. automodule:: elm.ords.extraction
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   apply
+   date
+   features
+   graphs
+   ngrams
+   ordinance
+   parse
+   tree
+

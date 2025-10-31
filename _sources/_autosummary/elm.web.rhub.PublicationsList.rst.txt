@@ -1,0 +1,36 @@
+elm.web.rhub.PublicationsList
+=============================
+
+.. currentmodule:: elm.web.rhub
+
+.. autoclass:: PublicationsList
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PublicationsList.append
+      ~PublicationsList.clear
+      ~PublicationsList.copy
+      ~PublicationsList.count
+      ~PublicationsList.download
+      ~PublicationsList.extend
+      ~PublicationsList.index
+      ~PublicationsList.insert
+      ~PublicationsList.meta
+      ~PublicationsList.pop
+      ~PublicationsList.remove
+      ~PublicationsList.reverse
+      ~PublicationsList.sort
+   
+   
+
+   
+   
+   

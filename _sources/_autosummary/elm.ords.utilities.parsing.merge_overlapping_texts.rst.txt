@@ -1,0 +1,6 @@
+elm.ords.utilities.parsing.merge\_overlapping\_texts
+====================================================
+
+.. currentmodule:: elm.ords.utilities.parsing
+
+.. autofunction:: merge_overlapping_texts

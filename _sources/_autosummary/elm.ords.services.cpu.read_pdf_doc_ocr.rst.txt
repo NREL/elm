@@ -1,0 +1,6 @@
+elm.ords.services.cpu.read\_pdf\_doc\_ocr
+=========================================
+
+.. currentmodule:: elm.ords.services.cpu
+
+.. autofunction:: read_pdf_doc_ocr

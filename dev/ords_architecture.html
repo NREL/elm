@@ -1,0 +1,1362 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OrdinanceGPT: Architectural Design Document &mdash; elm 0.0.34 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=9dd25805"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="elm" href="../_autosummary/elm.html" />
+    <link rel="prev" title="Development" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            elm
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples.energy_wizard.html">The Energy Wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples.energy_wizard.html#downloading-and-embedding-pdfs">Downloading and Embedding PDFs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.energy_wizard.html#running-the-streamlit-app">Running the Streamlit App</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.ordinance_gpt.html">Ordinance GPT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples.ordinance_gpt.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.ordinance_gpt.html#running-from-python">Running from Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.ordinance_gpt.html#running-from-the-command-line-utility">Running from the Command Line Utility</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples.ordinance_gpt.html#execution">Execution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.ordinance_gpt.html#debugging">Debugging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.ordinance_gpt.html#source-ordinance-documents">Source Ordinance Documents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.ordinance_gpt.html#extension-to-other-technologies">Extension to Other Technologies</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Development</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>OrdinanceGPT: Architectural Design Document</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction"><strong>1. Introduction</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#purpose"><strong>1.1 Purpose</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#audience"><strong>1.2 Audience</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scope"><strong>1.3 Scope</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#high-level-architecture"><strong>2. High-Level Architecture</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#system-context"><strong>2.1 System Context</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#detailed-design"><strong>3. Detailed Design</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#web-scraper"><strong>3.1 Web Scraper</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#document-parser"><strong>3.2 Document Parser</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#key-concepts-and-classes"><strong>4 Key Concepts and Classes</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#key-concept-services"><strong>4.1 Key Concept: Services</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#key-classes"><strong>4.2 Key Classes</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#workflows"><strong>5. Workflows</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#downloading-documents-from-google"><strong>5.1 Downloading documents from Google</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#querying-openai"><strong>5.2 Querying OpenAI</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#appendix"><strong>6. Appendix</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tools-and-libraries"><strong>6.1 Tools and Libraries</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#deliverables"><strong>7. Deliverables</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../_autosummary/elm.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../_autosummary/elm.base.html">elm.base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.base.ApiBase.html">elm.base.ApiBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.base.ApiBase.html#elm.base.ApiBase"><code class="docutils literal notranslate"><span class="pre">ApiBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.base.ApiQueue.html">elm.base.ApiQueue</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.base.ApiQueue.html#elm.base.ApiQueue"><code class="docutils literal notranslate"><span class="pre">ApiQueue</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../_autosummary/elm.chunk.html">elm.chunk</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.chunk.Chunker.html">elm.chunk.Chunker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker"><code class="docutils literal notranslate"><span class="pre">Chunker</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../_autosummary/elm.cli.html">elm.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_autosummary/elm.embed.html">elm.embed</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.embed.ChunkAndEmbed.html">elm.embed.ChunkAndEmbed</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed"><code class="docutils literal notranslate"><span class="pre">ChunkAndEmbed</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../_autosummary/elm.exceptions.html">elm.exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.exceptions.ELMError.html">elm.exceptions.ELMError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.exceptions.ELMError.html#elm.exceptions.ELMError"><code class="docutils literal notranslate"><span class="pre">ELMError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.exceptions.ELMInputError.html">elm.exceptions.ELMInputError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.exceptions.ELMInputError.html#elm.exceptions.ELMInputError"><code class="docutils literal notranslate"><span class="pre">ELMInputError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.exceptions.ELMKeyError.html">elm.exceptions.ELMKeyError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.exceptions.ELMKeyError.html#elm.exceptions.ELMKeyError"><code class="docutils literal notranslate"><span class="pre">ELMKeyError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.exceptions.ELMRuntimeError.html">elm.exceptions.ELMRuntimeError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.exceptions.ELMRuntimeError.html#elm.exceptions.ELMRuntimeError"><code class="docutils literal notranslate"><span class="pre">ELMRuntimeError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../_autosummary/elm.ords.html">elm.ords</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.ords.download.html">elm.ords.download</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.download.download_county_ordinance.html">elm.ords.download.download_county_ordinance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.ords.extraction.html">elm.ords.extraction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.extraction.apply.html">elm.ords.extraction.apply</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.extraction.date.html">elm.ords.extraction.date</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.extraction.features.html">elm.ords.extraction.features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.extraction.graphs.html">elm.ords.extraction.graphs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.extraction.ngrams.html">elm.ords.extraction.ngrams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.extraction.ordinance.html">elm.ords.extraction.ordinance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.extraction.parse.html">elm.ords.extraction.parse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.extraction.tree.html">elm.ords.extraction.tree</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.ords.llm.html">elm.ords.llm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.llm.calling.html">elm.ords.llm.calling</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.ords.process.html">elm.ords.process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.process.process_counties_with_openai.html">elm.ords.process.process_counties_with_openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.process.process_county.html">elm.ords.process.process_county</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.process.process_county_with_logging.html">elm.ords.process.process_county_with_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.ords.services.html">elm.ords.services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.services.base.html">elm.ords.services.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.services.cpu.html">elm.ords.services.cpu</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.services.openai.html">elm.ords.services.openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.services.provider.html">elm.ords.services.provider</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.services.queues.html">elm.ords.services.queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.services.threaded.html">elm.ords.services.threaded</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.services.usage.html">elm.ords.services.usage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.ords.utilities.html">elm.ords.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.utilities.counties.html">elm.ords.utilities.counties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.utilities.exceptions.html">elm.ords.utilities.exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.utilities.location.html">elm.ords.utilities.location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.utilities.parsing.html">elm.ords.utilities.parsing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.utilities.queued_logging.html">elm.ords.utilities.queued_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.ords.validation.html">elm.ords.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.validation.content.html">elm.ords.validation.content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.ords.validation.location.html">elm.ords.validation.location</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../_autosummary/elm.pdf.html">elm.pdf</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.pdf.PDFtoTXT.html">elm.pdf.PDFtoTXT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT"><code class="docutils literal notranslate"><span class="pre">PDFtoTXT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../_autosummary/elm.summary.html">elm.summary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.summary.Summary.html">elm.summary.Summary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.summary.Summary.html#elm.summary.Summary"><code class="docutils literal notranslate"><span class="pre">Summary</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../_autosummary/elm.tree.html">elm.tree</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.tree.DecisionTree.html">elm.tree.DecisionTree</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.tree.DecisionTree.html#elm.tree.DecisionTree"><code class="docutils literal notranslate"><span class="pre">DecisionTree</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../_autosummary/elm.utilities.html">elm.utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.utilities.parse.html">elm.utilities.parse</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.utilities.parse.clean_headers.html">elm.utilities.parse.clean_headers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.utilities.parse.combine_pages.html">elm.utilities.parse.combine_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.utilities.parse.format_html_tables.html">elm.utilities.parse.format_html_tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.utilities.parse.html_to_text.html">elm.utilities.parse.html_to_text</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.utilities.parse.is_multi_col.html">elm.utilities.parse.is_multi_col</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.utilities.parse.read_pdf.html">elm.utilities.parse.read_pdf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.utilities.parse.read_pdf_ocr.html">elm.utilities.parse.read_pdf_ocr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.utilities.parse.remove_blank_pages.html">elm.utilities.parse.remove_blank_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.utilities.parse.remove_empty_lines_or_page_footers.html">elm.utilities.parse.remove_empty_lines_or_page_footers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.utilities.parse.replace_common_pdf_conversion_chars.html">elm.utilities.parse.replace_common_pdf_conversion_chars</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.utilities.parse.replace_excessive_newlines.html">elm.utilities.parse.replace_excessive_newlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.utilities.parse.replace_multi_dot_lines.html">elm.utilities.parse.replace_multi_dot_lines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.utilities.parse.resembles_html.html">elm.utilities.parse.resembles_html</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.utilities.retry.html">elm.utilities.retry</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.utilities.retry.async_retry_with_exponential_backoff.html">elm.utilities.retry.async_retry_with_exponential_backoff</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.utilities.retry.retry_with_exponential_backoff.html">elm.utilities.retry.retry_with_exponential_backoff</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.utilities.try_import.html">elm.utilities.try_import</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.utilities.try_import.try_import.html">elm.utilities.try_import.try_import</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.utilities.validation.html">elm.utilities.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.utilities.validation.validate_azure_api_params.html">elm.utilities.validation.validate_azure_api_params</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../_autosummary/elm.version.html">elm.version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../_autosummary/elm.web.html">elm.web</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.web.document.html">elm.web.document</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.document.BaseDocument.html">elm.web.document.BaseDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.document.HTMLDocument.html">elm.web.document.HTMLDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.document.PDFDocument.html">elm.web.document.PDFDocument</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.web.file_loader.html">elm.web.file_loader</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.file_loader.AsyncFileLoader.html">elm.web.file_loader.AsyncFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.file_loader.AsyncLocalFileLoader.html">elm.web.file_loader.AsyncLocalFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.file_loader.AsyncWebFileLoader.html">elm.web.file_loader.AsyncWebFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.file_loader.BaseAsyncFileLoader.html">elm.web.file_loader.BaseAsyncFileLoader</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.web.html_pw.html">elm.web.html_pw</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.html_pw.load_html_with_pw.html">elm.web.html_pw.load_html_with_pw</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.web.osti.html">elm.web.osti</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.osti.OstiList.html">elm.web.osti.OstiList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.osti.OstiRecord.html">elm.web.osti.OstiRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.web.rhub.html">elm.web.rhub</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.rhub.ProfilesList.html">elm.web.rhub.ProfilesList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.rhub.ProfilesRecord.html">elm.web.rhub.ProfilesRecord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.rhub.PublicationsList.html">elm.web.rhub.PublicationsList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.rhub.PublicationsRecord.html">elm.web.rhub.PublicationsRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.web.search.html">elm.web.search</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.search.base.html">elm.web.search.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.search.bing.html">elm.web.search.bing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.search.duckduckgo.html">elm.web.search.duckduckgo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.search.dux.html">elm.web.search.dux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.search.google.html">elm.web.search.google</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.search.run.html">elm.web.search.run</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.search.tavily.html">elm.web.search.tavily</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.search.yahoo.html">elm.web.search.yahoo</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.web.utilities.html">elm.web.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.utilities.DEFAULT_HEADERS.html">elm.web.utilities.DEFAULT_HEADERS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.utilities.clean_search_query.html">elm.web.utilities.clean_search_query</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.utilities.compute_fn_from_url.html">elm.web.utilities.compute_fn_from_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.utilities.filter_documents.html">elm.web.utilities.filter_documents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.utilities.get_redirected_url.html">elm.web.utilities.get_redirected_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.utilities.pw_page.html">elm.web.utilities.pw_page</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.utilities.write_url_doc_to_file.html">elm.web.utilities.write_url_doc_to_file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.utilities.PWKwargs.html">elm.web.utilities.PWKwargs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.web.website_crawl.html">elm.web.website_crawl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS.html">elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.website_crawl.ELM_URL_FILTER.html">elm.web.website_crawl.ELM_URL_FILTER</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.website_crawl.ContentTypeExcludeFilter.html">elm.web.website_crawl.ContentTypeExcludeFilter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.website_crawl.ELMLinkScorer.html">elm.web.website_crawl.ELMLinkScorer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.website_crawl.ELMWebsiteCrawler.html">elm.web.website_crawl.ELMWebsiteCrawler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html">elm.web.website_crawl.ELMWebsiteCrawlingStrategy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html">elm.web.website_crawl.PeekablePriorityQueue</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../_autosummary/elm.wizard.html">elm.wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.wizard.EnergyWizard.html">elm.wizard.EnergyWizard</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard"><code class="docutils literal notranslate"><span class="pre">EnergyWizard</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.wizard.EnergyWizardBase.html">elm.wizard.EnergyWizardBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase"><code class="docutils literal notranslate"><span class="pre">EnergyWizardBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../_autosummary/elm.wizard.EnergyWizardPostgres.html">elm.wizard.EnergyWizardPostgres</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres"><code class="docutils literal notranslate"><span class="pre">EnergyWizardPostgres</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../_cli/cli.html">CLI reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../_cli/elm.html">elm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../_cli/elm.html#elm-ords">ords</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">elm</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Development</a></li>
+      <li class="breadcrumb-item active"><strong>OrdinanceGPT: Architectural Design Document</strong></li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/nrel/elm/blob/main/docs/source/dev/ords_architecture.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ordinancegpt-architectural-design-document">
+<h1><strong>OrdinanceGPT: Architectural Design Document</strong><a class="headerlink" href="#ordinancegpt-architectural-design-document" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2><strong>1. Introduction</strong><a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<section id="purpose">
+<h3><strong>1.1 Purpose</strong><a class="headerlink" href="#purpose" title="Link to this heading"></a></h3>
+<p>This document describes the architectural design of the ordinance web scraping and extraction tool, focusing on its components, key classes, and their roles within the system.</p>
+</section>
+<section id="audience">
+<h3><strong>1.2 Audience</strong><a class="headerlink" href="#audience" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Primary:</strong> Model developers working on expanding the capabilities of ordinance extraction.</p></li>
+<li><p><strong>Secondary:</strong> Model developers extending this functionality to other contexts.</p></li>
+</ul>
+</section>
+<section id="scope">
+<h3><strong>1.3 Scope</strong><a class="headerlink" href="#scope" title="Link to this heading"></a></h3>
+<p>Covers the OrdinanceGPT design, including key classes, their responsibilities, and interactions.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="high-level-architecture">
+<h2><strong>2. High-Level Architecture</strong><a class="headerlink" href="#high-level-architecture" title="Link to this heading"></a></h2>
+<section id="system-context">
+<h3><strong>2.1 System Context</strong><a class="headerlink" href="#system-context" title="Link to this heading"></a></h3>
+<p>Points of interaction for OrdinanceGPT:</p>
+<ul class="simple">
+<li><p><strong>End Users:</strong> Users submit model executions via command-line using a configuration file. Users can select specific jurisdictions to focus on.</p></li>
+<li><p><strong>Internet via Web Browser:</strong> The model searches the web for relevant legal documents. The most common search technique is Google Search.</p></li>
+<li><p><strong>LLMs:</strong> The model relies on LLMs (typically ChatGPT) to analyze web scraping results and subsequently extract information from documents.</p></li>
+<li><p><strong>Filesystem:</strong> Stores output files in organized sub-directories and compiles ordinance information into a CSV.</p></li>
+</ul>
+<p><strong>Diagram:</strong></p>
+<pre  class="mermaid">
+        architecture-beta
+    group model[OrdinanceGPT]
+
+    service input[User Input]
+    service scraper(server)[Web Scraper] in model
+    service llm(cloud)[LLM Service]
+    service web(internet)[Web]
+    service ds(disk)[Document Storage]
+    service parser(server)[Document Parser] in model
+    service out(database)[Ordinances]
+
+    input:R --&gt; L:scraper
+    scraper:T --&gt; L:llm
+    scraper:T --&gt; R:web
+    scraper:B --&gt; T:ds
+    scraper:R --&gt; L:parser
+    parser:T --&gt; B:llm
+    parser:B --&gt; T:out
+    </pre></section>
+</section>
+<hr class="docutils" />
+<section id="detailed-design">
+<h2><strong>3. Detailed Design</strong><a class="headerlink" href="#detailed-design" title="Link to this heading"></a></h2>
+<section id="web-scraper">
+<h3><strong>3.1 Web Scraper</strong><a class="headerlink" href="#web-scraper" title="Link to this heading"></a></h3>
+<p>The OrdinanceGPT Web Scraper consists of:</p>
+<ul class="simple">
+<li><p><strong>Google Search:</strong> Searches Google using pre-determined queries.</p></li>
+<li><p><strong>File Downloader:</strong> Converts Google Search results into documents (PDF or text).</p></li>
+<li><p><strong>Document Validators:</strong> Filters out irrelevant documents.</p></li>
+</ul>
+<p><strong>Diagram:</strong></p>
+<pre  class="mermaid">
+        flowchart LR
+
+    A[Google Search] --&gt;|File Downloader| B[Multiple Documents]
+    B --&gt;|Document Validator| C[Ordinance Document]
+    C --&gt; D[Disk storage]
+    </pre></section>
+<section id="document-parser">
+<h3><strong>3.2 Document Parser</strong><a class="headerlink" href="#document-parser" title="Link to this heading"></a></h3>
+<p>The OrdinanceGPT Document Parser consists of:</p>
+<ul class="simple">
+<li><p><strong>Text Cleaner:</strong> Extract text from ordinance related to data of interest (i.e. wind turbine zoning).</p></li>
+<li><p><strong>Decision Tree:</strong> One decision tree per ordinance value of interest to guide data extraction using LLMs.</p></li>
+</ul>
+<p><strong>Diagram:</strong></p>
+<pre  class="mermaid">
+        flowchart LR
+
+    A[Ordinance Document] --&gt;|Text Cleaner| B[Cleaned Text]
+    B --&gt; C[Ordinance value extraction via Decision Tree]
+    C --&gt; D[Ordinance Database]
+    </pre></section>
+</section>
+<hr class="docutils" />
+<section id="key-concepts-and-classes">
+<h2><strong>4 Key Concepts and Classes</strong><a class="headerlink" href="#key-concepts-and-classes" title="Link to this heading"></a></h2>
+<section id="key-concept-services">
+<h3><strong>4.1 Key Concept: Services</strong><a class="headerlink" href="#key-concept-services" title="Link to this heading"></a></h3>
+<p>Because OrdinanceGPT is so reliant on LLMs, one of the main design goals is to minimize the code
+overhead incurred by querying the LLM API. In other words, we want to make it <strong>as simple as possible</strong>
+to make an LLM query from <em>anywhere</em> in the model code. Let’s look at the code required to do a single
+OpenAI query using the <code class="docutils literal notranslate"><span class="pre">openai</span></code> python wrapper:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAI</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">my_function</span><span class="p">():</span>
+
+    <span class="o">...</span>
+
+    <span class="n">client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span>
+        <span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;OPENAI_API_KEY&quot;</span><span class="p">),</span>
+        <span class="n">version</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;OPENAI_VERSION&quot;</span><span class="p">),</span>
+        <span class="n">endpoint</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;OPENAI_ENDPOINT&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">chat_completion</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Say this is a test&quot;</span><span class="p">}],</span>
+        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">response_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">response_str</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span>
+
+    <span class="o">...</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">my_function</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Not bad! However, it’s still <em>A LOT</em> of boilerplate code every time you want to make query.
+Moreover, you may want to do extra processing on the response every time a call is made (i.e.
+convert it to JSON, track the number of tokens used, etc). One option is to refactor away
+some of the logic into a separate function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAI</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">count_token_use</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
+    <span class="o">...</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_response_to_str</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">call_openai</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o&quot;</span><span class="p">):</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span>
+        <span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;OPENAI_API_KEY&quot;</span><span class="p">),</span>
+        <span class="n">version</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;OPENAI_VERSION&quot;</span><span class="p">),</span>
+        <span class="n">endpoint</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;OPENAI_ENDPOINT&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">chat_completion</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span>
+    <span class="p">)</span>
+    <span class="n">count_token_use</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parse_response_to_str</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">my_function</span><span class="p">():</span>
+    <span class="o">...</span>
+    <span class="n">response_str</span> <span class="o">=</span> <span class="n">call_openai</span><span class="p">(</span>
+        <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Say this is a test&quot;</span><span class="p">}],</span>
+        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o&quot;</span>
+    <span class="p">)</span>
+    <span class="o">...</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">my_function</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This is a lot closer to what we are looking for. However, all LLM deployments (that we know
+of anyways!) have quotas and rate limits. It can be frustrating to run into an unexpected rate
+limit error deep within our model logic, so we’d like to add a tracker for usage that
+staggers the submission of our queries to stay within the pre-imposed rate limits.</p>
+<p>To achieve this without complicating the code we have to invoke every time we wish to submit
+an LLM query, we opt to submit our queries to a <em>queue</em> instead of to the API directly. Then,
+a separate worker can simultaneously monitor the queue and track rolling token usage. If the
+worker finds an item in the queue, it will submit the LLM call to the API as long as the rate
+limit has not been reached. Otherwise, it will wait until the limit has been reset before
+submitting an additional call.</p>
+<p>This is the main concept behind <em>services</em> in the ELM ordinance code. We call the worker a
+<code class="docutils literal notranslate"><span class="pre">Service</span></code>, and it monitors a dedicated queue that we can submit to from <em>anywhere</em> in our code
+without having to worry about setting up usage monitors or other utility functions related to
+the API call. To use the service, we simply have to invoke the <code class="docutils literal notranslate"><span class="pre">call</span></code> (class)method with the
+relevant arguments. The only price we have to pay is that the service has to be <em>running</em> (i.e.
+actively monitoring a queue and tracking usage) when our function is called. In practice, the
+code looks something like this (with <code class="docutils literal notranslate"><span class="pre">async</span></code> flavor now spread throughout):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunningAsyncServices</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIService</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">my_function</span><span class="p">():</span>
+    <span class="c1"># This function can be anywhere -</span>
+    <span class="c1"># in a separate module or even in external code</span>
+    <span class="o">...</span>
+    <span class="n">response_str</span> <span class="o">=</span> <span class="k">await</span> <span class="n">OpenAIService</span><span class="o">.</span><span class="n">call</span><span class="p">(</span>
+        <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Say this is a test&quot;</span><span class="p">}],</span>
+        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o&quot;</span>
+    <span class="p">)</span>
+    <span class="o">...</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">AsyncAzureOpenAI</span><span class="p">(</span>
+        <span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_API_KEY&quot;</span><span class="p">),</span>
+        <span class="n">api_version</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_VERSION&quot;</span><span class="p">),</span>
+        <span class="n">azure_endpoint</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_ENDPOINT&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">openai_service</span> <span class="o">=</span> <span class="n">OpenAIService</span><span class="p">(</span>
+        <span class="n">client</span><span class="p">,</span> <span class="n">rate_limit</span><span class="o">=</span><span class="mf">1e4</span>  <span class="c1"># adjustable; counted in tokens per minute</span>
+    <span class="p">)</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">RunningAsyncServices</span><span class="p">([</span><span class="n">openai_service</span><span class="p">]):</span>
+        <span class="k">await</span> <span class="n">my_function</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>The cool thing is that if there are other functions in the model that use <code class="docutils literal notranslate"><span class="pre">OpenAIService.call</span></code>,
+this method will track their usage as well (all calls are submitted to the same queue), so no
+need to worry about exceeding limits when calling other methods!
+<a class="reference internal" href="../_autosummary/elm.ords.services.openai.OpenAIService.html#elm.ords.services.openai.OpenAIService" title="elm.ords.services.openai.OpenAIService"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpenAIService</span></code></a> also provides
+some additional features behind the scenes, such as automatic resubmission upon API failure and
+ability to set up total token usage tracking.</p>
+<section id="threaded-and-process-pool-services">
+<h4><strong>4.1.1 Threaded and Process Pool Services</strong><a class="headerlink" href="#threaded-and-process-pool-services" title="Link to this heading"></a></h4>
+<p>The ELM ordinance code takes the <code class="docutils literal notranslate"><span class="pre">Services</span></code> idea one step further. When running an <code class="docutils literal notranslate"><span class="pre">async</span></code> pipeline,
+it can be beneficial to run some work on separate threads or even CPU cores. Since these are limited
+resources, we can use <code class="docutils literal notranslate"><span class="pre">Services</span></code> to monitor their use as well! Let’s look at a few examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunningAsyncServices</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIService</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.threaded</span><span class="w"> </span><span class="kn">import</span> <span class="n">FileMover</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.cpu</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDFLoader</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">read_pdf</span><span class="p">():</span>
+    <span class="c1"># Loads a PDF file in a separate process (this can be time consuming if using OCR, for example)</span>
+    <span class="k">return</span> <span class="n">PDFLoader</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">my_function</span><span class="p">():</span>
+    <span class="o">...</span>
+    <span class="n">response_str</span> <span class="o">=</span> <span class="k">await</span> <span class="n">OpenAIService</span><span class="o">.</span><span class="n">call</span><span class="p">(</span>
+        <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Say this is a test&quot;</span><span class="p">}],</span>
+        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o&quot;</span>
+    <span class="p">)</span>
+    <span class="o">...</span>
+    <span class="n">FileMover</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="o">...</span><span class="p">)</span> <span class="c1"># Moves files to &quot;./my_folder&quot; using separate thread</span>
+    <span class="o">...</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">AsyncAzureOpenAI</span><span class="p">(</span>
+        <span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_API_KEY&quot;</span><span class="p">),</span>
+        <span class="n">api_version</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_VERSION&quot;</span><span class="p">),</span>
+        <span class="n">azure_endpoint</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_ENDPOINT&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">services</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">OpenAIService</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">rate_limit</span><span class="o">=</span><span class="mf">1e4</span><span class="p">),</span>  <span class="c1"># OpenAI service, with rate monitoring as before</span>
+        <span class="n">FileMover</span><span class="p">(</span><span class="n">out_dir</span><span class="o">=</span><span class="s2">&quot;./my_folder&quot;</span><span class="p">,</span> <span class="n">max_workers</span><span class="o">=</span><span class="mi">8</span><span class="p">),</span>  <span class="c1"># launches 8 threads, each of which can be used run individual jobs</span>
+        <span class="n">PDFLoader</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">),</span>  <span class="c1"># launches 4 processes, each of which can be used run individual jobs</span>
+    <span class="p">]</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">RunningAsyncServices</span><span class="p">(</span><span class="n">services</span><span class="p">):</span>
+        <span class="k">await</span> <span class="n">read_pdf</span><span class="p">()</span>
+        <span class="k">await</span> <span class="n">my_function</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>There are several other services provided out of the box - see the
+<a class="reference external" href="https://nrel.github.io/elm/_autosummary/elm.ords.services.html">documentation</a> for details
+Alternatively, we provide two base classes that you can extend to get similar functionality:
+<a class="reference external" href="https://nrel.github.io/elm/_autosummary/elm.ords.services.threaded.ThreadedService.html#elm.ords.services.threaded.ThreadedService">ThreadedService</a>
+for threaded tasks and
+<a class="reference external" href="https://nrel.github.io/elm/_autosummary/elm.ords.services.cpu.ProcessPoolService.html#elm.ords.services.cpu.ProcessPoolService">ProcessPoolService</a>
+for multiprocessing tasks.</p>
+</section>
+</section>
+<section id="key-classes">
+<h3><strong>4.2 Key Classes</strong><a class="headerlink" href="#key-classes" title="Link to this heading"></a></h3>
+<section id="playwrightgooglelinksearch">
+<h4><strong>4.2.1</strong> <code class="xref py py-class docutils literal notranslate"><span class="pre">PlaywrightGoogleLinkSearch</span></code><a class="headerlink" href="#playwrightgooglelinksearch" title="Link to this heading"></a></h4>
+<p><strong>Example Code:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">elm.web.google_search</span><span class="w"> </span><span class="kn">import</span> <span class="n">PlaywrightGoogleLinkSearch</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">search_engine</span> <span class="o">=</span> <span class="n">PlaywrightGoogleLinkSearch</span><span class="p">()</span>
+    <span class="k">return</span> <span class="k">await</span> <span class="n">search_engine</span><span class="o">.</span><span class="n">results</span><span class="p">(</span>
+        <span class="s2">&quot;Wind energy zoning ordinance Decatur County, Indiana&quot;</span><span class="p">,</span>
+        <span class="n">num_results</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="asyncfileloader">
+<h4><strong>4.2.2</strong> <a class="reference internal" href="../_autosummary/elm.web.file_loader.AsyncFileLoader.html#elm.web.file_loader.AsyncFileLoader" title="elm.web.file_loader.AsyncFileLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncFileLoader</span></code></a><a class="headerlink" href="#asyncfileloader" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Purpose:
+    Save content from links as files.
+Responsibilities:
+    1. Retrieve data from a URL.
+    2. Determine wether information should be stored as a PDF or
+       HTML document.
+Key Relationships:
+    Returns either :class:`~elm.web.document.PDFDocument` or
+    :class:`~elm.web.document.HTMLDocument`. Uses `aiohttp` to
+    access the web.
+
+</pre></div>
+</div>
+<p><strong>Example Code:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.web.file_loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncFileLoader</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">loader</span> <span class="o">=</span> <span class="n">AsyncFileLoader</span><span class="p">()</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">loader</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span>
+        <span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://en.wikipedia.org/wiki/National_Renewable_Energy_Laboratory&quot;</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">doc</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="pdfdocument-htmldocument">
+<h4><strong>4.2.3</strong> <a class="reference internal" href="../_autosummary/elm.web.document.PDFDocument.html#elm.web.document.PDFDocument" title="elm.web.document.PDFDocument"><code class="xref py py-class docutils literal notranslate"><span class="pre">PDFDocument</span></code></a> / <a class="reference internal" href="../_autosummary/elm.web.document.HTMLDocument.html#elm.web.document.HTMLDocument" title="elm.web.document.HTMLDocument"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTMLDocument</span></code></a><a class="headerlink" href="#pdfdocument-htmldocument" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Purpose:
+    Track document content and perform minor processing on it.
+Responsibilities:
+    1. Store &quot;raw&quot; document text.
+    2. Compute &quot;cleaned&quot; text, which combines pages, strips HTML,
+       and formats tables.
+    3. Track pages and other document metadata.
+Key Relationships:
+    Created by :class:`~elm.web.file_loader.AsyncFileLoader` and
+    used all over ordinance code.
+
+</pre></div>
+</div>
+<p><strong>Example Code:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">elm.web.document</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTMLDocument</span>
+
+<span class="n">content</span> <span class="o">=</span> <span class="o">...</span>
+<span class="n">doc</span> <span class="o">=</span> <span class="n">HTMLDocument</span><span class="p">([</span><span class="n">content</span><span class="p">])</span>
+<span class="n">doc</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">doc</span><span class="o">.</span><span class="n">raw_pages</span><span class="p">,</span> <span class="n">doc</span><span class="o">.</span><span class="n">attrs</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="openaiservice">
+<h4><strong>4.2.4</strong> <a class="reference internal" href="../_autosummary/elm.ords.services.openai.OpenAIService.html#elm.ords.services.openai.OpenAIService" title="elm.ords.services.openai.OpenAIService"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpenAIService</span></code></a><a class="headerlink" href="#openaiservice" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Purpose:
+    Orchestrate OpenAI API calls.
+Responsibilities:
+    1. Monitor OpenAI call queue.
+    2. Submit calls to OpenAI API if rate limit has not been
+       exceeded.
+    3. Track token usage, both instantaneous (rate) and total (if
+       user requests it).
+    4. Parse responses into `str` and pass back to calling function.
+Key Relationships:
+    Must be activated with
+    :class:`~elm.ords.services.provider.RunningAsyncServices`
+    context.
+
+</pre></div>
+</div>
+<p><strong>Example Code:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunningAsyncServices</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIService</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">AsyncAzureOpenAI</span><span class="p">(</span>
+        <span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_API_KEY&quot;</span><span class="p">),</span>
+        <span class="n">api_version</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_VERSION&quot;</span><span class="p">),</span>
+        <span class="n">azure_endpoint</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_ENDPOINT&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">service</span> <span class="o">=</span> <span class="n">OpenAIService</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">rate_limit</span><span class="o">=</span><span class="mf">1e4</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">RunningAsyncServices</span><span class="p">([</span><span class="n">service</span><span class="p">]):</span>
+        <span class="n">response_str</span> <span class="o">=</span> <span class="k">await</span> <span class="n">OpenAIService</span><span class="o">.</span><span class="n">call</span><span class="p">(</span>
+            <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Say this is a test&quot;</span><span class="p">}],</span>
+            <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">response_str</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="llmcaller-chatllmcaller-structuredllmcaller">
+<h4><strong>4.2.5</strong> <a class="reference internal" href="../_autosummary/elm.ords.llm.calling.LLMCaller.html#elm.ords.llm.calling.LLMCaller" title="elm.ords.llm.calling.LLMCaller"><code class="xref py py-class docutils literal notranslate"><span class="pre">LLMCaller</span></code></a> / <a class="reference internal" href="../_autosummary/elm.ords.llm.calling.ChatLLMCaller.html#elm.ords.llm.calling.ChatLLMCaller" title="elm.ords.llm.calling.ChatLLMCaller"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChatLLMCaller</span></code></a> / <a class="reference internal" href="../_autosummary/elm.ords.llm.calling.StructuredLLMCaller.html#elm.ords.llm.calling.StructuredLLMCaller" title="elm.ords.llm.calling.StructuredLLMCaller"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructuredLLMCaller</span></code></a><a class="headerlink" href="#llmcaller-chatllmcaller-structuredllmcaller" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Purpose:
+    Helper classes to call LLMs.
+Responsibilities:
+    1. Use a service (e.g.
+       :class:`~elm.ords.services.openai.OpenAIService`) to query an LLM.
+    2. Maintain a useful context to simplify LLM query.
+        - Typically these classes are initialized with a single LLM
+          model (and optionally a usage tracker)
+        - This context is passed to every ``Service.call`` invocation,
+          allowing user to focus on only the message.
+    3. Track message history
+       (:class:`~elm.ords.llm.calling.ChatLLMCaller`)
+       or convert output into JSON
+       (:class:`~elm.ords.llm.calling.StructuredLLMCaller`).
+Key Relationships:
+    Delegates most of work to underlying ``Service`` class.
+
+</pre></div>
+</div>
+<p><strong>Example Code:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunningAsyncServices</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIService</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.llm</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructuredLLMCaller</span>
+
+<span class="n">CALLER</span> <span class="o">=</span> <span class="n">StructuredLLMCaller</span><span class="p">(</span>
+    <span class="n">llm_service</span><span class="o">=</span><span class="n">OpenAIService</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o&quot;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">AsyncAzureOpenAI</span><span class="p">(</span>
+        <span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_API_KEY&quot;</span><span class="p">),</span>
+        <span class="n">api_version</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_VERSION&quot;</span><span class="p">),</span>
+        <span class="n">azure_endpoint</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_ENDPOINT&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">service</span> <span class="o">=</span> <span class="n">OpenAIService</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">rate_limit</span><span class="o">=</span><span class="mf">1e4</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">with</span> <span class="n">RunningAsyncServices</span><span class="p">([</span><span class="n">service</span><span class="p">]):</span>
+        <span class="n">response_str</span> <span class="o">=</span> <span class="k">await</span> <span class="n">CALLER</span><span class="o">.</span><span class="n">call</span><span class="p">(</span>
+            <span class="n">sys_msg</span><span class="o">=</span><span class="s2">&quot;You are a helpful assistant&quot;</span><span class="p">,</span>
+            <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Say this is a test&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">response_str</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="countyvalidator">
+<h4><strong>4.2.6</strong> <a class="reference internal" href="../_autosummary/elm.ords.validation.location.CountyValidator.html#elm.ords.validation.location.CountyValidator" title="elm.ords.validation.location.CountyValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">CountyValidator</span></code></a><a class="headerlink" href="#countyvalidator" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Purpose:
+    Determine wether a document pertains to a specific county.
+Responsibilities:
+    1. Use a combination of heuristics and LLM queries to determine
+       wether or not a document pertains to a particular county.
+Key Relationships:
+    Uses a :class:`~elm.ords.llm.calling.StructuredLLMCaller` for
+    LLM queries and delegates sub-validation to
+    :class:`~elm.ords.validation.location.CountyNameValidator`,
+    :class:`~elm.ords.validation.location.CountyJurisdictionValidator`,
+    and :class:`~elm.ords.validation.location.URLValidator`.
+
+</pre></div>
+</div>
+<p><strong>Example Code:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunningAsyncServices</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIService</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.llm</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructuredLLMCaller</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.validation.location</span><span class="w"> </span><span class="kn">import</span> <span class="n">CountyValidator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.web.document</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTMLDocument</span>
+
+<span class="n">CALLER</span> <span class="o">=</span> <span class="n">StructuredLLMCaller</span><span class="p">(</span>
+    <span class="n">llm_service</span><span class="o">=</span><span class="n">OpenAIService</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o&quot;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="o">...</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">HTMLDocument</span><span class="p">([</span><span class="n">content</span><span class="p">])</span>
+
+    <span class="n">client</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">AsyncAzureOpenAI</span><span class="p">(</span>
+        <span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_API_KEY&quot;</span><span class="p">),</span>
+        <span class="n">api_version</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_VERSION&quot;</span><span class="p">),</span>
+        <span class="n">azure_endpoint</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_ENDPOINT&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">service</span> <span class="o">=</span> <span class="n">OpenAIService</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">rate_limit</span><span class="o">=</span><span class="mf">1e4</span><span class="p">)</span>
+    <span class="n">validator</span> <span class="o">=</span>  <span class="n">CountyValidator</span><span class="p">(</span><span class="n">CALLER</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">with</span> <span class="n">RunningAsyncServices</span><span class="p">([</span><span class="n">service</span><span class="p">]):</span>
+        <span class="n">is_valid</span> <span class="o">=</span> <span class="k">await</span> <span class="n">validator</span><span class="o">.</span><span class="n">check</span><span class="p">(</span>
+            <span class="n">doc</span><span class="p">,</span> <span class="n">county</span><span class="o">=</span><span class="s2">&quot;Decatur&quot;</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s2">&quot;Indiana&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">is_valid</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="ordinancevalidator">
+<h4><strong>4.2.7</strong> <a class="reference internal" href="../_autosummary/elm.ords.extraction.ordinance.OrdinanceValidator.html#elm.ords.extraction.ordinance.OrdinanceValidator" title="elm.ords.extraction.ordinance.OrdinanceValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrdinanceValidator</span></code></a><a class="headerlink" href="#ordinancevalidator" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Purpose:
+    Determine wether a document contains relevant ordinance
+    information.
+Responsibilities:
+    1. Determine wether a document contains relevant (e.g.
+    utility-scale wind zoning) ordinance information by splitting
+    the text into chunks and parsing them individually using LLMs.
+Key Relationships:
+    Child class of
+    :class:`~elm.ords.validation.content.ValidationWithMemory`,
+    which allows the validation to look at neighboring chunks of
+    text.
+
+</pre></div>
+</div>
+<p><strong>Example Code:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_text_splitters.character</span><span class="w"> </span><span class="kn">import</span> <span class="n">RecursiveCharacterTextSplitter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.extraction.ordinance</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrdinanceValidator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunningAsyncServices</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIService</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.llm</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructuredLLMCaller</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.web.document</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTMLDocument</span>
+
+<span class="n">CALLER</span> <span class="o">=</span> <span class="n">StructuredLLMCaller</span><span class="p">(</span>
+    <span class="n">llm_service</span><span class="o">=</span><span class="n">OpenAIService</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o&quot;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">TEXT_SPLITTER</span> <span class="o">=</span> <span class="n">RecursiveCharacterTextSplitter</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="o">...</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">HTMLDocument</span><span class="p">([</span><span class="n">content</span><span class="p">])</span>
+
+    <span class="n">client</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">AsyncAzureOpenAI</span><span class="p">(</span>
+        <span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_API_KEY&quot;</span><span class="p">),</span>
+        <span class="n">api_version</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_VERSION&quot;</span><span class="p">),</span>
+        <span class="n">azure_endpoint</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_ENDPOINT&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">service</span> <span class="o">=</span> <span class="n">OpenAIService</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">rate_limit</span><span class="o">=</span><span class="mf">1e4</span><span class="p">)</span>
+    <span class="n">chunks</span> <span class="o">=</span> <span class="n">TEXT_SPLITTER</span><span class="o">.</span><span class="n">split_text</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">validator</span> <span class="o">=</span> <span class="n">OrdinanceValidator</span><span class="p">(</span><span class="n">CALLER</span><span class="p">,</span> <span class="n">chunks</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">with</span> <span class="n">RunningAsyncServices</span><span class="p">([</span><span class="n">service</span><span class="p">]):</span>
+        <span class="n">contains_ordinances</span> <span class="o">=</span> <span class="k">await</span> <span class="n">validator</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">ordinance_text</span>
+
+    <span class="k">return</span> <span class="n">contains_ordinances</span><span class="p">,</span> <span class="n">text</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="ordinanceextractor">
+<h4><strong>4.2.8</strong> <a class="reference internal" href="../_autosummary/elm.ords.extraction.ordinance.OrdinanceExtractor.html#elm.ords.extraction.ordinance.OrdinanceExtractor" title="elm.ords.extraction.ordinance.OrdinanceExtractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrdinanceExtractor</span></code></a><a class="headerlink" href="#ordinanceextractor" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Purpose:
+    Extract relevant ordinance text from document.
+Responsibilities:
+    1. Extract portions from chunked document text relevant to
+       particular ordinance type (e.g. wind zoning for utility-scale
+       systems).
+Key Relationships:
+    Uses a :class:`~elm.ords.llm.calling.StructuredLLMCaller` for
+    LLM queries.
+
+</pre></div>
+</div>
+<p><strong>Example Code:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_text_splitters.character</span><span class="w"> </span><span class="kn">import</span> <span class="n">RecursiveCharacterTextSplitter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.extraction.ordinance</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrdinanceExtractor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunningAsyncServices</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIService</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.llm</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructuredLLMCaller</span>
+
+<span class="n">CALLER</span> <span class="o">=</span> <span class="n">StructuredLLMCaller</span><span class="p">(</span>
+    <span class="n">llm_service</span><span class="o">=</span><span class="n">OpenAIService</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o&quot;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">TEXT_SPLITTER</span> <span class="o">=</span> <span class="n">RecursiveCharacterTextSplitter</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="o">...</span>
+
+    <span class="n">client</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">AsyncAzureOpenAI</span><span class="p">(</span>
+        <span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_API_KEY&quot;</span><span class="p">),</span>
+        <span class="n">api_version</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_VERSION&quot;</span><span class="p">),</span>
+        <span class="n">azure_endpoint</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_ENDPOINT&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">service</span> <span class="o">=</span> <span class="n">OpenAIService</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">rate_limit</span><span class="o">=</span><span class="mf">1e4</span><span class="p">)</span>
+    <span class="n">validator</span> <span class="o">=</span> <span class="n">OrdinanceExtractor</span><span class="p">(</span><span class="n">CALLER</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">with</span> <span class="n">RunningAsyncServices</span><span class="p">([</span><span class="n">service</span><span class="p">]):</span>
+        <span class="n">text_chunks</span> <span class="o">=</span> <span class="n">TEXT_SPLITTER</span><span class="o">.</span><span class="n">split_text</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="n">ordinance_text</span> <span class="o">=</span> <span class="k">await</span> <span class="n">extractor</span><span class="o">.</span><span class="n">check_for_restrictions</span><span class="p">(</span><span class="n">text_chunks</span><span class="p">)</span>
+
+        <span class="n">text_chunks</span> <span class="o">=</span> <span class="n">text_splitter</span><span class="o">.</span><span class="n">split_text</span><span class="p">(</span><span class="n">ordinance_text</span><span class="p">)</span>
+        <span class="n">ordinance_text</span> <span class="o">=</span> <span class="k">await</span> <span class="n">TEXT_SPLITTER</span> <span class="n">extractor</span><span class="o">.</span><span class="n">check_for_correct_size</span><span class="p">(</span><span class="n">text_chunks</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ordinance_text</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="asyncdecisiontree">
+<h4><strong>4.2.9</strong> <a class="reference internal" href="../_autosummary/elm.ords.extraction.tree.AsyncDecisionTree.html#elm.ords.extraction.tree.AsyncDecisionTree" title="elm.ords.extraction.tree.AsyncDecisionTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncDecisionTree</span></code></a><a class="headerlink" href="#asyncdecisiontree" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Purpose:
+    Represent a series of prompts that can be used in sequence to
+    extract values of interest from text.
+Responsibilities:
+    1. Store all prompts used to extract a particular ordinance
+       value from text.
+    2. Track relationships between the prompts (i.e. which prompts
+       is used first, which prompt is used next depending on the
+       output of the previous prompt, etc.) using a directed acyclic
+       graph.
+Key Relationships:
+    Inherits from :class:`~elm.tree.DecisionTree` to add ``async``
+    capabilities. Uses a :class:`~elm.ords.llm.calling.ChatLLMCaller`
+    for LLm queries.
+
+</pre></div>
+</div>
+<p><strong>Example Code:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunningAsyncServices</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIService</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.extraction.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncDecisionTree</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">AsyncAzureOpenAI</span><span class="p">(</span>
+        <span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_API_KEY&quot;</span><span class="p">),</span>
+        <span class="n">api_version</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_VERSION&quot;</span><span class="p">),</span>
+        <span class="n">azure_endpoint</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_ENDPOINT&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">service</span> <span class="o">=</span> <span class="n">OpenAIService</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">rate_limit</span><span class="o">=</span><span class="mf">1e4</span><span class="p">)</span>
+
+    <span class="n">G</span> <span class="o">=</span> <span class="o">...</span> <span class="c1"># graph with prompts and a `ChatLLMCaller` instance embedded</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">AsyncDecisionTree</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">with</span> <span class="n">RunningAsyncServices</span><span class="p">([</span><span class="n">service</span><span class="p">]):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tree</span><span class="o">.</span><span class="n">async_run</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">response</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="structuredordinanceparser">
+<h4><strong>4.2.10</strong> <a class="reference internal" href="../_autosummary/elm.ords.extraction.parse.StructuredOrdinanceParser.html#elm.ords.extraction.parse.StructuredOrdinanceParser" title="elm.ords.extraction.parse.StructuredOrdinanceParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructuredOrdinanceParser</span></code></a><a class="headerlink" href="#structuredordinanceparser" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Purpose:
+    Extract structured ordinance data from text.
+Responsibilities:
+    1. Extract ordinance values into structured format by executing
+       a decision-tree-based chain-of-thought prompt on the text for
+       each value to be extracted.
+Key Relationships:
+    Uses a :class:`~elm.ords.llm.calling.StructuredLLMCaller` for
+    LLM queries and multiple
+    :class:`~elm.ords.extraction.tree.AsyncDecisionTree` instances
+    to guide the extraction of individual values.
+
+</pre></div>
+</div>
+<p><strong>Example Code:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.extraction.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructuredOrdinanceParser</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunningAsyncServices</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIService</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.llm</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructuredLLMCaller</span>
+
+<span class="n">CALLER</span> <span class="o">=</span> <span class="n">StructuredLLMCaller</span><span class="p">(</span>
+    <span class="n">llm_service</span><span class="o">=</span><span class="n">OpenAIService</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o&quot;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="o">...</span>
+
+    <span class="n">client</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">AsyncAzureOpenAI</span><span class="p">(</span>
+        <span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_API_KEY&quot;</span><span class="p">),</span>
+        <span class="n">api_version</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_VERSION&quot;</span><span class="p">),</span>
+        <span class="n">azure_endpoint</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_ENDPOINT&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">service</span> <span class="o">=</span> <span class="n">OpenAIService</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">rate_limit</span><span class="o">=</span><span class="mf">1e4</span><span class="p">)</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">StructuredOrdinanceParser</span><span class="p">(</span><span class="n">CALLER</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">with</span> <span class="n">RunningAsyncServices</span><span class="p">([</span><span class="n">service</span><span class="p">]):</span>
+        <span class="n">ordinance_values</span> <span class="o">=</span> <span class="k">await</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ordinance_values</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section id="workflows">
+<h2><strong>5. Workflows</strong><a class="headerlink" href="#workflows" title="Link to this heading"></a></h2>
+<section id="downloading-documents-from-google">
+<h3><strong>5.1 Downloading documents from Google</strong><a class="headerlink" href="#downloading-documents-from-google" title="Link to this heading"></a></h3>
+<p>We give a rough breakdown of the following call:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.web.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">web_search_links_as_docs</span>
+
+<span class="n">QUERIES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;NREL wiki&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;National Renewable Energy Laboratory director&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;NREL leadership wikipedia&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">docs</span> <span class="o">=</span> <span class="k">await</span> <span class="n">web_search_links_as_docs</span><span class="p">(</span><span class="n">QUERIES</span><span class="p">,</span> <span class="n">num_urls</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">docs</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+<p><strong>Step-by-Step:</strong></p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="../_autosummary/elm.web.search.run.web_search_links_as_docs.html#elm.web.search.run.web_search_links_as_docs" title="elm.web.search.run.web_search_links_as_docs"><code class="xref py py-func docutils literal notranslate"><span class="pre">web_search_links_as_docs()</span></code></a> is invoked with 3 queries and <code class="docutils literal notranslate"><span class="pre">num_urls=4</span></code>.</p></li>
+<li><p>Each of the three queries are processed asynchronously, creating a <code class="xref py py-class docutils literal notranslate"><span class="pre">PlaywrightGoogleLinkSearch</span></code> instance and retrieving the top URL results.</p></li>
+<li><p>Internal code reduces the URL lists returned from each of the queries into the top 4 URLs.</p></li>
+<li><p><a class="reference internal" href="../_autosummary/elm.web.file_loader.AsyncFileLoader.html#elm.web.file_loader.AsyncFileLoader" title="elm.web.file_loader.AsyncFileLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncFileLoader</span></code></a> asynchronously downloads the content for reach of the top 4 URLs, determines the document type the content should be stored
+in (<a class="reference internal" href="../_autosummary/elm.web.document.HTMLDocument.html#elm.web.document.HTMLDocument" title="elm.web.document.HTMLDocument"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTMLDocument</span></code></a> or <a class="reference internal" href="../_autosummary/elm.web.document.PDFDocument.html#elm.web.document.PDFDocument" title="elm.web.document.PDFDocument"><code class="xref py py-class docutils literal notranslate"><span class="pre">PDFDocument</span></code></a>), creates and populates the document instances, and returns the document to the caller.</p></li>
+</ol>
+<p><strong>Sequence Diagram:</strong></p>
+<pre  class="mermaid">
+        sequenceDiagram
+    participant A as web_search_links_as_docs()
+    participant B as PlaywrightGoogleLinkSearch
+    participant D as AsyncFileLoader
+    participant E as HTMLDocument
+    participant F as PDFDocument
+
+    A -&gt;&gt; B: Query 1
+    activate B
+    A -&gt;&gt; B: Query 2
+    B -&gt;&gt; A: Top-URL List 1
+    A -&gt;&gt; B: Query 3
+    B -&gt;&gt; A: Top-URL List 2
+    B -&gt;&gt; A: Top-URL List 3
+    deactivate B
+
+    A -&gt;&gt; A: URL lists reduced to top 4 URLs
+
+    A -&gt;&gt; D: URL 1
+    activate D
+    A -&gt;&gt; D: URL 2
+    D -&gt;&gt; E: Content 1
+    activate E
+    A -&gt;&gt; D: URL 3
+    E -&gt;&gt; A: Document 1
+    deactivate E
+    D -&gt;&gt; F: Content 2
+    activate F
+    D -&gt;&gt; E: Content 3
+    activate E
+    F -&gt;&gt; A: Document 2
+    deactivate F
+    E -&gt;&gt; A: Document 3
+    deactivate E
+    A -&gt;&gt; D: URL 4
+    D -&gt;&gt; F: Content 4
+    activate F
+    F -&gt;&gt; A: Document 4
+    deactivate F
+    deactivate D
+    </pre><p>Note that the interleaved call-and-response pairs are meant to exhibit the <cite>async</cite> nature of the process and do not reflect a deterministic execution order.</p>
+</section>
+<hr class="docutils" />
+<section id="querying-openai">
+<h3><strong>5.2 Querying OpenAI</strong><a class="headerlink" href="#querying-openai" title="Link to this heading"></a></h3>
+<p>We give a rough breakdown of the following call:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunningAsyncServices</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIService</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.llm</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMCaller</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">AsyncAzureOpenAI</span><span class="p">(</span>
+        <span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_API_KEY&quot;</span><span class="p">),</span>
+        <span class="n">api_version</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_VERSION&quot;</span><span class="p">),</span>
+        <span class="n">azure_endpoint</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;AZURE_OPENAI_ENDPOINT&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">service</span> <span class="o">=</span> <span class="n">OpenAIService</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">rate_limit</span><span class="o">=</span><span class="mf">1e4</span><span class="p">)</span>
+    <span class="n">llm_caller</span> <span class="o">=</span> <span class="n">LLMCaller</span><span class="p">(</span>
+        <span class="n">llm_service</span><span class="o">=</span><span class="n">OpenAIService</span><span class="p">,</span>
+        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o&quot;</span><span class="p">,</span>
+        <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">RunningAsyncServices</span><span class="p">([</span><span class="n">service</span><span class="p">]):</span>
+        <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
+                <span class="n">llm_caller</span><span class="o">.</span><span class="n">call</span><span class="p">(</span>
+                    <span class="n">sys_msg</span><span class="o">=</span><span class="s2">&quot;You are a helpful assistant&quot;</span><span class="p">,</span>
+                    <span class="n">content</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Say this is a test: </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="n">responses</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">tasks</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">responses</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+<p><strong>Step-by-Step:</strong></p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">main()</span></code> initializes <cite>openai.AsyncAzureOpenAI</cite> client, <a class="reference internal" href="../_autosummary/elm.ords.services.openai.OpenAIService.html#elm.ords.services.openai.OpenAIService" title="elm.ords.services.openai.OpenAIService"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpenAIService</span></code></a> (not running), and <a class="reference internal" href="../_autosummary/elm.ords.llm.calling.LLMCaller.html#elm.ords.llm.calling.LLMCaller" title="elm.ords.llm.calling.LLMCaller"><code class="xref py py-class docutils literal notranslate"><span class="pre">LLMCaller</span></code></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">main()</span></code> enters the <a class="reference internal" href="../_autosummary/elm.ords.services.provider.RunningAsyncServices.html#elm.ords.services.provider.RunningAsyncServices" title="elm.ords.services.provider.RunningAsyncServices"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunningAsyncServices</span></code></a> context, which starts the <code class="docutils literal notranslate"><span class="pre">service</span></code>.</p></li>
+<li><p>The now running <a class="reference internal" href="../_autosummary/elm.ords.services.openai.OpenAIService.html#elm.ords.services.openai.OpenAIService" title="elm.ords.services.openai.OpenAIService"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpenAIService</span></code></a> initializes it’s own queue and begins monitoring it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">main()</span></code> now submits three LLM queries using the <a class="reference internal" href="../_autosummary/elm.ords.llm.calling.LLMCaller.html#elm.ords.llm.calling.LLMCaller" title="elm.ords.llm.calling.LLMCaller"><code class="xref py py-class docutils literal notranslate"><span class="pre">LLMCaller</span></code></a> instance.</p></li>
+<li><p><a class="reference internal" href="../_autosummary/elm.ords.llm.calling.LLMCaller.html#elm.ords.llm.calling.LLMCaller" title="elm.ords.llm.calling.LLMCaller"><code class="xref py py-class docutils literal notranslate"><span class="pre">LLMCaller</span></code></a> puts the queries onto the queue initialized by <a class="reference internal" href="../_autosummary/elm.ords.services.openai.OpenAIService.html#elm.ords.services.openai.OpenAIService" title="elm.ords.services.openai.OpenAIService"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpenAIService</span></code></a>.</p></li>
+<li><p><a class="reference internal" href="../_autosummary/elm.ords.services.openai.OpenAIService.html#elm.ords.services.openai.OpenAIService" title="elm.ords.services.openai.OpenAIService"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpenAIService</span></code></a> detects that the queue is not empty, checks that the rate limit has not been exceeded, and submits the first query to the LLM.</p></li>
+<li><p><a class="reference internal" href="../_autosummary/elm.ords.services.openai.OpenAIService.html#elm.ords.services.openai.OpenAIService" title="elm.ords.services.openai.OpenAIService"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpenAIService</span></code></a> detects that the queue is still not empty. It checks the updated rate limit. Seeing that it has not been exceeded, it submits the second query to the LLM.</p></li>
+<li><p>The LLM send back the first response to <code class="docutils literal notranslate"><span class="pre">main()</span></code>.</p></li>
+<li><p>Once again, <a class="reference internal" href="../_autosummary/elm.ords.services.openai.OpenAIService.html#elm.ords.services.openai.OpenAIService" title="elm.ords.services.openai.OpenAIService"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpenAIService</span></code></a> detects that the queue is not empty. It checks the updated rate limit, but it has now been exceeded. It does <em>not</em> submit the third query,
+and instead continues to monitor the running rate limit.</p></li>
+<li><p><a class="reference internal" href="../_autosummary/elm.ords.services.openai.OpenAIService.html#elm.ords.services.openai.OpenAIService" title="elm.ords.services.openai.OpenAIService"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpenAIService</span></code></a> detects that it has waited long enough, and that the rate limit has still not been exceeded. Since there is still a query in the queue, it submits the third query.</p></li>
+<li><p>The LLM send back the responses of query 2 and 3 to <code class="docutils literal notranslate"><span class="pre">main()</span></code>.</p></li>
+<li><p><a class="reference internal" href="../_autosummary/elm.ords.services.openai.OpenAIService.html#elm.ords.services.openai.OpenAIService" title="elm.ords.services.openai.OpenAIService"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpenAIService</span></code></a> continues to monitor the queue, but <code class="docutils literal notranslate"><span class="pre">main()</span></code> has not submitted any more queries.</p></li>
+<li><p>Having received all the responses, <code class="docutils literal notranslate"><span class="pre">main()</span></code> exists the context. <a class="reference internal" href="../_autosummary/elm.ords.services.openai.OpenAIService.html#elm.ords.services.openai.OpenAIService" title="elm.ords.services.openai.OpenAIService"><code class="xref py py-class docutils literal notranslate"><span class="pre">OpenAIService</span></code></a> tears down the empty queue and stops running.</p></li>
+</ol>
+<p><strong>Sequence Diagram:</strong></p>
+<pre  class="mermaid">
+        sequenceDiagram
+
+    participant B as LLMCaller
+    participant A as main
+    participant C as RunningAsyncServices
+    participant D as OpenAIService
+    participant E as OpenAIServiceQueue
+    participant F as LLM (Chat GPT)
+
+    A -&gt;&gt; D: Initialize
+    activate D
+    A -&gt;&gt; B: Initialize
+    activate B
+    A -&gt;&gt; C: Enter Context
+    activate C
+    C -&gt;&gt; D: Start Running
+    D -&gt;&gt; E: Initialize
+    activate E
+    D -&gt;&gt; D: Check rate limit (OK)
+    D -&gt;&gt; E: Check queue
+    A -&gt;&gt; B: Submit queries
+    B -&gt;&gt; E: Enqueue &quot;Say this is a test: 1&quot;
+    D -&gt;&gt; D: Check rate limit (OK)
+    D -&gt;&gt; E: Check queue
+    E -&gt;&gt; D: Get LLM call request
+    D -&gt;&gt; F: Submit call for &quot;Say this is a test: 1&quot;
+    B -&gt;&gt; E: Enqueue &quot;Say this is a test: 2&quot;
+    B -&gt;&gt; E: Enqueue &quot;Say this is a test: 3&quot;
+    D -&gt;&gt; D: Check rate limit (OK)
+    D -&gt;&gt; E: Check queue
+    E -&gt;&gt; D: Get LLM call request
+    D -&gt;&gt; F: Submit call for &quot;Say this is a test: 2&quot;
+    F -&gt;&gt; A: Response: &quot;This is a test: 1&quot;
+    D -&gt;&gt; D: Check rate limit (Failed)
+    loop while rate limit exceeded
+        D--&gt;D: Check rate limit
+    end
+    D -&gt;&gt; D: Check rate limit (OK)
+    D -&gt;&gt; E: Check queue
+    E -&gt;&gt; D: Get LLM call request
+    D -&gt;&gt; F: Submit call for &quot;Say this is a test: 3&quot;
+    F -&gt;&gt; A: Response: &quot;This is a test: 2&quot;
+    F -&gt;&gt; A: Response: &quot;This is a test: 3&quot;
+    D -&gt;&gt; D: Check rate limit (OK)
+    D -&gt;&gt; E: Check queue
+
+    A -&gt;&gt; C: Exit context
+    C -&gt;&gt; D: Teardown
+    deactivate C
+    D -&gt;&gt; E: Teardown
+    deactivate D
+    deactivate E
+
+    A -&gt;&gt; B: Teardown
+    deactivate B
+    </pre><p>Note that the interleaved call-and-response pairs are meant to exhibit the <cite>async</cite> nature of the process and do not reflect a deterministic execution order.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="appendix">
+<h2><strong>6. Appendix</strong><a class="headerlink" href="#appendix" title="Link to this heading"></a></h2>
+<section id="tools-and-libraries">
+<h3><strong>6.1 Tools and Libraries</strong><a class="headerlink" href="#tools-and-libraries" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>aiohttp/beautifulsoup4:</strong> For fetching content from the web.</p></li>
+<li><p><strong>html2text:</strong> For utilities to pull text from HTML.</p></li>
+<li><p><strong>langchain:</strong> For utility classes like <code class="docutils literal notranslate"><span class="pre">RecursiveCharacterTextSplitter</span></code>.</p></li>
+<li><p><strong>networkx:</strong> For representing the DAG behind the decision tree(s).</p></li>
+<li><p><strong>pdftotext:</strong> For robust PDF to text conversion using poppler.</p></li>
+<li><p><strong>playwright:</strong> For navigating the web and performing Google searches.</p></li>
+<li><p><strong>PyPDF2:</strong> For auxiliary PDF utilities.</p></li>
+<li><p><strong>pytesseract (optional):</strong> For OCR utilities to read scanned PDF files.</p></li>
+<li><p><strong>tiktoken:</strong> For counting the number of LLM tokens used by a query.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="deliverables">
+<h2><strong>7. Deliverables</strong><a class="headerlink" href="#deliverables" title="Link to this heading"></a></h2>
+<p>This document can serve as a foundational guide for developers and analysis.
+It helps users of this code understand the software’s design and allows for
+smoother onboarding and more informed project planning.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Development" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../_autosummary/elm.html" class="btn btn-neutral float-right" title="elm" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alliance for Sustainable Energy, LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

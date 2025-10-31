@@ -1,0 +1,25 @@
+elm.ords.utilities.queued\_logging.LogListener
+==============================================
+
+.. currentmodule:: elm.ords.utilities.queued_logging
+
+.. autoclass:: LogListener
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~LogListener.addHandler
+      ~LogListener.removeHandler
+   
+   
+
+   
+   
+   

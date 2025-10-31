@@ -1,0 +1,31 @@
+elm.ords.validation
+===================
+
+.. automodule:: elm.ords.validation
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   content
+   location
+

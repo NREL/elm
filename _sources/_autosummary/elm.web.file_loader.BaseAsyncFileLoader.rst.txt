@@ -1,0 +1,25 @@
+elm.web.file\_loader.BaseAsyncFileLoader
+========================================
+
+.. currentmodule:: elm.web.file_loader
+
+.. autoclass:: BaseAsyncFileLoader
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~BaseAsyncFileLoader.fetch
+      ~BaseAsyncFileLoader.fetch_all
+   
+   
+
+   
+   
+   

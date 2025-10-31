@@ -1,0 +1,31 @@
+elm.web.file\_loader.AsyncWebFileLoader
+=======================================
+
+.. currentmodule:: elm.web.file_loader
+
+.. autoclass:: AsyncWebFileLoader
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~AsyncWebFileLoader.fetch
+      ~AsyncWebFileLoader.fetch_all
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~AsyncWebFileLoader.PAGE_LOAD_TIMEOUT
+   
+   

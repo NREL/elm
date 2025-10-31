@@ -1,0 +1,30 @@
+elm.ords.validation.location.CountyJurisdictionValidator
+========================================================
+
+.. currentmodule:: elm.ords.validation.location
+
+.. autoclass:: CountyJurisdictionValidator
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~CountyJurisdictionValidator.check
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~CountyJurisdictionValidator.SYSTEM_MESSAGE
+   
+   

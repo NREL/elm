@@ -1,0 +1,6 @@
+elm.utilities.parse.resembles\_html
+===================================
+
+.. currentmodule:: elm.utilities.parse
+
+.. autofunction:: resembles_html

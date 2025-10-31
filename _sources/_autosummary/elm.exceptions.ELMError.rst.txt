@@ -1,0 +1,6 @@
+elm.exceptions.ELMError
+=======================
+
+.. currentmodule:: elm.exceptions
+
+.. autoexception:: ELMError

@@ -1,0 +1,6 @@
+elm.ords.extraction.ngrams.sentence\_ngram\_containment
+=======================================================
+
+.. currentmodule:: elm.ords.extraction.ngrams
+
+.. autofunction:: sentence_ngram_containment

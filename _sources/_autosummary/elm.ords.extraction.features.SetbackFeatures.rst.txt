@@ -1,0 +1,31 @@
+elm.ords.extraction.features.SetbackFeatures
+============================================
+
+.. currentmodule:: elm.ords.extraction.features
+
+.. autoclass:: SetbackFeatures
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SetbackFeatures.DEFAULT_FEATURE_DESCRIPTIONS
+      ~SetbackFeatures.FEATURES_AS_IGNORE
+      ~SetbackFeatures.FEATURE_CLARIFICATIONS
+   
+   

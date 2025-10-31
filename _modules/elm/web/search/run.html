@@ -1,0 +1,868 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>elm.web.search.run &mdash; elm 0.0.34 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=9dd25805"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            elm
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.energy_wizard.html">The Energy Wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.energy_wizard.html#downloading-and-embedding-pdfs">Downloading and Embedding PDFs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.energy_wizard.html#running-the-streamlit-app">Running the Streamlit App</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.ordinance_gpt.html">Ordinance GPT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#running-from-python">Running from Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#running-from-the-command-line-utility">Running from the Command Line Utility</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#execution">Execution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#debugging">Debugging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#source-ordinance-documents">Source Ordinance Documents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#extension-to-other-technologies">Extension to Other Technologies</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dev/index.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dev/ords_architecture.html"><strong>OrdinanceGPT: Architectural Design Document</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#introduction"><strong>1. Introduction</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#purpose"><strong>1.1 Purpose</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#audience"><strong>1.2 Audience</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#scope"><strong>1.3 Scope</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#high-level-architecture"><strong>2. High-Level Architecture</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#system-context"><strong>2.1 System Context</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#detailed-design"><strong>3. Detailed Design</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#web-scraper"><strong>3.1 Web Scraper</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#document-parser"><strong>3.2 Document Parser</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#key-concepts-and-classes"><strong>4 Key Concepts and Classes</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#key-concept-services"><strong>4.1 Key Concept: Services</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#key-classes"><strong>4.2 Key Classes</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#workflows"><strong>5. Workflows</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#downloading-documents-from-google"><strong>5.1 Downloading documents from Google</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#querying-openai"><strong>5.2 Querying OpenAI</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#appendix"><strong>6. Appendix</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#tools-and-libraries"><strong>6.1 Tools and Libraries</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#deliverables"><strong>7. Deliverables</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/elm.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.base.html">elm.base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.base.ApiBase.html">elm.base.ApiBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.base.ApiBase.html#elm.base.ApiBase"><code class="docutils literal notranslate"><span class="pre">ApiBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.base.ApiQueue.html">elm.base.ApiQueue</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.base.ApiQueue.html#elm.base.ApiQueue"><code class="docutils literal notranslate"><span class="pre">ApiQueue</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.chunk.html">elm.chunk</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.chunk.Chunker.html">elm.chunk.Chunker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker"><code class="docutils literal notranslate"><span class="pre">Chunker</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.cli.html">elm.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.embed.html">elm.embed</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.embed.ChunkAndEmbed.html">elm.embed.ChunkAndEmbed</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed"><code class="docutils literal notranslate"><span class="pre">ChunkAndEmbed</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.html">elm.exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMError.html">elm.exceptions.ELMError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMError.html#elm.exceptions.ELMError"><code class="docutils literal notranslate"><span class="pre">ELMError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMInputError.html">elm.exceptions.ELMInputError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMInputError.html#elm.exceptions.ELMInputError"><code class="docutils literal notranslate"><span class="pre">ELMInputError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMKeyError.html">elm.exceptions.ELMKeyError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMKeyError.html#elm.exceptions.ELMKeyError"><code class="docutils literal notranslate"><span class="pre">ELMKeyError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMRuntimeError.html">elm.exceptions.ELMRuntimeError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMRuntimeError.html#elm.exceptions.ELMRuntimeError"><code class="docutils literal notranslate"><span class="pre">ELMRuntimeError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.ords.html">elm.ords</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.download.html">elm.ords.download</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.download.download_county_ordinance.html">elm.ords.download.download_county_ordinance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.html">elm.ords.extraction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.apply.html">elm.ords.extraction.apply</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.date.html">elm.ords.extraction.date</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.features.html">elm.ords.extraction.features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.graphs.html">elm.ords.extraction.graphs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.ngrams.html">elm.ords.extraction.ngrams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.ordinance.html">elm.ords.extraction.ordinance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.parse.html">elm.ords.extraction.parse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.tree.html">elm.ords.extraction.tree</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.llm.html">elm.ords.llm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.llm.calling.html">elm.ords.llm.calling</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.process.html">elm.ords.process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.process.process_counties_with_openai.html">elm.ords.process.process_counties_with_openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.process.process_county.html">elm.ords.process.process_county</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.process.process_county_with_logging.html">elm.ords.process.process_county_with_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.html">elm.ords.services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.base.html">elm.ords.services.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.cpu.html">elm.ords.services.cpu</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.openai.html">elm.ords.services.openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.provider.html">elm.ords.services.provider</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.queues.html">elm.ords.services.queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.threaded.html">elm.ords.services.threaded</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.usage.html">elm.ords.services.usage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.html">elm.ords.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.counties.html">elm.ords.utilities.counties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.exceptions.html">elm.ords.utilities.exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.location.html">elm.ords.utilities.location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.parsing.html">elm.ords.utilities.parsing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.queued_logging.html">elm.ords.utilities.queued_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.validation.html">elm.ords.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.validation.content.html">elm.ords.validation.content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.validation.location.html">elm.ords.validation.location</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.pdf.html">elm.pdf</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.pdf.PDFtoTXT.html">elm.pdf.PDFtoTXT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT"><code class="docutils literal notranslate"><span class="pre">PDFtoTXT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.summary.html">elm.summary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.summary.Summary.html">elm.summary.Summary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.summary.Summary.html#elm.summary.Summary"><code class="docutils literal notranslate"><span class="pre">Summary</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.tree.html">elm.tree</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.tree.DecisionTree.html">elm.tree.DecisionTree</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.tree.DecisionTree.html#elm.tree.DecisionTree"><code class="docutils literal notranslate"><span class="pre">DecisionTree</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.utilities.html">elm.utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.html">elm.utilities.parse</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.clean_headers.html">elm.utilities.parse.clean_headers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.combine_pages.html">elm.utilities.parse.combine_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.format_html_tables.html">elm.utilities.parse.format_html_tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.html_to_text.html">elm.utilities.parse.html_to_text</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.is_multi_col.html">elm.utilities.parse.is_multi_col</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.read_pdf.html">elm.utilities.parse.read_pdf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.read_pdf_ocr.html">elm.utilities.parse.read_pdf_ocr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.remove_blank_pages.html">elm.utilities.parse.remove_blank_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.remove_empty_lines_or_page_footers.html">elm.utilities.parse.remove_empty_lines_or_page_footers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.replace_common_pdf_conversion_chars.html">elm.utilities.parse.replace_common_pdf_conversion_chars</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.replace_excessive_newlines.html">elm.utilities.parse.replace_excessive_newlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.replace_multi_dot_lines.html">elm.utilities.parse.replace_multi_dot_lines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.resembles_html.html">elm.utilities.parse.resembles_html</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.utilities.retry.html">elm.utilities.retry</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.retry.async_retry_with_exponential_backoff.html">elm.utilities.retry.async_retry_with_exponential_backoff</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.retry.retry_with_exponential_backoff.html">elm.utilities.retry.retry_with_exponential_backoff</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.utilities.try_import.html">elm.utilities.try_import</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.try_import.try_import.html">elm.utilities.try_import.try_import</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.utilities.validation.html">elm.utilities.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.validation.validate_azure_api_params.html">elm.utilities.validation.validate_azure_api_params</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.version.html">elm.version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.web.html">elm.web</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.document.html">elm.web.document</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.document.BaseDocument.html">elm.web.document.BaseDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.document.HTMLDocument.html">elm.web.document.HTMLDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.document.PDFDocument.html">elm.web.document.PDFDocument</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.html">elm.web.file_loader</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.AsyncFileLoader.html">elm.web.file_loader.AsyncFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.AsyncLocalFileLoader.html">elm.web.file_loader.AsyncLocalFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.AsyncWebFileLoader.html">elm.web.file_loader.AsyncWebFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.BaseAsyncFileLoader.html">elm.web.file_loader.BaseAsyncFileLoader</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.html_pw.html">elm.web.html_pw</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.html_pw.load_html_with_pw.html">elm.web.html_pw.load_html_with_pw</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.osti.html">elm.web.osti</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.osti.OstiList.html">elm.web.osti.OstiList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.osti.OstiRecord.html">elm.web.osti.OstiRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.html">elm.web.rhub</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.ProfilesList.html">elm.web.rhub.ProfilesList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.ProfilesRecord.html">elm.web.rhub.ProfilesRecord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.PublicationsList.html">elm.web.rhub.PublicationsList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.PublicationsRecord.html">elm.web.rhub.PublicationsRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.search.html">elm.web.search</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.base.html">elm.web.search.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.bing.html">elm.web.search.bing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.duckduckgo.html">elm.web.search.duckduckgo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.dux.html">elm.web.search.dux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.google.html">elm.web.search.google</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.run.html">elm.web.search.run</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.tavily.html">elm.web.search.tavily</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.yahoo.html">elm.web.search.yahoo</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.html">elm.web.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.DEFAULT_HEADERS.html">elm.web.utilities.DEFAULT_HEADERS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.clean_search_query.html">elm.web.utilities.clean_search_query</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.compute_fn_from_url.html">elm.web.utilities.compute_fn_from_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.filter_documents.html">elm.web.utilities.filter_documents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.get_redirected_url.html">elm.web.utilities.get_redirected_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.pw_page.html">elm.web.utilities.pw_page</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.write_url_doc_to_file.html">elm.web.utilities.write_url_doc_to_file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.PWKwargs.html">elm.web.utilities.PWKwargs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.html">elm.web.website_crawl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS.html">elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ELM_URL_FILTER.html">elm.web.website_crawl.ELM_URL_FILTER</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ContentTypeExcludeFilter.html">elm.web.website_crawl.ContentTypeExcludeFilter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ELMLinkScorer.html">elm.web.website_crawl.ELMLinkScorer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawler.html">elm.web.website_crawl.ELMWebsiteCrawler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html">elm.web.website_crawl.ELMWebsiteCrawlingStrategy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html">elm.web.website_crawl.PeekablePriorityQueue</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.wizard.html">elm.wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizard.html">elm.wizard.EnergyWizard</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard"><code class="docutils literal notranslate"><span class="pre">EnergyWizard</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizardBase.html">elm.wizard.EnergyWizardBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase"><code class="docutils literal notranslate"><span class="pre">EnergyWizardBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizardPostgres.html">elm.wizard.EnergyWizardPostgres</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres"><code class="docutils literal notranslate"><span class="pre">EnergyWizardPostgres</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../_cli/cli.html">CLI reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_cli/elm.html">elm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_cli/elm.html#elm-ords">ords</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">elm</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">elm.web.search.run</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for elm.web.search.run</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;ELM Web Scraping - functions to run a search&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pprint</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">zip_longest</span><span class="p">,</span> <span class="n">chain</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncExitStack</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.web.file_loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncFileLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.web.search.bing</span><span class="w"> </span><span class="kn">import</span> <span class="n">PlaywrightBingLinkSearch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.web.search.duckduckgo</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">APIDuckDuckGoSearch</span><span class="p">,</span>
+                                       <span class="n">PlaywrightDuckDuckGoLinkSearch</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.web.search.dux</span><span class="w"> </span><span class="kn">import</span> <span class="n">DuxDistributedGlobalSearch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.web.search.google</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">APIGoogleCSESearch</span><span class="p">,</span> <span class="n">APISerperSearch</span><span class="p">,</span>
+                                   <span class="n">SerpAPIGoogleSearch</span><span class="p">,</span>
+                                   <span class="n">CamoufoxGoogleLinkSearch</span><span class="p">,</span>
+                                   <span class="n">PlaywrightGoogleCSELinkSearch</span><span class="p">,</span>
+                                   <span class="n">PlaywrightGoogleLinkSearch</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.web.search.tavily</span><span class="w"> </span><span class="kn">import</span> <span class="n">APITavilySearch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.web.search.yahoo</span><span class="w"> </span><span class="kn">import</span> <span class="n">PlaywrightYahooLinkSearch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ELMKeyError</span><span class="p">,</span> <span class="n">ELMInputError</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="n">_RESULTS_PER_QUERY</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">_SE_OPT</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;_SE_OPT&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;se_class&#39;</span><span class="p">,</span> <span class="s1">&#39;uses_browser&#39;</span><span class="p">,</span> <span class="s1">&#39;kwg_key_name&#39;</span><span class="p">])</span>
+<span class="n">SEARCH_ENGINE_OPTIONS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;APIDuckDuckGoSearch&quot;</span><span class="p">:</span> <span class="n">_SE_OPT</span><span class="p">(</span><span class="n">APIDuckDuckGoSearch</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span>
+                                   <span class="s2">&quot;ddg_api_kwargs&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;APIGoogleCSESearch&quot;</span><span class="p">:</span> <span class="n">_SE_OPT</span><span class="p">(</span><span class="n">APIGoogleCSESearch</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span>
+                                  <span class="s2">&quot;google_cse_api_kwargs&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;APISerperSearch&quot;</span><span class="p">:</span> <span class="n">_SE_OPT</span><span class="p">(</span><span class="n">APISerperSearch</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span>
+                               <span class="s2">&quot;google_serper_api_kwargs&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;SerpAPIGoogleSearch&quot;</span><span class="p">:</span> <span class="n">_SE_OPT</span><span class="p">(</span><span class="n">SerpAPIGoogleSearch</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span>
+                                   <span class="s2">&quot;google_serpapi_kwargs&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;APITavilySearch&quot;</span><span class="p">:</span> <span class="n">_SE_OPT</span><span class="p">(</span><span class="n">APITavilySearch</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;tavily_api_kwargs&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;CamoufoxGoogleLinkSearch&quot;</span><span class="p">:</span> <span class="n">_SE_OPT</span><span class="p">(</span><span class="n">CamoufoxGoogleLinkSearch</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span>
+                                        <span class="s2">&quot;cf_google_se_kwargs&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;DuxDistributedGlobalSearch&quot;</span><span class="p">:</span> <span class="n">_SE_OPT</span><span class="p">(</span><span class="n">DuxDistributedGlobalSearch</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span>
+                                          <span class="s2">&quot;ddgs_kwargs&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;PlaywrightBingLinkSearch&quot;</span><span class="p">:</span> <span class="n">_SE_OPT</span><span class="p">(</span><span class="n">PlaywrightBingLinkSearch</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span>
+                                        <span class="s2">&quot;pw_bing_se_kwargs&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;PlaywrightDuckDuckGoLinkSearch&quot;</span><span class="p">:</span> <span class="n">_SE_OPT</span><span class="p">(</span><span class="n">PlaywrightDuckDuckGoLinkSearch</span><span class="p">,</span>
+                                              <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;pw_ddg_se_kwargs&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;PlaywrightGoogleCSELinkSearch&quot;</span><span class="p">:</span> <span class="n">_SE_OPT</span><span class="p">(</span><span class="n">PlaywrightGoogleCSELinkSearch</span><span class="p">,</span>
+                                             <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;pw_google_cse_kwargs&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;PlaywrightGoogleLinkSearch&quot;</span><span class="p">:</span> <span class="n">_SE_OPT</span><span class="p">(</span><span class="n">PlaywrightGoogleLinkSearch</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span>
+                                          <span class="s2">&quot;pw_google_se_kwargs&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;PlaywrightYahooLinkSearch&quot;</span><span class="p">:</span> <span class="n">_SE_OPT</span><span class="p">(</span><span class="n">PlaywrightYahooLinkSearch</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span>
+                                         <span class="s2">&quot;pw_yahoo_se_kwargs&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="sd">&quot;&quot;&quot;Supported search engines&quot;&quot;&quot;</span>
+<span class="n">_DEFAULT_SE</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;PlaywrightGoogleLinkSearch&quot;</span><span class="p">,</span> <span class="s2">&quot;PlaywrightDuckDuckGoLinkSearch&quot;</span><span class="p">,</span>
+               <span class="s2">&quot;DuxDistributedGlobalSearch&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="web_search_links_as_docs">
+<a class="viewcode-back" href="../../../../_autosummary/elm.web.search.run.web_search_links_as_docs.html#elm.web.search.run.web_search_links_as_docs">[docs]</a>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">web_search_links_as_docs</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">search_engines</span><span class="o">=</span><span class="n">_DEFAULT_SE</span><span class="p">,</span>
+                                   <span class="n">num_urls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ignore_url_parts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                   <span class="n">search_semaphore</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                   <span class="n">browser_semaphore</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">task_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                   <span class="n">use_fallback_per_query</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                   <span class="n">on_search_complete_hook</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                   <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve top ``N`` search results as document instances</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    queries : collection of str</span>
+<span class="sd">        Collection of strings representing google queries. Documents for</span>
+<span class="sd">        the top `num_urls` google search results (from all of these</span>
+<span class="sd">        queries _combined_ will be returned from this function.</span>
+<span class="sd">    search_engines : iterable of str</span>
+<span class="sd">        Ordered collection of search engine names to attempt for web</span>
+<span class="sd">        search. If the first search engine in the list returns a set</span>
+<span class="sd">        of URLs, then iteration will end and documents for each URL will</span>
+<span class="sd">        be returned. Otherwise, the next engine in this list will be</span>
+<span class="sd">        used to run the web search. If this also fails, the next engine</span>
+<span class="sd">        is used and so on. If all web searches fail, an empty list is</span>
+<span class="sd">        returned. See :obj:`~elm.web.search.run.SEARCH_ENGINE_OPTIONS`</span>
+<span class="sd">        for supported search engine options.</span>
+<span class="sd">        By default, ``(&quot;PlaywrightGoogleLinkSearch&quot;,</span>
+<span class="sd">        &quot;PlaywrightDuckDuckGoLinkSearch&quot;,</span>
+<span class="sd">        &quot;DuxDistributedGlobalSearch&quot;)``.</span>
+<span class="sd">    num_urls : int, optional</span>
+<span class="sd">        Number of unique top Google search result to return as docs. The</span>
+<span class="sd">        google search results from all queries are interleaved and the</span>
+<span class="sd">        top `num_urls` unique URL&#39;s are downloaded as docs. If this</span>
+<span class="sd">        number is less than ``len(queries)``, some of your queries may</span>
+<span class="sd">        not contribute to the final output. By default, ``None``, which</span>
+<span class="sd">        sets ``num_urls = 3 * len(queries)``.</span>
+<span class="sd">    ignore_url_parts : iterable of str, optional</span>
+<span class="sd">        Optional URL components to blacklist. For example, supplying</span>
+<span class="sd">        `ignore_url_parts={&quot;wikipedia.org&quot;}` will ignore all URLs that</span>
+<span class="sd">        contain &quot;wikipedia.org&quot;. By default, ``None``.</span>
+<span class="sd">    search_semaphore : :class:`asyncio.Semaphore`, optional</span>
+<span class="sd">        Semaphore instance that can be used to limit the number of</span>
+<span class="sd">        playwright browsers used to submit search engine queries open</span>
+<span class="sd">        concurrently. For backwards-compatibility, if this input is</span>
+<span class="sd">        ``None``, the input from `browser_semaphore` will be used in its</span>
+<span class="sd">        place (i.e. the searches and file downloads will be limited</span>
+<span class="sd">        using the same semaphore). By default, ``None``.</span>
+<span class="sd">    browser_semaphore : :class:`asyncio.Semaphore`, optional</span>
+<span class="sd">        Semaphore instance that can be used to limit the number of</span>
+<span class="sd">        playwright browsers used to download files open concurrently.</span>
+<span class="sd">        If ``None``, no limits are applied. By default, ``None``.</span>
+<span class="sd">    task_name : str, optional</span>
+<span class="sd">        Optional task name to use in :func:`asyncio.create_task`.</span>
+<span class="sd">        By default, ``None``.</span>
+<span class="sd">    use_fallback_per_query : bool, default=True</span>
+<span class="sd">        Option to use the fallback list of search engines on a per-query</span>
+<span class="sd">        basis. This means if a single query fails with one search</span>
+<span class="sd">        engine, the fallback search engines will be attempted for that</span>
+<span class="sd">        query. If this input is ``False``, the fallback search engines</span>
+<span class="sd">        are only used if *all* search queries fail for a single search</span>
+<span class="sd">        engine. By default, ``True``.</span>
+<span class="sd">    on_search_complete_hook : callable, optional</span>
+<span class="sd">        If provided, this async callable will be called after the search</span>
+<span class="sd">        engine links have been retrieved. A single argument will be</span>
+<span class="sd">        passed to this function containing a list of URL&#39;s that were the</span>
+<span class="sd">        result of the search queries (this list cna be empty if the</span>
+<span class="sd">        search failed). By default, ``None``.</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Keyword-argument pairs to initialize</span>
+<span class="sd">        :class:`elm.web.file_loader.AsyncFileLoader`. This input can</span>
+<span class="sd">        also include and any/all of the following keywords:</span>
+
+<span class="sd">            - ddg_api_kwargs</span>
+<span class="sd">            - google_cse_api_kwargs</span>
+<span class="sd">            - google_serper_api_kwargs</span>
+<span class="sd">            - tavily_api_kwargs</span>
+<span class="sd">            - ddgs_kwargs</span>
+<span class="sd">            - cf_google_se_kwargs</span>
+<span class="sd">            - pw_bing_se_kwargs</span>
+<span class="sd">            - pw_ddg_se_kwargs</span>
+<span class="sd">            - pw_google_cse_kwargs</span>
+<span class="sd">            - pw_google_se_kwargs</span>
+<span class="sd">            - pw_yahoo_se_kwargs</span>
+<span class="sd">            - pw_launch_kwargs</span>
+
+<span class="sd">        Each of these inputs should be a dictionary with</span>
+<span class="sd">        keyword-argument pairs that you can use to initialize the search</span>
+<span class="sd">        engines in the `search_engines` input. If ``pw_launch_kwargs``</span>
+<span class="sd">        is detected, it will be added to the kwargs for all of the</span>
+<span class="sd">        PLaywright-based search engines so that you do not have to</span>
+<span class="sd">        repeatedly specify the launch parameters. For example, you may</span>
+<span class="sd">        specify ``pw_launch_kwargs={&quot;headless&quot;: False}`` to</span>
+<span class="sd">        have all Playwright-based searches show the browser and _also_</span>
+<span class="sd">        specify ``google_serper_api_kwargs={&quot;api_key&quot;: &quot;...&quot;}`` to</span>
+<span class="sd">        specify the API key for the Google Serper search.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of :class:`elm.web.document.BaseDocument`</span>
+<span class="sd">        List of documents representing the top `num_urls` results from</span>
+<span class="sd">        the google searches across all `queries`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">search_semaphore</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># backward-compatibility</span>
+        <span class="n">search_semaphore</span> <span class="o">=</span> <span class="n">browser_semaphore</span>
+
+    <span class="n">fpq</span> <span class="o">=</span> <span class="n">use_fallback_per_query</span>
+    <span class="n">urls</span> <span class="o">=</span> <span class="k">await</span> <span class="n">search_with_fallback</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">search_engines</span><span class="o">=</span><span class="n">search_engines</span><span class="p">,</span>
+                                      <span class="n">num_urls</span><span class="o">=</span><span class="n">num_urls</span><span class="p">,</span>
+                                      <span class="n">ignore_url_parts</span><span class="o">=</span><span class="n">ignore_url_parts</span><span class="p">,</span>
+                                      <span class="n">browser_semaphore</span><span class="o">=</span><span class="n">search_semaphore</span><span class="p">,</span>
+                                      <span class="n">task_name</span><span class="o">=</span><span class="n">task_name</span><span class="p">,</span>
+                                      <span class="n">use_fallback_per_query</span><span class="o">=</span><span class="n">fpq</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">on_search_complete_hook</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">on_search_complete_hook</span><span class="p">(</span><span class="n">urls</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Downloading documents for URLS: </span><span class="se">\n\t</span><span class="s2">-</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n\t</span><span class="s2">-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">urls</span><span class="p">))</span>
+    <span class="n">docs</span> <span class="o">=</span> <span class="k">await</span> <span class="n">load_docs</span><span class="p">(</span><span class="n">urls</span><span class="p">,</span> <span class="n">browser_semaphore</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">docs</span></div>
+
+
+
+<div class="viewcode-block" id="search_with_fallback">
+<a class="viewcode-back" href="../../../../_autosummary/elm.web.search.run.search_with_fallback.html#elm.web.search.run.search_with_fallback">[docs]</a>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">search_with_fallback</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">search_engines</span><span class="o">=</span><span class="n">_DEFAULT_SE</span><span class="p">,</span>
+                               <span class="n">num_urls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ignore_url_parts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                               <span class="n">browser_semaphore</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">task_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                               <span class="n">use_fallback_per_query</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve search query URLs using multiple search engines if needed</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    queries : collection of str</span>
+<span class="sd">        Collection of strings representing google queries. Documents for</span>
+<span class="sd">        the top `num_urls` google search results (from all of these</span>
+<span class="sd">        queries _combined_ will be returned from this function.</span>
+<span class="sd">    search_engines : iterable of str</span>
+<span class="sd">        Ordered collection of search engine names to attempt for web</span>
+<span class="sd">        search. If the first search engine in the list returns a set</span>
+<span class="sd">        of URLs, then iteration will end and documents for each URL will</span>
+<span class="sd">        be returned. Otherwise, the next engine in this list will be</span>
+<span class="sd">        used to run the web search. If this also fails, the next engine</span>
+<span class="sd">        is used and so on. If all web searches fail, an empty list is</span>
+<span class="sd">        returned. See :obj:`~elm.web.search.run.SEARCH_ENGINE_OPTIONS`</span>
+<span class="sd">        for supported search engine options.</span>
+<span class="sd">        By default, ``(&quot;PlaywrightGoogleLinkSearch&quot;, )``.</span>
+<span class="sd">    num_urls : int, optional</span>
+<span class="sd">        Number of unique top Google search result to return as docs. The</span>
+<span class="sd">        google search results from all queries are interleaved and the</span>
+<span class="sd">        top `num_urls` unique URL&#39;s are downloaded as docs. If this</span>
+<span class="sd">        number is less than ``len(queries)``, some of your queries may</span>
+<span class="sd">        not contribute to the final output. By default, ``None``, which</span>
+<span class="sd">        sets ``num_urls = 3 * len(queries)``.</span>
+<span class="sd">    ignore_url_parts : iterable of str, optional</span>
+<span class="sd">        Optional URL components to blacklist. For example, supplying</span>
+<span class="sd">        `ignore_url_parts={&quot;wikipedia.org&quot;}` will ignore all URLs that</span>
+<span class="sd">        contain &quot;wikipedia.org&quot;. By default, ``None``.</span>
+<span class="sd">    browser_semaphore : :class:`asyncio.Semaphore`, optional</span>
+<span class="sd">        Semaphore instance that can be used to limit the number of</span>
+<span class="sd">        playwright browsers open concurrently. If ``None``, no limits</span>
+<span class="sd">        are applied. By default, ``None``.</span>
+<span class="sd">    task_name : str, optional</span>
+<span class="sd">        Optional task name to use in :func:`asyncio.create_task`.</span>
+<span class="sd">        By default, ``None``.</span>
+<span class="sd">    use_fallback_per_query : bool, default=True</span>
+<span class="sd">        Option to use the fallback list of search engines on a per-query</span>
+<span class="sd">        basis. This means if a single query fails with one search</span>
+<span class="sd">        engine, the fallback search engines will be attempted for that</span>
+<span class="sd">        query. If this input is ``False``, the fallback search engines</span>
+<span class="sd">        are only used if *all* search queries fail for a single search</span>
+<span class="sd">        engine. By default, ``True``.</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Keyword-argument pairs to initialize search engines. This input</span>
+<span class="sd">        can include and any/all of the following keywords:</span>
+
+<span class="sd">            - ddg_api_kwargs</span>
+<span class="sd">            - google_cse_api_kwargs</span>
+<span class="sd">            - google_serper_api_kwargs</span>
+<span class="sd">            - tavily_api_kwargs</span>
+<span class="sd">            - ddgs_kwargs</span>
+<span class="sd">            - cf_google_se_kwargs</span>
+<span class="sd">            - pw_bing_se_kwargs</span>
+<span class="sd">            - pw_ddg_se_kwargs</span>
+<span class="sd">            - pw_google_cse_kwargs</span>
+<span class="sd">            - pw_google_se_kwargs</span>
+<span class="sd">            - pw_yahoo_se_kwargs</span>
+<span class="sd">            - pw_launch_kwargs</span>
+
+<span class="sd">        Each of these inputs should be a dictionary with</span>
+<span class="sd">        keyword-argument pairs that you can use to initialize the search</span>
+<span class="sd">        engines in the `search_engines` input. If ``pw_launch_kwargs``</span>
+<span class="sd">        is detected, it will be added to the kwargs for all of the</span>
+<span class="sd">        PLaywright-based search engines so that you do not have to</span>
+<span class="sd">        repeatedly specify the launch parameters. For example, you may</span>
+<span class="sd">        specify ``pw_launch_kwargs={&quot;headless&quot;: False}`` to</span>
+<span class="sd">        have all Playwright-based searches show the browser and _also_</span>
+<span class="sd">        specify ``google_serper_api_kwargs={&quot;api_key&quot;: &quot;...&quot;}`` to</span>
+<span class="sd">        specify the API key for the Google Serper search.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    set</span>
+<span class="sd">        Set of URL&#39;s for the queries (empty if search failed).</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ELMInputError</span>
+<span class="sd">        If `search_engines` input is empty.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">num_urls</span> <span class="o">=</span> <span class="n">num_urls</span> <span class="ow">or</span> <span class="mi">3</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">queries</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">search_engines</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Must provide at least one search engine! Got </span><span class="si">{</span><span class="n">search_engines</span><span class="si">=}</span><span class="s2">&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">ELMInputError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">use_fallback_per_query</span><span class="p">:</span>
+        <span class="n">urls</span> <span class="o">=</span> <span class="k">await</span> <span class="n">_multi_se_search</span><span class="p">(</span><span class="n">search_engines</span><span class="p">,</span> <span class="n">queries</span><span class="p">,</span> <span class="n">num_urls</span><span class="p">,</span>
+                                      <span class="n">ignore_url_parts</span><span class="p">,</span> <span class="n">browser_semaphore</span><span class="p">,</span>
+                                      <span class="n">task_name</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">urls</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">urls</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">se_name</span> <span class="ow">in</span> <span class="n">search_engines</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Searching web using </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">se_name</span><span class="p">)</span>
+            <span class="n">urls</span> <span class="o">=</span> <span class="k">await</span> <span class="n">_single_se_search</span><span class="p">(</span><span class="n">se_name</span><span class="p">,</span> <span class="n">queries</span><span class="p">,</span> <span class="n">num_urls</span><span class="p">,</span>
+                                           <span class="n">ignore_url_parts</span><span class="p">,</span> <span class="n">browser_semaphore</span><span class="p">,</span>
+                                           <span class="n">task_name</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">urls</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">urls</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No web results found using </span><span class="si">%d</span><span class="s2"> search engines: </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span>
+                   <span class="nb">len</span><span class="p">(</span><span class="n">search_engines</span><span class="p">),</span> <span class="n">search_engines</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">set</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="load_docs">
+<a class="viewcode-back" href="../../../../_autosummary/elm.web.search.run.load_docs.html#elm.web.search.run.load_docs">[docs]</a>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">load_docs</span><span class="p">(</span><span class="n">urls</span><span class="p">,</span> <span class="n">browser_semaphore</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load a document for each input URL</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    urls : iterable of str</span>
+<span class="sd">        Iterable of URL&#39;s (as strings) to fetch.</span>
+<span class="sd">    browser_semaphore : :class:`asyncio.Semaphore`, optional</span>
+<span class="sd">        Semaphore instance that can be used to limit the number of</span>
+<span class="sd">        playwright browsers open concurrently for document retrieval. If</span>
+<span class="sd">        ``None``, no limits are applied. By default, ``None``.</span>
+<span class="sd">    kwargs</span>
+<span class="sd">        Keyword-argument pairs to initialize</span>
+<span class="sd">        :class:`elm.web.file_loader.AsyncFileLoader`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        List of non-empty document instances containing information from</span>
+<span class="sd">        the URL&#39;s. If a URL could not be fetched (i.e. document instance</span>
+<span class="sd">        is empty), it will not be included in the output list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s2">&quot;Downloading docs for the following URL&#39;s:</span><span class="se">\n</span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">urls</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s2">&quot;kwargs for AsyncFileLoader:</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                 <span class="n">pprint</span><span class="o">.</span><span class="n">PrettyPrinter</span><span class="p">()</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">kwargs</span><span class="p">))</span>
+    <span class="n">file_loader</span> <span class="o">=</span> <span class="n">AsyncFileLoader</span><span class="p">(</span><span class="n">browser_semaphore</span><span class="o">=</span><span class="n">browser_semaphore</span><span class="p">,</span>
+                                  <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">docs</span> <span class="o">=</span> <span class="k">await</span> <span class="n">file_loader</span><span class="o">.</span><span class="n">fetch_all</span><span class="p">(</span><span class="o">*</span><span class="n">urls</span><span class="p">)</span>
+
+    <span class="n">page_lens</span> <span class="o">=</span> <span class="p">{</span><span class="n">doc</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">):</span> <span class="nb">len</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">pages</span><span class="p">)</span>
+                 <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">}</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Loaded the following number of pages for docs:</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                 <span class="n">pprint</span><span class="o">.</span><span class="n">PrettyPrinter</span><span class="p">()</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="n">page_lens</span><span class="p">))</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">doc</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">doc</span><span class="o">.</span><span class="n">empty</span><span class="p">]</span></div>
+
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_single_se_search</span><span class="p">(</span><span class="n">se_name</span><span class="p">,</span> <span class="n">queries</span><span class="p">,</span> <span class="n">num_urls</span><span class="p">,</span> <span class="n">ignore_url_parts</span><span class="p">,</span>
+                            <span class="n">browser_sem</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search for links using a single search engine&quot;&quot;&quot;</span>
+    <span class="n">_validate_se_name</span><span class="p">(</span><span class="n">se_name</span><span class="p">)</span>
+    <span class="n">links</span> <span class="o">=</span> <span class="k">await</span> <span class="n">_run_search</span><span class="p">(</span><span class="n">se_name</span><span class="p">,</span> <span class="n">queries</span><span class="p">,</span> <span class="n">browser_sem</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_down_select_urls</span><span class="p">(</span><span class="n">links</span><span class="p">,</span> <span class="n">num_urls</span><span class="o">=</span><span class="n">num_urls</span><span class="p">,</span>
+                             <span class="n">ignore_url_parts</span><span class="o">=</span><span class="n">ignore_url_parts</span><span class="p">)</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_multi_se_search</span><span class="p">(</span><span class="n">search_engines</span><span class="p">,</span> <span class="n">queries</span><span class="p">,</span> <span class="n">num_urls</span><span class="p">,</span>
+                           <span class="n">ignore_url_parts</span><span class="p">,</span> <span class="n">browser_sem</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search for links using one or more search engines as fallback&quot;&quot;&quot;</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="p">{</span><span class="n">q</span><span class="p">:</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">queries</span><span class="p">}</span>
+    <span class="n">remaining_queries</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">queries</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">se_name</span> <span class="ow">in</span> <span class="n">search_engines</span><span class="p">:</span>
+        <span class="n">_validate_se_name</span><span class="p">(</span><span class="n">se_name</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Searching web using </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">se_name</span><span class="p">)</span>
+        <span class="n">links</span> <span class="o">=</span> <span class="k">await</span> <span class="n">_run_search</span><span class="p">(</span><span class="n">se_name</span><span class="p">,</span> <span class="n">remaining_queries</span><span class="p">,</span> <span class="n">browser_sem</span><span class="p">,</span>
+                                  <span class="n">task_name</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s2">&quot;Links: </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">links</span><span class="p">)</span>
+
+        <span class="n">failed_queries</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">q</span><span class="p">,</span> <span class="n">se_result</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">remaining_queries</span><span class="p">,</span> <span class="n">links</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">se_result</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">se_result</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">failed_queries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="n">outputs</span><span class="p">[</span><span class="n">q</span><span class="p">]</span> <span class="o">=</span> <span class="n">se_result</span>
+
+        <span class="n">remaining_queries</span> <span class="o">=</span> <span class="n">failed_queries</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s2">&quot;Remaining queries to search: </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">remaining_queries</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">remaining_queries</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="n">links</span> <span class="o">=</span> <span class="p">[</span><span class="n">link</span> <span class="ow">or</span> <span class="p">[[]]</span> <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">outputs</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+
+    <span class="k">return</span> <span class="n">_down_select_urls</span><span class="p">(</span><span class="n">links</span><span class="p">,</span> <span class="n">num_urls</span><span class="o">=</span><span class="n">num_urls</span><span class="p">,</span>
+                             <span class="n">ignore_url_parts</span><span class="o">=</span><span class="n">ignore_url_parts</span><span class="p">)</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_run_search</span><span class="p">(</span><span class="n">se_name</span><span class="p">,</span> <span class="n">queries</span><span class="p">,</span> <span class="n">browser_sem</span><span class="p">,</span> <span class="n">task_name</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run a search for multiple queries on a single search engine&quot;&quot;&quot;</span>
+    <span class="n">searchers</span> <span class="o">=</span> <span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">_single_query_search</span><span class="p">(</span><span class="n">se_name</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span>
+                                                          <span class="n">browser_sem</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">),</span>
+                                     <span class="n">name</span><span class="o">=</span><span class="n">task_name</span><span class="p">)</span> <span class="k">for</span> <span class="n">query</span> <span class="ow">in</span> <span class="n">queries</span><span class="p">]</span>
+    <span class="k">return</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">searchers</span><span class="p">)</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_single_query_search</span><span class="p">(</span><span class="n">se_name</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">browser_sem</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Execute a single search query on a single search engine&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">search_engine</span><span class="p">,</span> <span class="n">uses_browser</span> <span class="o">=</span> <span class="n">_init_se</span><span class="p">(</span><span class="n">se_name</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Could not instantiate </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">se_name</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[[]]</span>
+
+    <span class="k">if</span> <span class="n">uses_browser</span><span class="p">:</span>
+        <span class="c1"># help avoid some detection by staggering the browser launches</span>
+        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">_single_query_pw</span><span class="p">(</span><span class="n">search_engine</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span>
+                                      <span class="n">browser_sem</span><span class="o">=</span><span class="n">browser_sem</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="k">await</span> <span class="n">_single_query_api</span><span class="p">(</span><span class="n">search_engine</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_single_query_pw</span><span class="p">(</span><span class="n">search_engine</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">browser_sem</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform a single browser-based search&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">browser_sem</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">browser_sem</span> <span class="o">=</span> <span class="n">AsyncExitStack</span><span class="p">()</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s2">&quot;Single search browser_semaphore=</span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">browser_sem</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">browser_sem</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s2">&quot;Starting </span><span class="si">%s</span><span class="s2"> search for </span><span class="si">%r</span><span class="s2"> with browser_semaphore=</span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span>
+                     <span class="n">search_engine</span><span class="o">.</span><span class="n">_SE_NAME</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">browser_sem</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">search_engine</span><span class="o">.</span><span class="n">results</span><span class="p">(</span><span class="n">question</span><span class="p">,</span>
+                                           <span class="n">num_results</span><span class="o">=</span><span class="n">_RESULTS_PER_QUERY</span><span class="p">)</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_single_query_api</span><span class="p">(</span><span class="n">search_engine</span><span class="p">,</span> <span class="n">question</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform a single api-based search&quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s2">&quot;Starting </span><span class="si">%s</span><span class="s2"> search for </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">search_engine</span><span class="o">.</span><span class="n">_SE_NAME</span><span class="p">,</span> <span class="n">question</span><span class="p">)</span>
+    <span class="k">return</span> <span class="k">await</span> <span class="n">search_engine</span><span class="o">.</span><span class="n">results</span><span class="p">(</span><span class="n">question</span><span class="p">,</span>
+                                       <span class="n">num_results</span><span class="o">=</span><span class="n">_RESULTS_PER_QUERY</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_init_se</span><span class="p">(</span><span class="n">se_name</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize a search engine class&quot;&quot;&quot;</span>
+    <span class="n">se_class</span><span class="p">,</span> <span class="n">uses_browser</span><span class="p">,</span> <span class="n">kwarg_key</span> <span class="o">=</span> <span class="n">SEARCH_ENGINE_OPTIONS</span><span class="p">[</span><span class="n">se_name</span><span class="p">]</span>
+    <span class="n">init_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">uses_browser</span><span class="p">:</span>
+        <span class="n">init_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pw_launch_kwargs&quot;</span><span class="p">,</span> <span class="p">{})</span>
+
+    <span class="c1"># Cannot use &#39;pop&#39; here because _run_search is invoked once per query.</span>
+    <span class="n">init_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">kwarg_key</span><span class="p">,</span> <span class="p">{}))</span>
+    <span class="k">return</span> <span class="n">se_class</span><span class="p">(</span><span class="o">**</span><span class="n">init_kwargs</span><span class="p">),</span> <span class="n">uses_browser</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_down_select_urls</span><span class="p">(</span><span class="n">search_results</span><span class="p">,</span> <span class="n">num_urls</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">ignore_url_parts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Select the top N URLs&quot;&quot;&quot;</span>
+    <span class="n">ignore_url_parts</span> <span class="o">=</span> <span class="n">_as_set</span><span class="p">(</span><span class="n">ignore_url_parts</span><span class="p">)</span>
+    <span class="n">all_urls</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">zip_longest</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                                                 <span class="k">for</span> <span class="n">results</span>
+                                                 <span class="ow">in</span> <span class="n">search_results</span><span class="p">]))</span>
+    <span class="n">urls</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">all_urls</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">url</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">substr</span> <span class="ow">in</span> <span class="n">url</span> <span class="k">for</span> <span class="n">substr</span> <span class="ow">in</span> <span class="n">ignore_url_parts</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">urls</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">urls</span><span class="p">)</span> <span class="o">==</span> <span class="n">num_urls</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">return</span> <span class="n">urls</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_as_set</span><span class="p">(</span><span class="n">user_input</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert user input (possibly None or str) to set of strings&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">user_input</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">user_input</span> <span class="o">=</span> <span class="p">{</span><span class="n">user_input</span><span class="p">}</span>
+    <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">user_input</span> <span class="ow">or</span> <span class="p">[])</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_validate_se_name</span><span class="p">(</span><span class="n">se_name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate user search engine name input&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">se_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">SEARCH_ENGINE_OPTIONS</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;se_name&#39; must be one of: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">SEARCH_ENGINE_OPTIONS</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+               <span class="sa">f</span><span class="s2">&quot;Got </span><span class="si">{</span><span class="n">se_name</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">ELMKeyError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alliance for Sustainable Energy, LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

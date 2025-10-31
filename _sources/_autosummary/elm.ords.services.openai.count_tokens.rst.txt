@@ -1,0 +1,6 @@
+elm.ords.services.openai.count\_tokens
+======================================
+
+.. currentmodule:: elm.ords.services.openai
+
+.. autofunction:: count_tokens

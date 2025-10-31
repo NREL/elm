@@ -1,0 +1,6 @@
+elm.ords.extraction.graphs.llm\_response\_starts\_with\_yes
+===========================================================
+
+.. currentmodule:: elm.ords.extraction.graphs
+
+.. autofunction:: llm_response_starts_with_yes

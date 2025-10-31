@@ -1,0 +1,6 @@
+elm.utilities.parse.read\_pdf\_ocr
+==================================
+
+.. currentmodule:: elm.utilities.parse
+
+.. autofunction:: read_pdf_ocr

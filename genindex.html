@@ -1,0 +1,2865 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Index &mdash; elm 0.0.34 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=9dd25805"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            elm
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples.energy_wizard.html">The Energy Wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples.energy_wizard.html#downloading-and-embedding-pdfs">Downloading and Embedding PDFs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.energy_wizard.html#running-the-streamlit-app">Running the Streamlit App</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples.ordinance_gpt.html">Ordinance GPT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples.ordinance_gpt.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.ordinance_gpt.html#running-from-python">Running from Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.ordinance_gpt.html#running-from-the-command-line-utility">Running from the Command Line Utility</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples.ordinance_gpt.html#execution">Execution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples.ordinance_gpt.html#debugging">Debugging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="examples.ordinance_gpt.html#source-ordinance-documents">Source Ordinance Documents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.ordinance_gpt.html#extension-to-other-technologies">Extension to Other Technologies</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dev/index.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dev/ords_architecture.html"><strong>OrdinanceGPT: Architectural Design Document</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dev/ords_architecture.html#introduction"><strong>1. Introduction</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dev/ords_architecture.html#purpose"><strong>1.1 Purpose</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev/ords_architecture.html#audience"><strong>1.2 Audience</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev/ords_architecture.html#scope"><strong>1.3 Scope</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dev/ords_architecture.html#high-level-architecture"><strong>2. High-Level Architecture</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dev/ords_architecture.html#system-context"><strong>2.1 System Context</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dev/ords_architecture.html#detailed-design"><strong>3. Detailed Design</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dev/ords_architecture.html#web-scraper"><strong>3.1 Web Scraper</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev/ords_architecture.html#document-parser"><strong>3.2 Document Parser</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dev/ords_architecture.html#key-concepts-and-classes"><strong>4 Key Concepts and Classes</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dev/ords_architecture.html#key-concept-services"><strong>4.1 Key Concept: Services</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev/ords_architecture.html#key-classes"><strong>4.2 Key Classes</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dev/ords_architecture.html#workflows"><strong>5. Workflows</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dev/ords_architecture.html#downloading-documents-from-google"><strong>5.1 Downloading documents from Google</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev/ords_architecture.html#querying-openai"><strong>5.2 Querying OpenAI</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dev/ords_architecture.html#appendix"><strong>6. Appendix</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dev/ords_architecture.html#tools-and-libraries"><strong>6.1 Tools and Libraries</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dev/ords_architecture.html#deliverables"><strong>7. Deliverables</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/elm.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/elm.base.html">elm.base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.base.ApiBase.html">elm.base.ApiBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.base.ApiBase.html#elm.base.ApiBase"><code class="docutils literal notranslate"><span class="pre">ApiBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.base.ApiQueue.html">elm.base.ApiQueue</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.base.ApiQueue.html#elm.base.ApiQueue"><code class="docutils literal notranslate"><span class="pre">ApiQueue</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/elm.chunk.html">elm.chunk</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.chunk.Chunker.html">elm.chunk.Chunker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker"><code class="docutils literal notranslate"><span class="pre">Chunker</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/elm.cli.html">elm.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/elm.embed.html">elm.embed</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.embed.ChunkAndEmbed.html">elm.embed.ChunkAndEmbed</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed"><code class="docutils literal notranslate"><span class="pre">ChunkAndEmbed</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/elm.exceptions.html">elm.exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.exceptions.ELMError.html">elm.exceptions.ELMError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.exceptions.ELMError.html#elm.exceptions.ELMError"><code class="docutils literal notranslate"><span class="pre">ELMError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.exceptions.ELMInputError.html">elm.exceptions.ELMInputError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.exceptions.ELMInputError.html#elm.exceptions.ELMInputError"><code class="docutils literal notranslate"><span class="pre">ELMInputError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.exceptions.ELMKeyError.html">elm.exceptions.ELMKeyError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.exceptions.ELMKeyError.html#elm.exceptions.ELMKeyError"><code class="docutils literal notranslate"><span class="pre">ELMKeyError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.exceptions.ELMRuntimeError.html">elm.exceptions.ELMRuntimeError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.exceptions.ELMRuntimeError.html#elm.exceptions.ELMRuntimeError"><code class="docutils literal notranslate"><span class="pre">ELMRuntimeError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/elm.ords.html">elm.ords</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.ords.download.html">elm.ords.download</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.download.download_county_ordinance.html">elm.ords.download.download_county_ordinance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.ords.extraction.html">elm.ords.extraction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.extraction.apply.html">elm.ords.extraction.apply</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.extraction.date.html">elm.ords.extraction.date</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.extraction.features.html">elm.ords.extraction.features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.extraction.graphs.html">elm.ords.extraction.graphs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.extraction.ngrams.html">elm.ords.extraction.ngrams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.extraction.ordinance.html">elm.ords.extraction.ordinance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.extraction.parse.html">elm.ords.extraction.parse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.extraction.tree.html">elm.ords.extraction.tree</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.ords.llm.html">elm.ords.llm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.llm.calling.html">elm.ords.llm.calling</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.ords.process.html">elm.ords.process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.process.process_counties_with_openai.html">elm.ords.process.process_counties_with_openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.process.process_county.html">elm.ords.process.process_county</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.process.process_county_with_logging.html">elm.ords.process.process_county_with_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.ords.services.html">elm.ords.services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.services.base.html">elm.ords.services.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.services.cpu.html">elm.ords.services.cpu</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.services.openai.html">elm.ords.services.openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.services.provider.html">elm.ords.services.provider</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.services.queues.html">elm.ords.services.queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.services.threaded.html">elm.ords.services.threaded</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.services.usage.html">elm.ords.services.usage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.ords.utilities.html">elm.ords.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.utilities.counties.html">elm.ords.utilities.counties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.utilities.exceptions.html">elm.ords.utilities.exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.utilities.location.html">elm.ords.utilities.location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.utilities.parsing.html">elm.ords.utilities.parsing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.utilities.queued_logging.html">elm.ords.utilities.queued_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.ords.validation.html">elm.ords.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.validation.content.html">elm.ords.validation.content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.ords.validation.location.html">elm.ords.validation.location</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/elm.pdf.html">elm.pdf</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.pdf.PDFtoTXT.html">elm.pdf.PDFtoTXT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT"><code class="docutils literal notranslate"><span class="pre">PDFtoTXT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/elm.summary.html">elm.summary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.summary.Summary.html">elm.summary.Summary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.summary.Summary.html#elm.summary.Summary"><code class="docutils literal notranslate"><span class="pre">Summary</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/elm.tree.html">elm.tree</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.tree.DecisionTree.html">elm.tree.DecisionTree</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.tree.DecisionTree.html#elm.tree.DecisionTree"><code class="docutils literal notranslate"><span class="pre">DecisionTree</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/elm.utilities.html">elm.utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.utilities.parse.html">elm.utilities.parse</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.utilities.parse.clean_headers.html">elm.utilities.parse.clean_headers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.utilities.parse.combine_pages.html">elm.utilities.parse.combine_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.utilities.parse.format_html_tables.html">elm.utilities.parse.format_html_tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.utilities.parse.html_to_text.html">elm.utilities.parse.html_to_text</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.utilities.parse.is_multi_col.html">elm.utilities.parse.is_multi_col</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.utilities.parse.read_pdf.html">elm.utilities.parse.read_pdf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.utilities.parse.read_pdf_ocr.html">elm.utilities.parse.read_pdf_ocr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.utilities.parse.remove_blank_pages.html">elm.utilities.parse.remove_blank_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.utilities.parse.remove_empty_lines_or_page_footers.html">elm.utilities.parse.remove_empty_lines_or_page_footers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.utilities.parse.replace_common_pdf_conversion_chars.html">elm.utilities.parse.replace_common_pdf_conversion_chars</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.utilities.parse.replace_excessive_newlines.html">elm.utilities.parse.replace_excessive_newlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.utilities.parse.replace_multi_dot_lines.html">elm.utilities.parse.replace_multi_dot_lines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.utilities.parse.resembles_html.html">elm.utilities.parse.resembles_html</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.utilities.retry.html">elm.utilities.retry</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.utilities.retry.async_retry_with_exponential_backoff.html">elm.utilities.retry.async_retry_with_exponential_backoff</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.utilities.retry.retry_with_exponential_backoff.html">elm.utilities.retry.retry_with_exponential_backoff</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.utilities.try_import.html">elm.utilities.try_import</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.utilities.try_import.try_import.html">elm.utilities.try_import.try_import</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.utilities.validation.html">elm.utilities.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.utilities.validation.validate_azure_api_params.html">elm.utilities.validation.validate_azure_api_params</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/elm.version.html">elm.version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/elm.web.html">elm.web</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.web.document.html">elm.web.document</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.document.BaseDocument.html">elm.web.document.BaseDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.document.HTMLDocument.html">elm.web.document.HTMLDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.document.PDFDocument.html">elm.web.document.PDFDocument</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.web.file_loader.html">elm.web.file_loader</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.file_loader.AsyncFileLoader.html">elm.web.file_loader.AsyncFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.file_loader.AsyncLocalFileLoader.html">elm.web.file_loader.AsyncLocalFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.file_loader.AsyncWebFileLoader.html">elm.web.file_loader.AsyncWebFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.file_loader.BaseAsyncFileLoader.html">elm.web.file_loader.BaseAsyncFileLoader</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.web.html_pw.html">elm.web.html_pw</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.html_pw.load_html_with_pw.html">elm.web.html_pw.load_html_with_pw</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.web.osti.html">elm.web.osti</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.osti.OstiList.html">elm.web.osti.OstiList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.osti.OstiRecord.html">elm.web.osti.OstiRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.web.rhub.html">elm.web.rhub</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.rhub.ProfilesList.html">elm.web.rhub.ProfilesList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.rhub.ProfilesRecord.html">elm.web.rhub.ProfilesRecord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.rhub.PublicationsList.html">elm.web.rhub.PublicationsList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.rhub.PublicationsRecord.html">elm.web.rhub.PublicationsRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.web.search.html">elm.web.search</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.search.base.html">elm.web.search.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.search.bing.html">elm.web.search.bing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.search.duckduckgo.html">elm.web.search.duckduckgo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.search.dux.html">elm.web.search.dux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.search.google.html">elm.web.search.google</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.search.run.html">elm.web.search.run</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.search.tavily.html">elm.web.search.tavily</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.search.yahoo.html">elm.web.search.yahoo</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.web.utilities.html">elm.web.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.utilities.DEFAULT_HEADERS.html">elm.web.utilities.DEFAULT_HEADERS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.utilities.clean_search_query.html">elm.web.utilities.clean_search_query</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.utilities.compute_fn_from_url.html">elm.web.utilities.compute_fn_from_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.utilities.filter_documents.html">elm.web.utilities.filter_documents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.utilities.get_redirected_url.html">elm.web.utilities.get_redirected_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.utilities.pw_page.html">elm.web.utilities.pw_page</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.utilities.write_url_doc_to_file.html">elm.web.utilities.write_url_doc_to_file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.utilities.PWKwargs.html">elm.web.utilities.PWKwargs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.web.website_crawl.html">elm.web.website_crawl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS.html">elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.website_crawl.ELM_URL_FILTER.html">elm.web.website_crawl.ELM_URL_FILTER</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.website_crawl.ContentTypeExcludeFilter.html">elm.web.website_crawl.ContentTypeExcludeFilter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.website_crawl.ELMLinkScorer.html">elm.web.website_crawl.ELMLinkScorer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.website_crawl.ELMWebsiteCrawler.html">elm.web.website_crawl.ELMWebsiteCrawler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html">elm.web.website_crawl.ELMWebsiteCrawlingStrategy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html">elm.web.website_crawl.PeekablePriorityQueue</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/elm.wizard.html">elm.wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.wizard.EnergyWizard.html">elm.wizard.EnergyWizard</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard"><code class="docutils literal notranslate"><span class="pre">EnergyWizard</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.wizard.EnergyWizardBase.html">elm.wizard.EnergyWizardBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase"><code class="docutils literal notranslate"><span class="pre">EnergyWizardBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/elm.wizard.EnergyWizardPostgres.html">elm.wizard.EnergyWizardPostgres</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres"><code class="docutils literal notranslate"><span class="pre">EnergyWizardPostgres</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="_cli/cli.html">CLI reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="_cli/elm.html">elm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="_cli/elm.html#elm-ords">ords</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">elm</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Index</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/nrel/elm/blob/main/docs/source/genindex" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#Symbols"><strong>Symbols</strong></a>
+ | <a href="#_"><strong>_</strong></a>
+ | <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#J"><strong>J</strong></a>
+ | <a href="#K"><strong>K</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#Q"><strong>Q</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
+ | <a href="#Y"><strong>Y</strong></a>
+ 
+</div>
+<h2 id="Symbols">Symbols</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    --config
+
+      <ul>
+        <li><a href="_cli/elm.html#cmdoption-elm-ords-c">elm-ords command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --verbose
+
+      <ul>
+        <li><a href="_cli/elm.html#cmdoption-elm-ords-v">elm-ords command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --version
+
+      <ul>
+        <li><a href="_cli/elm.html#cmdoption-elm-version">elm command line option</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    -c
+
+      <ul>
+        <li><a href="_cli/elm.html#cmdoption-elm-ords-c">elm-ords command line option</a>
+</li>
+      </ul></li>
+      <li>
+    -v
+
+      <ul>
+        <li><a href="_cli/elm.html#cmdoption-elm-ords-v">elm-ords command line option</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="_">_</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.osti.OstiList.html#elm.web.osti.OstiList.__add__">__add__() (OstiList method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesList.html#elm.web.rhub.ProfilesList.__add__">(ProfilesList method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsList.html#elm.web.rhub.PublicationsList.__add__">(PublicationsList method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html#elm.web.website_crawl.ELMWebsiteCrawlingStrategy.__call__">__call__() (ELMWebsiteCrawlingStrategy method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.osti.OstiList.html#elm.web.osti.OstiList.__mul__">__mul__() (OstiList method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesList.html#elm.web.rhub.ProfilesList.__mul__">(ProfilesList method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsList.html#elm.web.rhub.PublicationsList.__mul__">(PublicationsList method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.rhub.PublicationsRecord.html#elm.web.rhub.PublicationsRecord.abstract">abstract (PublicationsRecord property)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.LocalProcessQueueHandler.html#elm.ords.utilities.queued_logging.LocalProcessQueueHandler.acquire">acquire() (LocalProcessQueueHandler method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.threaded.CleanedFileWriter.html#elm.ords.services.threaded.CleanedFileWriter.acquire_resources">acquire_resources() (CleanedFileWriter method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.services.threaded.FileMover.html#elm.ords.services.threaded.FileMover.acquire_resources">(FileMover method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.openai.OpenAIService.html#elm.ords.services.openai.OpenAIService.acquire_resources">(OpenAIService method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.OrdDBFileWriter.html#elm.ords.services.threaded.OrdDBFileWriter.acquire_resources">(OrdDBFileWriter method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.cpu.PDFLoader.html#elm.ords.services.cpu.PDFLoader.acquire_resources">(PDFLoader method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.cpu.ProcessPoolService.html#elm.ords.services.cpu.ProcessPoolService.acquire_resources">(ProcessPoolService method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.base.RateLimitedService.html#elm.ords.services.base.RateLimitedService.acquire_resources">(RateLimitedService method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.base.Service.html#elm.ords.services.base.Service.acquire_resources">(Service method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.StoreFileOnDisk.html#elm.ords.services.threaded.StoreFileOnDisk.acquire_resources">(StoreFileOnDisk method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.TempFileCache.html#elm.ords.services.threaded.TempFileCache.acquire_resources">(TempFileCache method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.ThreadedService.html#elm.ords.services.threaded.ThreadedService.acquire_resources">(ThreadedService method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.UsageUpdater.html#elm.ords.services.threaded.UsageUpdater.acquire_resources">(UsageUpdater method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.ords.services.usage.TimeBoundedUsageTracker.html#elm.ords.services.usage.TimeBoundedUsageTracker.add">add() (TimeBoundedUsageTracker method)</a>
+</li>
+      <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.add_overlap">add_overlap() (Chunker method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.usage.UsageTracker.html#elm.ords.services.usage.UsageTracker.add_to">add_to() (UsageTracker method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.LocalProcessQueueHandler.html#elm.ords.utilities.queued_logging.LocalProcessQueueHandler.addFilter">addFilter() (LocalProcessQueueHandler method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.LogListener.html#elm.ords.utilities.queued_logging.LogListener.addHandler">addHandler() (LogListener method)</a>
+</li>
+      <li><a href="_autosummary/elm.base.ApiBase.html#elm.base.ApiBase.all_messages_txt">all_messages_txt (ApiBase property)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.extraction.tree.AsyncDecisionTree.html#elm.ords.extraction.tree.AsyncDecisionTree.all_messages_txt">(AsyncDecisionTree property)</a>
+</li>
+        <li><a href="_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed.all_messages_txt">(ChunkAndEmbed property)</a>
+</li>
+        <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.all_messages_txt">(Chunker property)</a>
+</li>
+        <li><a href="_autosummary/elm.tree.DecisionTree.html#elm.tree.DecisionTree.all_messages_txt">(DecisionTree property)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.all_messages_txt">(EnergyWizard property)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.all_messages_txt">(EnergyWizardBase property)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.all_messages_txt">(EnergyWizardPostgres property)</a>
+</li>
+        <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.all_messages_txt">(PDFtoTXT property)</a>
+</li>
+        <li><a href="_autosummary/elm.summary.Summary.html#elm.summary.Summary.all_messages_txt">(Summary property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.ords.extraction.tree.AsyncDecisionTree.html#elm.ords.extraction.tree.AsyncDecisionTree.api">api (AsyncDecisionTree property)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.tree.DecisionTree.html#elm.tree.DecisionTree.api">(DecisionTree property)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.search.google.APIGoogleCSESearch.html#elm.web.search.google.APIGoogleCSESearch.API_KEY_VAR">API_KEY_VAR (APIGoogleCSESearch attribute)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.search.base.APISearchEngineLinkSearch.html#elm.web.search.base.APISearchEngineLinkSearch.API_KEY_VAR">(APISearchEngineLinkSearch attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.google.APISerperSearch.html#elm.web.search.google.APISerperSearch.API_KEY_VAR">(APISerperSearch attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.tavily.APITavilySearch.html#elm.web.search.tavily.APITavilySearch.API_KEY_VAR">(APITavilySearch attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.google.SerpAPIGoogleSearch.html#elm.web.search.google.SerpAPIGoogleSearch.API_KEY_VAR">(SerpAPIGoogleSearch attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.base.ApiBase.html#elm.base.ApiBase">ApiBase (class in elm.base)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.duckduckgo.APIDuckDuckGoSearch.html#elm.web.search.duckduckgo.APIDuckDuckGoSearch">APIDuckDuckGoSearch (class in elm.web.search.duckduckgo)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.google.APIGoogleCSESearch.html#elm.web.search.google.APIGoogleCSESearch">APIGoogleCSESearch (class in elm.web.search.google)</a>
+</li>
+      <li><a href="_autosummary/elm.base.ApiQueue.html#elm.base.ApiQueue">ApiQueue (class in elm.base)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.base.APISearchEngineLinkSearch.html#elm.web.search.base.APISearchEngineLinkSearch">APISearchEngineLinkSearch (class in elm.web.search.base)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.google.APISerperSearch.html#elm.web.search.google.APISerperSearch">APISerperSearch (class in elm.web.search.google)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.tavily.APITavilySearch.html#elm.web.search.tavily.APITavilySearch">APITavilySearch (class in elm.web.search.tavily)</a>
+</li>
+      <li><a href="_autosummary/elm.web.osti.OstiList.html#elm.web.osti.OstiList.append">append() (OstiList method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesList.html#elm.web.rhub.ProfilesList.append">(ProfilesList method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsList.html#elm.web.rhub.PublicationsList.append">(PublicationsList method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.website_crawl.ContentTypeExcludeFilter.html#elm.web.website_crawl.ContentTypeExcludeFilter.apply">apply() (ContentTypeExcludeFilter method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html#elm.web.website_crawl.ELMWebsiteCrawlingStrategy.arun">arun() (ELMWebsiteCrawlingStrategy method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.tree.AsyncDecisionTree.html#elm.ords.extraction.tree.AsyncDecisionTree.async_call_node">async_call_node() (AsyncDecisionTree method)</a>
+</li>
+      <li><a href="_autosummary/elm.utilities.retry.async_retry_with_exponential_backoff.html#elm.utilities.retry.async_retry_with_exponential_backoff">async_retry_with_exponential_backoff() (in module elm.utilities.retry)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.tree.AsyncDecisionTree.html#elm.ords.extraction.tree.AsyncDecisionTree.async_run">async_run() (AsyncDecisionTree method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.tree.AsyncDecisionTree.html#elm.ords.extraction.tree.AsyncDecisionTree">AsyncDecisionTree (class in elm.ords.extraction.tree)</a>
+</li>
+      <li><a href="_autosummary/elm.web.file_loader.AsyncFileLoader.html#elm.web.file_loader.AsyncFileLoader">AsyncFileLoader (class in elm.web.file_loader)</a>
+</li>
+      <li><a href="_autosummary/elm.web.file_loader.AsyncLocalFileLoader.html#elm.web.file_loader.AsyncLocalFileLoader">AsyncLocalFileLoader (class in elm.web.file_loader)</a>
+</li>
+      <li><a href="_autosummary/elm.web.file_loader.AsyncWebFileLoader.html#elm.web.file_loader.AsyncWebFileLoader">AsyncWebFileLoader (class in elm.web.file_loader)</a>
+</li>
+      <li><a href="_autosummary/elm.web.osti.OstiRecord.html#elm.web.osti.OstiRecord.authors">authors (OstiRecord property)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsRecord.html#elm.web.rhub.PublicationsRecord.authors">(PublicationsRecord property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.osti.OstiList.html#elm.web.osti.OstiList.BASE_URL">BASE_URL (OstiList attribute)</a>
+</li>
+      <li><a href="_autosummary/elm.web.file_loader.BaseAsyncFileLoader.html#elm.web.file_loader.BaseAsyncFileLoader">BaseAsyncFileLoader (class in elm.web.file_loader)</a>
+</li>
+      <li><a href="_autosummary/elm.web.document.BaseDocument.html#elm.web.document.BaseDocument">BaseDocument (class in elm.web.document)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.ords.llm.calling.BaseLLMCaller.html#elm.ords.llm.calling.BaseLLMCaller">BaseLLMCaller (class in elm.ords.llm.calling)</a>
+</li>
+      <li><a href="_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html#elm.web.website_crawl.ELMWebsiteCrawlingStrategy.BATCH_SIZE">BATCH_SIZE (ELMWebsiteCrawlingStrategy attribute)</a>
+</li>
+      <li><a href="_autosummary/elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS.html#elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS">BEST_ZONING_ORDINANCE_KEYWORDS (in module elm.web.website_crawl)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.ords.llm.calling.ChatLLMCaller.html#elm.ords.llm.calling.ChatLLMCaller.call">call() (ChatLLMCaller method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.services.threaded.CleanedFileWriter.html#elm.ords.services.threaded.CleanedFileWriter.call">(CleanedFileWriter class method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.FileMover.html#elm.ords.services.threaded.FileMover.call">(FileMover class method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.llm.calling.LLMCaller.html#elm.ords.llm.calling.LLMCaller.call">(LLMCaller method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.openai.OpenAIService.html#elm.ords.services.openai.OpenAIService.call">(OpenAIService class method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.OrdDBFileWriter.html#elm.ords.services.threaded.OrdDBFileWriter.call">(OrdDBFileWriter class method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.cpu.PDFLoader.html#elm.ords.services.cpu.PDFLoader.call">(PDFLoader class method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.cpu.ProcessPoolService.html#elm.ords.services.cpu.ProcessPoolService.call">(ProcessPoolService class method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.base.RateLimitedService.html#elm.ords.services.base.RateLimitedService.call">(RateLimitedService class method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.base.Service.html#elm.ords.services.base.Service.call">(Service class method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.StoreFileOnDisk.html#elm.ords.services.threaded.StoreFileOnDisk.call">(StoreFileOnDisk class method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.llm.calling.StructuredLLMCaller.html#elm.ords.llm.calling.StructuredLLMCaller.call">(StructuredLLMCaller method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.TempFileCache.html#elm.ords.services.threaded.TempFileCache.call">(TempFileCache class method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.ThreadedService.html#elm.ords.services.threaded.ThreadedService.call">(ThreadedService class method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.UsageUpdater.html#elm.ords.services.threaded.UsageUpdater.call">(UsageUpdater class method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.base.ApiBase.html#elm.base.ApiBase.call_api">call_api() (ApiBase static method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed.call_api">(ChunkAndEmbed static method)</a>
+</li>
+        <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.call_api">(Chunker static method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.call_api">(EnergyWizard static method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.call_api">(EnergyWizardBase static method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.call_api">(EnergyWizardPostgres static method)</a>
+</li>
+        <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.call_api">(PDFtoTXT static method)</a>
+</li>
+        <li><a href="_autosummary/elm.summary.Summary.html#elm.summary.Summary.call_api">(Summary static method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.base.ApiBase.html#elm.base.ApiBase.call_api_async">call_api_async() (ApiBase method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed.call_api_async">(ChunkAndEmbed method)</a>
+</li>
+        <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.call_api_async">(Chunker method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.call_api_async">(EnergyWizard method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.call_api_async">(EnergyWizardBase method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.call_api_async">(EnergyWizardPostgres method)</a>
+</li>
+        <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.call_api_async">(PDFtoTXT method)</a>
+</li>
+        <li><a href="_autosummary/elm.summary.Summary.html#elm.summary.Summary.call_api_async">(Summary method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.ords.extraction.tree.AsyncDecisionTree.html#elm.ords.extraction.tree.AsyncDecisionTree.call_node">call_node() (AsyncDecisionTree method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.tree.DecisionTree.html#elm.tree.DecisionTree.call_node">(DecisionTree method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.search.google.CamoufoxGoogleLinkSearch.html#elm.web.search.google.CamoufoxGoogleLinkSearch">CamoufoxGoogleLinkSearch (class in elm.web.search.google)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.threaded.CleanedFileWriter.html#elm.ords.services.threaded.CleanedFileWriter.can_process">can_process (CleanedFileWriter property)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.services.threaded.FileMover.html#elm.ords.services.threaded.FileMover.can_process">(FileMover property)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.openai.OpenAIService.html#elm.ords.services.openai.OpenAIService.can_process">(OpenAIService property)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.OrdDBFileWriter.html#elm.ords.services.threaded.OrdDBFileWriter.can_process">(OrdDBFileWriter property)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.cpu.PDFLoader.html#elm.ords.services.cpu.PDFLoader.can_process">(PDFLoader property)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.cpu.ProcessPoolService.html#elm.ords.services.cpu.ProcessPoolService.can_process">(ProcessPoolService property)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.base.RateLimitedService.html#elm.ords.services.base.RateLimitedService.can_process">(RateLimitedService property)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.base.Service.html#elm.ords.services.base.Service.can_process">(Service property)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.StoreFileOnDisk.html#elm.ords.services.threaded.StoreFileOnDisk.can_process">(StoreFileOnDisk property)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.TempFileCache.html#elm.ords.services.threaded.TempFileCache.can_process">(TempFileCache property)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.ThreadedService.html#elm.ords.services.threaded.ThreadedService.can_process">(ThreadedService property)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.UsageUpdater.html#elm.ords.services.threaded.UsageUpdater.can_process">(UsageUpdater property)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html#elm.web.website_crawl.ELMWebsiteCrawlingStrategy.can_process_url">can_process_url() (ELMWebsiteCrawlingStrategy method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.rhub.PublicationsRecord.html#elm.web.rhub.PublicationsRecord.category">category (PublicationsRecord property)</a>
+</li>
+      <li><a href="_autosummary/elm.base.ApiBase.html#elm.base.ApiBase.chat">chat() (ApiBase method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed.chat">(ChunkAndEmbed method)</a>
+</li>
+        <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.chat">(Chunker method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.chat">(EnergyWizard method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.chat">(EnergyWizardBase method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.chat">(EnergyWizardPostgres method)</a>
+</li>
+        <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.chat">(PDFtoTXT method)</a>
+</li>
+        <li><a href="_autosummary/elm.summary.Summary.html#elm.summary.Summary.chat">(Summary method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.ords.extraction.tree.AsyncDecisionTree.html#elm.ords.extraction.tree.AsyncDecisionTree.chat_llm_caller">chat_llm_caller (AsyncDecisionTree property)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.llm.calling.ChatLLMCaller.html#elm.ords.llm.calling.ChatLLMCaller">ChatLLMCaller (class in elm.ords.llm.calling)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.validation.location.CountyJurisdictionValidator.html#elm.ords.validation.location.CountyJurisdictionValidator.check">check() (CountyJurisdictionValidator method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.validation.location.CountyNameValidator.html#elm.ords.validation.location.CountyNameValidator.check">(CountyNameValidator method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.validation.location.CountyValidator.html#elm.ords.validation.location.CountyValidator.check">(CountyValidator method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.validation.location.FixedMessageValidator.html#elm.ords.validation.location.FixedMessageValidator.check">(FixedMessageValidator method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.validation.location.URLValidator.html#elm.ords.validation.location.URLValidator.check">(URLValidator method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.ords.extraction.ordinance.OrdinanceExtractor.html#elm.ords.extraction.ordinance.OrdinanceExtractor.check_for_correct_size">check_for_correct_size() (OrdinanceExtractor method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.apply.check_for_ordinance_info.html#elm.ords.extraction.apply.check_for_ordinance_info">check_for_ordinance_info() (in module elm.ords.extraction.apply)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.ordinance.OrdinanceExtractor.html#elm.ords.extraction.ordinance.OrdinanceExtractor.check_for_restrictions">check_for_restrictions() (OrdinanceExtractor method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.chunk_text">chunk_text() (Chunker method)</a>
+</li>
+      <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.chunk_tokens">chunk_tokens (Chunker property)</a>
+</li>
+      <li><a href="_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed">ChunkAndEmbed (class in elm.embed)</a>
+</li>
+      <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker">Chunker (class in elm.chunk)</a>
+</li>
+      <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.chunks">chunks (Chunker property)</a>
+</li>
+      <li><a href="_autosummary/elm.web.osti.OstiList.html#elm.web.osti.OstiList.clean_escape_sequences">clean_escape_sequences() (OstiList method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.document.PDFDocument.html#elm.web.document.PDFDocument.CLEAN_HEADER_KWARGS">CLEAN_HEADER_KWARGS (PDFDocument attribute)</a>
+</li>
+      <li><a href="_autosummary/elm.utilities.parse.clean_headers.html#elm.utilities.parse.clean_headers">clean_headers() (in module elm.utilities.parse)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.clean_headers">(PDFtoTXT method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.clean_paragraphs">clean_paragraphs() (Chunker static method)</a>
+</li>
+      <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.clean_poppler">clean_poppler() (PDFtoTXT method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.utilities.clean_search_query.html#elm.web.utilities.clean_search_query">clean_search_query() (in module elm.web.utilities)</a>
+</li>
+      <li><a href="_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed.clean_tables">clean_tables() (ChunkAndEmbed static method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.clean_text">clean_text() (ProfilesRecord static method)</a>
+</li>
+      <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.clean_txt">clean_txt() (PDFtoTXT method)</a>
+</li>
+      <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.clean_txt_async">clean_txt_async() (PDFtoTXT method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.threaded.CleanedFileWriter.html#elm.ords.services.threaded.CleanedFileWriter">CleanedFileWriter (class in elm.ords.services.threaded)</a>
+</li>
+      <li><a href="_autosummary/elm.base.ApiBase.html#elm.base.ApiBase.clear">clear() (ApiBase method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed.clear">(ChunkAndEmbed method)</a>
+</li>
+        <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.clear">(Chunker method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.clear">(EnergyWizard method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.clear">(EnergyWizardBase method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.clear">(EnergyWizardPostgres method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.osti.OstiList.html#elm.web.osti.OstiList.clear">(OstiList method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.osti.OstiRecord.html#elm.web.osti.OstiRecord.clear">(OstiRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.clear">(PDFtoTXT method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesList.html#elm.web.rhub.ProfilesList.clear">(ProfilesList method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.clear">(ProfilesRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsList.html#elm.web.rhub.PublicationsList.clear">(PublicationsList method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsRecord.html#elm.web.rhub.PublicationsRecord.clear">(PublicationsRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.summary.Summary.html#elm.summary.Summary.clear">(Summary method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.usage.UsageTracker.html#elm.ords.services.usage.UsageTracker.clear">(UsageTracker method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.LocalProcessQueueHandler.html#elm.ords.utilities.queued_logging.LocalProcessQueueHandler.close">close() (LocalProcessQueueHandler method)</a>
+</li>
+      <li><a href="_autosummary/elm.base.ApiQueue.html#elm.base.ApiQueue.collect_jobs">collect_jobs() (ApiQueue method)</a>
+</li>
+      <li><a href="_autosummary/elm.summary.Summary.html#elm.summary.Summary.combine">combine() (Summary method)</a>
+</li>
+      <li><a href="_autosummary/elm.utilities.parse.combine_pages.html#elm.utilities.parse.combine_pages">combine_pages() (in module elm.utilities.parse)</a>
+</li>
+      <li><a href="_autosummary/elm.web.utilities.compute_fn_from_url.html#elm.web.utilities.compute_fn_from_url">compute_fn_from_url() (in module elm.web.utilities)</a>
+</li>
+      <li><a href="_autosummary/elm.web.website_crawl.ContentTypeExcludeFilter.html#elm.web.website_crawl.ContentTypeExcludeFilter">ContentTypeExcludeFilter (class in elm.web.website_crawl)</a>
+</li>
+      <li><a href="_autosummary/elm.web.utilities.PWKwargs.html#elm.web.utilities.PWKwargs.context_kwargs">context_kwargs() (PWKwargs class method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.ngrams.convert_text_to_sentence_ngrams.html#elm.ords.extraction.ngrams.convert_text_to_sentence_ngrams">convert_text_to_sentence_ngrams() (in module elm.ords.extraction.ngrams)</a>
+</li>
+      <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.convert_to_txt">convert_to_txt() (PDFtoTXT method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.osti.OstiList.html#elm.web.osti.OstiList.copy">copy() (OstiList method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.osti.OstiRecord.html#elm.web.osti.OstiRecord.copy">(OstiRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesList.html#elm.web.rhub.ProfilesList.copy">(ProfilesList method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.copy">(ProfilesRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsList.html#elm.web.rhub.PublicationsList.copy">(PublicationsList method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsRecord.html#elm.web.rhub.PublicationsRecord.copy">(PublicationsRecord method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.cosine_dist">cosine_dist() (EnergyWizard method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.osti.OstiList.html#elm.web.osti.OstiList.count">count() (OstiList method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesList.html#elm.web.rhub.ProfilesList.count">(ProfilesList method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsList.html#elm.web.rhub.PublicationsList.count">(PublicationsList method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.base.ApiBase.html#elm.base.ApiBase.count_tokens">count_tokens() (ApiBase class method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed.count_tokens">(ChunkAndEmbed class method)</a>
+</li>
+        <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.count_tokens">(Chunker class method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.count_tokens">(EnergyWizard class method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.count_tokens">(EnergyWizardBase class method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.count_tokens">(EnergyWizardPostgres class method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.openai.count_tokens.html#elm.ords.services.openai.count_tokens">(in module elm.ords.services.openai)</a>
+</li>
+        <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.count_tokens">(PDFtoTXT class method)</a>
+</li>
+        <li><a href="_autosummary/elm.summary.Summary.html#elm.summary.Summary.count_tokens">(Summary class method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.ords.utilities.location.County.html#elm.ords.utilities.location.County">County (class in elm.ords.utilities.location)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.counties.county_websites.html#elm.ords.utilities.counties.county_websites">county_websites() (in module elm.ords.utilities.counties)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.validation.location.CountyJurisdictionValidator.html#elm.ords.validation.location.CountyJurisdictionValidator">CountyJurisdictionValidator (class in elm.ords.validation.location)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.validation.location.CountyNameValidator.html#elm.ords.validation.location.CountyNameValidator">CountyNameValidator (class in elm.ords.validation.location)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.validation.location.CountyValidator.html#elm.ords.validation.location.CountyValidator">CountyValidator (class in elm.ords.validation.location)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.LocalProcessQueueHandler.html#elm.ords.utilities.queued_logging.LocalProcessQueueHandler.createLock">createLock() (LocalProcessQueueHandler method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.google.APIGoogleCSESearch.html#elm.web.search.google.APIGoogleCSESearch.CSE_ID_VAR">CSE_ID_VAR (APIGoogleCSESearch attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.osti.OstiRecord.html#elm.web.osti.OstiRecord.date">date (OstiRecord property)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.date.DateExtractor.html#elm.ords.extraction.date.DateExtractor">DateExtractor (class in elm.ords.extraction.date)</a>
+</li>
+      <li><a href="_autosummary/elm.tree.DecisionTree.html#elm.tree.DecisionTree">DecisionTree (class in elm.tree)</a>
+</li>
+      <li><a href="_autosummary/elm.web.utilities.DEFAULT_HEADERS.html#elm.web.utilities.DEFAULT_HEADERS">DEFAULT_HEADERS (in module elm.web.utilities)</a>
+</li>
+      <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.DEFAULT_META_COLS">DEFAULT_META_COLS (EnergyWizardPostgres attribute)</a>
+</li>
+      <li><a href="_autosummary/elm.base.ApiBase.html#elm.base.ApiBase.DEFAULT_MODEL">DEFAULT_MODEL (ApiBase attribute)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed.DEFAULT_MODEL">(ChunkAndEmbed attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.DEFAULT_MODEL">(Chunker attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.DEFAULT_MODEL">(EnergyWizard attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.DEFAULT_MODEL">(EnergyWizardBase attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.DEFAULT_MODEL">(EnergyWizardPostgres attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.DEFAULT_MODEL">(PDFtoTXT attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.summary.Summary.html#elm.summary.Summary.DEFAULT_MODEL">(Summary attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.osti.OstiRecord.html#elm.web.osti.OstiRecord.doi">doi (OstiRecord property)</a>
+</li>
+      <li><a href="_autosummary/elm.web.osti.OstiList.html#elm.web.osti.OstiList.download">download() (OstiList method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.osti.OstiRecord.html#elm.web.osti.OstiRecord.download">(OstiRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesList.html#elm.web.rhub.ProfilesList.download">(ProfilesList method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.download">(ProfilesRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsList.html#elm.web.rhub.PublicationsList.download">(PublicationsList method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsRecord.html#elm.web.rhub.PublicationsRecord.download">(PublicationsRecord method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.ords.download.download_county_ordinance.html#elm.ords.download.download_county_ordinance">download_county_ordinance() (in module elm.ords.download)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.dux.DuxDistributedGlobalSearch.html#elm.web.search.dux.DuxDistributedGlobalSearch">DuxDistributedGlobalSearch (class in elm.web.search.dux)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.education">education (ProfilesRecord property)</a>
+</li>
+      <li>
+    elm
+
+      <ul>
+        <li><a href="_autosummary/elm.html#module-elm">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm command line option
+
+      <ul>
+        <li><a href="_cli/elm.html#cmdoption-elm-version">--version</a>
+</li>
+      </ul></li>
+      <li>
+    elm-ords command line option
+
+      <ul>
+        <li><a href="_cli/elm.html#cmdoption-elm-ords-c">--config</a>
+</li>
+        <li><a href="_cli/elm.html#cmdoption-elm-ords-v">--verbose</a>
+</li>
+        <li><a href="_cli/elm.html#cmdoption-elm-ords-c">-c</a>
+</li>
+        <li><a href="_cli/elm.html#cmdoption-elm-ords-v">-v</a>
+</li>
+      </ul></li>
+      <li>
+    elm.base
+
+      <ul>
+        <li><a href="_autosummary/elm.base.html#module-elm.base">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.chunk
+
+      <ul>
+        <li><a href="_autosummary/elm.chunk.html#module-elm.chunk">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.cli
+
+      <ul>
+        <li><a href="_autosummary/elm.cli.html#module-elm.cli">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.embed
+
+      <ul>
+        <li><a href="_autosummary/elm.embed.html#module-elm.embed">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.exceptions
+
+      <ul>
+        <li><a href="_autosummary/elm.exceptions.html#module-elm.exceptions">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.html#module-elm.ords">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.download
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.download.html#module-elm.ords.download">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.extraction
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.extraction.html#module-elm.ords.extraction">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.extraction.apply
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.extraction.apply.html#module-elm.ords.extraction.apply">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.extraction.date
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.extraction.date.html#module-elm.ords.extraction.date">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.extraction.features
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.extraction.features.html#module-elm.ords.extraction.features">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.extraction.graphs
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.extraction.graphs.html#module-elm.ords.extraction.graphs">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.extraction.ngrams
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.extraction.ngrams.html#module-elm.ords.extraction.ngrams">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.extraction.ordinance
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.extraction.ordinance.html#module-elm.ords.extraction.ordinance">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.extraction.parse
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.extraction.parse.html#module-elm.ords.extraction.parse">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.extraction.tree
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.extraction.tree.html#module-elm.ords.extraction.tree">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.llm
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.llm.html#module-elm.ords.llm">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.llm.calling
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.llm.calling.html#module-elm.ords.llm.calling">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.process
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.process.html#module-elm.ords.process">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.services
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.services.html#module-elm.ords.services">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.services.base
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.services.base.html#module-elm.ords.services.base">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.services.cpu
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.services.cpu.html#module-elm.ords.services.cpu">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.services.openai
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.services.openai.html#module-elm.ords.services.openai">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.services.provider
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.services.provider.html#module-elm.ords.services.provider">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.services.queues
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.services.queues.html#module-elm.ords.services.queues">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.services.threaded
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.services.threaded.html#module-elm.ords.services.threaded">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.services.usage
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.services.usage.html#module-elm.ords.services.usage">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.utilities
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.utilities.html#module-elm.ords.utilities">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.utilities.counties
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.utilities.counties.html#module-elm.ords.utilities.counties">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.utilities.exceptions
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.utilities.exceptions.html#module-elm.ords.utilities.exceptions">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.utilities.location
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.utilities.location.html#module-elm.ords.utilities.location">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.utilities.parsing
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.utilities.parsing.html#module-elm.ords.utilities.parsing">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.utilities.queued_logging
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.utilities.queued_logging.html#module-elm.ords.utilities.queued_logging">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.validation
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.validation.html#module-elm.ords.validation">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.validation.content
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.validation.content.html#module-elm.ords.validation.content">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.ords.validation.location
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.validation.location.html#module-elm.ords.validation.location">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.pdf
+
+      <ul>
+        <li><a href="_autosummary/elm.pdf.html#module-elm.pdf">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.summary
+
+      <ul>
+        <li><a href="_autosummary/elm.summary.html#module-elm.summary">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.tree
+
+      <ul>
+        <li><a href="_autosummary/elm.tree.html#module-elm.tree">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.utilities
+
+      <ul>
+        <li><a href="_autosummary/elm.utilities.html#module-elm.utilities">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.utilities.parse
+
+      <ul>
+        <li><a href="_autosummary/elm.utilities.parse.html#module-elm.utilities.parse">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    elm.utilities.retry
+
+      <ul>
+        <li><a href="_autosummary/elm.utilities.retry.html#module-elm.utilities.retry">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.utilities.try_import
+
+      <ul>
+        <li><a href="_autosummary/elm.utilities.try_import.html#module-elm.utilities.try_import">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.utilities.validation
+
+      <ul>
+        <li><a href="_autosummary/elm.utilities.validation.html#module-elm.utilities.validation">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.version
+
+      <ul>
+        <li><a href="_autosummary/elm.version.html#module-elm.version">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.web
+
+      <ul>
+        <li><a href="_autosummary/elm.web.html#module-elm.web">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.web.document
+
+      <ul>
+        <li><a href="_autosummary/elm.web.document.html#module-elm.web.document">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.web.file_loader
+
+      <ul>
+        <li><a href="_autosummary/elm.web.file_loader.html#module-elm.web.file_loader">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.web.html_pw
+
+      <ul>
+        <li><a href="_autosummary/elm.web.html_pw.html#module-elm.web.html_pw">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.web.osti
+
+      <ul>
+        <li><a href="_autosummary/elm.web.osti.html#module-elm.web.osti">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.web.rhub
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.html#module-elm.web.rhub">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.web.search
+
+      <ul>
+        <li><a href="_autosummary/elm.web.search.html#module-elm.web.search">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.web.search.base
+
+      <ul>
+        <li><a href="_autosummary/elm.web.search.base.html#module-elm.web.search.base">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.web.search.bing
+
+      <ul>
+        <li><a href="_autosummary/elm.web.search.bing.html#module-elm.web.search.bing">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.web.search.duckduckgo
+
+      <ul>
+        <li><a href="_autosummary/elm.web.search.duckduckgo.html#module-elm.web.search.duckduckgo">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.web.search.dux
+
+      <ul>
+        <li><a href="_autosummary/elm.web.search.dux.html#module-elm.web.search.dux">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.web.search.google
+
+      <ul>
+        <li><a href="_autosummary/elm.web.search.google.html#module-elm.web.search.google">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.web.search.run
+
+      <ul>
+        <li><a href="_autosummary/elm.web.search.run.html#module-elm.web.search.run">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.web.search.tavily
+
+      <ul>
+        <li><a href="_autosummary/elm.web.search.tavily.html#module-elm.web.search.tavily">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.web.search.yahoo
+
+      <ul>
+        <li><a href="_autosummary/elm.web.search.yahoo.html#module-elm.web.search.yahoo">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.web.utilities
+
+      <ul>
+        <li><a href="_autosummary/elm.web.utilities.html#module-elm.web.utilities">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.web.website_crawl
+
+      <ul>
+        <li><a href="_autosummary/elm.web.website_crawl.html#module-elm.web.website_crawl">module</a>
+</li>
+      </ul></li>
+      <li>
+    elm.wizard
+
+      <ul>
+        <li><a href="_autosummary/elm.wizard.html#module-elm.wizard">module</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.website_crawl.ELM_URL_FILTER.html#elm.web.website_crawl.ELM_URL_FILTER">ELM_URL_FILTER (in module elm.web.website_crawl)</a>
+</li>
+      <li><a href="_autosummary/elm.exceptions.ELMError.html#elm.exceptions.ELMError">ELMError</a>
+</li>
+      <li><a href="_autosummary/elm.exceptions.ELMInputError.html#elm.exceptions.ELMInputError">ELMInputError</a>
+</li>
+      <li><a href="_autosummary/elm.exceptions.ELMKeyError.html#elm.exceptions.ELMKeyError">ELMKeyError</a>
+</li>
+      <li><a href="_autosummary/elm.web.website_crawl.ELMLinkScorer.html#elm.web.website_crawl.ELMLinkScorer">ELMLinkScorer (class in elm.web.website_crawl)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.exceptions.ELMOrdsError.html#elm.ords.utilities.exceptions.ELMOrdsError">ELMOrdsError</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.exceptions.ELMOrdsNotInitializedError.html#elm.ords.utilities.exceptions.ELMOrdsNotInitializedError">ELMOrdsNotInitializedError</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.exceptions.ELMOrdsRuntimeError.html#elm.ords.utilities.exceptions.ELMOrdsRuntimeError">ELMOrdsRuntimeError</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.exceptions.ELMOrdsValueError.html#elm.ords.utilities.exceptions.ELMOrdsValueError">ELMOrdsValueError</a>
+</li>
+      <li><a href="_autosummary/elm.exceptions.ELMRuntimeError.html#elm.exceptions.ELMRuntimeError">ELMRuntimeError</a>
+</li>
+      <li><a href="_autosummary/elm.web.website_crawl.ELMWebsiteCrawler.html#elm.web.website_crawl.ELMWebsiteCrawler">ELMWebsiteCrawler (class in elm.web.website_crawl)</a>
+</li>
+      <li><a href="_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html#elm.web.website_crawl.ELMWebsiteCrawlingStrategy">ELMWebsiteCrawlingStrategy (class in elm.web.website_crawl)</a>
+</li>
+      <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.email">email (ProfilesRecord property)</a>
+</li>
+      <li><a href="_autosummary/elm.base.ApiBase.html#elm.base.ApiBase.EMBEDDING_MODEL">EMBEDDING_MODEL (ApiBase attribute)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed.EMBEDDING_MODEL">(ChunkAndEmbed attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.EMBEDDING_MODEL">(Chunker attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.EMBEDDING_MODEL">(EnergyWizard attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.EMBEDDING_MODEL">(EnergyWizardBase attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.EMBEDDING_MODEL">(EnergyWizardPostgres attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.EMBEDDING_MODEL">(PDFtoTXT attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.summary.Summary.html#elm.summary.Summary.EMBEDDING_MODEL">(Summary attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.base.ApiBase.html#elm.base.ApiBase.EMBEDDING_URL">EMBEDDING_URL (ApiBase attribute)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed.EMBEDDING_URL">(ChunkAndEmbed attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.EMBEDDING_URL">(Chunker attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.EMBEDDING_URL">(EnergyWizard attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.EMBEDDING_URL">(EnergyWizardBase attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.EMBEDDING_URL">(EnergyWizardPostgres attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.EMBEDDING_URL">(PDFtoTXT attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.summary.Summary.html#elm.summary.Summary.EMBEDDING_URL">(Summary attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.LocalProcessQueueHandler.html#elm.ords.utilities.queued_logging.LocalProcessQueueHandler.emit">emit() (LocalProcessQueueHandler method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.document.BaseDocument.html#elm.web.document.BaseDocument.empty">empty (BaseDocument property)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.document.HTMLDocument.html#elm.web.document.HTMLDocument.empty">(HTMLDocument property)</a>
+</li>
+        <li><a href="_autosummary/elm.web.document.PDFDocument.html#elm.web.document.PDFDocument.empty">(PDFDocument property)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html#elm.web.website_crawl.PeekablePriorityQueue.empty">empty() (PeekablePriorityQueue method)</a>
+</li>
+      <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard">EnergyWizard (class in elm.wizard)</a>
+</li>
+      <li><a href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase">EnergyWizardBase (class in elm.wizard)</a>
+</li>
+      <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres">EnergyWizardPostgres (class in elm.wizard)</a>
+</li>
+      <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.engineer_query">engineer_query() (EnergyWizard method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.engineer_query">(EnergyWizardBase method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.engineer_query">(EnergyWizardPostgres method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.LocalProcessQueueHandler.html#elm.ords.utilities.queued_logging.LocalProcessQueueHandler.enqueue">enqueue() (LocalProcessQueueHandler method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.website_crawl.ContentTypeExcludeFilter.html#elm.web.website_crawl.ContentTypeExcludeFilter.EXCLUDE_EXTENSIONS">EXCLUDE_EXTENSIONS (ContentTypeExcludeFilter attribute)</a>
+</li>
+      <li><a href="_autosummary/elm.web.osti.OstiList.html#elm.web.osti.OstiList.extend">extend() (OstiList method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesList.html#elm.web.rhub.ProfilesList.extend">(ProfilesList method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsList.html#elm.web.rhub.PublicationsList.extend">(PublicationsList method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.ords.extraction.apply.extract_ordinance_text_with_llm.html#elm.ords.extraction.apply.extract_ordinance_text_with_llm">extract_ordinance_text_with_llm() (in module elm.ords.extraction.apply)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.apply.extract_ordinance_text_with_ngram_validation.html#elm.ords.extraction.apply.extract_ordinance_text_with_ngram_validation">extract_ordinance_text_with_ngram_validation() (in module elm.ords.extraction.apply)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.apply.extract_ordinance_values.html#elm.ords.extraction.apply.extract_ordinance_values">extract_ordinance_values() (in module elm.ords.extraction.apply)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.file_loader.AsyncFileLoader.html#elm.web.file_loader.AsyncFileLoader.fetch">fetch() (AsyncFileLoader method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.file_loader.AsyncLocalFileLoader.html#elm.web.file_loader.AsyncLocalFileLoader.fetch">(AsyncLocalFileLoader method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.file_loader.AsyncWebFileLoader.html#elm.web.file_loader.AsyncWebFileLoader.fetch">(AsyncWebFileLoader method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.file_loader.BaseAsyncFileLoader.html#elm.web.file_loader.BaseAsyncFileLoader.fetch">(BaseAsyncFileLoader method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.file_loader.AsyncFileLoader.html#elm.web.file_loader.AsyncFileLoader.fetch_all">fetch_all() (AsyncFileLoader method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.file_loader.AsyncLocalFileLoader.html#elm.web.file_loader.AsyncLocalFileLoader.fetch_all">(AsyncLocalFileLoader method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.file_loader.AsyncWebFileLoader.html#elm.web.file_loader.AsyncWebFileLoader.fetch_all">(AsyncWebFileLoader method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.file_loader.BaseAsyncFileLoader.html#elm.web.file_loader.BaseAsyncFileLoader.fetch_all">(BaseAsyncFileLoader method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.document.BaseDocument.html#elm.web.document.BaseDocument.FILE_EXTENSION">FILE_EXTENSION (BaseDocument property)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.threaded.FileMover.html#elm.ords.services.threaded.FileMover">FileMover (class in elm.ords.services.threaded)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.LocalProcessQueueHandler.html#elm.ords.utilities.queued_logging.LocalProcessQueueHandler.filter">filter() (LocalProcessQueueHandler method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.utilities.queued_logging.LocationFilter.html#elm.ords.utilities.queued_logging.LocationFilter.filter">(LocationFilter method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.utilities.queued_logging.NoLocationFilter.html#elm.ords.utilities.queued_logging.NoLocationFilter.filter">(NoLocationFilter method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.utilities.filter_documents.html#elm.web.utilities.filter_documents">filter_documents() (in module elm.web.utilities)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.first_name">first_name (ProfilesRecord property)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.validation.location.FixedMessageValidator.html#elm.ords.validation.location.FixedMessageValidator">FixedMessageValidator (class in elm.ords.validation.location)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.LocalProcessQueueHandler.html#elm.ords.utilities.queued_logging.LocalProcessQueueHandler.flush">flush() (LocalProcessQueueHandler method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.LocalProcessQueueHandler.html#elm.ords.utilities.queued_logging.LocalProcessQueueHandler.format">format() (LocalProcessQueueHandler method)</a>
+</li>
+      <li><a href="_autosummary/elm.utilities.parse.format_html_tables.html#elm.utilities.parse.format_html_tables">format_html_tables() (in module elm.utilities.parse)</a>
+</li>
+      <li><a href="_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html#elm.web.website_crawl.ELMWebsiteCrawlingStrategy.found_enough_docs">found_enough_docs() (ELMWebsiteCrawlingStrategy class method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.document.PDFDocument.html#elm.web.document.PDFDocument.from_file">from_file() (PDFDocument class method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.osti.OstiList.html#elm.web.osti.OstiList.from_osti_ids">from_osti_ids() (OstiList class method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.osti.OstiRecord.html#elm.web.osti.OstiRecord.fromkeys">fromkeys() (OstiRecord class method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.fromkeys">(ProfilesRecord class method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsRecord.html#elm.web.rhub.PublicationsRecord.fromkeys">(PublicationsRecord class method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html#elm.web.website_crawl.PeekablePriorityQueue.full">full() (PeekablePriorityQueue method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.location.County.html#elm.ords.utilities.location.County.full_name">full_name (County property)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.utilities.location.Location.html#elm.ords.utilities.location.Location.full_name">(Location property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.base.ApiBase.html#elm.base.ApiBase.generic_async_query">generic_async_query() (ApiBase method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed.generic_async_query">(ChunkAndEmbed method)</a>
+</li>
+        <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.generic_async_query">(Chunker method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.generic_async_query">(EnergyWizard method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.generic_async_query">(EnergyWizardBase method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.generic_async_query">(EnergyWizardPostgres method)</a>
+</li>
+        <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.generic_async_query">(PDFtoTXT method)</a>
+</li>
+        <li><a href="_autosummary/elm.summary.Summary.html#elm.summary.Summary.generic_async_query">(Summary method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.base.ApiBase.html#elm.base.ApiBase.generic_query">generic_query() (ApiBase method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed.generic_query">(ChunkAndEmbed method)</a>
+</li>
+        <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.generic_query">(Chunker method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.generic_query">(EnergyWizard method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.generic_query">(EnergyWizardBase method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.generic_query">(EnergyWizardPostgres method)</a>
+</li>
+        <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.generic_query">(PDFtoTXT method)</a>
+</li>
+        <li><a href="_autosummary/elm.summary.Summary.html#elm.summary.Summary.generic_query">(Summary method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.osti.OstiRecord.html#elm.web.osti.OstiRecord.get">get() (OstiRecord method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html#elm.web.website_crawl.PeekablePriorityQueue.get">(PeekablePriorityQueue method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.get">(ProfilesRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsRecord.html#elm.web.rhub.PublicationsRecord.get">(PublicationsRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.usage.UsageTracker.html#elm.ords.services.usage.UsageTracker.get">(UsageTracker method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.search.base.PatchedSerpApiClient.html#elm.web.search.base.PatchedSerpApiClient.get_account">get_account() (PatchedSerpApiClient method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.search.base.PatchedSerpApiClient.html#elm.web.search.base.PatchedSerpApiClient.get_dict">get_dict() (PatchedSerpApiClient method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.base.PatchedSerpApiClient.html#elm.web.search.base.PatchedSerpApiClient.get_dictionary">get_dictionary() (PatchedSerpApiClient method)</a>
+</li>
+      <li><a href="_autosummary/elm.base.ApiBase.html#elm.base.ApiBase.get_embedding">get_embedding() (ApiBase class method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed.get_embedding">(ChunkAndEmbed class method)</a>
+</li>
+        <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.get_embedding">(Chunker class method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.get_embedding">(EnergyWizard class method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.get_embedding">(EnergyWizardBase class method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.get_embedding">(EnergyWizardPostgres method)</a>
+</li>
+        <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.get_embedding">(PDFtoTXT class method)</a>
+</li>
+        <li><a href="_autosummary/elm.summary.Summary.html#elm.summary.Summary.get_embedding">(Summary class method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.search.base.PatchedSerpApiClient.html#elm.web.search.base.PatchedSerpApiClient.get_html">get_html() (PatchedSerpApiClient method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.base.PatchedSerpApiClient.html#elm.web.search.base.PatchedSerpApiClient.get_json">get_json() (PatchedSerpApiClient method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.base.PatchedSerpApiClient.html#elm.web.search.base.PatchedSerpApiClient.get_location">get_location() (PatchedSerpApiClient method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html#elm.web.website_crawl.PeekablePriorityQueue.get_nowait">get_nowait() (PeekablePriorityQueue method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.base.PatchedSerpApiClient.html#elm.web.search.base.PatchedSerpApiClient.get_object">get_object() (PatchedSerpApiClient method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.base.PatchedSerpApiClient.html#elm.web.search.base.PatchedSerpApiClient.get_raw_json">get_raw_json() (PatchedSerpApiClient method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.utilities.get_redirected_url.html#elm.web.utilities.get_redirected_url">get_redirected_url() (in module elm.web.utilities)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.base.PatchedSerpApiClient.html#elm.web.search.base.PatchedSerpApiClient.get_response">get_response() (PatchedSerpApiClient method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.base.PatchedSerpApiClient.html#elm.web.search.base.PatchedSerpApiClient.get_results">get_results() (PatchedSerpApiClient method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.base.PatchedSerpApiClient.html#elm.web.search.base.PatchedSerpApiClient.get_search_archive">get_search_archive() (PatchedSerpApiClient method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.queues.get_service_queue.html#elm.ords.services.queues.get_service_queue">get_service_queue() (in module elm.ords.services.queues)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.tree.AsyncDecisionTree.html#elm.ords.extraction.tree.AsyncDecisionTree.graph">graph (AsyncDecisionTree property)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.tree.DecisionTree.html#elm.tree.DecisionTree.graph">(DecisionTree property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.LocalProcessQueueHandler.html#elm.ords.utilities.queued_logging.LocalProcessQueueHandler.handle">handle() (LocalProcessQueueHandler method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.LocalProcessQueueHandler.html#elm.ords.utilities.queued_logging.LocalProcessQueueHandler.handleError">handleError() (LocalProcessQueueHandler method)</a>
+</li>
+      <li><a href="_autosummary/elm.base.ApiBase.html#elm.base.ApiBase.HEADERS">HEADERS (ApiBase attribute)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed.HEADERS">(ChunkAndEmbed attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.HEADERS">(Chunker attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.HEADERS">(EnergyWizard attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.HEADERS">(EnergyWizardBase attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.HEADERS">(EnergyWizardPostgres attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.HEADERS">(PDFtoTXT attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.summary.Summary.html#elm.summary.Summary.HEADERS">(Summary attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.ords.extraction.tree.AsyncDecisionTree.html#elm.ords.extraction.tree.AsyncDecisionTree.history">history (AsyncDecisionTree property)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.tree.DecisionTree.html#elm.tree.DecisionTree.history">(DecisionTree property)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.document.HTMLDocument.html#elm.web.document.HTMLDocument.HTML_TABLE_TO_MARKDOWN_KWARGS">HTML_TABLE_TO_MARKDOWN_KWARGS (HTMLDocument attribute)</a>
+</li>
+      <li><a href="_autosummary/elm.utilities.parse.html_to_text.html#elm.utilities.parse.html_to_text">html_to_text() (in module elm.utilities.parse)</a>
+</li>
+      <li><a href="_autosummary/elm.web.document.HTMLDocument.html#elm.web.document.HTMLDocument">HTMLDocument (class in elm.web.document)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.id">id (ProfilesRecord property)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsRecord.html#elm.web.rhub.PublicationsRecord.id">(PublicationsRecord property)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.osti.OstiList.html#elm.web.osti.OstiList.index">index() (OstiList method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesList.html#elm.web.rhub.ProfilesList.index">(ProfilesList method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsList.html#elm.web.rhub.PublicationsList.index">(PublicationsList method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.ords.services.queues.initialize_service_queue.html#elm.ords.services.queues.initialize_service_queue">initialize_service_queue() (in module elm.ords.services.queues)</a>
+</li>
+      <li><a href="_autosummary/elm.web.osti.OstiList.html#elm.web.osti.OstiList.insert">insert() (OstiList method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesList.html#elm.web.rhub.ProfilesList.insert">(ProfilesList method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsList.html#elm.web.rhub.PublicationsList.insert">(PublicationsList method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.is_good_paragraph">is_good_paragraph() (Chunker static method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.ordinance.OrdinanceValidator.html#elm.ords.extraction.ordinance.OrdinanceValidator.is_legal_text">is_legal_text (OrdinanceValidator property)</a>
+</li>
+      <li><a href="_autosummary/elm.utilities.parse.is_multi_col.html#elm.utilities.parse.is_multi_col">is_multi_col() (in module elm.utilities.parse)</a>
+</li>
+      <li><a href="_autosummary/elm.web.osti.OstiRecord.html#elm.web.osti.OstiRecord.items">items() (OstiRecord method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.items">(ProfilesRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsRecord.html#elm.web.rhub.PublicationsRecord.items">(PublicationsRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.usage.UsageTracker.html#elm.ords.services.usage.UsageTracker.items">(UsageTracker method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="J">J</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html#elm.web.website_crawl.PeekablePriorityQueue.join">join() (PeekablePriorityQueue method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.osti.OstiRecord.html#elm.web.osti.OstiRecord.keys">keys() (OstiRecord method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.keys">(ProfilesRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsRecord.html#elm.web.rhub.PublicationsRecord.keys">(PublicationsRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.usage.UsageTracker.html#elm.ords.services.usage.UsageTracker.keys">(UsageTracker method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.last_name">last_name (ProfilesRecord property)</a>
+</li>
+      <li><a href="_autosummary/elm.web.utilities.PWKwargs.html#elm.web.utilities.PWKwargs.launch_kwargs">launch_kwargs() (PWKwargs class method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html#elm.web.website_crawl.ELMWebsiteCrawlingStrategy.link_discovery">link_discovery() (ELMWebsiteCrawlingStrategy method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.rhub.PublicationsRecord.html#elm.web.rhub.PublicationsRecord.links">links (PublicationsRecord property)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.parsing.llm_response_as_json.html#elm.ords.utilities.parsing.llm_response_as_json">llm_response_as_json() (in module elm.ords.utilities.parsing)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.graphs.llm_response_does_not_start_with_no.html#elm.ords.extraction.graphs.llm_response_does_not_start_with_no">llm_response_does_not_start_with_no() (in module elm.ords.extraction.graphs)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.graphs.llm_response_starts_with_no.html#elm.ords.extraction.graphs.llm_response_starts_with_no">llm_response_starts_with_no() (in module elm.ords.extraction.graphs)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.graphs.llm_response_starts_with_yes.html#elm.ords.extraction.graphs.llm_response_starts_with_yes">llm_response_starts_with_yes() (in module elm.ords.extraction.graphs)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.llm.calling.LLMCaller.html#elm.ords.llm.calling.LLMCaller">LLMCaller (class in elm.ords.llm.calling)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.ords.utilities.counties.load_all_county_info.html#elm.ords.utilities.counties.load_all_county_info">load_all_county_info() (in module elm.ords.utilities.counties)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.counties.load_counties_from_fp.html#elm.ords.utilities.counties.load_counties_from_fp">load_counties_from_fp() (in module elm.ords.utilities.counties)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.run.load_docs.html#elm.web.search.run.load_docs">load_docs() (in module elm.web.search.run)</a>
+</li>
+      <li><a href="_autosummary/elm.web.html_pw.load_html_with_pw.html#elm.web.html_pw.load_html_with_pw">load_html_with_pw() (in module elm.web.html_pw)</a>
+</li>
+      <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.load_pdf">load_pdf() (PDFtoTXT method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.LocalProcessQueueHandler.html#elm.ords.utilities.queued_logging.LocalProcessQueueHandler">LocalProcessQueueHandler (class in elm.ords.utilities.queued_logging)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.location.Location.html#elm.ords.utilities.location.Location">Location (class in elm.ords.utilities.location)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.LocationFileLog.html#elm.ords.utilities.queued_logging.LocationFileLog">LocationFileLog (class in elm.ords.utilities.queued_logging)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.LocationFilter.html#elm.ords.utilities.queued_logging.LocationFilter">LocationFilter (class in elm.ords.utilities.queued_logging)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.LogListener.html#elm.ords.utilities.queued_logging.LogListener">LogListener (class in elm.ords.utilities.queued_logging)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.make_gpt_messages">make_gpt_messages() (PDFtoTXT method)</a>
+</li>
+      <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.make_ref_list">make_ref_list() (EnergyWizard method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.make_ref_list">(EnergyWizardBase method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.make_ref_list">(EnergyWizardPostgres method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.ords.services.threaded.CleanedFileWriter.html#elm.ords.services.threaded.CleanedFileWriter.MAX_CONCURRENT_JOBS">MAX_CONCURRENT_JOBS (CleanedFileWriter attribute)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.services.threaded.FileMover.html#elm.ords.services.threaded.FileMover.MAX_CONCURRENT_JOBS">(FileMover attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.openai.OpenAIService.html#elm.ords.services.openai.OpenAIService.MAX_CONCURRENT_JOBS">(OpenAIService attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.OrdDBFileWriter.html#elm.ords.services.threaded.OrdDBFileWriter.MAX_CONCURRENT_JOBS">(OrdDBFileWriter attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.cpu.PDFLoader.html#elm.ords.services.cpu.PDFLoader.MAX_CONCURRENT_JOBS">(PDFLoader attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.cpu.ProcessPoolService.html#elm.ords.services.cpu.ProcessPoolService.MAX_CONCURRENT_JOBS">(ProcessPoolService attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.base.RateLimitedService.html#elm.ords.services.base.RateLimitedService.MAX_CONCURRENT_JOBS">(RateLimitedService attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.base.Service.html#elm.ords.services.base.Service.MAX_CONCURRENT_JOBS">(Service attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.StoreFileOnDisk.html#elm.ords.services.threaded.StoreFileOnDisk.MAX_CONCURRENT_JOBS">(StoreFileOnDisk attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.TempFileCache.html#elm.ords.services.threaded.TempFileCache.MAX_CONCURRENT_JOBS">(TempFileCache attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.ThreadedService.html#elm.ords.services.threaded.ThreadedService.MAX_CONCURRENT_JOBS">(ThreadedService attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.UsageUpdater.html#elm.ords.services.threaded.UsageUpdater.MAX_CONCURRENT_JOBS">(UsageUpdater attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.search.google.CamoufoxGoogleLinkSearch.html#elm.web.search.google.CamoufoxGoogleLinkSearch.MAX_RESULTS_CONSIDERED_PER_PAGE">MAX_RESULTS_CONSIDERED_PER_PAGE (CamoufoxGoogleLinkSearch attribute)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.search.bing.PlaywrightBingLinkSearch.html#elm.web.search.bing.PlaywrightBingLinkSearch.MAX_RESULTS_CONSIDERED_PER_PAGE">(PlaywrightBingLinkSearch attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.duckduckgo.PlaywrightDuckDuckGoLinkSearch.html#elm.web.search.duckduckgo.PlaywrightDuckDuckGoLinkSearch.MAX_RESULTS_CONSIDERED_PER_PAGE">(PlaywrightDuckDuckGoLinkSearch attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.google.PlaywrightGoogleCSELinkSearch.html#elm.web.search.google.PlaywrightGoogleCSELinkSearch.MAX_RESULTS_CONSIDERED_PER_PAGE">(PlaywrightGoogleCSELinkSearch attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.google.PlaywrightGoogleLinkSearch.html#elm.web.search.google.PlaywrightGoogleLinkSearch.MAX_RESULTS_CONSIDERED_PER_PAGE">(PlaywrightGoogleLinkSearch attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.base.PlaywrightSearchEngineLinkSearch.html#elm.web.search.base.PlaywrightSearchEngineLinkSearch.MAX_RESULTS_CONSIDERED_PER_PAGE">(PlaywrightSearchEngineLinkSearch attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.yahoo.PlaywrightYahooLinkSearch.html#elm.web.search.yahoo.PlaywrightYahooLinkSearch.MAX_RESULTS_CONSIDERED_PER_PAGE">(PlaywrightYahooLinkSearch attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html#elm.web.website_crawl.PeekablePriorityQueue.maxsize">maxsize (PeekablePriorityQueue property)</a>
+</li>
+      <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.merge_chunks">merge_chunks() (Chunker method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.parsing.merge_overlapping_texts.html#elm.ords.utilities.parsing.merge_overlapping_texts">merge_overlapping_texts() (in module elm.ords.utilities.parsing)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.tree.AsyncDecisionTree.html#elm.ords.extraction.tree.AsyncDecisionTree.messages">messages (AsyncDecisionTree property)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.tree.DecisionTree.html#elm.tree.DecisionTree.messages">(DecisionTree property)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.osti.OstiList.html#elm.web.osti.OstiList.meta">meta (OstiList property)</a>
+</li>
+      <li><a href="_autosummary/elm.web.rhub.ProfilesList.html#elm.web.rhub.ProfilesList.meta">meta() (ProfilesList method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsList.html#elm.web.rhub.PublicationsList.meta">(PublicationsList method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.MODEL_INSTRUCTION">MODEL_INSTRUCTION (EnergyWizard attribute)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.MODEL_INSTRUCTION">(EnergyWizardBase attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.MODEL_INSTRUCTION">(EnergyWizardPostgres attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.MODEL_INSTRUCTION">(PDFtoTXT attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.summary.Summary.html#elm.summary.Summary.MODEL_INSTRUCTION">(Summary attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.base.ApiBase.html#elm.base.ApiBase.MODEL_ROLE">MODEL_ROLE (ApiBase attribute)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed.MODEL_ROLE">(ChunkAndEmbed attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.MODEL_ROLE">(Chunker attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.MODEL_ROLE">(EnergyWizard attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.MODEL_ROLE">(EnergyWizardBase attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.MODEL_ROLE">(EnergyWizardPostgres attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.MODEL_ROLE">(PDFtoTXT attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.summary.Summary.html#elm.summary.Summary.MODEL_ROLE">(Summary attribute)</a>
+</li>
+      </ul></li>
+      <li>
+    module
+
+      <ul>
+        <li><a href="_autosummary/elm.html#module-elm">elm</a>
+</li>
+        <li><a href="_autosummary/elm.base.html#module-elm.base">elm.base</a>
+</li>
+        <li><a href="_autosummary/elm.chunk.html#module-elm.chunk">elm.chunk</a>
+</li>
+        <li><a href="_autosummary/elm.cli.html#module-elm.cli">elm.cli</a>
+</li>
+        <li><a href="_autosummary/elm.embed.html#module-elm.embed">elm.embed</a>
+</li>
+        <li><a href="_autosummary/elm.exceptions.html#module-elm.exceptions">elm.exceptions</a>
+</li>
+        <li><a href="_autosummary/elm.ords.html#module-elm.ords">elm.ords</a>
+</li>
+        <li><a href="_autosummary/elm.ords.download.html#module-elm.ords.download">elm.ords.download</a>
+</li>
+        <li><a href="_autosummary/elm.ords.extraction.html#module-elm.ords.extraction">elm.ords.extraction</a>
+</li>
+        <li><a href="_autosummary/elm.ords.extraction.apply.html#module-elm.ords.extraction.apply">elm.ords.extraction.apply</a>
+</li>
+        <li><a href="_autosummary/elm.ords.extraction.date.html#module-elm.ords.extraction.date">elm.ords.extraction.date</a>
+</li>
+        <li><a href="_autosummary/elm.ords.extraction.features.html#module-elm.ords.extraction.features">elm.ords.extraction.features</a>
+</li>
+        <li><a href="_autosummary/elm.ords.extraction.graphs.html#module-elm.ords.extraction.graphs">elm.ords.extraction.graphs</a>
+</li>
+        <li><a href="_autosummary/elm.ords.extraction.ngrams.html#module-elm.ords.extraction.ngrams">elm.ords.extraction.ngrams</a>
+</li>
+        <li><a href="_autosummary/elm.ords.extraction.ordinance.html#module-elm.ords.extraction.ordinance">elm.ords.extraction.ordinance</a>
+</li>
+        <li><a href="_autosummary/elm.ords.extraction.parse.html#module-elm.ords.extraction.parse">elm.ords.extraction.parse</a>
+</li>
+        <li><a href="_autosummary/elm.ords.extraction.tree.html#module-elm.ords.extraction.tree">elm.ords.extraction.tree</a>
+</li>
+        <li><a href="_autosummary/elm.ords.llm.html#module-elm.ords.llm">elm.ords.llm</a>
+</li>
+        <li><a href="_autosummary/elm.ords.llm.calling.html#module-elm.ords.llm.calling">elm.ords.llm.calling</a>
+</li>
+        <li><a href="_autosummary/elm.ords.process.html#module-elm.ords.process">elm.ords.process</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.html#module-elm.ords.services">elm.ords.services</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.base.html#module-elm.ords.services.base">elm.ords.services.base</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.cpu.html#module-elm.ords.services.cpu">elm.ords.services.cpu</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.openai.html#module-elm.ords.services.openai">elm.ords.services.openai</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.provider.html#module-elm.ords.services.provider">elm.ords.services.provider</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.queues.html#module-elm.ords.services.queues">elm.ords.services.queues</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.html#module-elm.ords.services.threaded">elm.ords.services.threaded</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.usage.html#module-elm.ords.services.usage">elm.ords.services.usage</a>
+</li>
+        <li><a href="_autosummary/elm.ords.utilities.html#module-elm.ords.utilities">elm.ords.utilities</a>
+</li>
+        <li><a href="_autosummary/elm.ords.utilities.counties.html#module-elm.ords.utilities.counties">elm.ords.utilities.counties</a>
+</li>
+        <li><a href="_autosummary/elm.ords.utilities.exceptions.html#module-elm.ords.utilities.exceptions">elm.ords.utilities.exceptions</a>
+</li>
+        <li><a href="_autosummary/elm.ords.utilities.location.html#module-elm.ords.utilities.location">elm.ords.utilities.location</a>
+</li>
+        <li><a href="_autosummary/elm.ords.utilities.parsing.html#module-elm.ords.utilities.parsing">elm.ords.utilities.parsing</a>
+</li>
+        <li><a href="_autosummary/elm.ords.utilities.queued_logging.html#module-elm.ords.utilities.queued_logging">elm.ords.utilities.queued_logging</a>
+</li>
+        <li><a href="_autosummary/elm.ords.validation.html#module-elm.ords.validation">elm.ords.validation</a>
+</li>
+        <li><a href="_autosummary/elm.ords.validation.content.html#module-elm.ords.validation.content">elm.ords.validation.content</a>
+</li>
+        <li><a href="_autosummary/elm.ords.validation.location.html#module-elm.ords.validation.location">elm.ords.validation.location</a>
+</li>
+        <li><a href="_autosummary/elm.pdf.html#module-elm.pdf">elm.pdf</a>
+</li>
+        <li><a href="_autosummary/elm.summary.html#module-elm.summary">elm.summary</a>
+</li>
+        <li><a href="_autosummary/elm.tree.html#module-elm.tree">elm.tree</a>
+</li>
+        <li><a href="_autosummary/elm.utilities.html#module-elm.utilities">elm.utilities</a>
+</li>
+        <li><a href="_autosummary/elm.utilities.parse.html#module-elm.utilities.parse">elm.utilities.parse</a>
+</li>
+        <li><a href="_autosummary/elm.utilities.retry.html#module-elm.utilities.retry">elm.utilities.retry</a>
+</li>
+        <li><a href="_autosummary/elm.utilities.try_import.html#module-elm.utilities.try_import">elm.utilities.try_import</a>
+</li>
+        <li><a href="_autosummary/elm.utilities.validation.html#module-elm.utilities.validation">elm.utilities.validation</a>
+</li>
+        <li><a href="_autosummary/elm.version.html#module-elm.version">elm.version</a>
+</li>
+        <li><a href="_autosummary/elm.web.html#module-elm.web">elm.web</a>
+</li>
+        <li><a href="_autosummary/elm.web.document.html#module-elm.web.document">elm.web.document</a>
+</li>
+        <li><a href="_autosummary/elm.web.file_loader.html#module-elm.web.file_loader">elm.web.file_loader</a>
+</li>
+        <li><a href="_autosummary/elm.web.html_pw.html#module-elm.web.html_pw">elm.web.html_pw</a>
+</li>
+        <li><a href="_autosummary/elm.web.osti.html#module-elm.web.osti">elm.web.osti</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.html#module-elm.web.rhub">elm.web.rhub</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.html#module-elm.web.search">elm.web.search</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.base.html#module-elm.web.search.base">elm.web.search.base</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.bing.html#module-elm.web.search.bing">elm.web.search.bing</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.duckduckgo.html#module-elm.web.search.duckduckgo">elm.web.search.duckduckgo</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.dux.html#module-elm.web.search.dux">elm.web.search.dux</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.google.html#module-elm.web.search.google">elm.web.search.google</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.run.html#module-elm.web.search.run">elm.web.search.run</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.tavily.html#module-elm.web.search.tavily">elm.web.search.tavily</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.yahoo.html#module-elm.web.search.yahoo">elm.web.search.yahoo</a>
+</li>
+        <li><a href="_autosummary/elm.web.utilities.html#module-elm.web.utilities">elm.web.utilities</a>
+</li>
+        <li><a href="_autosummary/elm.web.website_crawl.html#module-elm.web.website_crawl">elm.web.website_crawl</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.html#module-elm.wizard">elm.wizard</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.ords.services.threaded.CleanedFileWriter.html#elm.ords.services.threaded.CleanedFileWriter.name">name (CleanedFileWriter property)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.services.threaded.FileMover.html#elm.ords.services.threaded.FileMover.name">(FileMover property)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.openai.OpenAIService.html#elm.ords.services.openai.OpenAIService.name">(OpenAIService property)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.OrdDBFileWriter.html#elm.ords.services.threaded.OrdDBFileWriter.name">(OrdDBFileWriter property)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.cpu.PDFLoader.html#elm.ords.services.cpu.PDFLoader.name">(PDFLoader property)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.cpu.ProcessPoolService.html#elm.ords.services.cpu.ProcessPoolService.name">(ProcessPoolService property)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.base.RateLimitedService.html#elm.ords.services.base.RateLimitedService.name">(RateLimitedService property)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.base.Service.html#elm.ords.services.base.Service.name">(Service property)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.StoreFileOnDisk.html#elm.ords.services.threaded.StoreFileOnDisk.name">(StoreFileOnDisk property)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.TempFileCache.html#elm.ords.services.threaded.TempFileCache.name">(TempFileCache property)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.ThreadedService.html#elm.ords.services.threaded.ThreadedService.name">(ThreadedService property)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.UsageUpdater.html#elm.ords.services.threaded.UsageUpdater.name">(UsageUpdater property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.NoLocationFilter.html#elm.ords.utilities.queued_logging.NoLocationFilter">NoLocationFilter (class in elm.ords.utilities.queued_logging)</a>
+</li>
+      <li><a href="_autosummary/elm.web.document.PDFDocument.html#elm.web.document.PDFDocument.num_raw_pages_to_keep">num_raw_pages_to_keep (PDFDocument property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html#elm.web.website_crawl.ELMWebsiteCrawlingStrategy.ONE_SCORE_AT_A_TIME">ONE_SCORE_AT_A_TIME (ELMWebsiteCrawlingStrategy attribute)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.openai.OpenAIService.html#elm.ords.services.openai.OpenAIService">OpenAIService (class in elm.ords.services.openai)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.threaded.OrdDBFileWriter.html#elm.ords.services.threaded.OrdDBFileWriter">OrdDBFileWriter (class in elm.ords.services.threaded)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.ordinance.OrdinanceValidator.html#elm.ords.extraction.ordinance.OrdinanceValidator.ordinance_text">ordinance_text (OrdinanceValidator property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.ords.extraction.ordinance.OrdinanceExtractor.html#elm.ords.extraction.ordinance.OrdinanceExtractor">OrdinanceExtractor (class in elm.ords.extraction.ordinance)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.ordinance.OrdinanceValidator.html#elm.ords.extraction.ordinance.OrdinanceValidator">OrdinanceValidator (class in elm.ords.extraction.ordinance)</a>
+</li>
+      <li><a href="_autosummary/elm.web.osti.OstiRecord.html#elm.web.osti.OstiRecord.osti_id">osti_id (OstiRecord property)</a>
+</li>
+      <li><a href="_autosummary/elm.web.osti.OstiList.html#elm.web.osti.OstiList">OstiList (class in elm.web.osti)</a>
+</li>
+      <li><a href="_autosummary/elm.web.osti.OstiRecord.html#elm.web.osti.OstiRecord">OstiRecord (class in elm.web.osti)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.file_loader.AsyncFileLoader.html#elm.web.file_loader.AsyncFileLoader.PAGE_LOAD_TIMEOUT">PAGE_LOAD_TIMEOUT (AsyncFileLoader attribute)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.file_loader.AsyncWebFileLoader.html#elm.web.file_loader.AsyncWebFileLoader.PAGE_LOAD_TIMEOUT">(AsyncWebFileLoader attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.google.CamoufoxGoogleLinkSearch.html#elm.web.search.google.CamoufoxGoogleLinkSearch.PAGE_LOAD_TIMEOUT">(CamoufoxGoogleLinkSearch attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.bing.PlaywrightBingLinkSearch.html#elm.web.search.bing.PlaywrightBingLinkSearch.PAGE_LOAD_TIMEOUT">(PlaywrightBingLinkSearch attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.duckduckgo.PlaywrightDuckDuckGoLinkSearch.html#elm.web.search.duckduckgo.PlaywrightDuckDuckGoLinkSearch.PAGE_LOAD_TIMEOUT">(PlaywrightDuckDuckGoLinkSearch attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.google.PlaywrightGoogleCSELinkSearch.html#elm.web.search.google.PlaywrightGoogleCSELinkSearch.PAGE_LOAD_TIMEOUT">(PlaywrightGoogleCSELinkSearch attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.google.PlaywrightGoogleLinkSearch.html#elm.web.search.google.PlaywrightGoogleLinkSearch.PAGE_LOAD_TIMEOUT">(PlaywrightGoogleLinkSearch attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.base.PlaywrightSearchEngineLinkSearch.html#elm.web.search.base.PlaywrightSearchEngineLinkSearch.PAGE_LOAD_TIMEOUT">(PlaywrightSearchEngineLinkSearch attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.yahoo.PlaywrightYahooLinkSearch.html#elm.web.search.yahoo.PlaywrightYahooLinkSearch.PAGE_LOAD_TIMEOUT">(PlaywrightYahooLinkSearch attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.search.base.PatchedSerpApiClient.html#elm.web.search.base.PatchedSerpApiClient.pagination">pagination() (PatchedSerpApiClient method)</a>
+</li>
+      <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.paragraph_tokens">paragraph_tokens (Chunker property)</a>
+</li>
+      <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.paragraphs">paragraphs (Chunker property)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.date.DateExtractor.html#elm.ords.extraction.date.DateExtractor.parse">parse() (DateExtractor method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.extraction.ordinance.OrdinanceValidator.html#elm.ords.extraction.ordinance.OrdinanceValidator.parse">(OrdinanceValidator method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.extraction.parse.StructuredOrdinanceParser.html#elm.ords.extraction.parse.StructuredOrdinanceParser.parse">(StructuredOrdinanceParser method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.ords.extraction.ordinance.OrdinanceValidator.html#elm.ords.extraction.ordinance.OrdinanceValidator.parse_from_ind">parse_from_ind() (OrdinanceValidator method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.validation.content.ValidationWithMemory.html#elm.ords.validation.content.ValidationWithMemory.parse_from_ind">(ValidationWithMemory method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.osti.OstiList.html#elm.web.osti.OstiList.parse_json_safely">parse_json_safely() (OstiList method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.base.PatchedSerpApiClient.html#elm.web.search.base.PatchedSerpApiClient">PatchedSerpApiClient (class in elm.web.search.base)</a>
+</li>
+      <li><a href="_autosummary/elm.web.document.PDFDocument.html#elm.web.document.PDFDocument">PDFDocument (class in elm.web.document)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.cpu.PDFLoader.html#elm.ords.services.cpu.PDFLoader">PDFLoader (class in elm.ords.services.cpu)</a>
+</li>
+      <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT">PDFtoTXT (class in elm.pdf)</a>
+</li>
+      <li><a href="_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html#elm.web.website_crawl.PeekablePriorityQueue.peek">peek() (PeekablePriorityQueue method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html#elm.web.website_crawl.PeekablePriorityQueue">PeekablePriorityQueue (class in elm.web.website_crawl)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.bing.PlaywrightBingLinkSearch.html#elm.web.search.bing.PlaywrightBingLinkSearch">PlaywrightBingLinkSearch (class in elm.web.search.bing)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.duckduckgo.PlaywrightDuckDuckGoLinkSearch.html#elm.web.search.duckduckgo.PlaywrightDuckDuckGoLinkSearch">PlaywrightDuckDuckGoLinkSearch (class in elm.web.search.duckduckgo)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.google.PlaywrightGoogleCSELinkSearch.html#elm.web.search.google.PlaywrightGoogleCSELinkSearch">PlaywrightGoogleCSELinkSearch (class in elm.web.search.google)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.google.PlaywrightGoogleLinkSearch.html#elm.web.search.google.PlaywrightGoogleLinkSearch">PlaywrightGoogleLinkSearch (class in elm.web.search.google)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.base.PlaywrightSearchEngineLinkSearch.html#elm.web.search.base.PlaywrightSearchEngineLinkSearch">PlaywrightSearchEngineLinkSearch (class in elm.web.search.base)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.yahoo.PlaywrightYahooLinkSearch.html#elm.web.search.yahoo.PlaywrightYahooLinkSearch">PlaywrightYahooLinkSearch (class in elm.web.search.yahoo)</a>
+</li>
+      <li><a href="_autosummary/elm.web.osti.OstiList.html#elm.web.osti.OstiList.pop">pop() (OstiList method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.osti.OstiRecord.html#elm.web.osti.OstiRecord.pop">(OstiRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesList.html#elm.web.rhub.ProfilesList.pop">(ProfilesList method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.pop">(ProfilesRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsList.html#elm.web.rhub.PublicationsList.pop">(PublicationsList method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsRecord.html#elm.web.rhub.PublicationsRecord.pop">(PublicationsRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.usage.UsageTracker.html#elm.ords.services.usage.UsageTracker.pop">(UsageTracker method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.osti.OstiRecord.html#elm.web.osti.OstiRecord.popitem">popitem() (OstiRecord method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.popitem">(ProfilesRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsRecord.html#elm.web.rhub.PublicationsRecord.popitem">(PublicationsRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.usage.UsageTracker.html#elm.ords.services.usage.UsageTracker.popitem">(UsageTracker method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.position">position (ProfilesRecord property)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.validation.content.possibly_mentions_wind.html#elm.ords.validation.content.possibly_mentions_wind">possibly_mentions_wind() (in module elm.ords.validation.content)</a>
+</li>
+      <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.preflight_corpus">preflight_corpus() (EnergyWizard static method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.LocalProcessQueueHandler.html#elm.ords.utilities.queued_logging.LocalProcessQueueHandler.prepare">prepare() (LocalProcessQueueHandler method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.threaded.CleanedFileWriter.html#elm.ords.services.threaded.CleanedFileWriter.process">process() (CleanedFileWriter method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.services.threaded.FileMover.html#elm.ords.services.threaded.FileMover.process">(FileMover method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.openai.OpenAIService.html#elm.ords.services.openai.OpenAIService.process">(OpenAIService method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.OrdDBFileWriter.html#elm.ords.services.threaded.OrdDBFileWriter.process">(OrdDBFileWriter method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.cpu.PDFLoader.html#elm.ords.services.cpu.PDFLoader.process">(PDFLoader method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.cpu.ProcessPoolService.html#elm.ords.services.cpu.ProcessPoolService.process">(ProcessPoolService method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.base.RateLimitedService.html#elm.ords.services.base.RateLimitedService.process">(RateLimitedService method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.base.Service.html#elm.ords.services.base.Service.process">(Service method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.StoreFileOnDisk.html#elm.ords.services.threaded.StoreFileOnDisk.process">(StoreFileOnDisk method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.TempFileCache.html#elm.ords.services.threaded.TempFileCache.process">(TempFileCache method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.ThreadedService.html#elm.ords.services.threaded.ThreadedService.process">(ThreadedService method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.UsageUpdater.html#elm.ords.services.threaded.UsageUpdater.process">(UsageUpdater method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.ords.process.process_counties_with_openai.html#elm.ords.process.process_counties_with_openai">process_counties_with_openai() (in module elm.ords.process)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.process.process_county.html#elm.ords.process.process_county">process_county() (in module elm.ords.process)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.process.process_county_with_logging.html#elm.ords.process.process_county_with_logging">process_county_with_logging() (in module elm.ords.process)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.threaded.CleanedFileWriter.html#elm.ords.services.threaded.CleanedFileWriter.process_using_futures">process_using_futures() (CleanedFileWriter method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.services.threaded.FileMover.html#elm.ords.services.threaded.FileMover.process_using_futures">(FileMover method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.openai.OpenAIService.html#elm.ords.services.openai.OpenAIService.process_using_futures">(OpenAIService method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.OrdDBFileWriter.html#elm.ords.services.threaded.OrdDBFileWriter.process_using_futures">(OrdDBFileWriter method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.cpu.PDFLoader.html#elm.ords.services.cpu.PDFLoader.process_using_futures">(PDFLoader method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.cpu.ProcessPoolService.html#elm.ords.services.cpu.ProcessPoolService.process_using_futures">(ProcessPoolService method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.base.RateLimitedService.html#elm.ords.services.base.RateLimitedService.process_using_futures">(RateLimitedService method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.base.Service.html#elm.ords.services.base.Service.process_using_futures">(Service method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.StoreFileOnDisk.html#elm.ords.services.threaded.StoreFileOnDisk.process_using_futures">(StoreFileOnDisk method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.TempFileCache.html#elm.ords.services.threaded.TempFileCache.process_using_futures">(TempFileCache method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.ThreadedService.html#elm.ords.services.threaded.ThreadedService.process_using_futures">(ThreadedService method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.UsageUpdater.html#elm.ords.services.threaded.UsageUpdater.process_using_futures">(UsageUpdater method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.ords.services.cpu.ProcessPoolService.html#elm.ords.services.cpu.ProcessPoolService">ProcessPoolService (class in elm.ords.services.cpu)</a>
+</li>
+      <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.profile_information">profile_information (ProfilesRecord property)</a>
+</li>
+      <li><a href="_autosummary/elm.web.rhub.ProfilesList.html#elm.web.rhub.ProfilesList">ProfilesList (class in elm.web.rhub)</a>
+</li>
+      <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord">ProfilesRecord (class in elm.web.rhub)</a>
+</li>
+      <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.publications">publications (ProfilesRecord property)</a>
+</li>
+      <li><a href="_autosummary/elm.web.rhub.PublicationsList.html#elm.web.rhub.PublicationsList">PublicationsList (class in elm.web.rhub)</a>
+</li>
+      <li><a href="_autosummary/elm.web.rhub.PublicationsRecord.html#elm.web.rhub.PublicationsRecord">PublicationsRecord (class in elm.web.rhub)</a>
+</li>
+      <li><a href="_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html#elm.web.website_crawl.PeekablePriorityQueue.put">put() (PeekablePriorityQueue method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html#elm.web.website_crawl.PeekablePriorityQueue.put_nowait">put_nowait() (PeekablePriorityQueue method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.utilities.pw_page.html#elm.web.utilities.pw_page">pw_page() (in module elm.web.utilities)</a>
+</li>
+      <li><a href="_autosummary/elm.web.utilities.PWKwargs.html#elm.web.utilities.PWKwargs">PWKwargs (class in elm.web.utilities)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Q">Q</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html#elm.web.website_crawl.PeekablePriorityQueue.qsize">qsize() (PeekablePriorityQueue method)</a>
+</li>
+      <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.query_vector_db">query_vector_db() (EnergyWizard method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.query_vector_db">(EnergyWizardBase method)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.query_vector_db">(EnergyWizardPostgres method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.ords.services.base.RateLimitedService.html#elm.ords.services.base.RateLimitedService">RateLimitedService (class in elm.ords.services.base)</a>
+</li>
+      <li><a href="_autosummary/elm.web.document.BaseDocument.html#elm.web.document.BaseDocument.raw_pages">raw_pages (BaseDocument property)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.document.HTMLDocument.html#elm.web.document.HTMLDocument.raw_pages">(HTMLDocument property)</a>
+</li>
+        <li><a href="_autosummary/elm.web.document.PDFDocument.html#elm.web.document.PDFDocument.raw_pages">(PDFDocument property)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.utilities.parse.read_pdf.html#elm.utilities.parse.read_pdf">read_pdf() (in module elm.utilities.parse)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.cpu.read_pdf_doc.html#elm.ords.services.cpu.read_pdf_doc">read_pdf_doc() (in module elm.ords.services.cpu)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.cpu.read_pdf_doc_ocr.html#elm.ords.services.cpu.read_pdf_doc_ocr">read_pdf_doc_ocr() (in module elm.ords.services.cpu)</a>
+</li>
+      <li><a href="_autosummary/elm.utilities.parse.read_pdf_ocr.html#elm.utilities.parse.read_pdf_ocr">read_pdf_ocr() (in module elm.utilities.parse)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.LocalProcessQueueHandler.html#elm.ords.utilities.queued_logging.LocalProcessQueueHandler.release">release() (LocalProcessQueueHandler method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.threaded.CleanedFileWriter.html#elm.ords.services.threaded.CleanedFileWriter.release_resources">release_resources() (CleanedFileWriter method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.services.threaded.FileMover.html#elm.ords.services.threaded.FileMover.release_resources">(FileMover method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.openai.OpenAIService.html#elm.ords.services.openai.OpenAIService.release_resources">(OpenAIService method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.OrdDBFileWriter.html#elm.ords.services.threaded.OrdDBFileWriter.release_resources">(OrdDBFileWriter method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.cpu.PDFLoader.html#elm.ords.services.cpu.PDFLoader.release_resources">(PDFLoader method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.cpu.ProcessPoolService.html#elm.ords.services.cpu.ProcessPoolService.release_resources">(ProcessPoolService method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.base.RateLimitedService.html#elm.ords.services.base.RateLimitedService.release_resources">(RateLimitedService method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.base.Service.html#elm.ords.services.base.Service.release_resources">(Service method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.StoreFileOnDisk.html#elm.ords.services.threaded.StoreFileOnDisk.release_resources">(StoreFileOnDisk method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.TempFileCache.html#elm.ords.services.threaded.TempFileCache.release_resources">(TempFileCache method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.ThreadedService.html#elm.ords.services.threaded.ThreadedService.release_resources">(ThreadedService method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.threaded.UsageUpdater.html#elm.ords.services.threaded.UsageUpdater.release_resources">(UsageUpdater method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.osti.OstiList.html#elm.web.osti.OstiList.remove">remove() (OstiList method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesList.html#elm.web.rhub.ProfilesList.remove">(ProfilesList method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsList.html#elm.web.rhub.PublicationsList.remove">(PublicationsList method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.utilities.parse.remove_blank_pages.html#elm.utilities.parse.remove_blank_pages">remove_blank_pages() (in module elm.utilities.parse)</a>
+</li>
+      <li><a href="_autosummary/elm.utilities.parse.remove_empty_lines_or_page_footers.html#elm.utilities.parse.remove_empty_lines_or_page_footers">remove_empty_lines_or_page_footers() (in module elm.utilities.parse)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.LocalProcessQueueHandler.html#elm.ords.utilities.queued_logging.LocalProcessQueueHandler.removeFilter">removeFilter() (LocalProcessQueueHandler method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.LogListener.html#elm.ords.utilities.queued_logging.LogListener.removeHandler">removeHandler() (LogListener method)</a>
+</li>
+      <li><a href="_autosummary/elm.utilities.parse.replace_common_pdf_conversion_chars.html#elm.utilities.parse.replace_common_pdf_conversion_chars">replace_common_pdf_conversion_chars() (in module elm.utilities.parse)</a>
+</li>
+      <li><a href="_autosummary/elm.utilities.parse.replace_excessive_newlines.html#elm.utilities.parse.replace_excessive_newlines">replace_excessive_newlines() (in module elm.utilities.parse)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.utilities.parse.replace_multi_dot_lines.html#elm.utilities.parse.replace_multi_dot_lines">replace_multi_dot_lines() (in module elm.utilities.parse)</a>
+</li>
+      <li><a href="_autosummary/elm.utilities.parse.resembles_html.html#elm.utilities.parse.resembles_html">resembles_html() (in module elm.utilities.parse)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.duckduckgo.APIDuckDuckGoSearch.html#elm.web.search.duckduckgo.APIDuckDuckGoSearch.results">results() (APIDuckDuckGoSearch method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.search.google.APIGoogleCSESearch.html#elm.web.search.google.APIGoogleCSESearch.results">(APIGoogleCSESearch method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.base.APISearchEngineLinkSearch.html#elm.web.search.base.APISearchEngineLinkSearch.results">(APISearchEngineLinkSearch method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.google.APISerperSearch.html#elm.web.search.google.APISerperSearch.results">(APISerperSearch method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.tavily.APITavilySearch.html#elm.web.search.tavily.APITavilySearch.results">(APITavilySearch method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.google.CamoufoxGoogleLinkSearch.html#elm.web.search.google.CamoufoxGoogleLinkSearch.results">(CamoufoxGoogleLinkSearch method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.dux.DuxDistributedGlobalSearch.html#elm.web.search.dux.DuxDistributedGlobalSearch.results">(DuxDistributedGlobalSearch method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.bing.PlaywrightBingLinkSearch.html#elm.web.search.bing.PlaywrightBingLinkSearch.results">(PlaywrightBingLinkSearch method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.duckduckgo.PlaywrightDuckDuckGoLinkSearch.html#elm.web.search.duckduckgo.PlaywrightDuckDuckGoLinkSearch.results">(PlaywrightDuckDuckGoLinkSearch method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.google.PlaywrightGoogleCSELinkSearch.html#elm.web.search.google.PlaywrightGoogleCSELinkSearch.results">(PlaywrightGoogleCSELinkSearch method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.google.PlaywrightGoogleLinkSearch.html#elm.web.search.google.PlaywrightGoogleLinkSearch.results">(PlaywrightGoogleLinkSearch method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.base.PlaywrightSearchEngineLinkSearch.html#elm.web.search.base.PlaywrightSearchEngineLinkSearch.results">(PlaywrightSearchEngineLinkSearch method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.yahoo.PlaywrightYahooLinkSearch.html#elm.web.search.yahoo.PlaywrightYahooLinkSearch.results">(PlaywrightYahooLinkSearch method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.base.SearchEngineLinkSearch.html#elm.web.search.base.SearchEngineLinkSearch.results">(SearchEngineLinkSearch method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.search.google.SerpAPIGoogleSearch.html#elm.web.search.google.SerpAPIGoogleSearch.results">(SerpAPIGoogleSearch method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.utilities.retry.retry_with_exponential_backoff.html#elm.utilities.retry.retry_with_exponential_backoff">retry_with_exponential_backoff() (in module elm.utilities.retry)</a>
+</li>
+      <li><a href="_autosummary/elm.web.osti.OstiList.html#elm.web.osti.OstiList.reverse">reverse() (OstiList method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesList.html#elm.web.rhub.ProfilesList.reverse">(ProfilesList method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsList.html#elm.web.rhub.PublicationsList.reverse">(PublicationsList method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.base.ApiQueue.html#elm.base.ApiQueue.run">run() (ApiQueue method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.extraction.tree.AsyncDecisionTree.html#elm.ords.extraction.tree.AsyncDecisionTree.run">(AsyncDecisionTree method)</a>
+</li>
+        <li><a href="_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed.run">(ChunkAndEmbed method)</a>
+</li>
+        <li><a href="_autosummary/elm.tree.DecisionTree.html#elm.tree.DecisionTree.run">(DecisionTree method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.website_crawl.ELMWebsiteCrawler.html#elm.web.website_crawl.ELMWebsiteCrawler.run">(ELMWebsiteCrawler method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.provider.RunningAsyncServices.html#elm.ords.services.provider.RunningAsyncServices.run">(RunningAsyncServices class method)</a>
+</li>
+        <li><a href="_autosummary/elm.summary.Summary.html#elm.summary.Summary.run">(Summary method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed.run_async">run_async() (ChunkAndEmbed method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.summary.Summary.html#elm.summary.Summary.run_async">(Summary method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.ords.services.provider.RunningAsyncServices.html#elm.ords.services.provider.RunningAsyncServices">RunningAsyncServices (class in elm.ords.services.provider)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.rhub.PublicationsRecord.html#elm.web.rhub.PublicationsRecord.save_abstract">save_abstract() (PublicationsRecord method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.website_crawl.ELMLinkScorer.html#elm.web.website_crawl.ELMLinkScorer.score">score() (ELMLinkScorer method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.run.SEARCH_ENGINE_OPTIONS.html#elm.web.search.run.SEARCH_ENGINE_OPTIONS">SEARCH_ENGINE_OPTIONS (in module elm.web.search.run)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.run.search_with_fallback.html#elm.web.search.run.search_with_fallback">search_with_fallback() (in module elm.web.search.run)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.base.SearchEngineLinkSearch.html#elm.web.search.base.SearchEngineLinkSearch">SearchEngineLinkSearch (class in elm.web.search.base)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.ngrams.sentence_ngram_containment.html#elm.ords.extraction.ngrams.sentence_ngram_containment">sentence_ngram_containment() (in module elm.ords.extraction.ngrams)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.google.SerpAPIGoogleSearch.html#elm.web.search.google.SerpAPIGoogleSearch">SerpAPIGoogleSearch (class in elm.web.search.google)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.base.Service.html#elm.ords.services.base.Service">Service (class in elm.ords.services.base)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.features.SetbackFeatures.html#elm.ords.extraction.features.SetbackFeatures">SetbackFeatures (class in elm.ords.extraction.features)</a>
+</li>
+      <li><a href="_autosummary/elm.web.osti.OstiRecord.html#elm.web.osti.OstiRecord.setdefault">setdefault() (OstiRecord method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.setdefault">(ProfilesRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsRecord.html#elm.web.rhub.PublicationsRecord.setdefault">(PublicationsRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.usage.UsageTracker.html#elm.ords.services.usage.UsageTracker.setdefault">(UsageTracker method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.LocalProcessQueueHandler.html#elm.ords.utilities.queued_logging.LocalProcessQueueHandler.setFormatter">setFormatter() (LocalProcessQueueHandler method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.utilities.queued_logging.LocalProcessQueueHandler.html#elm.ords.utilities.queued_logging.LocalProcessQueueHandler.setLevel">setLevel() (LocalProcessQueueHandler method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.graphs.setup_base_graph.html#elm.ords.extraction.graphs.setup_base_graph">setup_base_graph() (in module elm.ords.extraction.graphs)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.graphs.setup_conditional.html#elm.ords.extraction.graphs.setup_conditional">setup_conditional() (in module elm.ords.extraction.graphs)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.graphs.setup_graph_extra_restriction.html#elm.ords.extraction.graphs.setup_graph_extra_restriction">setup_graph_extra_restriction() (in module elm.ords.extraction.graphs)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.ords.extraction.graphs.setup_graph_wes_types.html#elm.ords.extraction.graphs.setup_graph_wes_types">setup_graph_wes_types() (in module elm.ords.extraction.graphs)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.graphs.setup_multiplier.html#elm.ords.extraction.graphs.setup_multiplier">setup_multiplier() (in module elm.ords.extraction.graphs)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.graphs.setup_participating_owner.html#elm.ords.extraction.graphs.setup_participating_owner">setup_participating_owner() (in module elm.ords.extraction.graphs)</a>
+</li>
+      <li><a href="_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html#elm.web.website_crawl.ELMWebsiteCrawlingStrategy.shutdown">shutdown() (ELMWebsiteCrawlingStrategy method)</a>
+</li>
+      <li><a href="_autosummary/elm.web.utilities.PWKwargs.html#elm.web.utilities.PWKwargs.SKIP_SCRIPS">SKIP_SCRIPS (PWKwargs attribute)</a>
+</li>
+      <li><a href="_autosummary/elm.web.osti.OstiList.html#elm.web.osti.OstiList.sort">sort() (OstiList method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesList.html#elm.web.rhub.ProfilesList.sort">(ProfilesList method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsList.html#elm.web.rhub.PublicationsList.sort">(PublicationsList method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.web.utilities.PWKwargs.html#elm.web.utilities.PWKwargs.stealth_scripts">stealth_scripts() (PWKwargs class method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.threaded.StoreFileOnDisk.html#elm.ords.services.threaded.StoreFileOnDisk">StoreFileOnDisk (class in elm.ords.services.threaded)</a>
+</li>
+      <li><a href="_autosummary/elm.web.osti.OstiRecord.html#elm.web.osti.OstiRecord.strip_nested_brackets">strip_nested_brackets() (OstiRecord static method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.llm.calling.StructuredLLMCaller.html#elm.ords.llm.calling.StructuredLLMCaller">StructuredLLMCaller (class in elm.ords.llm.calling)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.extraction.parse.StructuredOrdinanceParser.html#elm.ords.extraction.parse.StructuredOrdinanceParser">StructuredOrdinanceParser (class in elm.ords.extraction.parse)</a>
+</li>
+      <li><a href="_autosummary/elm.base.ApiQueue.html#elm.base.ApiQueue.submit_jobs">submit_jobs() (ApiQueue method)</a>
+</li>
+      <li><a href="_autosummary/elm.summary.Summary.html#elm.summary.Summary">Summary (class in elm.summary)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.validation.location.CountyJurisdictionValidator.html#elm.ords.validation.location.CountyJurisdictionValidator.SYSTEM_MESSAGE">SYSTEM_MESSAGE (CountyJurisdictionValidator attribute)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.ords.validation.location.CountyNameValidator.html#elm.ords.validation.location.CountyNameValidator.SYSTEM_MESSAGE">(CountyNameValidator attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.validation.location.FixedMessageValidator.html#elm.ords.validation.location.FixedMessageValidator.SYSTEM_MESSAGE">(FixedMessageValidator attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.validation.location.URLValidator.html#elm.ords.validation.location.URLValidator.SYSTEM_MESSAGE">(URLValidator attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html#elm.web.website_crawl.PeekablePriorityQueue.task_done">task_done() (PeekablePriorityQueue method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.queues.tear_down_service_queue.html#elm.ords.services.queues.tear_down_service_queue">tear_down_service_queue() (in module elm.ords.services.queues)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.threaded.TempFileCache.html#elm.ords.services.threaded.TempFileCache">TempFileCache (class in elm.ords.services.threaded)</a>
+</li>
+      <li><a href="_autosummary/elm.web.document.BaseDocument.html#elm.web.document.BaseDocument.text">text (BaseDocument property)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.document.HTMLDocument.html#elm.web.document.HTMLDocument.text">(HTMLDocument property)</a>
+</li>
+        <li><a href="_autosummary/elm.web.document.PDFDocument.html#elm.web.document.PDFDocument.text">(PDFDocument property)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.ords.services.threaded.ThreadedService.html#elm.ords.services.threaded.ThreadedService">ThreadedService (class in elm.ords.services.threaded)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.usage.TimeBoundedUsageTracker.html#elm.ords.services.usage.TimeBoundedUsageTracker">TimeBoundedUsageTracker (class in elm.ords.services.usage)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.usage.TimedEntry.html#elm.ords.services.usage.TimedEntry">TimedEntry (class in elm.ords.services.usage)</a>
+</li>
+      <li><a href="_autosummary/elm.web.osti.OstiRecord.html#elm.web.osti.OstiRecord.title">title (OstiRecord property)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.title">(ProfilesRecord property)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsRecord.html#elm.web.rhub.PublicationsRecord.title">(PublicationsRecord property)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.base.ApiBase.html#elm.base.ApiBase.TOKENIZER_ALIASES">TOKENIZER_ALIASES (ApiBase attribute)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed.TOKENIZER_ALIASES">(ChunkAndEmbed attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.TOKENIZER_ALIASES">(Chunker attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.TOKENIZER_ALIASES">(EnergyWizard attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.TOKENIZER_ALIASES">(EnergyWizardBase attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.TOKENIZER_ALIASES">(EnergyWizardPostgres attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.TOKENIZER_ALIASES">(PDFtoTXT attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.summary.Summary.html#elm.summary.Summary.TOKENIZER_ALIASES">(Summary attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.base.ApiBase.html#elm.base.ApiBase.TOKENIZER_PATTERNS">TOKENIZER_PATTERNS (ApiBase attribute)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed.TOKENIZER_PATTERNS">(ChunkAndEmbed attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.TOKENIZER_PATTERNS">(Chunker attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.TOKENIZER_PATTERNS">(EnergyWizard attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.TOKENIZER_PATTERNS">(EnergyWizardBase attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.TOKENIZER_PATTERNS">(EnergyWizardPostgres attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.TOKENIZER_PATTERNS">(PDFtoTXT attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.summary.Summary.html#elm.summary.Summary.TOKENIZER_PATTERNS">(Summary attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.ords.services.usage.TimeBoundedUsageTracker.html#elm.ords.services.usage.TimeBoundedUsageTracker.total">total (TimeBoundedUsageTracker property)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.usage.UsageTracker.html#elm.ords.services.usage.UsageTracker.totals">totals (UsageTracker property)</a>
+</li>
+      <li><a href="_autosummary/elm.utilities.try_import.try_import.html#elm.utilities.try_import.try_import">try_import() (in module elm.utilities.try_import)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.osti.OstiRecord.html#elm.web.osti.OstiRecord.update">update() (OstiRecord method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.update">(ProfilesRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsRecord.html#elm.web.rhub.PublicationsRecord.update">(PublicationsRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.usage.UsageTracker.html#elm.ords.services.usage.UsageTracker.update">(UsageTracker method)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.ords.services.usage.UsageTracker.html#elm.ords.services.usage.UsageTracker.update_from_model">update_from_model() (UsageTracker method)</a>
+</li>
+      <li><a href="_autosummary/elm.base.ApiBase.html#elm.base.ApiBase.URL">URL (ApiBase attribute)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed.URL">(ChunkAndEmbed attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker.URL">(Chunker attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.URL">(EnergyWizard attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.URL">(EnergyWizardBase attribute)</a>
+</li>
+        <li><a href="_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.URL">(EnergyWizardPostgres attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.osti.OstiRecord.html#elm.web.osti.OstiRecord.url">url (OstiRecord property)</a>
+</li>
+      <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.URL">URL (PDFtoTXT attribute)</a>
+</li>
+      <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.url">url (ProfilesRecord property)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsRecord.html#elm.web.rhub.PublicationsRecord.url">(PublicationsRecord property)</a>
+</li>
+      </ul></li>
+      <li><a href="_autosummary/elm.summary.Summary.html#elm.summary.Summary.URL">URL (Summary attribute)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.validation.location.URLValidator.html#elm.ords.validation.location.URLValidator">URLValidator (class in elm.ords.validation.location)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.openai.usage_from_response.html#elm.ords.services.openai.usage_from_response">usage_from_response() (in module elm.ords.services.openai)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.usage.UsageTracker.html#elm.ords.services.usage.UsageTracker">UsageTracker (class in elm.ords.services.usage)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.services.threaded.UsageUpdater.html#elm.ords.services.threaded.UsageUpdater">UsageUpdater (class in elm.ords.services.threaded)</a>
+</li>
+      <li><a href="_autosummary/elm.web.utilities.PWKwargs.html#elm.web.utilities.PWKwargs.USE_REALISTIC_VIEWPORTS">USE_REALISTIC_VIEWPORTS (PWKwargs attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.utilities.validation.validate_azure_api_params.html#elm.utilities.validation.validate_azure_api_params">validate_azure_api_params() (in module elm.utilities.validation)</a>
+</li>
+      <li><a href="_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT.validate_clean">validate_clean() (PDFtoTXT method)</a>
+</li>
+      <li><a href="_autosummary/elm.ords.validation.content.ValidationWithMemory.html#elm.ords.validation.content.ValidationWithMemory">ValidationWithMemory (class in elm.ords.validation.content)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.osti.OstiRecord.html#elm.web.osti.OstiRecord.values">values() (OstiRecord method)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.ProfilesRecord.html#elm.web.rhub.ProfilesRecord.values">(ProfilesRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsRecord.html#elm.web.rhub.PublicationsRecord.values">(PublicationsRecord method)</a>
+</li>
+        <li><a href="_autosummary/elm.ords.services.usage.UsageTracker.html#elm.ords.services.usage.UsageTracker.values">(UsageTracker method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.base.ApiQueue.html#elm.base.ApiQueue.waiting_on">waiting_on (ApiQueue property)</a>
+</li>
+      <li><a href="_autosummary/elm.web.search.run.web_search_links_as_docs.html#elm.web.search.run.web_search_links_as_docs">web_search_links_as_docs() (in module elm.web.search.run)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.document.BaseDocument.html#elm.web.document.BaseDocument.WRITE_KWARGS">WRITE_KWARGS (BaseDocument property)</a>
+</li>
+      <li><a href="_autosummary/elm.web.utilities.write_url_doc_to_file.html#elm.web.utilities.write_url_doc_to_file">write_url_doc_to_file() (in module elm.web.utilities)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Y">Y</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/elm.web.osti.OstiRecord.html#elm.web.osti.OstiRecord.year">year (OstiRecord property)</a>
+
+      <ul>
+        <li><a href="_autosummary/elm.web.rhub.PublicationsRecord.html#elm.web.rhub.PublicationsRecord.year">(PublicationsRecord property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alliance for Sustainable Energy, LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

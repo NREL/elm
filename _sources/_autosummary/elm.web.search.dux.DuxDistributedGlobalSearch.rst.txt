@@ -1,0 +1,24 @@
+elm.web.search.dux.DuxDistributedGlobalSearch
+=============================================
+
+.. currentmodule:: elm.web.search.dux
+
+.. autoclass:: DuxDistributedGlobalSearch
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~DuxDistributedGlobalSearch.results
+   
+   
+
+   
+   
+   

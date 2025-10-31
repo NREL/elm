@@ -1,0 +1,6 @@
+elm.utilities.parse.remove\_empty\_lines\_or\_page\_footers
+===========================================================
+
+.. currentmodule:: elm.utilities.parse
+
+.. autofunction:: remove_empty_lines_or_page_footers

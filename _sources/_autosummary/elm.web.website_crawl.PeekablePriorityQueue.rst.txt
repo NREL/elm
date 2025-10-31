@@ -1,0 +1,39 @@
+elm.web.website\_crawl.PeekablePriorityQueue
+============================================
+
+.. currentmodule:: elm.web.website_crawl
+
+.. autoclass:: PeekablePriorityQueue
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PeekablePriorityQueue.empty
+      ~PeekablePriorityQueue.full
+      ~PeekablePriorityQueue.get
+      ~PeekablePriorityQueue.get_nowait
+      ~PeekablePriorityQueue.join
+      ~PeekablePriorityQueue.peek
+      ~PeekablePriorityQueue.put
+      ~PeekablePriorityQueue.put_nowait
+      ~PeekablePriorityQueue.qsize
+      ~PeekablePriorityQueue.task_done
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PeekablePriorityQueue.maxsize
+   
+   

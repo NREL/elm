@@ -1,0 +1,36 @@
+elm.ords.services.threaded.TempFileCache
+========================================
+
+.. currentmodule:: elm.ords.services.threaded
+
+.. autoclass:: TempFileCache
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~TempFileCache.acquire_resources
+      ~TempFileCache.call
+      ~TempFileCache.process
+      ~TempFileCache.process_using_futures
+      ~TempFileCache.release_resources
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~TempFileCache.MAX_CONCURRENT_JOBS
+      ~TempFileCache.can_process
+      ~TempFileCache.name
+   
+   

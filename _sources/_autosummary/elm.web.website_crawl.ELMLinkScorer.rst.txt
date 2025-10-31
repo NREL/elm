@@ -1,0 +1,24 @@
+elm.web.website\_crawl.ELMLinkScorer
+====================================
+
+.. currentmodule:: elm.web.website_crawl
+
+.. autoclass:: ELMLinkScorer
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ELMLinkScorer.score
+   
+   
+
+   
+   
+   

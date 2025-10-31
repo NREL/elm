@@ -1,0 +1,36 @@
+elm.ords.services.threaded.StoreFileOnDisk
+==========================================
+
+.. currentmodule:: elm.ords.services.threaded
+
+.. autoclass:: StoreFileOnDisk
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~StoreFileOnDisk.acquire_resources
+      ~StoreFileOnDisk.call
+      ~StoreFileOnDisk.process
+      ~StoreFileOnDisk.process_using_futures
+      ~StoreFileOnDisk.release_resources
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~StoreFileOnDisk.MAX_CONCURRENT_JOBS
+      ~StoreFileOnDisk.can_process
+      ~StoreFileOnDisk.name
+   
+   

@@ -1,0 +1,32 @@
+elm.web.search.duckduckgo
+=========================
+
+.. automodule:: elm.web.search.duckduckgo
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      APIDuckDuckGoSearch
+      PlaywrightDuckDuckGoLinkSearch
+   
+   
+
+   
+   
+   
+
+
+

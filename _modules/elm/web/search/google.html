@@ -1,0 +1,739 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>elm.web.search.google &mdash; elm 0.0.34 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=9dd25805"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            elm
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.energy_wizard.html">The Energy Wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.energy_wizard.html#downloading-and-embedding-pdfs">Downloading and Embedding PDFs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.energy_wizard.html#running-the-streamlit-app">Running the Streamlit App</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.ordinance_gpt.html">Ordinance GPT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#running-from-python">Running from Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#running-from-the-command-line-utility">Running from the Command Line Utility</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#execution">Execution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#debugging">Debugging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#source-ordinance-documents">Source Ordinance Documents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#extension-to-other-technologies">Extension to Other Technologies</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dev/index.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dev/ords_architecture.html"><strong>OrdinanceGPT: Architectural Design Document</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#introduction"><strong>1. Introduction</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#purpose"><strong>1.1 Purpose</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#audience"><strong>1.2 Audience</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#scope"><strong>1.3 Scope</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#high-level-architecture"><strong>2. High-Level Architecture</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#system-context"><strong>2.1 System Context</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#detailed-design"><strong>3. Detailed Design</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#web-scraper"><strong>3.1 Web Scraper</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#document-parser"><strong>3.2 Document Parser</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#key-concepts-and-classes"><strong>4 Key Concepts and Classes</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#key-concept-services"><strong>4.1 Key Concept: Services</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#key-classes"><strong>4.2 Key Classes</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#workflows"><strong>5. Workflows</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#downloading-documents-from-google"><strong>5.1 Downloading documents from Google</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#querying-openai"><strong>5.2 Querying OpenAI</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#appendix"><strong>6. Appendix</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#tools-and-libraries"><strong>6.1 Tools and Libraries</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#deliverables"><strong>7. Deliverables</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/elm.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.base.html">elm.base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.base.ApiBase.html">elm.base.ApiBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.base.ApiBase.html#elm.base.ApiBase"><code class="docutils literal notranslate"><span class="pre">ApiBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.base.ApiQueue.html">elm.base.ApiQueue</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.base.ApiQueue.html#elm.base.ApiQueue"><code class="docutils literal notranslate"><span class="pre">ApiQueue</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.chunk.html">elm.chunk</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.chunk.Chunker.html">elm.chunk.Chunker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker"><code class="docutils literal notranslate"><span class="pre">Chunker</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.cli.html">elm.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.embed.html">elm.embed</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.embed.ChunkAndEmbed.html">elm.embed.ChunkAndEmbed</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed"><code class="docutils literal notranslate"><span class="pre">ChunkAndEmbed</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.html">elm.exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMError.html">elm.exceptions.ELMError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMError.html#elm.exceptions.ELMError"><code class="docutils literal notranslate"><span class="pre">ELMError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMInputError.html">elm.exceptions.ELMInputError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMInputError.html#elm.exceptions.ELMInputError"><code class="docutils literal notranslate"><span class="pre">ELMInputError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMKeyError.html">elm.exceptions.ELMKeyError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMKeyError.html#elm.exceptions.ELMKeyError"><code class="docutils literal notranslate"><span class="pre">ELMKeyError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMRuntimeError.html">elm.exceptions.ELMRuntimeError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMRuntimeError.html#elm.exceptions.ELMRuntimeError"><code class="docutils literal notranslate"><span class="pre">ELMRuntimeError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.ords.html">elm.ords</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.download.html">elm.ords.download</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.download.download_county_ordinance.html">elm.ords.download.download_county_ordinance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.html">elm.ords.extraction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.apply.html">elm.ords.extraction.apply</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.date.html">elm.ords.extraction.date</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.features.html">elm.ords.extraction.features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.graphs.html">elm.ords.extraction.graphs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.ngrams.html">elm.ords.extraction.ngrams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.ordinance.html">elm.ords.extraction.ordinance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.parse.html">elm.ords.extraction.parse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.tree.html">elm.ords.extraction.tree</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.llm.html">elm.ords.llm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.llm.calling.html">elm.ords.llm.calling</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.process.html">elm.ords.process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.process.process_counties_with_openai.html">elm.ords.process.process_counties_with_openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.process.process_county.html">elm.ords.process.process_county</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.process.process_county_with_logging.html">elm.ords.process.process_county_with_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.html">elm.ords.services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.base.html">elm.ords.services.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.cpu.html">elm.ords.services.cpu</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.openai.html">elm.ords.services.openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.provider.html">elm.ords.services.provider</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.queues.html">elm.ords.services.queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.threaded.html">elm.ords.services.threaded</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.usage.html">elm.ords.services.usage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.html">elm.ords.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.counties.html">elm.ords.utilities.counties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.exceptions.html">elm.ords.utilities.exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.location.html">elm.ords.utilities.location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.parsing.html">elm.ords.utilities.parsing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.queued_logging.html">elm.ords.utilities.queued_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.validation.html">elm.ords.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.validation.content.html">elm.ords.validation.content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.validation.location.html">elm.ords.validation.location</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.pdf.html">elm.pdf</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.pdf.PDFtoTXT.html">elm.pdf.PDFtoTXT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT"><code class="docutils literal notranslate"><span class="pre">PDFtoTXT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.summary.html">elm.summary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.summary.Summary.html">elm.summary.Summary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.summary.Summary.html#elm.summary.Summary"><code class="docutils literal notranslate"><span class="pre">Summary</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.tree.html">elm.tree</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.tree.DecisionTree.html">elm.tree.DecisionTree</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.tree.DecisionTree.html#elm.tree.DecisionTree"><code class="docutils literal notranslate"><span class="pre">DecisionTree</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.utilities.html">elm.utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.html">elm.utilities.parse</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.clean_headers.html">elm.utilities.parse.clean_headers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.combine_pages.html">elm.utilities.parse.combine_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.format_html_tables.html">elm.utilities.parse.format_html_tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.html_to_text.html">elm.utilities.parse.html_to_text</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.is_multi_col.html">elm.utilities.parse.is_multi_col</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.read_pdf.html">elm.utilities.parse.read_pdf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.read_pdf_ocr.html">elm.utilities.parse.read_pdf_ocr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.remove_blank_pages.html">elm.utilities.parse.remove_blank_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.remove_empty_lines_or_page_footers.html">elm.utilities.parse.remove_empty_lines_or_page_footers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.replace_common_pdf_conversion_chars.html">elm.utilities.parse.replace_common_pdf_conversion_chars</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.replace_excessive_newlines.html">elm.utilities.parse.replace_excessive_newlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.replace_multi_dot_lines.html">elm.utilities.parse.replace_multi_dot_lines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.resembles_html.html">elm.utilities.parse.resembles_html</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.utilities.retry.html">elm.utilities.retry</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.retry.async_retry_with_exponential_backoff.html">elm.utilities.retry.async_retry_with_exponential_backoff</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.retry.retry_with_exponential_backoff.html">elm.utilities.retry.retry_with_exponential_backoff</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.utilities.try_import.html">elm.utilities.try_import</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.try_import.try_import.html">elm.utilities.try_import.try_import</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.utilities.validation.html">elm.utilities.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.validation.validate_azure_api_params.html">elm.utilities.validation.validate_azure_api_params</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.version.html">elm.version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.web.html">elm.web</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.document.html">elm.web.document</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.document.BaseDocument.html">elm.web.document.BaseDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.document.HTMLDocument.html">elm.web.document.HTMLDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.document.PDFDocument.html">elm.web.document.PDFDocument</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.html">elm.web.file_loader</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.AsyncFileLoader.html">elm.web.file_loader.AsyncFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.AsyncLocalFileLoader.html">elm.web.file_loader.AsyncLocalFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.AsyncWebFileLoader.html">elm.web.file_loader.AsyncWebFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.BaseAsyncFileLoader.html">elm.web.file_loader.BaseAsyncFileLoader</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.html_pw.html">elm.web.html_pw</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.html_pw.load_html_with_pw.html">elm.web.html_pw.load_html_with_pw</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.osti.html">elm.web.osti</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.osti.OstiList.html">elm.web.osti.OstiList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.osti.OstiRecord.html">elm.web.osti.OstiRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.html">elm.web.rhub</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.ProfilesList.html">elm.web.rhub.ProfilesList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.ProfilesRecord.html">elm.web.rhub.ProfilesRecord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.PublicationsList.html">elm.web.rhub.PublicationsList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.PublicationsRecord.html">elm.web.rhub.PublicationsRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.search.html">elm.web.search</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.base.html">elm.web.search.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.bing.html">elm.web.search.bing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.duckduckgo.html">elm.web.search.duckduckgo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.dux.html">elm.web.search.dux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.google.html">elm.web.search.google</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.run.html">elm.web.search.run</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.tavily.html">elm.web.search.tavily</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.yahoo.html">elm.web.search.yahoo</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.html">elm.web.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.DEFAULT_HEADERS.html">elm.web.utilities.DEFAULT_HEADERS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.clean_search_query.html">elm.web.utilities.clean_search_query</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.compute_fn_from_url.html">elm.web.utilities.compute_fn_from_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.filter_documents.html">elm.web.utilities.filter_documents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.get_redirected_url.html">elm.web.utilities.get_redirected_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.pw_page.html">elm.web.utilities.pw_page</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.write_url_doc_to_file.html">elm.web.utilities.write_url_doc_to_file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.PWKwargs.html">elm.web.utilities.PWKwargs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.html">elm.web.website_crawl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS.html">elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ELM_URL_FILTER.html">elm.web.website_crawl.ELM_URL_FILTER</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ContentTypeExcludeFilter.html">elm.web.website_crawl.ContentTypeExcludeFilter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ELMLinkScorer.html">elm.web.website_crawl.ELMLinkScorer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawler.html">elm.web.website_crawl.ELMWebsiteCrawler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html">elm.web.website_crawl.ELMWebsiteCrawlingStrategy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html">elm.web.website_crawl.PeekablePriorityQueue</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.wizard.html">elm.wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizard.html">elm.wizard.EnergyWizard</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard"><code class="docutils literal notranslate"><span class="pre">EnergyWizard</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizardBase.html">elm.wizard.EnergyWizardBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase"><code class="docutils literal notranslate"><span class="pre">EnergyWizardBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizardPostgres.html">elm.wizard.EnergyWizardPostgres</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres"><code class="docutils literal notranslate"><span class="pre">EnergyWizardPostgres</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../_cli/cli.html">CLI reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_cli/elm.html">elm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_cli/elm.html#elm-ords">ords</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">elm</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">elm.web.search.google</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for elm.web.search.google</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;ELM Web Scraping - Google search.&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">asynccontextmanager</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">camoufox.async_api</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncCamoufox</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">googleapiclient.discovery</span><span class="w"> </span><span class="kn">import</span> <span class="n">build</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">playwright.async_api</span><span class="w"> </span><span class="kn">import</span> <span class="ne">TimeoutError</span> <span class="k">as</span> <span class="n">PlaywrightTimeoutError</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.web.search.base</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">PlaywrightSearchEngineLinkSearch</span><span class="p">,</span>
+                                 <span class="n">APISearchEngineLinkSearch</span><span class="p">,</span>
+                                 <span class="n">PatchedSerpApiClient</span><span class="p">)</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="PlaywrightGoogleLinkSearch">
+<a class="viewcode-back" href="../../../../_autosummary/elm.web.search.google.PlaywrightGoogleLinkSearch.html#elm.web.search.google.PlaywrightGoogleLinkSearch">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PlaywrightGoogleLinkSearch</span><span class="p">(</span><span class="n">PlaywrightSearchEngineLinkSearch</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search for top links on the main google search engine</span>
+
+<span class="sd">    Purpose:</span>
+<span class="sd">        Search Google using Playwright engine.</span>
+<span class="sd">    Responsibilities:</span>
+<span class="sd">        1. Launch browser using Playwright and</span>
+<span class="sd">        navigate to Google.</span>
+<span class="sd">        2. Submit a query to Google Search.</span>
+<span class="sd">        3. Get list of resulting URLs.</span>
+<span class="sd">    Key Relationships:</span>
+<span class="sd">        Relies on `Playwright &lt;https://playwright.dev/python/&gt;`_ for</span>
+<span class="sd">        web access.</span>
+
+<span class="sd">    .. end desc</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">MAX_RESULTS_CONSIDERED_PER_PAGE</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of results considered per Google page.</span>
+
+<span class="sd">    This value used to be 10, but the addition of extra divs like a set</span>
+<span class="sd">    of youtube links has brought this number down.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_SE_NAME</span> <span class="o">=</span> <span class="s2">&quot;Google&quot;</span>
+    <span class="n">_SE_URL</span> <span class="o">=</span> <span class="s2">&quot;https://www.google.com&quot;</span>
+    <span class="n">_SE_SR_TAG</span> <span class="o">=</span> <span class="s1">&#39;[jsname=&quot;UWckNb&quot;]&#39;</span>
+    <span class="n">_SC</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_SE_QUERY_URL</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;https://www.google.com/search?q=</span><span class="si">{}</span><span class="s2">&amp;gl=sg&amp;hl=en&amp;udm=14&amp;start=0&amp;num=10&quot;</span>
+    <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_perform_homepage_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">search_query</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fill in search bar with user query and hit enter&quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_move_mouse</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s2">&quot;Clicking on search bar for query: </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">search_query</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_click_on_search_bar</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s2">&quot;Filling in search bar for query: </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">search_query</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fill_in_search_bar</span><span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="n">search_query</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s2">&quot;Hitting enter for query: </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">search_query</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">keyboard</span><span class="o">.</span><span class="n">press</span><span class="p">(</span><span class="s1">&#39;Enter&#39;</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_click_on_search_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the search bar and click it&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">search_bar</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">get_by_label</span><span class="p">(</span><span class="s2">&quot;Search&quot;</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_move_and_click</span><span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="n">search_bar</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">PlaywrightTimeoutError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="n">search_bar</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">locator</span><span class="p">(</span><span class="s1">&#39;[name=&quot;q&quot;]&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_move_and_click</span><span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="n">search_bar</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">PlaywrightTimeoutError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="n">search_bar</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">locator</span><span class="p">(</span><span class="s1">&#39;[autofocus]&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_move_and_click</span><span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="n">search_bar</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_fill_in_search_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">search_query</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Attempt to find and fill the search bar several ways&quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">))</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s2">&quot;Typing in query: </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">search_query</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">keyboard</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">search_query</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">150</span><span class="p">))</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="CamoufoxGoogleLinkSearch">
+<a class="viewcode-back" href="../../../../_autosummary/elm.web.search.google.CamoufoxGoogleLinkSearch.html#elm.web.search.google.CamoufoxGoogleLinkSearch">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CamoufoxGoogleLinkSearch</span><span class="p">(</span><span class="n">PlaywrightGoogleLinkSearch</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search for top links on Google using Camoufox browser&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">use_homepage</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">launch_kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        use_homepage : bool, default=True</span>
+<span class="sd">            If ``True``, the browser will be navigated to the search</span>
+<span class="sd">            engine homepage and the query will be input into the search</span>
+<span class="sd">            bar. If ``False``, the query will be embedded in the URL</span>
+<span class="sd">            and the browser will navigate directly to the filled-out</span>
+<span class="sd">            URL. By default, ``False``.</span>
+<span class="sd">        **launch_kwargs</span>
+<span class="sd">            Keyword arguments to be passed to</span>
+<span class="sd">            `playwright.firefox.launch`. For example, you can pass</span>
+<span class="sd">            ``headless=False, slow_mo=50`` for a visualization of the</span>
+<span class="sd">            search.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_homepage</span> <span class="o">=</span> <span class="n">use_homepage</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">launch_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;humanize&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;headless&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">launch_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">launch_kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_browser</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_load_browser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pw_instance</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Empty implementation since we are using camoufox&quot;&quot;&quot;</span>
+
+    <span class="nd">@asynccontextmanager</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_browser_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get page to use for search&quot;&quot;&quot;</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">AsyncCamoufox</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">launch_kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="n">browser</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="k">await</span> <span class="n">browser</span><span class="o">.</span><span class="n">new_page</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="PlaywrightGoogleCSELinkSearch">
+<a class="viewcode-back" href="../../../../_autosummary/elm.web.search.google.PlaywrightGoogleCSELinkSearch.html#elm.web.search.google.PlaywrightGoogleCSELinkSearch">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PlaywrightGoogleCSELinkSearch</span><span class="p">(</span><span class="n">PlaywrightSearchEngineLinkSearch</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search for top links on a custom google search engine</span>
+
+<span class="sd">    Resources</span>
+<span class="sd">    ---------</span>
+<span class="sd">    https://programmablesearchengine.google.com/controlpanel/create</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_SE_NAME</span> <span class="o">=</span> <span class="s2">&quot;Google CSE&quot;</span>
+    <span class="n">_SE_SR_TAG</span> <span class="o">=</span> <span class="s2">&quot;a.gs-title[href]&quot;</span>
+    <span class="n">PAGE_LOAD_TIMEOUT</span> <span class="o">=</span> <span class="mi">10_000</span>
+    <span class="n">_SE_QUERY_URL</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cse_url</span><span class="p">,</span> <span class="n">use_homepage</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">launch_kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cse_url : str</span>
+<span class="sd">            URL of the custom google programmable search engine.</span>
+<span class="sd">        use_homepage : bool, default=False</span>
+<span class="sd">            If ``True``, the browser will be navigated to the search</span>
+<span class="sd">            engine homepage and the query will be input into the search</span>
+<span class="sd">            bar. If ``False``, the query will be embedded in the URL</span>
+<span class="sd">            and the browser will navigate directly to the filled-out</span>
+<span class="sd">            URL. By default, ``False``.</span>
+<span class="sd">        **launch_kwargs</span>
+<span class="sd">            Keyword arguments to be passed to</span>
+<span class="sd">            `playwright.chromium.launch`. For example, you can pass</span>
+<span class="sd">            ``headless=False, slow_mo=50`` for a visualization of the</span>
+<span class="sd">            search.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">use_homepage</span><span class="o">=</span><span class="n">use_homepage</span><span class="p">,</span> <span class="o">**</span><span class="n">launch_kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cse_url</span> <span class="o">=</span> <span class="n">cse_url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_SE_QUERY_URL</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;https://cse.google.com/cse?cx=</span><span class="si">{</span><span class="n">cse_url</span><span class="si">}</span><span class="s2">#gsc.tab=0&quot;</span>
+            <span class="s2">&quot;&amp;gsc.q=</span><span class="si">{}</span><span class="s2">&amp;gsc.sort=&quot;</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_SE_URL</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;str: URL for the custom google programmable search engine&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cse_url</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;#gsc.tab=0&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cse_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cse_url</span><span class="si">}</span><span class="s2">#gsc.tab=0&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cse_url</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_perform_homepage_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">search_query</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fill in search bar with user query and hit enter&quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s2">&quot;Finding search bar for query: </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">search_query</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">get_by_label</span><span class="p">(</span><span class="s2">&quot;search&quot;</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">search_query</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s2">&quot;Hitting enter for query: </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">search_query</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">keyboard</span><span class="o">.</span><span class="n">press</span><span class="p">(</span><span class="s1">&#39;Enter&#39;</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_extract_links</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">num_results</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract links for top `num_results` on page&quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">wait_for_load_state</span><span class="p">(</span><span class="s2">&quot;networkidle&quot;</span><span class="p">,</span>
+                                       <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">PAGE_LOAD_TIMEOUT</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">page</span><span class="o">.</span><span class="n">wait_for_selector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_SE_SR_TAG</span><span class="p">)</span>
+        <span class="n">locator</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">locator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_SE_SR_TAG</span><span class="p">)</span>
+
+        <span class="n">count</span> <span class="o">=</span> <span class="k">await</span> <span class="n">locator</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">links</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
+            <span class="n">element</span> <span class="o">=</span> <span class="n">locator</span><span class="o">.</span><span class="n">nth</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">link</span> <span class="o">=</span> <span class="k">await</span> <span class="n">element</span><span class="o">.</span><span class="n">get_attribute</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">link</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Skipped extracting link </span><span class="si">%d</span><span class="s2"> for query </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span>
+                                 <span class="n">i</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">links</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">num_results</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="k">return</span> <span class="n">links</span></div>
+
+
+
+<div class="viewcode-block" id="APIGoogleCSESearch">
+<a class="viewcode-back" href="../../../../_autosummary/elm.web.search.google.APIGoogleCSESearch.html#elm.web.search.google.APIGoogleCSESearch">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">APIGoogleCSESearch</span><span class="p">(</span><span class="n">APISearchEngineLinkSearch</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search the web for links using a Google CSE API&quot;&quot;&quot;</span>
+
+    <span class="n">_BUILD_ARGS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;serviceName&quot;</span><span class="p">:</span> <span class="s2">&quot;customsearch&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1&quot;</span><span class="p">}</span>
+    <span class="n">_SE_NAME</span> <span class="o">=</span> <span class="s2">&quot;Google CSE API&quot;</span>
+
+    <span class="n">API_KEY_VAR</span> <span class="o">=</span> <span class="s2">&quot;GOOGLE_API_KEY&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Environment variable that should contain the Google CSE API key&quot;&quot;&quot;</span>
+    <span class="n">CSE_ID_VAR</span> <span class="o">=</span> <span class="s2">&quot;GOOGLE_CSE_ID&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Environment variable that should contain CSE ID&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cse_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        api_key : str, optional</span>
+<span class="sd">            API key for search engine. If ``None``, will look up the API</span>
+<span class="sd">            key using the :obj:`API_KEY_VAR` environment variable.</span>
+<span class="sd">            By default, ``None``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cse_id</span> <span class="o">=</span> <span class="n">cse_id</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">CSE_ID_VAR</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">num_results</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Search web for links related to a query&quot;&quot;&quot;</span>
+        <span class="n">build_args</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_BUILD_ARGS</span><span class="p">)</span>
+        <span class="n">build_args</span><span class="p">[</span><span class="s2">&quot;developerKey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span>
+
+        <span class="n">search_args</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span> <span class="s2">&quot;cx&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cse_id</span><span class="p">,</span> <span class="s2">&quot;num&quot;</span><span class="p">:</span> <span class="n">num_results</span><span class="p">}</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="o">**</span><span class="n">build_args</span><span class="p">)</span><span class="o">.</span><span class="n">cse</span><span class="p">()</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="o">**</span><span class="n">search_args</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">(</span><span class="n">results</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;items&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;link&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">results</span><span class="p">)))</span></div>
+
+
+
+<div class="viewcode-block" id="SerpAPIGoogleSearch">
+<a class="viewcode-back" href="../../../../_autosummary/elm.web.search.google.SerpAPIGoogleSearch.html#elm.web.search.google.SerpAPIGoogleSearch">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SerpAPIGoogleSearch</span><span class="p">(</span><span class="n">APISearchEngineLinkSearch</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search the google for links using the SerpAPI service&quot;&quot;&quot;</span>
+
+    <span class="n">_SE_NAME</span> <span class="o">=</span> <span class="s2">&quot;SerpAPI (Google)&quot;</span>
+
+    <span class="n">API_KEY_VAR</span> <span class="o">=</span> <span class="s2">&quot;SERPAPI_KEY&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Environment variable that should contain the SerpAPI key&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        api_key : str, optional</span>
+<span class="sd">            API key for serper search API. If ``None``, will look up the</span>
+<span class="sd">            API key using the ``&quot;SERPAPI_KEY&quot;`` environment variable.</span>
+<span class="sd">            By default, ``None``.</span>
+<span class="sd">        verify : bool, default=False</span>
+<span class="sd">            Option to use SSL verification when making request to API</span>
+<span class="sd">            endpoint. By default, ``False``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verify</span> <span class="o">=</span> <span class="n">verify</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">num_results</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="o">**</span><span class="n">param_kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Search web for links related to a query&quot;&quot;&quot;</span>
+
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span> <span class="s2">&quot;hl&quot;</span><span class="p">:</span> <span class="s2">&quot;en&quot;</span><span class="p">,</span> <span class="s2">&quot;gl&quot;</span><span class="p">:</span> <span class="s2">&quot;us&quot;</span><span class="p">,</span> <span class="s2">&quot;api_key&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span><span class="p">}</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">param_kwargs</span><span class="p">)</span>
+
+        <span class="n">client</span> <span class="o">=</span> <span class="n">PatchedSerpApiClient</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;google&quot;</span><span class="p">,</span>
+                                      <span class="n">verify</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verify</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;organic_results&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;link&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot;%20&quot;</span><span class="p">)</span>
+                                  <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">results</span><span class="p">)))[:</span><span class="n">num_results</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="APISerperSearch">
+<a class="viewcode-back" href="../../../../_autosummary/elm.web.search.google.APISerperSearch.html#elm.web.search.google.APISerperSearch">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">APISerperSearch</span><span class="p">(</span><span class="n">APISearchEngineLinkSearch</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search the web for links using the Google Serper API&quot;&quot;&quot;</span>
+
+    <span class="n">_SE_NAME</span> <span class="o">=</span> <span class="s2">&quot;Google Serper API&quot;</span>
+    <span class="n">_URL</span> <span class="o">=</span> <span class="s2">&quot;https://google.serper.dev/search&quot;</span>
+
+    <span class="n">API_KEY_VAR</span> <span class="o">=</span> <span class="s2">&quot;SERPER_API_KEY&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Environment variable that should contain the Google Serper API key&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        api_key : str, optional</span>
+<span class="sd">            API key for serper search API. If ``None``, will look up the</span>
+<span class="sd">            API key using the ``&quot;SERPER_API_KEY&quot;`` environment variable.</span>
+<span class="sd">            By default, ``None``.</span>
+<span class="sd">        verify : bool, default=False</span>
+<span class="sd">            Option to use SSL verification when making request to API</span>
+<span class="sd">            endpoint. By default, ``False``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verify</span> <span class="o">=</span> <span class="n">verify</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">num_results</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Search web for links related to a query&quot;&quot;&quot;</span>
+
+        <span class="n">payload</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">query</span><span class="p">,</span> <span class="s2">&quot;num&quot;</span><span class="p">:</span> <span class="n">num_results</span><span class="p">})</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;X-API-KEY&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span><span class="p">,</span>
+                   <span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">}</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_URL</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+                                    <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verify</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;organic&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;link&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot;%20&quot;</span><span class="p">)</span>
+                                  <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">)))</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alliance for Sustainable Energy, LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

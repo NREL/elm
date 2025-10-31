@@ -1,0 +1,6 @@
+elm.utilities.parse.remove\_blank\_pages
+========================================
+
+.. currentmodule:: elm.utilities.parse
+
+.. autofunction:: remove_blank_pages

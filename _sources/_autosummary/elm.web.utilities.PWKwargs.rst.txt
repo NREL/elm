@@ -1,0 +1,33 @@
+elm.web.utilities.PWKwargs
+==========================
+
+.. currentmodule:: elm.web.utilities
+
+.. autoclass:: PWKwargs
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PWKwargs.context_kwargs
+      ~PWKwargs.launch_kwargs
+      ~PWKwargs.stealth_scripts
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PWKwargs.SKIP_SCRIPS
+      ~PWKwargs.USE_REALISTIC_VIEWPORTS
+   
+   

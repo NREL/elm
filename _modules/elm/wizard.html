@@ -1,0 +1,1201 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>elm.wizard &mdash; elm 0.0.34 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=9dd25805"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            elm
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.energy_wizard.html">The Energy Wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.energy_wizard.html#downloading-and-embedding-pdfs">Downloading and Embedding PDFs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.energy_wizard.html#running-the-streamlit-app">Running the Streamlit App</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.ordinance_gpt.html">Ordinance GPT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.ordinance_gpt.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.ordinance_gpt.html#running-from-python">Running from Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.ordinance_gpt.html#running-from-the-command-line-utility">Running from the Command Line Utility</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../examples.ordinance_gpt.html#execution">Execution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../examples.ordinance_gpt.html#debugging">Debugging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.ordinance_gpt.html#source-ordinance-documents">Source Ordinance Documents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.ordinance_gpt.html#extension-to-other-technologies">Extension to Other Technologies</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../dev/ords_architecture.html"><strong>OrdinanceGPT: Architectural Design Document</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../dev/ords_architecture.html#introduction"><strong>1. Introduction</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dev/ords_architecture.html#purpose"><strong>1.1 Purpose</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dev/ords_architecture.html#audience"><strong>1.2 Audience</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dev/ords_architecture.html#scope"><strong>1.3 Scope</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../dev/ords_architecture.html#high-level-architecture"><strong>2. High-Level Architecture</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dev/ords_architecture.html#system-context"><strong>2.1 System Context</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../dev/ords_architecture.html#detailed-design"><strong>3. Detailed Design</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dev/ords_architecture.html#web-scraper"><strong>3.1 Web Scraper</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dev/ords_architecture.html#document-parser"><strong>3.2 Document Parser</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../dev/ords_architecture.html#key-concepts-and-classes"><strong>4 Key Concepts and Classes</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dev/ords_architecture.html#key-concept-services"><strong>4.1 Key Concept: Services</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dev/ords_architecture.html#key-classes"><strong>4.2 Key Classes</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../dev/ords_architecture.html#workflows"><strong>5. Workflows</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dev/ords_architecture.html#downloading-documents-from-google"><strong>5.1 Downloading documents from Google</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dev/ords_architecture.html#querying-openai"><strong>5.2 Querying OpenAI</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../dev/ords_architecture.html#appendix"><strong>6. Appendix</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../dev/ords_architecture.html#tools-and-libraries"><strong>6.1 Tools and Libraries</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../dev/ords_architecture.html#deliverables"><strong>7. Deliverables</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../_autosummary/elm.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.base.html">elm.base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.base.ApiBase.html">elm.base.ApiBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.base.ApiBase.html#elm.base.ApiBase"><code class="docutils literal notranslate"><span class="pre">ApiBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.base.ApiQueue.html">elm.base.ApiQueue</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.base.ApiQueue.html#elm.base.ApiQueue"><code class="docutils literal notranslate"><span class="pre">ApiQueue</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.chunk.html">elm.chunk</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.chunk.Chunker.html">elm.chunk.Chunker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker"><code class="docutils literal notranslate"><span class="pre">Chunker</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.cli.html">elm.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.embed.html">elm.embed</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.embed.ChunkAndEmbed.html">elm.embed.ChunkAndEmbed</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed"><code class="docutils literal notranslate"><span class="pre">ChunkAndEmbed</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.exceptions.html">elm.exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.exceptions.ELMError.html">elm.exceptions.ELMError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.exceptions.ELMError.html#elm.exceptions.ELMError"><code class="docutils literal notranslate"><span class="pre">ELMError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.exceptions.ELMInputError.html">elm.exceptions.ELMInputError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.exceptions.ELMInputError.html#elm.exceptions.ELMInputError"><code class="docutils literal notranslate"><span class="pre">ELMInputError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.exceptions.ELMKeyError.html">elm.exceptions.ELMKeyError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.exceptions.ELMKeyError.html#elm.exceptions.ELMKeyError"><code class="docutils literal notranslate"><span class="pre">ELMKeyError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.exceptions.ELMRuntimeError.html">elm.exceptions.ELMRuntimeError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.exceptions.ELMRuntimeError.html#elm.exceptions.ELMRuntimeError"><code class="docutils literal notranslate"><span class="pre">ELMRuntimeError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.ords.html">elm.ords</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.ords.download.html">elm.ords.download</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.download.download_county_ordinance.html">elm.ords.download.download_county_ordinance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.ords.extraction.html">elm.ords.extraction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.extraction.apply.html">elm.ords.extraction.apply</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.extraction.date.html">elm.ords.extraction.date</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.extraction.features.html">elm.ords.extraction.features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.extraction.graphs.html">elm.ords.extraction.graphs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.extraction.ngrams.html">elm.ords.extraction.ngrams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.extraction.ordinance.html">elm.ords.extraction.ordinance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.extraction.parse.html">elm.ords.extraction.parse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.extraction.tree.html">elm.ords.extraction.tree</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.ords.llm.html">elm.ords.llm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.llm.calling.html">elm.ords.llm.calling</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.ords.process.html">elm.ords.process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.process.process_counties_with_openai.html">elm.ords.process.process_counties_with_openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.process.process_county.html">elm.ords.process.process_county</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.process.process_county_with_logging.html">elm.ords.process.process_county_with_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.ords.services.html">elm.ords.services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.services.base.html">elm.ords.services.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.services.cpu.html">elm.ords.services.cpu</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.services.openai.html">elm.ords.services.openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.services.provider.html">elm.ords.services.provider</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.services.queues.html">elm.ords.services.queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.services.threaded.html">elm.ords.services.threaded</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.services.usage.html">elm.ords.services.usage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.ords.utilities.html">elm.ords.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.utilities.counties.html">elm.ords.utilities.counties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.utilities.exceptions.html">elm.ords.utilities.exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.utilities.location.html">elm.ords.utilities.location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.utilities.parsing.html">elm.ords.utilities.parsing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.utilities.queued_logging.html">elm.ords.utilities.queued_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.ords.validation.html">elm.ords.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.validation.content.html">elm.ords.validation.content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.ords.validation.location.html">elm.ords.validation.location</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.pdf.html">elm.pdf</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.pdf.PDFtoTXT.html">elm.pdf.PDFtoTXT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT"><code class="docutils literal notranslate"><span class="pre">PDFtoTXT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.summary.html">elm.summary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.summary.Summary.html">elm.summary.Summary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.summary.Summary.html#elm.summary.Summary"><code class="docutils literal notranslate"><span class="pre">Summary</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.tree.html">elm.tree</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.tree.DecisionTree.html">elm.tree.DecisionTree</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.tree.DecisionTree.html#elm.tree.DecisionTree"><code class="docutils literal notranslate"><span class="pre">DecisionTree</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.utilities.html">elm.utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.html">elm.utilities.parse</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.clean_headers.html">elm.utilities.parse.clean_headers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.combine_pages.html">elm.utilities.parse.combine_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.format_html_tables.html">elm.utilities.parse.format_html_tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.html_to_text.html">elm.utilities.parse.html_to_text</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.is_multi_col.html">elm.utilities.parse.is_multi_col</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.read_pdf.html">elm.utilities.parse.read_pdf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.read_pdf_ocr.html">elm.utilities.parse.read_pdf_ocr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.remove_blank_pages.html">elm.utilities.parse.remove_blank_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.remove_empty_lines_or_page_footers.html">elm.utilities.parse.remove_empty_lines_or_page_footers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.replace_common_pdf_conversion_chars.html">elm.utilities.parse.replace_common_pdf_conversion_chars</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.replace_excessive_newlines.html">elm.utilities.parse.replace_excessive_newlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.replace_multi_dot_lines.html">elm.utilities.parse.replace_multi_dot_lines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.parse.resembles_html.html">elm.utilities.parse.resembles_html</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.utilities.retry.html">elm.utilities.retry</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.retry.async_retry_with_exponential_backoff.html">elm.utilities.retry.async_retry_with_exponential_backoff</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.retry.retry_with_exponential_backoff.html">elm.utilities.retry.retry_with_exponential_backoff</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.utilities.try_import.html">elm.utilities.try_import</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.try_import.try_import.html">elm.utilities.try_import.try_import</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.utilities.validation.html">elm.utilities.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.utilities.validation.validate_azure_api_params.html">elm.utilities.validation.validate_azure_api_params</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.version.html">elm.version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.web.html">elm.web</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.web.document.html">elm.web.document</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.document.BaseDocument.html">elm.web.document.BaseDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.document.HTMLDocument.html">elm.web.document.HTMLDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.document.PDFDocument.html">elm.web.document.PDFDocument</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.web.file_loader.html">elm.web.file_loader</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.file_loader.AsyncFileLoader.html">elm.web.file_loader.AsyncFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.file_loader.AsyncLocalFileLoader.html">elm.web.file_loader.AsyncLocalFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.file_loader.AsyncWebFileLoader.html">elm.web.file_loader.AsyncWebFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.file_loader.BaseAsyncFileLoader.html">elm.web.file_loader.BaseAsyncFileLoader</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.web.html_pw.html">elm.web.html_pw</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.html_pw.load_html_with_pw.html">elm.web.html_pw.load_html_with_pw</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.web.osti.html">elm.web.osti</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.osti.OstiList.html">elm.web.osti.OstiList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.osti.OstiRecord.html">elm.web.osti.OstiRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.web.rhub.html">elm.web.rhub</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.rhub.ProfilesList.html">elm.web.rhub.ProfilesList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.rhub.ProfilesRecord.html">elm.web.rhub.ProfilesRecord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.rhub.PublicationsList.html">elm.web.rhub.PublicationsList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.rhub.PublicationsRecord.html">elm.web.rhub.PublicationsRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.web.search.html">elm.web.search</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.search.base.html">elm.web.search.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.search.bing.html">elm.web.search.bing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.search.duckduckgo.html">elm.web.search.duckduckgo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.search.dux.html">elm.web.search.dux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.search.google.html">elm.web.search.google</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.search.run.html">elm.web.search.run</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.search.tavily.html">elm.web.search.tavily</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.search.yahoo.html">elm.web.search.yahoo</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.web.utilities.html">elm.web.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.utilities.DEFAULT_HEADERS.html">elm.web.utilities.DEFAULT_HEADERS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.utilities.clean_search_query.html">elm.web.utilities.clean_search_query</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.utilities.compute_fn_from_url.html">elm.web.utilities.compute_fn_from_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.utilities.filter_documents.html">elm.web.utilities.filter_documents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.utilities.get_redirected_url.html">elm.web.utilities.get_redirected_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.utilities.pw_page.html">elm.web.utilities.pw_page</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.utilities.write_url_doc_to_file.html">elm.web.utilities.write_url_doc_to_file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.utilities.PWKwargs.html">elm.web.utilities.PWKwargs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.web.website_crawl.html">elm.web.website_crawl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS.html">elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.website_crawl.ELM_URL_FILTER.html">elm.web.website_crawl.ELM_URL_FILTER</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.website_crawl.ContentTypeExcludeFilter.html">elm.web.website_crawl.ContentTypeExcludeFilter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.website_crawl.ELMLinkScorer.html">elm.web.website_crawl.ELMLinkScorer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawler.html">elm.web.website_crawl.ELMWebsiteCrawler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html">elm.web.website_crawl.ELMWebsiteCrawlingStrategy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html">elm.web.website_crawl.PeekablePriorityQueue</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/elm.wizard.html">elm.wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.wizard.EnergyWizard.html">elm.wizard.EnergyWizard</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard"><code class="docutils literal notranslate"><span class="pre">EnergyWizard</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.wizard.EnergyWizardBase.html">elm.wizard.EnergyWizardBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase"><code class="docutils literal notranslate"><span class="pre">EnergyWizardBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/elm.wizard.EnergyWizardPostgres.html">elm.wizard.EnergyWizardPostgres</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres"><code class="docutils literal notranslate"><span class="pre">EnergyWizardPostgres</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../_cli/cli.html">CLI reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../_cli/elm.html">elm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_cli/elm.html#elm-ords">ords</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">elm</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">elm.wizard</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for elm.wizard</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">ELM energy wizard</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">perf_counter</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">ApiBase</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.utilities.try_import</span><span class="w"> </span><span class="kn">import</span> <span class="n">try_import</span>
+
+
+<div class="viewcode-block" id="EnergyWizardBase">
+<a class="viewcode-back" href="../../_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EnergyWizardBase</span><span class="p">(</span><span class="n">ApiBase</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base interface to ask OpenAI LLMs about energy research.&quot;&quot;&quot;</span>
+
+    <span class="n">MODEL_ROLE</span> <span class="o">=</span> <span class="s2">&quot;You parse through articles to answer questions.&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;High level model role, somewhat redundant to MODEL_INSTRUCTION&quot;&quot;&quot;</span>
+
+    <span class="n">MODEL_INSTRUCTION</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Use the information below to answer the subsequent &#39;</span>
+                         <span class="s1">&#39;question. If the answer cannot be found in the &#39;</span>
+                         <span class="s1">&#39;text, write &quot;I could not find an answer.&quot;&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Prefix to the engineered prompt&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">token_budget</span><span class="o">=</span><span class="mi">3500</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        model : str</span>
+<span class="sd">            GPT model name, default is the DEFAULT_MODEL global var</span>
+<span class="sd">        token_budget : int</span>
+<span class="sd">            Number of tokens that can be embedded in the prompt. Note that the</span>
+<span class="sd">            default budget for GPT-3.5-Turbo is 4096, but you want to subtract</span>
+<span class="sd">            some tokens to account for the response budget.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token_budget</span> <span class="o">=</span> <span class="n">token_budget</span>
+
+<div class="viewcode-block" id="EnergyWizardBase.query_vector_db">
+<a class="viewcode-back" href="../../_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.query_vector_db">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">query_vector_db</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a list of strings and relatednesses, sorted from most</span>
+<span class="sd">        related to least.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        query : str</span>
+<span class="sd">            Question being asked of GPT</span>
+<span class="sd">        limit : int</span>
+<span class="sd">            Number of top results to return.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        strings : np.ndarray</span>
+<span class="sd">            1D array of related strings</span>
+<span class="sd">        score : np.ndarray</span>
+<span class="sd">            1D array of float scores of strings</span>
+<span class="sd">        idx : np.ndarray</span>
+<span class="sd">            1D array of indices in the text corpus corresponding to the</span>
+<span class="sd">            ranked strings/scores outputs.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="EnergyWizardBase.engineer_query">
+<a class="viewcode-back" href="../../_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.engineer_query">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">engineer_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                       <span class="n">query</span><span class="p">,</span>
+                       <span class="n">token_budget</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                       <span class="n">new_info_threshold</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+                       <span class="n">convo</span><span class="o">=</span><span class="kc">False</span>
+                       <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Engineer a query for GPT using the corpus of information</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        query : str</span>
+<span class="sd">            Question being asked of GPT</span>
+<span class="sd">        token_budget : int</span>
+<span class="sd">            Option to override the class init token budget.</span>
+<span class="sd">        new_info_threshold : float</span>
+<span class="sd">            New text added to the engineered query must contain at least this</span>
+<span class="sd">            much new information. This helps prevent (for example) the table of</span>
+<span class="sd">            contents being added multiple times.</span>
+<span class="sd">        convo : bool</span>
+<span class="sd">            Flag to perform semantic search with full conversation history</span>
+<span class="sd">            (True) or just the single query (False). Call EnergyWizard.clear()</span>
+<span class="sd">            to reset the chat history.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        message : str</span>
+<span class="sd">            Engineered question to GPT including information from corpus and</span>
+<span class="sd">            the original query</span>
+<span class="sd">        references : list</span>
+<span class="sd">            The list of references (strs) used in the engineered prompt is</span>
+<span class="sd">            returned here</span>
+<span class="sd">        used_index : list</span>
+<span class="sd">            Shows the indices of the documents used in making a query to the</span>
+<span class="sd">            vector database</span>
+<span class="sd">        vector_query_time : float</span>
+<span class="sd">            measures vector database query time</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">query</span><span class="p">})</span>
+
+        <span class="k">if</span> <span class="n">convo</span><span class="p">:</span>
+            <span class="c1"># [1:] to not include the system role in the semantic search</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">msg</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                     <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">messages</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
+
+            <span class="n">query</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="n">token_budget</span> <span class="o">=</span> <span class="n">token_budget</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">token_budget</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
+        <span class="n">strings</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_vector_db</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
+        <span class="n">vector_query_time</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MODEL_INSTRUCTION</span><span class="p">)</span>
+        <span class="n">question</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">Question: </span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">used_index</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">string</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">strings</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+            <span class="n">next_str</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&quot;&quot;&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">string</span><span class="si">}</span><span class="se">\n</span><span class="s1">&quot;&quot;&quot;&#39;</span><span class="p">)</span>
+            <span class="n">token_usage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count_tokens</span><span class="p">(</span><span class="n">message</span> <span class="o">+</span> <span class="n">next_str</span> <span class="o">+</span> <span class="n">question</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+
+            <span class="n">new_words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">next_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">))</span>
+            <span class="n">additional_info</span> <span class="o">=</span> <span class="n">new_words</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">))</span>
+            <span class="n">new_info_frac</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">additional_info</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_words</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">new_info_frac</span> <span class="o">&gt;</span> <span class="n">new_info_threshold</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">token_usage</span> <span class="o">&gt;</span> <span class="n">token_budget</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">message</span> <span class="o">+=</span> <span class="n">next_str</span>
+                    <span class="n">used_index</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="n">message</span> <span class="o">=</span> <span class="n">message</span> <span class="o">+</span> <span class="n">question</span>
+        <span class="n">used_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">used_index</span><span class="p">)</span>
+        <span class="n">references</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_ref_list</span><span class="p">(</span><span class="n">used_index</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">message</span><span class="p">,</span> <span class="n">references</span><span class="p">,</span> <span class="n">used_index</span><span class="p">,</span> <span class="n">vector_query_time</span></div>
+
+
+<div class="viewcode-block" id="EnergyWizardBase.make_ref_list">
+<a class="viewcode-back" href="../../_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.make_ref_list">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_ref_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Make a reference list</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        used_index : np.ndarray</span>
+<span class="sd">            Indices of the used text from the text corpus</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ref_list : list</span>
+<span class="sd">            A list of references (strs) used. Ideally, this is something like:</span>
+<span class="sd">            [&quot;{ref_title} ({ref_url})&quot;]</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="EnergyWizardBase.chat">
+<a class="viewcode-back" href="../../_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase.chat">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">chat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+             <span class="n">query</span><span class="p">,</span>
+             <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+             <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+             <span class="n">convo</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+             <span class="n">token_budget</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+             <span class="n">new_info_threshold</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+             <span class="n">print_references</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+             <span class="n">return_chat_obj</span><span class="o">=</span><span class="kc">False</span>
+             <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Answers a query by doing a semantic search of relevant text with</span>
+<span class="sd">        embeddings and then sending engineered query to the LLM.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        query : str</span>
+<span class="sd">            Question being asked of EnergyWizard</span>
+<span class="sd">        stream : bool</span>
+<span class="sd">            Flag to print subsequent chunks of the response in a streaming</span>
+<span class="sd">            fashion</span>
+<span class="sd">        temperature : float</span>
+<span class="sd">            GPT model temperature, a measure of response entropy from 0 to 1. 0</span>
+<span class="sd">            is more reliable and nearly deterministic; 1 will give the model</span>
+<span class="sd">            more creative freedom and may not return as factual of results.</span>
+<span class="sd">        convo : bool</span>
+<span class="sd">            Flag to perform semantic search with full conversation history</span>
+<span class="sd">            (True) or just the single query (False). Call EnergyWizard.clear()</span>
+<span class="sd">            to reset the chat history.</span>
+<span class="sd">        token_budget : int</span>
+<span class="sd">            Option to override the class init token budget.</span>
+<span class="sd">        new_info_threshold : float</span>
+<span class="sd">            New text added to the engineered query must contain at least this</span>
+<span class="sd">            much new information. This helps prevent (for example) the table of</span>
+<span class="sd">            contents being added multiple times.</span>
+<span class="sd">        print_references : bool</span>
+<span class="sd">            Flag to print references if EnergyWizard is initialized with a</span>
+<span class="sd">            valid ``ref_col``.</span>
+<span class="sd">        return_chat_obj : bool</span>
+<span class="sd">            Flag to return the ChatCompletion object from OpenAI API instead of</span>
+<span class="sd">            the message string.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        response : str | ChatCompletion</span>
+<span class="sd">            GPT response string ``if not return_chat_obj`` or OpenAI</span>
+<span class="sd">            ChatCompletion object ``if return_chat_obj``</span>
+<span class="sd">        query : str</span>
+<span class="sd">            The engineered query asked of GPT including retrieved context</span>
+<span class="sd">        references : list</span>
+<span class="sd">            The list of references (strs) used in the engineered prompt is</span>
+<span class="sd">            returned here</span>
+<span class="sd">        performance : dict | None</span>
+<span class="sd">            dictionary with keys of ``total_chat_time``,</span>
+<span class="sd">            ``chat_completion_time`` and ``vectordb_query_time``. If</span>
+<span class="sd">            return_chat_obj, this is None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">start_chat_time</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">engineer_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">token_budget</span><span class="o">=</span><span class="n">token_budget</span><span class="p">,</span>
+                                  <span class="n">new_info_threshold</span><span class="o">=</span><span class="n">new_info_threshold</span><span class="p">,</span>
+                                  <span class="n">convo</span><span class="o">=</span><span class="n">convo</span><span class="p">)</span>
+        <span class="n">query</span><span class="p">,</span> <span class="n">references</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">vector_query_time</span> <span class="o">=</span> <span class="n">out</span>
+
+        <span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">MODEL_ROLE</span><span class="p">},</span>
+                    <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">query</span><span class="p">}]</span>
+        <span class="n">response_message</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+                      <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
+                      <span class="n">temperature</span><span class="o">=</span><span class="n">temperature</span><span class="p">,</span>
+                      <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">)</span>
+
+        <span class="n">start_completion_time</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">finish_completion_time</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
+        <span class="n">chat_completion_time</span> <span class="o">=</span> <span class="n">finish_completion_time</span> <span class="o">-</span> <span class="n">start_completion_time</span>
+        <span class="n">total_chat_time</span> <span class="o">=</span> <span class="n">finish_completion_time</span> <span class="o">-</span> <span class="n">start_chat_time</span>
+
+        <span class="n">performance</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;total_chat_time&quot;</span><span class="p">:</span> <span class="n">total_chat_time</span><span class="p">,</span>
+            <span class="s2">&quot;chat_completion_time&quot;</span><span class="p">:</span> <span class="n">chat_completion_time</span><span class="p">,</span>
+            <span class="s2">&quot;vectordb_query_time&quot;</span><span class="p">:</span> <span class="n">vector_query_time</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">return_chat_obj</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">response</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">references</span><span class="p">,</span> <span class="n">performance</span>
+
+        <span class="k">if</span> <span class="n">stream</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+                <span class="n">chunk_msg</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">content</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+                <span class="n">response_message</span> <span class="o">+=</span> <span class="n">chunk_msg</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">chunk_msg</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">response_message</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="s1">&#39;assistant&#39;</span><span class="p">,</span>
+                              <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">response_message</span><span class="p">})</span>
+
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">references</span><span class="p">)</span> <span class="ow">and</span> <span class="n">print_references</span><span class="p">:</span>
+            <span class="n">ref_msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">The model was provided with the &#39;</span>
+                       <span class="s1">&#39;following documents to support its answer:&#39;</span><span class="p">)</span>
+            <span class="n">ref_msg</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> - &#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> - &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">references</span><span class="p">)</span>
+            <span class="n">response_message</span> <span class="o">+=</span> <span class="n">ref_msg</span>
+            <span class="k">if</span> <span class="n">stream</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">ref_msg</span><span class="p">)</span>
+
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
+        <span class="n">total_chat_time</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">start_chat_time</span>
+        <span class="n">performance</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;total_chat_time&quot;</span><span class="p">:</span> <span class="n">total_chat_time</span><span class="p">,</span>
+            <span class="s2">&quot;chat_completion_time&quot;</span><span class="p">:</span> <span class="n">chat_completion_time</span><span class="p">,</span>
+            <span class="s2">&quot;vectordb_query_time&quot;</span><span class="p">:</span> <span class="n">vector_query_time</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">response_message</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">references</span><span class="p">,</span> <span class="n">performance</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="EnergyWizard">
+<a class="viewcode-back" href="../../_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EnergyWizard</span><span class="p">(</span><span class="n">EnergyWizardBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Interface to ask OpenAI LLMs about energy research.</span>
+
+<span class="sd">    This class is for execution on a local machine with a vector database in</span>
+<span class="sd">    memory</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">corpus</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">token_budget</span><span class="o">=</span><span class="mi">3500</span><span class="p">,</span> <span class="n">ref_col</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        corpus : pd.DataFrame</span>
+<span class="sd">            Corpus of text in dataframe format. Must have columns &quot;text&quot; and</span>
+<span class="sd">            &quot;embedding&quot;.</span>
+<span class="sd">        model : str</span>
+<span class="sd">            GPT model name, default is the DEFAULT_MODEL global var</span>
+<span class="sd">        token_budget : int</span>
+<span class="sd">            Number of tokens that can be embedded in the prompt. Note that the</span>
+<span class="sd">            default budget for GPT-3.5-Turbo is 4096, but you want to subtract</span>
+<span class="sd">            some tokens to account for the response budget.</span>
+<span class="sd">        ref_col : None | str</span>
+<span class="sd">            Optional column label in the corpus that provides a reference text</span>
+<span class="sd">            string for each chunk of text.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">token_budget</span><span class="o">=</span><span class="n">token_budget</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">preflight_corpus</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedding_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">[</span><span class="s1">&#39;embedding&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_arr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ref_col</span> <span class="o">=</span> <span class="n">ref_col</span>
+
+<div class="viewcode-block" id="EnergyWizard.preflight_corpus">
+<a class="viewcode-back" href="../../_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.preflight_corpus">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">preflight_corpus</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">&#39;embedding&#39;</span><span class="p">)):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run preflight checks on the text corpus.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        corpus : pd.DataFrame</span>
+<span class="sd">            Corpus of text in dataframe format. Must have columns &quot;text&quot; and</span>
+<span class="sd">            &quot;embedding&quot;.</span>
+<span class="sd">        required : list | tuple</span>
+<span class="sd">            Column names required to be in the corpus df</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        corpus : pd.DataFrame</span>
+<span class="sd">            Corpus of text in dataframe format. Must have columns &quot;text&quot; and</span>
+<span class="sd">            &quot;embedding&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">missing</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">required</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">missing</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Text corpus must have </span><span class="si">{}</span><span class="s1"> columns but received &#39;</span>
+                   <span class="s1">&#39;corpus with columns: </span><span class="si">{}</span><span class="s1">&#39;</span>
+                   <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">missing</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">corpus</span><span class="o">.</span><span class="n">columns</span><span class="p">)))</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">corpus</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">corpus</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">corpus</span><span class="p">))</span>
+            <span class="n">corpus</span> <span class="o">=</span> <span class="n">corpus</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">corpus</span></div>
+
+
+<div class="viewcode-block" id="EnergyWizard.cosine_dist">
+<a class="viewcode-back" href="../../_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.cosine_dist">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cosine_dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_embedding</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the cosine distance of the query embedding array vs. all of</span>
+<span class="sd">        the embedding arrays of the full text corpus</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        query_embedding : np.ndarray</span>
+<span class="sd">            1D array of the numerical embedding of the request query.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : np.ndarray</span>
+<span class="sd">            1D array with length equal to the number of entries in the text</span>
+<span class="sd">            corpus. Each value is a distance score where smaller is closer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">dot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_arr</span><span class="p">,</span> <span class="n">query_embedding</span><span class="p">)</span>
+        <span class="n">norm1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">query_embedding</span><span class="p">)</span>
+        <span class="n">norm2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_arr</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">out</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">dot</span> <span class="o">/</span> <span class="p">(</span><span class="n">norm1</span> <span class="o">*</span> <span class="n">norm2</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="EnergyWizard.query_vector_db">
+<a class="viewcode-back" href="../../_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.query_vector_db">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">query_vector_db</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a list of strings and relatednesses, sorted from most</span>
+<span class="sd">        related to least.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        query : str</span>
+<span class="sd">            Question being asked of GPT</span>
+<span class="sd">        limit : int</span>
+<span class="sd">            Number of top results to return.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        strings : np.ndarray</span>
+<span class="sd">            1D array of related strings</span>
+<span class="sd">        score : np.ndarray</span>
+<span class="sd">            1D array of float scores of strings</span>
+<span class="sd">        idx : np.ndarray</span>
+<span class="sd">            1D array of indices in the text corpus corresponding to the</span>
+<span class="sd">            ranked strings/scores outputs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">embedding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_embedding</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">cosine_dist</span><span class="p">(</span><span class="n">embedding</span><span class="p">)</span>
+        <span class="n">best</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">scores</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="n">limit</span><span class="p">]</span>
+
+        <span class="n">strings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_arr</span><span class="p">[</span><span class="n">best</span><span class="p">]</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="n">scores</span><span class="p">[</span><span class="n">best</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">strings</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">best</span></div>
+
+
+<div class="viewcode-block" id="EnergyWizard.make_ref_list">
+<a class="viewcode-back" href="../../_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard.make_ref_list">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_ref_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Make a reference list</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        used_index : np.ndarray</span>
+<span class="sd">            Indices of the used text from the text corpus</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ref_list : list</span>
+<span class="sd">            A list of references (strs) used. This takes information straight</span>
+<span class="sd">            from ``ref_col``. Ideally, this is something like:</span>
+<span class="sd">            [&quot;{ref_title} ({ref_url})&quot;]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ref_list</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref_col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">:</span>
+            <span class="n">ref_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">corpus</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ref_col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">ref_list</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="EnergyWizardPostgres">
+<a class="viewcode-back" href="../../_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EnergyWizardPostgres</span><span class="p">(</span><span class="n">EnergyWizardBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Interface to ask OpenAI LLMs about energy research.</span>
+
+<span class="sd">    This class is for execution with a postgres vector database.</span>
+<span class="sd">    Querying the database requires the use of the psycopg2 and</span>
+<span class="sd">    boto3 python packages, environment variables (&#39;EWIZ_DB_USER&#39;</span>
+<span class="sd">    and &#39;EWIZ_DB_PASSWORD&#39;) storing the db user and password, and</span>
+<span class="sd">    the specification of other connection paremeters such as host,</span>
+<span class="sd">    port, and name. The database has the following columns: id,</span>
+<span class="sd">    embedding, chunks, and metadata.</span>
+
+<span class="sd">    This class is designed as follows:</span>
+<span class="sd">    Vector database: PostgreSQL database accessed using psycopg2.</span>
+<span class="sd">    Query Embedding: AWS using boto3</span>
+<span class="sd">    LLM Application: GPT4 via Azure deployment</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">EMBEDDING_MODEL</span> <span class="o">=</span> <span class="s1">&#39;amazon.titan-embed-text-v1&#39;</span>
+
+    <span class="n">TOKENIZER_ALIASES</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">EnergyWizardBase</span><span class="o">.</span><span class="n">TOKENIZER_ALIASES</span><span class="p">,</span>
+                         <span class="s1">&#39;ewiz-gpt-4&#39;</span><span class="p">:</span> <span class="s1">&#39;gpt-4&#39;</span>
+                         <span class="p">}</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Optional mappings for weird azure names to tiktoken/openai names.&quot;&quot;&quot;</span>
+
+    <span class="n">DEFAULT_META_COLS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="p">,</span> <span class="s1">&#39;nrel_id&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default columns to retrieve for metadata&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db_host</span><span class="p">,</span> <span class="n">db_port</span><span class="p">,</span> <span class="n">db_name</span><span class="p">,</span>
+                 <span class="n">db_schema</span><span class="p">,</span> <span class="n">db_table</span><span class="p">,</span> <span class="n">probes</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+                 <span class="n">meta_columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cursor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">boto_client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">token_budget</span><span class="o">=</span><span class="mi">3500</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        db_host : str</span>
+<span class="sd">            Host url for postgres database.</span>
+<span class="sd">        db_port : str</span>
+<span class="sd">            Port for postres database. ex: &#39;5432&#39;</span>
+<span class="sd">        db_name : str</span>
+<span class="sd">            Postgres database name.</span>
+<span class="sd">        db_schema : str</span>
+<span class="sd">            Schema name for postres database.</span>
+<span class="sd">        db_table : str</span>
+<span class="sd">            Table to query in Postgres database. Necessary columns: id,</span>
+<span class="sd">            chunks, embedding, title, and url.</span>
+<span class="sd">        probes : int</span>
+<span class="sd">            Number of lists to search in vector database. Recommended</span>
+<span class="sd">            value is sqrt(n_lists).</span>
+<span class="sd">        meta_columns : list</span>
+<span class="sd">            List of metadata columns to retrieve from database. Default</span>
+<span class="sd">            query returns title, url, nrel_id, and id. nrel_id and id are</span>
+<span class="sd">            necessary to correctly format references.</span>
+<span class="sd">        cursor : psycopg2.extensions.cursor</span>
+<span class="sd">            PostgreSQL database cursor used to execute queries.</span>
+<span class="sd">        boto_client: botocore.client.BedrockRuntime</span>
+<span class="sd">            AWS boto3 client used to access embedding model.</span>
+<span class="sd">        model : str</span>
+<span class="sd">            GPT model name, default is the DEFAULT_MODEL global var</span>
+<span class="sd">        token_budget : int</span>
+<span class="sd">            Number of tokens that can be embedded in the prompt. Note that the</span>
+<span class="sd">            default budget for GPT-3.5-Turbo is 4096, but you want to subtract</span>
+<span class="sd">            some tokens to account for the response budget.</span>
+<span class="sd">        tag: bool</span>
+<span class="sd">            Flag to add tag/metadata to text chunks before sending query to</span>
+<span class="sd">            GPT.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">boto3</span> <span class="o">=</span> <span class="n">try_import</span><span class="p">(</span><span class="s1">&#39;boto3&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">psycopg2</span> <span class="o">=</span> <span class="n">try_import</span><span class="p">(</span><span class="s1">&#39;psycopg2&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">meta_columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">meta_columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_META_COLS</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">meta_columns</span> <span class="o">=</span> <span class="n">meta_columns</span>
+
+        <span class="k">assert</span> <span class="s1">&#39;id&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta_columns</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;Please include the chunk id &quot;</span>
+                                           <span class="s2">&quot;column: &#39;id&#39;!&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="s1">&#39;nrel_id&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta_columns</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;Please include the document &quot;</span>
+                                                <span class="s2">&quot;id column: &#39;nrel_id&#39;!&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">cursor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">db_user</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;EWIZ_DB_USER&quot;</span><span class="p">)</span>
+            <span class="n">db_password</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;EWIZ_DB_PASSWORD&#39;</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">db_user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Must set EWIZ_DB_USER!&quot;</span>
+            <span class="k">assert</span> <span class="n">db_password</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Must set EWIZ_DB_PASSWORD!&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">db_user</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">db_password</span><span class="p">,</span>
+                                  <span class="n">host</span><span class="o">=</span><span class="n">db_host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">db_port</span><span class="p">,</span>
+                                  <span class="n">database</span><span class="o">=</span><span class="n">db_name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">db_kwargs</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="n">cursor</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">db_schema</span> <span class="o">=</span> <span class="n">db_schema</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db_table</span> <span class="o">=</span> <span class="n">db_table</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">tag</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">probes</span> <span class="o">=</span> <span class="n">probes</span>
+
+        <span class="k">if</span> <span class="n">boto_client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">access_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;AWS_ACCESS_KEY_ID&#39;</span><span class="p">)</span>
+            <span class="n">secret</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;AWS_SECRET_ACCESS_KEY&#39;</span><span class="p">)</span>
+            <span class="n">session</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;AWS_SESSION_TOKEN&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">access_key</span> <span class="ow">and</span> <span class="n">secret</span> <span class="ow">and</span> <span class="n">session</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_aws_client</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="n">service_name</span><span class="o">=</span><span class="s1">&#39;bedrock-runtime&#39;</span><span class="p">,</span>
+                                                <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-west-2&#39;</span><span class="p">,</span>
+                                                <span class="n">aws_access_key_id</span><span class="o">=</span><span class="n">access_key</span><span class="p">,</span>
+                                                <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="n">secret</span><span class="p">,</span>
+                                                <span class="n">aws_session_token</span><span class="o">=</span><span class="n">session</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_aws_client</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="n">service_name</span><span class="o">=</span><span class="s1">&#39;bedrock-runtime&#39;</span><span class="p">,</span>
+                                                <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-west-2&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_aws_client</span> <span class="o">=</span> <span class="n">boto_client</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">token_budget</span><span class="o">=</span><span class="n">token_budget</span><span class="p">)</span>
+
+<div class="viewcode-block" id="EnergyWizardPostgres.get_embedding">
+<a class="viewcode-back" href="../../_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.get_embedding">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_embedding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the 1D array (list) embedding of a text string</span>
+<span class="sd">        as generated by specified AWS model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        text : str</span>
+<span class="sd">            Text to embed</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        embedding : list</span>
+<span class="sd">            List of float that represents the numerical embedding of the text</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">model_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">EMBEDDING_MODEL</span>
+
+        <span class="k">if</span> <span class="s1">&#39;cohere&#39;</span> <span class="ow">in</span> <span class="n">model_id</span><span class="p">:</span>
+            <span class="n">input_type</span> <span class="o">=</span> <span class="s2">&quot;search_query&quot;</span>
+
+            <span class="n">body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;texts&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">text</span><span class="p">],</span>
+                               <span class="s2">&quot;input_type&quot;</span><span class="p">:</span> <span class="n">input_type</span><span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;inputText&quot;</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span> <span class="p">})</span>
+
+        <span class="n">accept</span> <span class="o">=</span> <span class="s1">&#39;application/json&#39;</span>
+        <span class="n">content_type</span> <span class="o">=</span> <span class="s1">&#39;application/json&#39;</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aws_client</span><span class="o">.</span><span class="n">invoke_model</span><span class="p">(</span>
+            <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span>
+            <span class="n">modelId</span><span class="o">=</span><span class="n">model_id</span><span class="p">,</span>
+            <span class="n">accept</span><span class="o">=</span><span class="n">accept</span><span class="p">,</span>
+            <span class="n">contentType</span><span class="o">=</span><span class="n">content_type</span>
+        <span class="p">)</span>
+
+        <span class="n">response_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;body&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="s1">&#39;cohere&#39;</span> <span class="ow">in</span> <span class="n">model_id</span><span class="p">:</span>
+            <span class="n">embedding</span> <span class="o">=</span> <span class="n">response_body</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;embeddings&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">embedding</span> <span class="o">=</span> <span class="n">response_body</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;embedding&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">embedding</span></div>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_tag</span><span class="p">(</span><span class="n">meta</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Function to add tag/metadata to text strings before</span>
+<span class="sd">        sending query to GPT.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        meta : tuple</span>
+<span class="sd">            Text values to include in tag (title, authors, year)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tag : str</span>
+<span class="sd">            Text string containing provided metadata.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">title</span><span class="p">,</span> <span class="n">authors</span><span class="p">,</span> <span class="n">year</span> <span class="o">=</span> <span class="n">meta</span>
+        <span class="k">if</span> <span class="n">authors</span> <span class="ow">and</span> <span class="n">year</span><span class="p">:</span>
+            <span class="n">tag</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Title: </span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                   <span class="sa">f</span><span class="s2">&quot;Authors: </span><span class="si">{</span><span class="n">authors</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                   <span class="sa">f</span><span class="s2">&quot;Publication Year: </span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                   <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tag</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Title: </span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+
+        <span class="k">return</span> <span class="n">tag</span>
+
+<div class="viewcode-block" id="EnergyWizardPostgres.query_vector_db">
+<a class="viewcode-back" href="../../_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.query_vector_db">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">query_vector_db</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a list of strings and relatednesses, sorted from most</span>
+<span class="sd">        related to least. SQL query uses a context handler and rollback</span>
+<span class="sd">        to ensure a failed query does not interupt future questions from</span>
+<span class="sd">        the user. Ex: a user submitting a new question before the first</span>
+<span class="sd">        one completes will close the cursor preventing future database</span>
+<span class="sd">        access.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        query : str</span>
+<span class="sd">            Question being asked of GPT</span>
+<span class="sd">        limit : int</span>
+<span class="sd">            Number of top results to return.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        strings : np.ndarray</span>
+<span class="sd">            1D array of related strings</span>
+<span class="sd">        score : np.ndarray</span>
+<span class="sd">            1D array of float scores of strings</span>
+<span class="sd">        ids : np.ndarray</span>
+<span class="sd">            1D array of IDs in the text corpus corresponding to the</span>
+<span class="sd">            ranked strings/scores outputs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">query_embedding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_embedding</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">db_kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+            <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SET LOCAL ivfflat.probes = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">probes</span><span class="si">}</span><span class="s2">;&quot;</span>
+                               <span class="sa">f</span><span class="s2">&quot;SELECT </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">db_table</span><span class="si">}</span><span class="s2">.id, &quot;</span>
+                               <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">db_table</span><span class="si">}</span><span class="s2">.chunks, &quot;</span>
+                               <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">db_table</span><span class="si">}</span><span class="s2">.embedding &quot;</span>
+                               <span class="s2">&quot;&lt;=&gt; </span><span class="si">%s</span><span class="s2">::vector as score, &quot;</span>
+                               <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">db_table</span><span class="si">}</span><span class="s2">.title, &quot;</span>
+                               <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">db_table</span><span class="si">}</span><span class="s2">.authors, &quot;</span>
+                               <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">db_table</span><span class="si">}</span><span class="s2">.year &quot;</span>
+                               <span class="sa">f</span><span class="s2">&quot;FROM </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">db_schema</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">db_table</span><span class="si">}</span><span class="s2"> &quot;</span>
+                               <span class="s2">&quot;ORDER BY embedding &lt;=&gt; </span><span class="si">%s</span><span class="s2">::vector LIMIT </span><span class="si">%s</span><span class="s2">;&quot;</span><span class="p">,</span>
+                               <span class="p">(</span><span class="n">query_embedding</span><span class="p">,</span> <span class="n">query_embedding</span><span class="p">,</span> <span class="n">limit</span><span class="p">,),</span> <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="n">conn</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Received error when querying the postgres &#39;</span>
+                       <span class="sa">f</span><span class="s1">&#39;vector database: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="p">:</span>
+            <span class="n">strings</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_add_tag</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">3</span><span class="p">:])</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">strings</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
+
+        <span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
+        <span class="n">best</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">strings</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">best</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_format_refs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refs</span><span class="p">,</span> <span class="n">ids</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse and nicely format a reference dictionary into a list of well</span>
+<span class="sd">        formatted string representations</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        refs : list</span>
+<span class="sd">            List of references returned from the vector db</span>
+<span class="sd">        ids : np.ndarray</span>
+<span class="sd">            IDs of the used text from the text corpus sorted by embedding</span>
+<span class="sd">            relevance.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : list</span>
+<span class="sd">            Unique ordered list of references (most relevant first)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ref_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">refs</span><span class="p">:</span>
+            <span class="n">ref_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">col</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="mi">34</span><span class="p">),</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meta_columns</span><span class="p">,</span> <span class="n">item</span><span class="p">)}</span>
+
+            <span class="n">ref_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ref_dict</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">ref_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;The Wizard did not return any &quot;</span>
+                                   <span class="s2">&quot;references. Please check your database &quot;</span>
+                                   <span class="s2">&quot;connection or query.&quot;</span><span class="p">)</span>
+
+        <span class="n">unique_ref_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">unique_nrel_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">ref_dict</span> <span class="ow">in</span> <span class="n">ref_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ref_dict</span><span class="p">[</span><span class="s1">&#39;nrel_id&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">unique_nrel_ids</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">unique_ref_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ref_dict</span><span class="p">)</span>
+            <span class="n">unique_nrel_ids</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ref_dict</span><span class="p">[</span><span class="s1">&#39;nrel_id&#39;</span><span class="p">])</span>
+
+        <span class="n">ref_list</span> <span class="o">=</span> <span class="n">unique_ref_list</span>
+
+        <span class="k">if</span> <span class="s1">&#39;id&#39;</span> <span class="ow">in</span> <span class="n">ref_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">ids_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+            <span class="n">sorted_ref_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">ref_id</span> <span class="ow">in</span> <span class="n">ids_list</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">ref_dict</span> <span class="ow">in</span> <span class="n">ref_list</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">ref_dict</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">ref_id</span><span class="p">:</span>
+                        <span class="n">sorted_ref_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ref_dict</span><span class="p">)</span>
+                        <span class="k">break</span>
+            <span class="n">ref_list</span> <span class="o">=</span> <span class="n">sorted_ref_list</span>
+
+        <span class="n">ref_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span> <span class="k">for</span> <span class="n">ref</span> <span class="ow">in</span> <span class="n">ref_list</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">ref_list</span>
+
+<div class="viewcode-block" id="EnergyWizardPostgres.make_ref_list">
+<a class="viewcode-back" href="../../_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres.make_ref_list">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_ref_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Make a reference list. SQL query uses a context handler and</span>
+<span class="sd">        rollback to ensure a failed query does not interupt future questions</span>
+<span class="sd">        from the user. Ex: a user submitting a new question before the first</span>
+<span class="sd">        one completes will close the cursor preventing future database</span>
+<span class="sd">        access.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ids : np.ndarray</span>
+<span class="sd">            IDs of the used text from the text corpus</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ref_list : list</span>
+<span class="sd">            A list of references (strs) used. Ideally, this is something like:</span>
+<span class="sd">            [&quot;{ref_title} ({ref_url})&quot;]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">placeholders</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">))</span>
+        <span class="n">columns_str</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">db_table</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">&quot;</span>
+                                 <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta_columns</span><span class="p">])</span>
+
+        <span class="n">sql_query</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT </span><span class="si">{</span><span class="n">columns_str</span><span class="si">}</span><span class="s2"> &quot;</span>
+                     <span class="sa">f</span><span class="s2">&quot;FROM </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">db_schema</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">db_table</span><span class="si">}</span><span class="s2"> &quot;</span>
+                     <span class="sa">f</span><span class="s2">&quot;WHERE </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">db_table</span><span class="si">}</span><span class="s2">.id IN (&quot;</span> <span class="o">+</span> <span class="n">placeholders</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">db_kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+            <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql_query</span><span class="p">,</span> <span class="n">ids</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="n">conn</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Received error when querying the postgres &#39;</span>
+                       <span class="sa">f</span><span class="s1">&#39;vector database: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                <span class="n">refs</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+
+        <span class="n">ref_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_refs</span><span class="p">(</span><span class="n">refs</span><span class="p">,</span> <span class="n">ids</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ref_list</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alliance for Sustainable Energy, LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+elm.ords.extraction.graphs.setup\_base\_graph
+=============================================
+
+.. currentmodule:: elm.ords.extraction.graphs
+
+.. autofunction:: setup_base_graph

@@ -1,0 +1,44 @@
+elm.web.search.base.PatchedSerpApiClient
+========================================
+
+.. currentmodule:: elm.web.search.base
+
+.. autoclass:: PatchedSerpApiClient
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PatchedSerpApiClient.construct_url
+      ~PatchedSerpApiClient.get_account
+      ~PatchedSerpApiClient.get_dict
+      ~PatchedSerpApiClient.get_dictionary
+      ~PatchedSerpApiClient.get_html
+      ~PatchedSerpApiClient.get_json
+      ~PatchedSerpApiClient.get_location
+      ~PatchedSerpApiClient.get_object
+      ~PatchedSerpApiClient.get_raw_json
+      ~PatchedSerpApiClient.get_response
+      ~PatchedSerpApiClient.get_results
+      ~PatchedSerpApiClient.get_search_archive
+      ~PatchedSerpApiClient.make_pyobj
+      ~PatchedSerpApiClient.pagination
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PatchedSerpApiClient.BACKEND
+      ~PatchedSerpApiClient.SERP_API_KEY
+   
+   

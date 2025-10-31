@@ -1,0 +1,787 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>elm.ords.extraction.ordinance &mdash; elm 0.0.34 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=9dd25805"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            elm
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.energy_wizard.html">The Energy Wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.energy_wizard.html#downloading-and-embedding-pdfs">Downloading and Embedding PDFs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.energy_wizard.html#running-the-streamlit-app">Running the Streamlit App</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.ordinance_gpt.html">Ordinance GPT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#running-from-python">Running from Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#running-from-the-command-line-utility">Running from the Command Line Utility</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#execution">Execution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#debugging">Debugging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#source-ordinance-documents">Source Ordinance Documents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#extension-to-other-technologies">Extension to Other Technologies</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dev/index.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dev/ords_architecture.html"><strong>OrdinanceGPT: Architectural Design Document</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#introduction"><strong>1. Introduction</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#purpose"><strong>1.1 Purpose</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#audience"><strong>1.2 Audience</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#scope"><strong>1.3 Scope</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#high-level-architecture"><strong>2. High-Level Architecture</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#system-context"><strong>2.1 System Context</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#detailed-design"><strong>3. Detailed Design</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#web-scraper"><strong>3.1 Web Scraper</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#document-parser"><strong>3.2 Document Parser</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#key-concepts-and-classes"><strong>4 Key Concepts and Classes</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#key-concept-services"><strong>4.1 Key Concept: Services</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#key-classes"><strong>4.2 Key Classes</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#workflows"><strong>5. Workflows</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#downloading-documents-from-google"><strong>5.1 Downloading documents from Google</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#querying-openai"><strong>5.2 Querying OpenAI</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#appendix"><strong>6. Appendix</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#tools-and-libraries"><strong>6.1 Tools and Libraries</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#deliverables"><strong>7. Deliverables</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/elm.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.base.html">elm.base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.base.ApiBase.html">elm.base.ApiBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.base.ApiBase.html#elm.base.ApiBase"><code class="docutils literal notranslate"><span class="pre">ApiBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.base.ApiQueue.html">elm.base.ApiQueue</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.base.ApiQueue.html#elm.base.ApiQueue"><code class="docutils literal notranslate"><span class="pre">ApiQueue</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.chunk.html">elm.chunk</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.chunk.Chunker.html">elm.chunk.Chunker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker"><code class="docutils literal notranslate"><span class="pre">Chunker</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.cli.html">elm.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.embed.html">elm.embed</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.embed.ChunkAndEmbed.html">elm.embed.ChunkAndEmbed</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed"><code class="docutils literal notranslate"><span class="pre">ChunkAndEmbed</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.html">elm.exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMError.html">elm.exceptions.ELMError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMError.html#elm.exceptions.ELMError"><code class="docutils literal notranslate"><span class="pre">ELMError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMInputError.html">elm.exceptions.ELMInputError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMInputError.html#elm.exceptions.ELMInputError"><code class="docutils literal notranslate"><span class="pre">ELMInputError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMKeyError.html">elm.exceptions.ELMKeyError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMKeyError.html#elm.exceptions.ELMKeyError"><code class="docutils literal notranslate"><span class="pre">ELMKeyError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMRuntimeError.html">elm.exceptions.ELMRuntimeError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMRuntimeError.html#elm.exceptions.ELMRuntimeError"><code class="docutils literal notranslate"><span class="pre">ELMRuntimeError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.ords.html">elm.ords</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.download.html">elm.ords.download</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.download.download_county_ordinance.html">elm.ords.download.download_county_ordinance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.html">elm.ords.extraction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.apply.html">elm.ords.extraction.apply</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.date.html">elm.ords.extraction.date</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.features.html">elm.ords.extraction.features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.graphs.html">elm.ords.extraction.graphs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.ngrams.html">elm.ords.extraction.ngrams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.ordinance.html">elm.ords.extraction.ordinance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.parse.html">elm.ords.extraction.parse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.tree.html">elm.ords.extraction.tree</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.llm.html">elm.ords.llm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.llm.calling.html">elm.ords.llm.calling</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.process.html">elm.ords.process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.process.process_counties_with_openai.html">elm.ords.process.process_counties_with_openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.process.process_county.html">elm.ords.process.process_county</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.process.process_county_with_logging.html">elm.ords.process.process_county_with_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.html">elm.ords.services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.base.html">elm.ords.services.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.cpu.html">elm.ords.services.cpu</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.openai.html">elm.ords.services.openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.provider.html">elm.ords.services.provider</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.queues.html">elm.ords.services.queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.threaded.html">elm.ords.services.threaded</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.usage.html">elm.ords.services.usage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.html">elm.ords.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.counties.html">elm.ords.utilities.counties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.exceptions.html">elm.ords.utilities.exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.location.html">elm.ords.utilities.location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.parsing.html">elm.ords.utilities.parsing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.queued_logging.html">elm.ords.utilities.queued_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.validation.html">elm.ords.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.validation.content.html">elm.ords.validation.content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.validation.location.html">elm.ords.validation.location</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.pdf.html">elm.pdf</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.pdf.PDFtoTXT.html">elm.pdf.PDFtoTXT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT"><code class="docutils literal notranslate"><span class="pre">PDFtoTXT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.summary.html">elm.summary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.summary.Summary.html">elm.summary.Summary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.summary.Summary.html#elm.summary.Summary"><code class="docutils literal notranslate"><span class="pre">Summary</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.tree.html">elm.tree</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.tree.DecisionTree.html">elm.tree.DecisionTree</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.tree.DecisionTree.html#elm.tree.DecisionTree"><code class="docutils literal notranslate"><span class="pre">DecisionTree</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.utilities.html">elm.utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.html">elm.utilities.parse</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.clean_headers.html">elm.utilities.parse.clean_headers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.combine_pages.html">elm.utilities.parse.combine_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.format_html_tables.html">elm.utilities.parse.format_html_tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.html_to_text.html">elm.utilities.parse.html_to_text</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.is_multi_col.html">elm.utilities.parse.is_multi_col</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.read_pdf.html">elm.utilities.parse.read_pdf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.read_pdf_ocr.html">elm.utilities.parse.read_pdf_ocr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.remove_blank_pages.html">elm.utilities.parse.remove_blank_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.remove_empty_lines_or_page_footers.html">elm.utilities.parse.remove_empty_lines_or_page_footers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.replace_common_pdf_conversion_chars.html">elm.utilities.parse.replace_common_pdf_conversion_chars</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.replace_excessive_newlines.html">elm.utilities.parse.replace_excessive_newlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.replace_multi_dot_lines.html">elm.utilities.parse.replace_multi_dot_lines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.resembles_html.html">elm.utilities.parse.resembles_html</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.utilities.retry.html">elm.utilities.retry</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.retry.async_retry_with_exponential_backoff.html">elm.utilities.retry.async_retry_with_exponential_backoff</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.retry.retry_with_exponential_backoff.html">elm.utilities.retry.retry_with_exponential_backoff</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.utilities.try_import.html">elm.utilities.try_import</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.try_import.try_import.html">elm.utilities.try_import.try_import</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.utilities.validation.html">elm.utilities.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.validation.validate_azure_api_params.html">elm.utilities.validation.validate_azure_api_params</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.version.html">elm.version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.web.html">elm.web</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.document.html">elm.web.document</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.document.BaseDocument.html">elm.web.document.BaseDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.document.HTMLDocument.html">elm.web.document.HTMLDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.document.PDFDocument.html">elm.web.document.PDFDocument</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.html">elm.web.file_loader</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.AsyncFileLoader.html">elm.web.file_loader.AsyncFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.AsyncLocalFileLoader.html">elm.web.file_loader.AsyncLocalFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.AsyncWebFileLoader.html">elm.web.file_loader.AsyncWebFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.BaseAsyncFileLoader.html">elm.web.file_loader.BaseAsyncFileLoader</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.html_pw.html">elm.web.html_pw</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.html_pw.load_html_with_pw.html">elm.web.html_pw.load_html_with_pw</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.osti.html">elm.web.osti</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.osti.OstiList.html">elm.web.osti.OstiList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.osti.OstiRecord.html">elm.web.osti.OstiRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.html">elm.web.rhub</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.ProfilesList.html">elm.web.rhub.ProfilesList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.ProfilesRecord.html">elm.web.rhub.ProfilesRecord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.PublicationsList.html">elm.web.rhub.PublicationsList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.PublicationsRecord.html">elm.web.rhub.PublicationsRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.search.html">elm.web.search</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.base.html">elm.web.search.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.bing.html">elm.web.search.bing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.duckduckgo.html">elm.web.search.duckduckgo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.dux.html">elm.web.search.dux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.google.html">elm.web.search.google</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.run.html">elm.web.search.run</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.tavily.html">elm.web.search.tavily</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.yahoo.html">elm.web.search.yahoo</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.html">elm.web.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.DEFAULT_HEADERS.html">elm.web.utilities.DEFAULT_HEADERS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.clean_search_query.html">elm.web.utilities.clean_search_query</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.compute_fn_from_url.html">elm.web.utilities.compute_fn_from_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.filter_documents.html">elm.web.utilities.filter_documents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.get_redirected_url.html">elm.web.utilities.get_redirected_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.pw_page.html">elm.web.utilities.pw_page</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.write_url_doc_to_file.html">elm.web.utilities.write_url_doc_to_file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.PWKwargs.html">elm.web.utilities.PWKwargs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.html">elm.web.website_crawl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS.html">elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ELM_URL_FILTER.html">elm.web.website_crawl.ELM_URL_FILTER</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ContentTypeExcludeFilter.html">elm.web.website_crawl.ContentTypeExcludeFilter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ELMLinkScorer.html">elm.web.website_crawl.ELMLinkScorer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawler.html">elm.web.website_crawl.ELMWebsiteCrawler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html">elm.web.website_crawl.ELMWebsiteCrawlingStrategy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html">elm.web.website_crawl.PeekablePriorityQueue</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.wizard.html">elm.wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizard.html">elm.wizard.EnergyWizard</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard"><code class="docutils literal notranslate"><span class="pre">EnergyWizard</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizardBase.html">elm.wizard.EnergyWizardBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase"><code class="docutils literal notranslate"><span class="pre">EnergyWizardBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizardPostgres.html">elm.wizard.EnergyWizardPostgres</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres"><code class="docutils literal notranslate"><span class="pre">EnergyWizardPostgres</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../_cli/cli.html">CLI reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_cli/elm.html">elm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_cli/elm.html#elm-ords">ords</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">elm</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">elm.ords.extraction.ordinance</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for elm.ords.extraction.ordinance</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;ELM Ordinance document content Validation logic</span>
+
+<span class="sd">These are primarily used to validate that a legal document applies to a</span>
+<span class="sd">particular technology (e.g. Large Wind Energy Conversion Systems).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm</span><span class="w"> </span><span class="kn">import</span> <span class="n">ApiBase</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.validation.content</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ValidationWithMemory</span><span class="p">,</span>
+    <span class="n">possibly_mentions_wind</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.utilities.parsing</span><span class="w"> </span><span class="kn">import</span> <span class="n">merge_overlapping_texts</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="n">RESTRICTIONS</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;- buildings / structures / residences</span>
+<span class="s2">- property lines / parcels / subdivisions</span>
+<span class="s2">- roads / rights-of-way</span>
+<span class="s2">- railroads</span>
+<span class="s2">- overhead electrical transmission wires</span>
+<span class="s2">- bodies of water including wetlands, lakes, reservoirs, streams, and rivers</span>
+<span class="s2">- natural, wildlife, and environmental conservation areas</span>
+<span class="s2">- noise restrictions</span>
+<span class="s2">- shadow flicker restrictions</span>
+<span class="s2">- density restrictions</span>
+<span class="s2">- turbine height restrictions</span>
+<span class="s2">- minimum/maximum lot size</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="OrdinanceValidator">
+<a class="viewcode-back" href="../../../../_autosummary/elm.ords.extraction.ordinance.OrdinanceValidator.html#elm.ords.extraction.ordinance.OrdinanceValidator">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OrdinanceValidator</span><span class="p">(</span><span class="n">ValidationWithMemory</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check document text for wind ordinances</span>
+
+<span class="sd">    .. start desc ov</span>
+<span class="sd">    Purpose:</span>
+<span class="sd">        Determine wether a document contains relevant ordinance</span>
+<span class="sd">        information.</span>
+<span class="sd">    Responsibilities:</span>
+<span class="sd">        1. Determine wether a document contains relevant (e.g.</span>
+<span class="sd">        utility-scale wind zoning) ordinance information by splitting</span>
+<span class="sd">        the text into chunks and parsing them individually using LLMs.</span>
+<span class="sd">    Key Relationships:</span>
+<span class="sd">        Child class of</span>
+<span class="sd">        :class:`~elm.ords.validation.content.ValidationWithMemory`,</span>
+<span class="sd">        which allows the validation to look at neighboring chunks of</span>
+<span class="sd">        text.</span>
+
+<span class="sd">    .. end desc</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">IS_LEGAL_TEXT_PROMPT</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;You extract structured data from text. Return your answer in JSON &quot;</span>
+        <span class="s2">&quot;format (not markdown). Your JSON file must include exactly three &quot;</span>
+        <span class="s2">&quot;keys. The first key is &#39;summary&#39;, which is a string that provides a &quot;</span>
+        <span class="s2">&quot;short summary of the text. The second key is &#39;type&#39;, which is a &quot;</span>
+        <span class="s2">&quot;string that best represent the type of document this text belongs &quot;</span>
+        <span class="s2">&quot;to. The third key is &#39;</span><span class="si">{key}</span><span class="s2">&#39;, which is a boolean that is set to &quot;</span>
+        <span class="s2">&quot;True if the type of the text (as you previously determined) is a &quot;</span>
+        <span class="s2">&quot;legally-binding statute or code and False if the text is an excerpt &quot;</span>
+        <span class="s2">&quot;from other non-legal text such as a news article, survey, summary, &quot;</span>
+        <span class="s2">&quot;application, public notice, etc.&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">CONTAINS_ORD_PROMPT</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;You extract structured data from text. Return your answer in JSON &quot;</span>
+        <span class="s2">&quot;format (not markdown). Your JSON file must include exactly three &quot;</span>
+        <span class="s2">&quot;keys. The first key is &#39;wind_reqs&#39;, which is a string that &quot;</span>
+        <span class="s2">&quot;summarizes the setbacks or other geospatial siting requirements (if &quot;</span>
+        <span class="s2">&quot;any) given in the text for a wind turbine. The second key is &#39;reqs&#39;, &quot;</span>
+        <span class="s2">&quot;which lists the quantitative values from the text excerpt that can &quot;</span>
+        <span class="s2">&quot;be used to compute setbacks or other geospatial siting requirements &quot;</span>
+        <span class="s2">&quot;for a wind turbine/tower (empty list if none exist in the text). The &quot;</span>
+        <span class="s2">&quot;last key is &#39;</span><span class="si">{key}</span><span class="s2">&#39;, which is a boolean that is set to True if the &quot;</span>
+        <span class="s2">&quot;text excerpt provides enough quantitative info to compute setbacks &quot;</span>
+        <span class="s2">&quot;or other geospatial siting requirements for a wind turbine/tower &quot;</span>
+        <span class="s2">&quot;and False otherwise. Geospatial siting is impacted by any of the &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;following:</span><span class="se">\n</span><span class="si">{</span><span class="n">RESTRICTIONS</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">IS_UTILITY_SCALE_PROMPT</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;You are a legal scholar that reads ordinance text and determines &quot;</span>
+        <span class="s2">&quot;wether it applies to large wind energy systems. Large wind energy &quot;</span>
+        <span class="s2">&quot;systems (WES) may also be referred to as wind turbines, wind energy &quot;</span>
+        <span class="s2">&quot;conversion systems (WECS), wind energy facilities (WEF), wind energy &quot;</span>
+        <span class="s2">&quot;turbines (WET), large wind energy turbines (LWET), utility-scale &quot;</span>
+        <span class="s2">&quot;wind energy turbines (UWET), commercial wind energy systems, or &quot;</span>
+        <span class="s2">&quot;similar. Your client is a commercial wind developer that does not &quot;</span>
+        <span class="s2">&quot;care about ordinances related to private, micro, small, or medium &quot;</span>
+        <span class="s2">&quot;sized wind energy systems. Ignore any text related to such systems. &quot;</span>
+        <span class="s2">&quot;Return your answer in JSON format (not markdown). Your JSON file &quot;</span>
+        <span class="s2">&quot;must include exactly two keys. The first key is &#39;summary&#39; which &quot;</span>
+        <span class="s2">&quot;contains a string that summarizes the types of wind energy systems &quot;</span>
+        <span class="s2">&quot;the text applies to (if any). The second key is &#39;</span><span class="si">{key}</span><span class="s2">&#39;, which is a &quot;</span>
+        <span class="s2">&quot;boolean that is set to True if any part of the text excerpt is &quot;</span>
+        <span class="s2">&quot;applicable to the large wind energy conversion systems that the &quot;</span>
+        <span class="s2">&quot;client is interested in and False otherwise.&quot;</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structured_llm_caller</span><span class="p">,</span> <span class="n">text_chunks</span><span class="p">,</span> <span class="n">num_to_recall</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        structured_llm_caller : elm.ords.llm.StructuredLLMCaller</span>
+<span class="sd">            StructuredLLMCaller instance. Used for structured validation</span>
+<span class="sd">            queries.</span>
+<span class="sd">        text_chunks : list of str</span>
+<span class="sd">            List of strings, each of which represent a chunk of text.</span>
+<span class="sd">            The order of the strings should be the order of the text</span>
+<span class="sd">            chunks. This validator may refer to previous text chunks to</span>
+<span class="sd">            answer validation questions.</span>
+<span class="sd">        num_to_recall : int, optional</span>
+<span class="sd">            Number of chunks to check for each validation call. This</span>
+<span class="sd">            includes the original chunk! For example, if</span>
+<span class="sd">            `num_to_recall=2`, the validator will first check the chunk</span>
+<span class="sd">            at the requested index, and then the previous chunk as well.</span>
+<span class="sd">            By default, ``2``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">structured_llm_caller</span><span class="o">=</span><span class="n">structured_llm_caller</span><span class="p">,</span>
+            <span class="n">text_chunks</span><span class="o">=</span><span class="n">text_chunks</span><span class="p">,</span>
+            <span class="n">num_to_recall</span><span class="o">=</span><span class="n">num_to_recall</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_legal_text_mem</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wind_mention_mem</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ordinance_chunks</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_legal_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;bool: ``True`` if text was found to be from a legal source.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_legal_text_mem</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_legal_text_mem</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_legal_text_mem</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ordinance_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;str: Combined ordinance text from the individual chunks.&quot;&quot;&quot;</span>
+        <span class="n">inds_to_grab</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ordinance_chunks</span><span class="p">:</span>
+            <span class="n">inds_to_grab</span> <span class="o">|=</span> <span class="p">{</span>
+                <span class="n">info</span><span class="p">[</span><span class="s2">&quot;ind&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_to_recall</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="p">}</span>
+
+        <span class="n">text</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">text_chunks</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">inds_to_grab</span><span class="p">)</span>
+            <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">ind</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text_chunks</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">merge_overlapping_texts</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OrdinanceValidator.parse">
+<a class="viewcode-back" href="../../../../_autosummary/elm.ords.extraction.ordinance.OrdinanceValidator.html#elm.ords.extraction.ordinance.OrdinanceValidator.parse">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_chunks_to_process</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse text chunks and look for ordinance text.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        min_chunks_to_process : int, optional</span>
+<span class="sd">            Minimum number of chunks to process before checking if</span>
+<span class="sd">            document resembles legal text and ignoring chunks that don&#39;t</span>
+<span class="sd">            pass the wind heuristic. By default, ``3``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` if any ordinance text was found in the chunks.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text_chunks</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_wind_mention_mem</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">possibly_mentions_wind</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">ind</span> <span class="o">&gt;=</span> <span class="n">min_chunks_to_process</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_legal_text</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+
+                <span class="c1"># fmt: off</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_wind_mention_mem</span><span class="p">[</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">num_to_recall</span><span class="p">:]):</span>
+                    <span class="k">continue</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Processing text at ind </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">ind</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Text:</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">ind</span> <span class="o">&lt;</span> <span class="n">min_chunks_to_process</span><span class="p">:</span>
+                <span class="n">is_legal_text</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_from_ind</span><span class="p">(</span>
+                    <span class="n">ind</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">IS_LEGAL_TEXT_PROMPT</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;legal_text&quot;</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_legal_text_mem</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">is_legal_text</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">is_legal_text</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Text at ind </span><span class="si">%d</span><span class="s2"> is not legal text&quot;</span><span class="p">,</span> <span class="n">ind</span><span class="p">)</span>
+                    <span class="k">continue</span>
+
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Text at ind </span><span class="si">%d</span><span class="s2"> is legal text&quot;</span><span class="p">,</span> <span class="n">ind</span><span class="p">)</span>
+
+            <span class="n">contains_ord_info</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_from_ind</span><span class="p">(</span>
+                <span class="n">ind</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONTAINS_ORD_PROMPT</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;contains_ord_info&quot;</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">contains_ord_info</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                    <span class="s2">&quot;Text at ind </span><span class="si">%d</span><span class="s2"> does not contain ordinance info&quot;</span><span class="p">,</span> <span class="n">ind</span>
+                <span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Text at ind </span><span class="si">%d</span><span class="s2"> does contain ordinance info&quot;</span><span class="p">,</span> <span class="n">ind</span><span class="p">)</span>
+
+            <span class="n">is_utility_scale</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_from_ind</span><span class="p">(</span>
+                <span class="n">ind</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">IS_UTILITY_SCALE_PROMPT</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;x&quot;</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_utility_scale</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                    <span class="s2">&quot;Text at ind </span><span class="si">%d</span><span class="s2"> is not for utility-scale WECS&quot;</span><span class="p">,</span> <span class="n">ind</span>
+                <span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Text at ind </span><span class="si">%d</span><span class="s2"> is for utility-scale WECS&quot;</span><span class="p">,</span> <span class="n">ind</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ordinance_chunks</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span> <span class="s2">&quot;ind&quot;</span><span class="p">:</span> <span class="n">ind</span><span class="p">})</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Added text at ind </span><span class="si">%d</span><span class="s2"> to ordinances&quot;</span><span class="p">,</span> <span class="n">ind</span><span class="p">)</span>
+            <span class="c1"># mask, since we got a good result</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_wind_mention_mem</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ordinance_chunks</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="OrdinanceExtractor">
+<a class="viewcode-back" href="../../../../_autosummary/elm.ords.extraction.ordinance.OrdinanceExtractor.html#elm.ords.extraction.ordinance.OrdinanceExtractor">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OrdinanceExtractor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract succinct ordinance text from input</span>
+
+<span class="sd">    .. start desc oe</span>
+<span class="sd">    Purpose:</span>
+<span class="sd">        Extract relevant ordinance text from document.</span>
+<span class="sd">    Responsibilities:</span>
+<span class="sd">        1. Extract portions from chunked document text relevant to</span>
+<span class="sd">           particular ordinance type (e.g. wind zoning for utility-scale</span>
+<span class="sd">           systems).</span>
+<span class="sd">    Key Relationships:</span>
+<span class="sd">        Uses a :class:`~elm.ords.llm.calling.StructuredLLMCaller` for</span>
+<span class="sd">        LLM queries.</span>
+
+<span class="sd">    .. end desc</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">SYSTEM_MESSAGE</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;You extract one or more direct excerpts from a given text based on &quot;</span>
+        <span class="s2">&quot;the user&#39;s request. Maintain all original formatting and characters &quot;</span>
+        <span class="s2">&quot;without any paraphrasing. If the relevant text is inside of a &quot;</span>
+        <span class="s2">&quot;space-delimited table, return the entire table with the original &quot;</span>
+        <span class="s2">&quot;space-delimited formatting. Never paraphrase! Only return portions &quot;</span>
+        <span class="s2">&quot;of the original text directly.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">MODEL_INSTRUCTIONS_RESTRICTIONS</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;Extract one or more direct text excerpts related to the restrictions &quot;</span>
+        <span class="s2">&quot;of large wind energy systems with respect to any of the following:</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">RESTRICTIONS</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="s2">&quot;Include section headers (if any) for the text excerpts. Also include &quot;</span>
+        <span class="s2">&quot;any text excerpts that define what kind of large wind energy &quot;</span>
+        <span class="s2">&quot;conversion system the restriction applies to. If there is no text &quot;</span>
+        <span class="s2">&quot;related to siting restrictions of large wind systems, simply say: &quot;</span>
+        <span class="s1">&#39;&quot;No relevant text.&quot;&#39;</span>
+    <span class="p">)</span>
+    <span class="n">MODEL_INSTRUCTIONS_SIZE</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;Extract one or more direct text excerpts pertaining to large wind &quot;</span>
+        <span class="s2">&quot;energy systems. Large wind energy systems (WES) may also be referred &quot;</span>
+        <span class="s2">&quot;to as wind turbines, wind energy conversion systems (WECS), wind &quot;</span>
+        <span class="s2">&quot;energy facilities (WEF), wind energy turbines (WET), large wind &quot;</span>
+        <span class="s2">&quot;energy turbines (LWET), utility-scale wind energy turbines (UWET), &quot;</span>
+        <span class="s2">&quot;or similar. Do not return any text excerpts that only apply to &quot;</span>
+        <span class="s2">&quot;private, micro, small, or medium sized wind energy systems. Include &quot;</span>
+        <span class="s2">&quot;section headers (if any) for the text excerpts. Also include any &quot;</span>
+        <span class="s2">&quot;text excerpts that define what kind of large wind energy conversion &quot;</span>
+        <span class="s2">&quot;system the restriction applies to. If there is no text pertaining to &quot;</span>
+        <span class="s2">&quot;large wind systems, simply say: &quot;</span>
+        <span class="s1">&#39;&quot;No relevant text.&quot;&#39;</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">llm_caller</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        llm_caller : elm.ords.llm.LLMCaller</span>
+<span class="sd">            LLM Caller instance used to extract ordinance info with.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">llm_caller</span> <span class="o">=</span> <span class="n">llm_caller</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text_chunks</span><span class="p">,</span> <span class="n">instructions</span><span class="p">,</span> <span class="n">valid_chunk</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform extraction processing.&quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;Extracting ordinance text from </span><span class="si">%d</span><span class="s2"> text chunks asynchronously...&quot;</span><span class="p">,</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">text_chunks</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">outer_task_name</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">current_task</span><span class="p">()</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
+        <span class="n">summaries</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">llm_caller</span><span class="o">.</span><span class="n">call</span><span class="p">(</span>
+                    <span class="n">sys_msg</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SYSTEM_MESSAGE</span><span class="p">,</span>
+                    <span class="n">content</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Text:</span><span class="se">\n</span><span class="si">{</span><span class="n">chunk</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">instructions</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="n">usage_sub_label</span><span class="o">=</span><span class="s2">&quot;document_ordinance_summary&quot;</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">outer_task_name</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">text_chunks</span>
+        <span class="p">]</span>
+        <span class="n">summary_chunks</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">summaries</span><span class="p">)</span>
+        <span class="n">summary_chunks</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">chunk</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">summary_chunks</span> <span class="k">if</span> <span class="n">valid_chunk</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+        <span class="p">]</span>
+
+        <span class="n">text_summary</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">summary_chunks</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="s2">&quot;Final summary contains </span><span class="si">%d</span><span class="s2"> tokens&quot;</span><span class="p">,</span>
+            <span class="n">ApiBase</span><span class="o">.</span><span class="n">count_tokens</span><span class="p">(</span>
+                <span class="n">text_summary</span><span class="p">,</span>
+                <span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">llm_caller</span><span class="o">.</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;gpt-4&quot;</span><span class="p">),</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">text_summary</span>
+
+<div class="viewcode-block" id="OrdinanceExtractor.check_for_restrictions">
+<a class="viewcode-back" href="../../../../_autosummary/elm.ords.extraction.ordinance.OrdinanceExtractor.html#elm.ords.extraction.ordinance.OrdinanceExtractor.check_for_restrictions">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">check_for_restrictions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text_chunks</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract restriction ordinance text from input text chunks.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        text_chunks : list of str</span>
+<span class="sd">            List of strings, each of which represent a chunk of text.</span>
+<span class="sd">            The order of the strings should be the order of the text</span>
+<span class="sd">            chunks.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            Ordinance text extracted from text chunks.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="p">(</span>
+            <span class="n">text_chunks</span><span class="o">=</span><span class="n">text_chunks</span><span class="p">,</span>
+            <span class="n">instructions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">MODEL_INSTRUCTIONS_RESTRICTIONS</span><span class="p">,</span>
+            <span class="n">valid_chunk</span><span class="o">=</span><span class="n">_valid_chunk_not_short</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OrdinanceExtractor.check_for_correct_size">
+<a class="viewcode-back" href="../../../../_autosummary/elm.ords.extraction.ordinance.OrdinanceExtractor.html#elm.ords.extraction.ordinance.OrdinanceExtractor.check_for_correct_size">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">check_for_correct_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text_chunks</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract ordinance text from input text chunks for large WES.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        text_chunks : list of str</span>
+<span class="sd">            List of strings, each of which represent a chunk of text.</span>
+<span class="sd">            The order of the strings should be the order of the text</span>
+<span class="sd">            chunks.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            Ordinance text extracted from text chunks.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="p">(</span>
+            <span class="n">text_chunks</span><span class="o">=</span><span class="n">text_chunks</span><span class="p">,</span>
+            <span class="n">instructions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">MODEL_INSTRUCTIONS_SIZE</span><span class="p">,</span>
+            <span class="n">valid_chunk</span><span class="o">=</span><span class="n">_valid_chunk</span><span class="p">,</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_valid_chunk</span><span class="p">(</span><span class="n">chunk</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;True if chunk has content.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">chunk</span> <span class="ow">and</span> <span class="s2">&quot;no relevant text&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">chunk</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_valid_chunk_not_short</span><span class="p">(</span><span class="n">chunk</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;True if chunk has content and is not too short.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_valid_chunk</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">20</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alliance for Sustainable Energy, LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

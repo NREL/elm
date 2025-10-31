@@ -1,0 +1,54 @@
+elm.pdf.PDFtoTXT
+================
+
+.. currentmodule:: elm.pdf
+
+.. autoclass:: PDFtoTXT
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PDFtoTXT.call_api
+      ~PDFtoTXT.call_api_async
+      ~PDFtoTXT.chat
+      ~PDFtoTXT.clean_headers
+      ~PDFtoTXT.clean_poppler
+      ~PDFtoTXT.clean_txt
+      ~PDFtoTXT.clean_txt_async
+      ~PDFtoTXT.clear
+      ~PDFtoTXT.convert_to_txt
+      ~PDFtoTXT.count_tokens
+      ~PDFtoTXT.generic_async_query
+      ~PDFtoTXT.generic_query
+      ~PDFtoTXT.get_embedding
+      ~PDFtoTXT.load_pdf
+      ~PDFtoTXT.make_gpt_messages
+      ~PDFtoTXT.validate_clean
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PDFtoTXT.DEFAULT_MODEL
+      ~PDFtoTXT.EMBEDDING_MODEL
+      ~PDFtoTXT.EMBEDDING_URL
+      ~PDFtoTXT.HEADERS
+      ~PDFtoTXT.MODEL_INSTRUCTION
+      ~PDFtoTXT.MODEL_ROLE
+      ~PDFtoTXT.TOKENIZER_ALIASES
+      ~PDFtoTXT.TOKENIZER_PATTERNS
+      ~PDFtoTXT.URL
+      ~PDFtoTXT.all_messages_txt
+   
+   

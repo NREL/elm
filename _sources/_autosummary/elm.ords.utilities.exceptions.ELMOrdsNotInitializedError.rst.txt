@@ -1,0 +1,6 @@
+elm.ords.utilities.exceptions.ELMOrdsNotInitializedError
+========================================================
+
+.. currentmodule:: elm.ords.utilities.exceptions
+
+.. autoexception:: ELMOrdsNotInitializedError

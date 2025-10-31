@@ -1,0 +1,30 @@
+elm.web.search.tavily.APITavilySearch
+=====================================
+
+.. currentmodule:: elm.web.search.tavily
+
+.. autoclass:: APITavilySearch
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~APITavilySearch.results
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~APITavilySearch.API_KEY_VAR
+   
+   

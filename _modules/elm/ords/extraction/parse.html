@@ -1,0 +1,753 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>elm.ords.extraction.parse &mdash; elm 0.0.34 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=9dd25805"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            elm
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.energy_wizard.html">The Energy Wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.energy_wizard.html#downloading-and-embedding-pdfs">Downloading and Embedding PDFs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.energy_wizard.html#running-the-streamlit-app">Running the Streamlit App</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.ordinance_gpt.html">Ordinance GPT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#running-from-python">Running from Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#running-from-the-command-line-utility">Running from the Command Line Utility</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#execution">Execution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#debugging">Debugging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#source-ordinance-documents">Source Ordinance Documents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#extension-to-other-technologies">Extension to Other Technologies</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dev/index.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dev/ords_architecture.html"><strong>OrdinanceGPT: Architectural Design Document</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#introduction"><strong>1. Introduction</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#purpose"><strong>1.1 Purpose</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#audience"><strong>1.2 Audience</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#scope"><strong>1.3 Scope</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#high-level-architecture"><strong>2. High-Level Architecture</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#system-context"><strong>2.1 System Context</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#detailed-design"><strong>3. Detailed Design</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#web-scraper"><strong>3.1 Web Scraper</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#document-parser"><strong>3.2 Document Parser</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#key-concepts-and-classes"><strong>4 Key Concepts and Classes</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#key-concept-services"><strong>4.1 Key Concept: Services</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#key-classes"><strong>4.2 Key Classes</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#workflows"><strong>5. Workflows</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#downloading-documents-from-google"><strong>5.1 Downloading documents from Google</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#querying-openai"><strong>5.2 Querying OpenAI</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#appendix"><strong>6. Appendix</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#tools-and-libraries"><strong>6.1 Tools and Libraries</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#deliverables"><strong>7. Deliverables</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/elm.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.base.html">elm.base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.base.ApiBase.html">elm.base.ApiBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.base.ApiBase.html#elm.base.ApiBase"><code class="docutils literal notranslate"><span class="pre">ApiBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.base.ApiQueue.html">elm.base.ApiQueue</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.base.ApiQueue.html#elm.base.ApiQueue"><code class="docutils literal notranslate"><span class="pre">ApiQueue</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.chunk.html">elm.chunk</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.chunk.Chunker.html">elm.chunk.Chunker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker"><code class="docutils literal notranslate"><span class="pre">Chunker</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.cli.html">elm.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.embed.html">elm.embed</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.embed.ChunkAndEmbed.html">elm.embed.ChunkAndEmbed</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed"><code class="docutils literal notranslate"><span class="pre">ChunkAndEmbed</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.html">elm.exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMError.html">elm.exceptions.ELMError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMError.html#elm.exceptions.ELMError"><code class="docutils literal notranslate"><span class="pre">ELMError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMInputError.html">elm.exceptions.ELMInputError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMInputError.html#elm.exceptions.ELMInputError"><code class="docutils literal notranslate"><span class="pre">ELMInputError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMKeyError.html">elm.exceptions.ELMKeyError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMKeyError.html#elm.exceptions.ELMKeyError"><code class="docutils literal notranslate"><span class="pre">ELMKeyError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMRuntimeError.html">elm.exceptions.ELMRuntimeError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMRuntimeError.html#elm.exceptions.ELMRuntimeError"><code class="docutils literal notranslate"><span class="pre">ELMRuntimeError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.ords.html">elm.ords</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.download.html">elm.ords.download</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.download.download_county_ordinance.html">elm.ords.download.download_county_ordinance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.html">elm.ords.extraction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.apply.html">elm.ords.extraction.apply</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.date.html">elm.ords.extraction.date</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.features.html">elm.ords.extraction.features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.graphs.html">elm.ords.extraction.graphs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.ngrams.html">elm.ords.extraction.ngrams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.ordinance.html">elm.ords.extraction.ordinance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.parse.html">elm.ords.extraction.parse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.tree.html">elm.ords.extraction.tree</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.llm.html">elm.ords.llm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.llm.calling.html">elm.ords.llm.calling</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.process.html">elm.ords.process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.process.process_counties_with_openai.html">elm.ords.process.process_counties_with_openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.process.process_county.html">elm.ords.process.process_county</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.process.process_county_with_logging.html">elm.ords.process.process_county_with_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.html">elm.ords.services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.base.html">elm.ords.services.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.cpu.html">elm.ords.services.cpu</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.openai.html">elm.ords.services.openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.provider.html">elm.ords.services.provider</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.queues.html">elm.ords.services.queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.threaded.html">elm.ords.services.threaded</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.usage.html">elm.ords.services.usage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.html">elm.ords.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.counties.html">elm.ords.utilities.counties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.exceptions.html">elm.ords.utilities.exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.location.html">elm.ords.utilities.location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.parsing.html">elm.ords.utilities.parsing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.queued_logging.html">elm.ords.utilities.queued_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.validation.html">elm.ords.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.validation.content.html">elm.ords.validation.content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.validation.location.html">elm.ords.validation.location</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.pdf.html">elm.pdf</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.pdf.PDFtoTXT.html">elm.pdf.PDFtoTXT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT"><code class="docutils literal notranslate"><span class="pre">PDFtoTXT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.summary.html">elm.summary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.summary.Summary.html">elm.summary.Summary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.summary.Summary.html#elm.summary.Summary"><code class="docutils literal notranslate"><span class="pre">Summary</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.tree.html">elm.tree</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.tree.DecisionTree.html">elm.tree.DecisionTree</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.tree.DecisionTree.html#elm.tree.DecisionTree"><code class="docutils literal notranslate"><span class="pre">DecisionTree</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.utilities.html">elm.utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.html">elm.utilities.parse</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.clean_headers.html">elm.utilities.parse.clean_headers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.combine_pages.html">elm.utilities.parse.combine_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.format_html_tables.html">elm.utilities.parse.format_html_tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.html_to_text.html">elm.utilities.parse.html_to_text</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.is_multi_col.html">elm.utilities.parse.is_multi_col</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.read_pdf.html">elm.utilities.parse.read_pdf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.read_pdf_ocr.html">elm.utilities.parse.read_pdf_ocr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.remove_blank_pages.html">elm.utilities.parse.remove_blank_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.remove_empty_lines_or_page_footers.html">elm.utilities.parse.remove_empty_lines_or_page_footers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.replace_common_pdf_conversion_chars.html">elm.utilities.parse.replace_common_pdf_conversion_chars</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.replace_excessive_newlines.html">elm.utilities.parse.replace_excessive_newlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.replace_multi_dot_lines.html">elm.utilities.parse.replace_multi_dot_lines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.resembles_html.html">elm.utilities.parse.resembles_html</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.utilities.retry.html">elm.utilities.retry</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.retry.async_retry_with_exponential_backoff.html">elm.utilities.retry.async_retry_with_exponential_backoff</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.retry.retry_with_exponential_backoff.html">elm.utilities.retry.retry_with_exponential_backoff</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.utilities.try_import.html">elm.utilities.try_import</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.try_import.try_import.html">elm.utilities.try_import.try_import</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.utilities.validation.html">elm.utilities.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.validation.validate_azure_api_params.html">elm.utilities.validation.validate_azure_api_params</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.version.html">elm.version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.web.html">elm.web</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.document.html">elm.web.document</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.document.BaseDocument.html">elm.web.document.BaseDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.document.HTMLDocument.html">elm.web.document.HTMLDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.document.PDFDocument.html">elm.web.document.PDFDocument</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.html">elm.web.file_loader</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.AsyncFileLoader.html">elm.web.file_loader.AsyncFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.AsyncLocalFileLoader.html">elm.web.file_loader.AsyncLocalFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.AsyncWebFileLoader.html">elm.web.file_loader.AsyncWebFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.BaseAsyncFileLoader.html">elm.web.file_loader.BaseAsyncFileLoader</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.html_pw.html">elm.web.html_pw</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.html_pw.load_html_with_pw.html">elm.web.html_pw.load_html_with_pw</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.osti.html">elm.web.osti</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.osti.OstiList.html">elm.web.osti.OstiList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.osti.OstiRecord.html">elm.web.osti.OstiRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.html">elm.web.rhub</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.ProfilesList.html">elm.web.rhub.ProfilesList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.ProfilesRecord.html">elm.web.rhub.ProfilesRecord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.PublicationsList.html">elm.web.rhub.PublicationsList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.PublicationsRecord.html">elm.web.rhub.PublicationsRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.search.html">elm.web.search</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.base.html">elm.web.search.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.bing.html">elm.web.search.bing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.duckduckgo.html">elm.web.search.duckduckgo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.dux.html">elm.web.search.dux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.google.html">elm.web.search.google</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.run.html">elm.web.search.run</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.tavily.html">elm.web.search.tavily</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.yahoo.html">elm.web.search.yahoo</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.html">elm.web.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.DEFAULT_HEADERS.html">elm.web.utilities.DEFAULT_HEADERS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.clean_search_query.html">elm.web.utilities.clean_search_query</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.compute_fn_from_url.html">elm.web.utilities.compute_fn_from_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.filter_documents.html">elm.web.utilities.filter_documents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.get_redirected_url.html">elm.web.utilities.get_redirected_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.pw_page.html">elm.web.utilities.pw_page</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.write_url_doc_to_file.html">elm.web.utilities.write_url_doc_to_file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.PWKwargs.html">elm.web.utilities.PWKwargs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.html">elm.web.website_crawl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS.html">elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ELM_URL_FILTER.html">elm.web.website_crawl.ELM_URL_FILTER</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ContentTypeExcludeFilter.html">elm.web.website_crawl.ContentTypeExcludeFilter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ELMLinkScorer.html">elm.web.website_crawl.ELMLinkScorer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawler.html">elm.web.website_crawl.ELMWebsiteCrawler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html">elm.web.website_crawl.ELMWebsiteCrawlingStrategy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html">elm.web.website_crawl.PeekablePriorityQueue</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.wizard.html">elm.wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizard.html">elm.wizard.EnergyWizard</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard"><code class="docutils literal notranslate"><span class="pre">EnergyWizard</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizardBase.html">elm.wizard.EnergyWizardBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase"><code class="docutils literal notranslate"><span class="pre">EnergyWizardBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizardPostgres.html">elm.wizard.EnergyWizardPostgres</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres"><code class="docutils literal notranslate"><span class="pre">EnergyWizardPostgres</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../_cli/cli.html">CLI reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_cli/elm.html">elm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_cli/elm.html#elm-ords">ords</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">elm</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">elm.ords.extraction.parse</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for elm.ords.extraction.parse</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;ELM Ordinance structured parsing class.&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">chain</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.llm.calling</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseLLMCaller</span><span class="p">,</span> <span class="n">ChatLLMCaller</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">llm_response_as_json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.extraction.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncDecisionTree</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.extraction.features</span><span class="w"> </span><span class="kn">import</span> <span class="n">SetbackFeatures</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.extraction.graphs</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">EXTRACT_ORIGINAL_TEXT_PROMPT</span><span class="p">,</span>
+    <span class="n">setup_graph_wes_types</span><span class="p">,</span>
+    <span class="n">setup_base_graph</span><span class="p">,</span>
+    <span class="n">setup_multiplier</span><span class="p">,</span>
+    <span class="n">setup_conditional</span><span class="p">,</span>
+    <span class="n">setup_participating_owner</span><span class="p">,</span>
+    <span class="n">setup_graph_extra_restriction</span><span class="p">,</span>
+    <span class="n">llm_response_starts_with_yes</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">DEFAULT_SYSTEM_MESSAGE</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;You are a legal scholar explaining legal ordinances to a wind &quot;</span>
+    <span class="s2">&quot;energy developer.&quot;</span>
+<span class="p">)</span>
+<span class="n">SETBACKS_SYSTEM_MESSAGE</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">DEFAULT_SYSTEM_MESSAGE</span><span class="si">}</span><span class="s2"> &quot;</span>
+    <span class="s2">&quot;For the duration of this conversation, only focus on &quot;</span>
+    <span class="s2">&quot;ordinances relating to setbacks from </span><span class="si">{feature}</span><span class="s2"> for </span><span class="si">{wes_type}</span><span class="s2">. Ignore &quot;</span>
+    <span class="s2">&quot;all text that pertains to private, micro, small, or medium sized wind &quot;</span>
+    <span class="s2">&quot;energy systems.&quot;</span>
+<span class="p">)</span>
+<span class="n">RESTRICTIONS_SYSTEM_MESSAGE</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">DEFAULT_SYSTEM_MESSAGE</span><span class="si">}</span><span class="s2"> &quot;</span>
+    <span class="s2">&quot;For the duration of this conversation, only focus on &quot;</span>
+    <span class="s2">&quot;ordinances relating to </span><span class="si">{restriction}</span><span class="s2"> for </span><span class="si">{wes_type}</span><span class="s2">. Ignore &quot;</span>
+    <span class="s2">&quot;all text that pertains to private, micro, small, or medium sized wind &quot;</span>
+    <span class="s2">&quot;energy systems.&quot;</span>
+<span class="p">)</span>
+<span class="n">EXTRA_RESTRICTIONS_TO_CHECK</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;noise&quot;</span><span class="p">:</span> <span class="s2">&quot;maximum noise level&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;max height&quot;</span><span class="p">:</span> <span class="s2">&quot;maximum turbine height&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;min lot size&quot;</span><span class="p">:</span> <span class="s2">&quot;minimum lot size&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;shadow flicker&quot;</span><span class="p">:</span> <span class="s2">&quot;maximum shadow flicker&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;density&quot;</span><span class="p">:</span> <span class="s2">&quot;maximum turbine spacing&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_setup_async_decision_tree</span><span class="p">(</span><span class="n">graph_setup_func</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Setup Async Decision tree dor ordinance extraction.&quot;&quot;&quot;</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">graph_setup_func</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">AsyncDecisionTree</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">chat_llm_caller</span><span class="o">.</span><span class="n">messages</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">tree</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_found_ord</span><span class="p">(</span><span class="n">messages</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if ordinance was found based on messages from the base graph.</span>
+<span class="sd">    IMPORTANT: This function may break if the base graph structure changes.</span>
+<span class="sd">    Always update the hardcoded values to match the base graph message</span>
+<span class="sd">    containing the LLM response about ordinance content.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">llm_response_starts_with_yes</span><span class="p">(</span><span class="n">messages</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_run_async_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">response_as_json</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run Async Decision Tree and return output as dict.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tree</span><span class="o">.</span><span class="n">async_run</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+            <span class="s2">&quot;    - NOTE: This is not necessarily an error and may just mean &quot;</span>
+            <span class="s2">&quot;that the text does not have the requested data.&quot;</span>
+        <span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">response_as_json</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">llm_response_as_json</span><span class="p">(</span><span class="n">response</span><span class="p">)</span> <span class="k">if</span> <span class="n">response</span> <span class="k">else</span> <span class="p">{}</span>
+
+    <span class="k">return</span> <span class="n">response</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_run_async_tree_with_bm</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">base_messages</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run Async Decision Tree from base messages and return dict output.&quot;&quot;&quot;</span>
+    <span class="n">tree</span><span class="o">.</span><span class="n">chat_llm_caller</span><span class="o">.</span><span class="n">messages</span> <span class="o">=</span> <span class="n">base_messages</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">chat_llm_caller</span><span class="o">.</span><span class="n">messages</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">base_messages</span><span class="p">)</span>
+    <span class="k">return</span> <span class="k">await</span> <span class="n">_run_async_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_empty_output</span><span class="p">(</span><span class="n">feature</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Empty output for a feature (not found in text).&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">feature</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;struct&quot;</span><span class="p">,</span> <span class="s2">&quot;pline&quot;</span><span class="p">}:</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s2">&quot;feature&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">feature</span><span class="si">}</span><span class="s2"> (participating)&quot;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s2">&quot;feature&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">feature</span><span class="si">}</span><span class="s2"> (non-participating)&quot;</span><span class="p">},</span>
+        <span class="p">]</span>
+    <span class="k">return</span> <span class="p">[{</span><span class="s2">&quot;feature&quot;</span><span class="p">:</span> <span class="n">feature</span><span class="p">}]</span>
+
+
+<div class="viewcode-block" id="StructuredOrdinanceParser">
+<a class="viewcode-back" href="../../../../_autosummary/elm.ords.extraction.parse.StructuredOrdinanceParser.html#elm.ords.extraction.parse.StructuredOrdinanceParser">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">StructuredOrdinanceParser</span><span class="p">(</span><span class="n">BaseLLMCaller</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;LLM ordinance document structured data scraping utility</span>
+
+<span class="sd">    Purpose:</span>
+<span class="sd">        Extract structured ordinance data from text.</span>
+<span class="sd">    Responsibilities:</span>
+<span class="sd">        1. Extract ordinance values into structured format by executing</span>
+<span class="sd">           a decision-tree-based chain-of-thought prompt on the text for</span>
+<span class="sd">           each value to be extracted.</span>
+<span class="sd">    Key Relationships:</span>
+<span class="sd">        Uses a :class:`~elm.ords.llm.calling.StructuredLLMCaller` for</span>
+<span class="sd">        LLM queries and multiple</span>
+<span class="sd">        :class:`~elm.ords.extraction.tree.AsyncDecisionTree` instances</span>
+<span class="sd">        to guide the extraction of individual values.</span>
+
+<span class="sd">    .. end desc</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_init_chat_llm_caller</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system_message</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a ChatLLMCaller instance for the DecisionTree&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ChatLLMCaller</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">llm_service</span><span class="p">,</span>
+            <span class="n">system_message</span><span class="o">=</span><span class="n">system_message</span><span class="p">,</span>
+            <span class="n">usage_tracker</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">usage_tracker</span><span class="p">,</span>
+            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="StructuredOrdinanceParser.parse">
+<a class="viewcode-back" href="../../../../_autosummary/elm.ords.extraction.parse.StructuredOrdinanceParser.html#elm.ords.extraction.parse.StructuredOrdinanceParser.parse">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse text and extract structure ordinance data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        text : str</span>
+<span class="sd">            Ordinance text which may or may not contain setbacks for one</span>
+<span class="sd">            or more features (property lines, structure, roads, etc.).</span>
+<span class="sd">            Text can also contain other supported regulations (noise,</span>
+<span class="sd">            shadow-flicker, etc,) which will be extracted as well.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pd.DataFrame</span>
+<span class="sd">            DataFrame containing parsed-out ordinance values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">largest_wes_type</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_wind_turbine_type</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Largest WES type found in text: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">largest_wes_type</span><span class="p">)</span>
+
+        <span class="n">outer_task_name</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">current_task</span><span class="p">()</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
+        <span class="n">feature_parsers</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_parse_setback_feature</span><span class="p">(</span>
+                    <span class="n">text</span><span class="p">,</span> <span class="n">feature_kwargs</span><span class="p">,</span> <span class="n">largest_wes_type</span>
+                <span class="p">),</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">outer_task_name</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">feature_kwargs</span> <span class="ow">in</span> <span class="n">SetbackFeatures</span><span class="p">()</span>
+        <span class="p">]</span>
+        <span class="n">extras_parsers</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_parse_extra_restriction</span><span class="p">(</span>
+                    <span class="n">text</span><span class="p">,</span> <span class="n">feature</span><span class="p">,</span> <span class="n">r_text</span><span class="p">,</span> <span class="n">largest_wes_type</span>
+                <span class="p">),</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">outer_task_name</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">feature</span><span class="p">,</span> <span class="n">r_text</span> <span class="ow">in</span> <span class="n">EXTRA_RESTRICTIONS_TO_CHECK</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">]</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">feature_parsers</span> <span class="o">+</span> <span class="n">extras_parsers</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">outputs</span><span class="p">))</span></div>
+
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_check_wind_turbine_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the largest turbine size mentioned in the text.&quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Checking turbine_types&quot;</span><span class="p">)</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">_setup_async_decision_tree</span><span class="p">(</span>
+            <span class="n">setup_graph_wes_types</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+            <span class="n">chat_llm_caller</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_chat_llm_caller</span><span class="p">(</span><span class="n">DEFAULT_SYSTEM_MESSAGE</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">dtree_wes_types_out</span> <span class="o">=</span> <span class="k">await</span> <span class="n">_run_async_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+
+        <span class="n">largest_wes_type</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">dtree_wes_types_out</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;largest_wes_type&quot;</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="s2">&quot;large wind energy systems&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">largest_wes_type</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_parse_extra_restriction</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">feature</span><span class="p">,</span> <span class="n">restriction_text</span><span class="p">,</span> <span class="n">largest_wes_type</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a non-setback restriction from the text.&quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Parsing extra feature </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">feature</span><span class="p">)</span>
+        <span class="n">system_message</span> <span class="o">=</span> <span class="n">RESTRICTIONS_SYSTEM_MESSAGE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">restriction</span><span class="o">=</span><span class="n">restriction_text</span><span class="p">,</span> <span class="n">wes_type</span><span class="o">=</span><span class="n">largest_wes_type</span>
+        <span class="p">)</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">_setup_async_decision_tree</span><span class="p">(</span>
+            <span class="n">setup_graph_extra_restriction</span><span class="p">,</span>
+            <span class="n">wes_type</span><span class="o">=</span><span class="n">largest_wes_type</span><span class="p">,</span>
+            <span class="n">restriction</span><span class="o">=</span><span class="n">restriction_text</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+            <span class="n">chat_llm_caller</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_chat_llm_caller</span><span class="p">(</span><span class="n">system_message</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="k">await</span> <span class="n">_run_async_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+        <span class="n">info</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;feature&quot;</span><span class="p">:</span> <span class="n">feature</span><span class="p">})</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">info</span><span class="p">]</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_parse_setback_feature</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">feature_kwargs</span><span class="p">,</span> <span class="n">largest_wes_type</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse values for a setback feature.&quot;&quot;&quot;</span>
+        <span class="n">feature</span> <span class="o">=</span> <span class="n">feature_kwargs</span><span class="p">[</span><span class="s2">&quot;feature_id&quot;</span><span class="p">]</span>
+        <span class="n">feature_kwargs</span><span class="p">[</span><span class="s2">&quot;wes_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">largest_wes_type</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Parsing feature </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">feature</span><span class="p">)</span>
+
+        <span class="n">base_messages</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_base_messages</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="o">**</span><span class="n">feature_kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_found_ord</span><span class="p">(</span><span class="n">base_messages</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Failed `_found_ord` check for feature </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">feature</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">_empty_output</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">feature</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;struct&quot;</span><span class="p">,</span> <span class="s2">&quot;pline&quot;</span><span class="p">}:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;feature&quot;</span><span class="p">:</span> <span class="n">feature</span><span class="p">}</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_setback_values</span><span class="p">(</span>
+                    <span class="n">text</span><span class="p">,</span>
+                    <span class="n">base_messages</span><span class="o">=</span><span class="n">base_messages</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">feature_kwargs</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">output</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_setback_values_for_p_or_np</span><span class="p">(</span>
+            <span class="n">text</span><span class="p">,</span> <span class="n">base_messages</span><span class="p">,</span> <span class="o">**</span><span class="n">feature_kwargs</span>
+        <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_base_messages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="o">**</span><span class="n">feature_kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get base messages for setback feature parsing.&quot;&quot;&quot;</span>
+        <span class="n">system_message</span> <span class="o">=</span> <span class="n">SETBACKS_SYSTEM_MESSAGE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">feature</span><span class="o">=</span><span class="n">feature_kwargs</span><span class="p">[</span><span class="s2">&quot;feature&quot;</span><span class="p">],</span>
+            <span class="n">wes_type</span><span class="o">=</span><span class="n">feature_kwargs</span><span class="p">[</span><span class="s2">&quot;wes_type&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">_setup_async_decision_tree</span><span class="p">(</span>
+            <span class="n">setup_base_graph</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+            <span class="n">chat_llm_caller</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_chat_llm_caller</span><span class="p">(</span><span class="n">system_message</span><span class="p">),</span>
+            <span class="o">**</span><span class="n">feature_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">await</span> <span class="n">_run_async_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">response_as_json</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">chat_llm_caller</span><span class="o">.</span><span class="n">messages</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_extract_setback_values_for_p_or_np</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">base_messages</span><span class="p">,</span> <span class="o">**</span><span class="n">feature_kwargs</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract setback values for participating/non-participating ords.&quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Checking participating vs non-participating&quot;</span><span class="p">)</span>
+        <span class="n">dtree_participating_out</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_setback_graph</span><span class="p">(</span>
+            <span class="n">setup_participating_owner</span><span class="p">,</span>
+            <span class="n">text</span><span class="p">,</span>
+            <span class="n">base_messages</span><span class="o">=</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">base_messages</span><span class="p">),</span>
+            <span class="o">**</span><span class="n">feature_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">outer_task_name</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">current_task</span><span class="p">()</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
+        <span class="n">p_or_np_parsers</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_parse_p_or_np_text</span><span class="p">(</span>
+                    <span class="n">key</span><span class="p">,</span> <span class="n">sub_text</span><span class="p">,</span> <span class="n">base_messages</span><span class="p">,</span> <span class="o">**</span><span class="n">feature_kwargs</span>
+                <span class="p">),</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">outer_task_name</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">sub_text</span> <span class="ow">in</span> <span class="n">dtree_participating_out</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">p_or_np_parsers</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_parse_p_or_np_text</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">sub_text</span><span class="p">,</span> <span class="n">base_messages</span><span class="p">,</span> <span class="o">**</span><span class="n">feature_kwargs</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse participating/non-participating sub-text for ord values.&quot;&quot;&quot;</span>
+        <span class="n">feature</span> <span class="o">=</span> <span class="n">feature_kwargs</span><span class="p">[</span><span class="s2">&quot;feature_id&quot;</span><span class="p">]</span>
+        <span class="n">out_feat_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">feature</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;feature&quot;</span><span class="p">:</span> <span class="n">out_feat_name</span><span class="p">}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sub_text</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">output</span>
+
+        <span class="n">feature</span> <span class="o">=</span> <span class="n">feature_kwargs</span><span class="p">[</span><span class="s2">&quot;feature&quot;</span><span class="p">]</span>
+        <span class="n">feature</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">feature</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">feature_kwargs</span><span class="p">[</span><span class="s2">&quot;feature&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">feature</span>
+
+        <span class="n">base_messages</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">base_messages</span><span class="p">)</span>
+        <span class="n">base_messages</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">EXTRACT_ORIGINAL_TEXT_PROMPT</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">feature</span><span class="o">=</span><span class="n">feature</span><span class="p">,</span> <span class="n">wes_type</span><span class="o">=</span><span class="n">feature_kwargs</span><span class="p">[</span><span class="s2">&quot;wes_type&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">base_messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub_text</span>
+
+        <span class="n">values</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_setback_values</span><span class="p">(</span>
+            <span class="n">sub_text</span><span class="p">,</span>
+            <span class="n">base_messages</span><span class="o">=</span><span class="n">base_messages</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">feature_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">output</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_extract_setback_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract setback values for a particular feature from input text.&quot;&quot;&quot;</span>
+        <span class="n">dtree_out</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_setback_graph</span><span class="p">(</span>
+            <span class="n">setup_multiplier</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">dtree_out</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mult_value&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">dtree_out</span>
+
+        <span class="n">dtree_con_out</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_setback_graph</span><span class="p">(</span>
+            <span class="n">setup_conditional</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="n">dtree_out</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dtree_con_out</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dtree_out</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_run_setback_graph</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">graphs_setup_func</span><span class="p">,</span>
+        <span class="n">text</span><span class="p">,</span>
+        <span class="n">feature</span><span class="p">,</span>
+        <span class="n">wes_type</span><span class="p">,</span>
+        <span class="n">base_messages</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generic function to run async tree for ordinance extraction.&quot;&quot;&quot;</span>
+        <span class="n">system_message</span> <span class="o">=</span> <span class="n">SETBACKS_SYSTEM_MESSAGE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">feature</span><span class="o">=</span><span class="n">feature</span><span class="p">,</span> <span class="n">wes_type</span><span class="o">=</span><span class="n">wes_type</span>
+        <span class="p">)</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">_setup_async_decision_tree</span><span class="p">(</span>
+            <span class="n">graphs_setup_func</span><span class="p">,</span>
+            <span class="n">feature</span><span class="o">=</span><span class="n">feature</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+            <span class="n">chat_llm_caller</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_chat_llm_caller</span><span class="p">(</span><span class="n">system_message</span><span class="p">),</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">base_messages</span><span class="p">:</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="n">_run_async_tree_with_bm</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">base_messages</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">_run_async_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alliance for Sustainable Energy, LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

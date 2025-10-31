@@ -1,0 +1,915 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>elm.ords.extraction.graphs &mdash; elm 0.0.34 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=9dd25805"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            elm
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.energy_wizard.html">The Energy Wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.energy_wizard.html#downloading-and-embedding-pdfs">Downloading and Embedding PDFs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.energy_wizard.html#running-the-streamlit-app">Running the Streamlit App</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples.ordinance_gpt.html">Ordinance GPT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#running-from-python">Running from Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#running-from-the-command-line-utility">Running from the Command Line Utility</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#execution">Execution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#debugging">Debugging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#source-ordinance-documents">Source Ordinance Documents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../examples.ordinance_gpt.html#extension-to-other-technologies">Extension to Other Technologies</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dev/index.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../dev/ords_architecture.html"><strong>OrdinanceGPT: Architectural Design Document</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#introduction"><strong>1. Introduction</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#purpose"><strong>1.1 Purpose</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#audience"><strong>1.2 Audience</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#scope"><strong>1.3 Scope</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#high-level-architecture"><strong>2. High-Level Architecture</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#system-context"><strong>2.1 System Context</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#detailed-design"><strong>3. Detailed Design</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#web-scraper"><strong>3.1 Web Scraper</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#document-parser"><strong>3.2 Document Parser</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#key-concepts-and-classes"><strong>4 Key Concepts and Classes</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#key-concept-services"><strong>4.1 Key Concept: Services</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#key-classes"><strong>4.2 Key Classes</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#workflows"><strong>5. Workflows</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#downloading-documents-from-google"><strong>5.1 Downloading documents from Google</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#querying-openai"><strong>5.2 Querying OpenAI</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#appendix"><strong>6. Appendix</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../dev/ords_architecture.html#tools-and-libraries"><strong>6.1 Tools and Libraries</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../dev/ords_architecture.html#deliverables"><strong>7. Deliverables</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../_autosummary/elm.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.base.html">elm.base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.base.ApiBase.html">elm.base.ApiBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.base.ApiBase.html#elm.base.ApiBase"><code class="docutils literal notranslate"><span class="pre">ApiBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.base.ApiQueue.html">elm.base.ApiQueue</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.base.ApiQueue.html#elm.base.ApiQueue"><code class="docutils literal notranslate"><span class="pre">ApiQueue</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.chunk.html">elm.chunk</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.chunk.Chunker.html">elm.chunk.Chunker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker"><code class="docutils literal notranslate"><span class="pre">Chunker</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.cli.html">elm.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.embed.html">elm.embed</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.embed.ChunkAndEmbed.html">elm.embed.ChunkAndEmbed</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed"><code class="docutils literal notranslate"><span class="pre">ChunkAndEmbed</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.html">elm.exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMError.html">elm.exceptions.ELMError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMError.html#elm.exceptions.ELMError"><code class="docutils literal notranslate"><span class="pre">ELMError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMInputError.html">elm.exceptions.ELMInputError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMInputError.html#elm.exceptions.ELMInputError"><code class="docutils literal notranslate"><span class="pre">ELMInputError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMKeyError.html">elm.exceptions.ELMKeyError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMKeyError.html#elm.exceptions.ELMKeyError"><code class="docutils literal notranslate"><span class="pre">ELMKeyError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMRuntimeError.html">elm.exceptions.ELMRuntimeError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.exceptions.ELMRuntimeError.html#elm.exceptions.ELMRuntimeError"><code class="docutils literal notranslate"><span class="pre">ELMRuntimeError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.ords.html">elm.ords</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.download.html">elm.ords.download</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.download.download_county_ordinance.html">elm.ords.download.download_county_ordinance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.html">elm.ords.extraction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.apply.html">elm.ords.extraction.apply</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.date.html">elm.ords.extraction.date</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.features.html">elm.ords.extraction.features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.graphs.html">elm.ords.extraction.graphs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.ngrams.html">elm.ords.extraction.ngrams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.ordinance.html">elm.ords.extraction.ordinance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.parse.html">elm.ords.extraction.parse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.extraction.tree.html">elm.ords.extraction.tree</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.llm.html">elm.ords.llm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.llm.calling.html">elm.ords.llm.calling</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.process.html">elm.ords.process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.process.process_counties_with_openai.html">elm.ords.process.process_counties_with_openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.process.process_county.html">elm.ords.process.process_county</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.process.process_county_with_logging.html">elm.ords.process.process_county_with_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.html">elm.ords.services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.base.html">elm.ords.services.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.cpu.html">elm.ords.services.cpu</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.openai.html">elm.ords.services.openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.provider.html">elm.ords.services.provider</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.queues.html">elm.ords.services.queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.threaded.html">elm.ords.services.threaded</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.services.usage.html">elm.ords.services.usage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.html">elm.ords.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.counties.html">elm.ords.utilities.counties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.exceptions.html">elm.ords.utilities.exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.location.html">elm.ords.utilities.location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.parsing.html">elm.ords.utilities.parsing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.utilities.queued_logging.html">elm.ords.utilities.queued_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.ords.validation.html">elm.ords.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.validation.content.html">elm.ords.validation.content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.ords.validation.location.html">elm.ords.validation.location</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.pdf.html">elm.pdf</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.pdf.PDFtoTXT.html">elm.pdf.PDFtoTXT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT"><code class="docutils literal notranslate"><span class="pre">PDFtoTXT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.summary.html">elm.summary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.summary.Summary.html">elm.summary.Summary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.summary.Summary.html#elm.summary.Summary"><code class="docutils literal notranslate"><span class="pre">Summary</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.tree.html">elm.tree</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.tree.DecisionTree.html">elm.tree.DecisionTree</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.tree.DecisionTree.html#elm.tree.DecisionTree"><code class="docutils literal notranslate"><span class="pre">DecisionTree</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.utilities.html">elm.utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.html">elm.utilities.parse</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.clean_headers.html">elm.utilities.parse.clean_headers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.combine_pages.html">elm.utilities.parse.combine_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.format_html_tables.html">elm.utilities.parse.format_html_tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.html_to_text.html">elm.utilities.parse.html_to_text</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.is_multi_col.html">elm.utilities.parse.is_multi_col</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.read_pdf.html">elm.utilities.parse.read_pdf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.read_pdf_ocr.html">elm.utilities.parse.read_pdf_ocr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.remove_blank_pages.html">elm.utilities.parse.remove_blank_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.remove_empty_lines_or_page_footers.html">elm.utilities.parse.remove_empty_lines_or_page_footers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.replace_common_pdf_conversion_chars.html">elm.utilities.parse.replace_common_pdf_conversion_chars</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.replace_excessive_newlines.html">elm.utilities.parse.replace_excessive_newlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.replace_multi_dot_lines.html">elm.utilities.parse.replace_multi_dot_lines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.parse.resembles_html.html">elm.utilities.parse.resembles_html</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.utilities.retry.html">elm.utilities.retry</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.retry.async_retry_with_exponential_backoff.html">elm.utilities.retry.async_retry_with_exponential_backoff</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.retry.retry_with_exponential_backoff.html">elm.utilities.retry.retry_with_exponential_backoff</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.utilities.try_import.html">elm.utilities.try_import</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.try_import.try_import.html">elm.utilities.try_import.try_import</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.utilities.validation.html">elm.utilities.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.utilities.validation.validate_azure_api_params.html">elm.utilities.validation.validate_azure_api_params</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.version.html">elm.version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.web.html">elm.web</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.document.html">elm.web.document</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.document.BaseDocument.html">elm.web.document.BaseDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.document.HTMLDocument.html">elm.web.document.HTMLDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.document.PDFDocument.html">elm.web.document.PDFDocument</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.html">elm.web.file_loader</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.AsyncFileLoader.html">elm.web.file_loader.AsyncFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.AsyncLocalFileLoader.html">elm.web.file_loader.AsyncLocalFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.AsyncWebFileLoader.html">elm.web.file_loader.AsyncWebFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.file_loader.BaseAsyncFileLoader.html">elm.web.file_loader.BaseAsyncFileLoader</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.html_pw.html">elm.web.html_pw</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.html_pw.load_html_with_pw.html">elm.web.html_pw.load_html_with_pw</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.osti.html">elm.web.osti</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.osti.OstiList.html">elm.web.osti.OstiList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.osti.OstiRecord.html">elm.web.osti.OstiRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.html">elm.web.rhub</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.ProfilesList.html">elm.web.rhub.ProfilesList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.ProfilesRecord.html">elm.web.rhub.ProfilesRecord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.PublicationsList.html">elm.web.rhub.PublicationsList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.rhub.PublicationsRecord.html">elm.web.rhub.PublicationsRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.search.html">elm.web.search</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.base.html">elm.web.search.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.bing.html">elm.web.search.bing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.duckduckgo.html">elm.web.search.duckduckgo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.dux.html">elm.web.search.dux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.google.html">elm.web.search.google</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.run.html">elm.web.search.run</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.tavily.html">elm.web.search.tavily</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.search.yahoo.html">elm.web.search.yahoo</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.html">elm.web.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.DEFAULT_HEADERS.html">elm.web.utilities.DEFAULT_HEADERS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.clean_search_query.html">elm.web.utilities.clean_search_query</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.compute_fn_from_url.html">elm.web.utilities.compute_fn_from_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.filter_documents.html">elm.web.utilities.filter_documents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.get_redirected_url.html">elm.web.utilities.get_redirected_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.pw_page.html">elm.web.utilities.pw_page</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.write_url_doc_to_file.html">elm.web.utilities.write_url_doc_to_file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.utilities.PWKwargs.html">elm.web.utilities.PWKwargs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.html">elm.web.website_crawl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS.html">elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ELM_URL_FILTER.html">elm.web.website_crawl.ELM_URL_FILTER</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ContentTypeExcludeFilter.html">elm.web.website_crawl.ContentTypeExcludeFilter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ELMLinkScorer.html">elm.web.website_crawl.ELMLinkScorer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawler.html">elm.web.website_crawl.ELMWebsiteCrawler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html">elm.web.website_crawl.ELMWebsiteCrawlingStrategy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html">elm.web.website_crawl.PeekablePriorityQueue</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_autosummary/elm.wizard.html">elm.wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizard.html">elm.wizard.EnergyWizard</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard"><code class="docutils literal notranslate"><span class="pre">EnergyWizard</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizardBase.html">elm.wizard.EnergyWizardBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase"><code class="docutils literal notranslate"><span class="pre">EnergyWizardBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizardPostgres.html">elm.wizard.EnergyWizardPostgres</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres"><code class="docutils literal notranslate"><span class="pre">EnergyWizardPostgres</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../_cli/cli.html">CLI reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../_cli/elm.html">elm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../_cli/elm.html#elm-ords">ords</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">elm</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">elm.ords.extraction.graphs</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for elm.ords.extraction.graphs</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;ELM Ordinance Decision Tree Graph setup functions.&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+
+
+<span class="n">_SECTION_PROMPT</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;The value of the &quot;section&quot; key should be a string representing the &#39;</span>
+    <span class="s2">&quot;title of the section (including numerical labels), if it&#39;s given, &quot;</span>
+    <span class="s2">&quot;and `null` otherwise.&quot;</span>
+<span class="p">)</span>
+<span class="n">_COMMENT_PROMPT</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;The value of the &quot;comment&quot; key should be a one-sentence explanation &#39;</span>
+    <span class="s2">&quot;of how you determined the value, if you think it is necessary &quot;</span>
+    <span class="s2">&quot;(`null` otherwise).&quot;</span>
+<span class="p">)</span>
+<span class="n">EXTRACT_ORIGINAL_TEXT_PROMPT</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;Can you extract the raw text with original formatting &quot;</span>
+    <span class="s2">&quot;that states how close I can site </span><span class="si">{wes_type}</span><span class="s2"> to </span><span class="si">{feature}</span><span class="s2">? &quot;</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_setup_graph_no_nodes</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">(</span>
+        <span class="n">SECTION_PROMPT</span><span class="o">=</span><span class="n">_SECTION_PROMPT</span><span class="p">,</span>
+        <span class="n">COMMENT_PROMPT</span><span class="o">=</span><span class="n">_COMMENT_PROMPT</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="llm_response_starts_with_yes">
+<a class="viewcode-back" href="../../../../_autosummary/elm.ords.extraction.graphs.llm_response_starts_with_yes.html#elm.ords.extraction.graphs.llm_response_starts_with_yes">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">llm_response_starts_with_yes</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if LLM response begins with &quot;yes&quot; (case-insensitive)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    response : str</span>
+<span class="sd">        LLM response string.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        `True` if LLM response begins with &quot;Yes&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;yes&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="llm_response_starts_with_no">
+<a class="viewcode-back" href="../../../../_autosummary/elm.ords.extraction.graphs.llm_response_starts_with_no.html#elm.ords.extraction.graphs.llm_response_starts_with_no">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">llm_response_starts_with_no</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if LLM response begins with &quot;no&quot; (case-insensitive)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    response : str</span>
+<span class="sd">        LLM response string.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        `True` if LLM response begins with &quot;No&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;no&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="llm_response_does_not_start_with_no">
+<a class="viewcode-back" href="../../../../_autosummary/elm.ords.extraction.graphs.llm_response_does_not_start_with_no.html#elm.ords.extraction.graphs.llm_response_does_not_start_with_no">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">llm_response_does_not_start_with_no</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if LLM response does not start with &quot;no&quot; (case-insensitive)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    response : str</span>
+<span class="sd">        LLM response string.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        `True` if LLM response does not begin with &quot;No&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="ow">not</span> <span class="n">llm_response_starts_with_no</span><span class="p">(</span><span class="n">response</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="setup_graph_wes_types">
+<a class="viewcode-back" href="../../../../_autosummary/elm.ords.extraction.graphs.setup_graph_wes_types.html#elm.ords.extraction.graphs.setup_graph_wes_types">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup_graph_wes_types</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Setup Graph to get the largest turbine size in the ordinance text.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Keyword-value pairs to add to graph.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    nx.DiGraph</span>
+<span class="sd">        Graph instance that can be used to initialize an</span>
+<span class="sd">        `elm.tree.DecisionTree`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">_setup_graph_no_nodes</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+        <span class="s2">&quot;init&quot;</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Does the following text distinguish between multiple &quot;</span>
+            <span class="s2">&quot;turbine sizes? Distinctions are often made as &#39;small&#39; vs &#39;large&#39; &quot;</span>
+            <span class="s2">&quot;wind energy conversion systems or actual MW values. &quot;</span>
+            <span class="s2">&quot;Begin your response with either &#39;Yes&#39; or &#39;No&#39; and explain your &quot;</span>
+            <span class="s2">&quot;answer.&quot;</span>
+            <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&quot;&quot;&quot;</span><span class="se">\n</span><span class="si">{text}</span><span class="se">\n</span><span class="s1">&quot;&quot;&quot;&#39;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;init&quot;</span><span class="p">,</span> <span class="s2">&quot;get_text&quot;</span><span class="p">,</span> <span class="n">condition</span><span class="o">=</span><span class="n">llm_response_starts_with_yes</span><span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+        <span class="s2">&quot;get_text&quot;</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;What are the different turbine sizes this text mentions? &quot;</span>
+            <span class="s2">&quot;List them in order of increasing size.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;get_text&quot;</span><span class="p">,</span> <span class="s2">&quot;final&quot;</span><span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+        <span class="s2">&quot;final&quot;</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Respond based on our entire conversation so far. Return your &quot;</span>
+            <span class="s2">&quot;answer in JSON format (not markdown). Your JSON file must &quot;</span>
+            <span class="s1">&#39;include exactly two keys. The keys are &quot;largest_wes_type&quot; and &#39;</span>
+            <span class="s1">&#39;&quot;explanation&quot;. The value of the &quot;largest_wes_type&quot; key should &#39;</span>
+            <span class="s2">&quot;be a string that labels the largest wind energy conversion &quot;</span>
+            <span class="s1">&#39;system mentioned in the text. The value of the &quot;explanation&quot; &#39;</span>
+            <span class="s2">&quot;key should be a string containing a short explanation for your &quot;</span>
+            <span class="s2">&quot;choice.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">G</span></div>
+
+
+
+<div class="viewcode-block" id="setup_base_graph">
+<a class="viewcode-back" href="../../../../_autosummary/elm.ords.extraction.graphs.setup_base_graph.html#elm.ords.extraction.graphs.setup_base_graph">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup_base_graph</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Setup Graph to get setback ordinance text for a particular feature.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Keyword-value pairs to add to graph.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    nx.DiGraph</span>
+<span class="sd">        Graph instance that can be used to initialize an</span>
+<span class="sd">        `elm.tree.DecisionTree`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">_setup_graph_no_nodes</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+        <span class="s2">&quot;init&quot;</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Is there text in the following legal document that describes &quot;</span>
+            <span class="s2">&quot;how close I can site or how far I have to setback &quot;</span>
+            <span class="s2">&quot;</span><span class="si">{wes_type}</span><span class="s2"> to </span><span class="si">{feature}</span><span class="s2">? </span><span class="si">{feature_clarifications}</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Pay extra attention to clarifying text found in parentheses &quot;</span>
+            <span class="s2">&quot;and footnotes. Begin your response with either &#39;Yes&#39; or &#39;No&#39; &quot;</span>
+            <span class="s2">&quot;and explain your answer.&quot;</span>
+            <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&quot;&quot;&quot;</span><span class="se">\n</span><span class="si">{text}</span><span class="se">\n</span><span class="s1">&quot;&quot;&quot;&#39;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span>
+        <span class="s2">&quot;init&quot;</span><span class="p">,</span> <span class="s2">&quot;get_text&quot;</span><span class="p">,</span> <span class="n">condition</span><span class="o">=</span><span class="n">llm_response_does_not_start_with_no</span>
+    <span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;get_text&quot;</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="n">EXTRACT_ORIGINAL_TEXT_PROMPT</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">G</span></div>
+
+
+
+<div class="viewcode-block" id="setup_participating_owner">
+<a class="viewcode-back" href="../../../../_autosummary/elm.ords.extraction.graphs.setup_participating_owner.html#elm.ords.extraction.graphs.setup_participating_owner">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup_participating_owner</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Setup Graph to check for participating vs non-participating owner</span>
+<span class="sd">    setbacks for a feature.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Keyword-value pairs to add to graph.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    nx.DiGraph</span>
+<span class="sd">        Graph instance that can be used to initialize an</span>
+<span class="sd">        `elm.tree.DecisionTree`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">_setup_graph_no_nodes</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+        <span class="s2">&quot;init&quot;</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Does the ordinance for </span><span class="si">{feature}</span><span class="s2"> setbacks explicitly specify &quot;</span>
+            <span class="s2">&quot;a value that applies to participating owners? Occupying owners &quot;</span>
+            <span class="s2">&quot;are not participating owners unless explicitly mentioned in the &quot;</span>
+            <span class="s2">&quot;text. Justify your answer by quoting the raw text directly.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;init&quot;</span><span class="p">,</span> <span class="s2">&quot;non_part&quot;</span><span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+        <span class="s2">&quot;non_part&quot;</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Does the ordinance for </span><span class="si">{feature}</span><span class="s2"> setbacks explicitly specify &quot;</span>
+            <span class="s2">&quot;a value that applies to non-participating owners? Non-occupying &quot;</span>
+            <span class="s2">&quot;owners are not non-participating owners unless explicitly &quot;</span>
+            <span class="s2">&quot;mentioned in the text. Justify your answer by quoting the raw &quot;</span>
+            <span class="s2">&quot;text directly.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;non_part&quot;</span><span class="p">,</span> <span class="s2">&quot;final&quot;</span><span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+        <span class="s2">&quot;final&quot;</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Now we are ready to extract structured data. Respond based on &quot;</span>
+            <span class="s2">&quot;our entire conversation so far. Return your answer in JSON &quot;</span>
+            <span class="s2">&quot;format (not markdown). Your JSON file must include exactly two &quot;</span>
+            <span class="s1">&#39;keys. The keys are &quot;participating&quot; and &quot;non-participating&quot;. The &#39;</span>
+            <span class="s1">&#39;value of the &quot;participating&quot; key should be a string containing &#39;</span>
+            <span class="s2">&quot;the raw text with original formatting from the ordinance that &quot;</span>
+            <span class="s2">&quot;applies to participating owners or `null` if there was no such &quot;</span>
+            <span class="s1">&#39;text. The value of the &quot;non-participating&quot; key should be a &#39;</span>
+            <span class="s2">&quot;string containing the raw text with original formatting from the &quot;</span>
+            <span class="s2">&quot;ordinance that applies to non-participating owners or simply the &quot;</span>
+            <span class="s2">&quot;full ordinance if the text did not make the distinction between &quot;</span>
+            <span class="s2">&quot;participating and non-participating owners.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">G</span></div>
+
+
+
+<div class="viewcode-block" id="setup_multiplier">
+<a class="viewcode-back" href="../../../../_autosummary/elm.ords.extraction.graphs.setup_multiplier.html#elm.ords.extraction.graphs.setup_multiplier">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup_multiplier</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Setup Graph to extract a setbacks multiplier values for a feature.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Keyword-value pairs to add to graph.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    nx.DiGraph</span>
+<span class="sd">        Graph instance that can be used to initialize an</span>
+<span class="sd">        `elm.tree.DecisionTree`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">_setup_graph_no_nodes</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+        <span class="s2">&quot;init&quot;</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;We will attempt to extract structured data for this ordinance. &quot;</span>
+            <span class="s2">&quot;Let&#39;s think step by step. Does the text mention a multiplier &quot;</span>
+            <span class="s2">&quot;that should be applied to a turbine dimension (e.g. height, &quot;</span>
+            <span class="s2">&quot;rotor diameter, etc) to compute the setback distance from &quot;</span>
+            <span class="s2">&quot;</span><span class="si">{feature}</span><span class="s2">? Ignore any text related to </span><span class="si">{ignore_features}</span><span class="s2">. &quot;</span>
+            <span class="s2">&quot;Remember that 1 is a valid multiplier, and treat any mention of &quot;</span>
+            <span class="s2">&quot;&#39;fall zone&#39; as a system height multiplier of 1. Begin your &quot;</span>
+            <span class="s2">&quot;response with either &#39;Yes&#39; or &#39;No&#39; and explain your answer.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;init&quot;</span><span class="p">,</span> <span class="s2">&quot;no_multiplier&quot;</span><span class="p">,</span> <span class="n">condition</span><span class="o">=</span><span class="n">llm_response_starts_with_no</span><span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+        <span class="s2">&quot;no_multiplier&quot;</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Does the ordinance give the setback from </span><span class="si">{feature}</span><span class="s2"> as a fixed &quot;</span>
+            <span class="s2">&quot;distance value? Explain yourself.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;no_multiplier&quot;</span><span class="p">,</span> <span class="s2">&quot;out_static&quot;</span><span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+        <span class="s2">&quot;out_static&quot;</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Now we are ready to extract structured data. Respond based on &quot;</span>
+            <span class="s2">&quot;our entire conversation so far. Return your answer in JSON &quot;</span>
+            <span class="s2">&quot;format (not markdown). Your JSON file must include exactly &quot;</span>
+            <span class="s1">&#39;four keys. The keys are &quot;fixed_value&quot;, &quot;units&quot;, &quot;section&quot;, &#39;</span>
+            <span class="s1">&#39;&quot;comment&quot;. The value of the &quot;fixed_value&quot; key should be a &#39;</span>
+            <span class="s2">&quot;numerical value corresponding to the setback distance value &quot;</span>
+            <span class="s2">&quot;from </span><span class="si">{feature}</span><span class="s2"> or `null` if there was no such value. The value &quot;</span>
+            <span class="s1">&#39;of the &quot;units&quot; key should be a string corresponding to the units &#39;</span>
+            <span class="s2">&quot;of the setback distance value from </span><span class="si">{feature}</span><span class="s2"> or `null` if there &quot;</span>
+            <span class="s1">&#39;was no such value. </span><span class="si">{SECTION_PROMPT}</span><span class="s1"> The value of the &quot;comment&quot; &#39;</span>
+            <span class="s2">&quot;key should be a one-sentence explanation of how you determined &quot;</span>
+            <span class="s2">&quot;the value, or a short description of the ordinance itself if no &quot;</span>
+            <span class="s2">&quot;multiplier or static setback value was found.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;init&quot;</span><span class="p">,</span> <span class="s2">&quot;mult_single&quot;</span><span class="p">,</span> <span class="n">condition</span><span class="o">=</span><span class="n">llm_response_starts_with_yes</span><span class="p">)</span>
+
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+        <span class="s2">&quot;mult_single&quot;</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Are multiple values given for the multiplier used to &quot;</span>
+            <span class="s2">&quot;compute the setback distance value from </span><span class="si">{feature}</span><span class="s2">? If so, &quot;</span>
+            <span class="s2">&quot;select and state the largest one. Otherwise, repeat the single &quot;</span>
+            <span class="s2">&quot;multiplier value that was given in the text. &quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;mult_single&quot;</span><span class="p">,</span> <span class="s2">&quot;mult_type&quot;</span><span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+        <span class="s2">&quot;mult_type&quot;</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;What should the multiplier be applied to? Common acronyms &quot;</span>
+            <span class="s2">&quot;include RD for rotor diameter and HH for hub height. Remember &quot;</span>
+            <span class="s2">&quot;that system/total height is the tip-hight of the turbine. &quot;</span>
+            <span class="s2">&quot;Select a value from the following list and explain yourself: &quot;</span>
+            <span class="s2">&quot;[&#39;tip-height-multiplier&#39;, &#39;hub-height-multiplier&#39;, &quot;</span>
+            <span class="s2">&quot;&#39;rotor-diameter-multiplier]&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;mult_type&quot;</span><span class="p">,</span> <span class="s2">&quot;adder&quot;</span><span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+        <span class="s2">&quot;adder&quot;</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Does the ordinance include a static distance value that &quot;</span>
+            <span class="s2">&quot;should be added to the result of the multiplication? Do not &quot;</span>
+            <span class="s2">&quot;confuse this value with static setback requirements. Ignore text &quot;</span>
+            <span class="s2">&quot;with clauses such as &#39;no lesser than&#39;, &#39;no greater than&#39;, &quot;</span>
+            <span class="s2">&quot;&#39;the lesser of&#39;, or &#39;the greater of&#39;. Begin your response with &quot;</span>
+            <span class="s2">&quot;either &#39;Yes&#39; or &#39;No&#39; and explain your answer, stating the adder &quot;</span>
+            <span class="s2">&quot;value if it exists.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;adder&quot;</span><span class="p">,</span> <span class="s2">&quot;out_mult&quot;</span><span class="p">,</span> <span class="n">condition</span><span class="o">=</span><span class="n">llm_response_starts_with_no</span><span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;adder&quot;</span><span class="p">,</span> <span class="s2">&quot;adder_eq&quot;</span><span class="p">,</span> <span class="n">condition</span><span class="o">=</span><span class="n">llm_response_starts_with_yes</span><span class="p">)</span>
+
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+        <span class="s2">&quot;adder_eq&quot;</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;We are only interested in adders that satisfy the following &quot;</span>
+            <span class="s2">&quot;equation: &#39;multiplier * turbine_dimension + &lt;adder&gt;&#39;. Does the &quot;</span>
+            <span class="s2">&quot;adder value you identified satisfy this equation? Begin your &quot;</span>
+            <span class="s2">&quot;response with either &#39;Yes&#39; or &#39;No&#39; and explain your answer.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;adder_eq&quot;</span><span class="p">,</span> <span class="s2">&quot;out_mult&quot;</span><span class="p">,</span> <span class="n">condition</span><span class="o">=</span><span class="n">llm_response_starts_with_no</span><span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span>
+        <span class="s2">&quot;adder_eq&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;conversion&quot;</span><span class="p">,</span>
+        <span class="n">condition</span><span class="o">=</span><span class="n">llm_response_starts_with_yes</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+        <span class="s2">&quot;conversion&quot;</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;If the adder value is not given in feet, convert &quot;</span>
+            <span class="s2">&quot;it to feet (remember that there are 3.28084 feet in one meter &quot;</span>
+            <span class="s2">&quot;and 5280 feet in one mile). Show your work step-by-step &quot;</span>
+            <span class="s2">&quot;if you had to perform a conversion.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;conversion&quot;</span><span class="p">,</span> <span class="s2">&quot;out_mult&quot;</span><span class="p">)</span>
+
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+        <span class="s2">&quot;out_mult&quot;</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Now we are ready to extract structured data. Respond based on &quot;</span>
+            <span class="s2">&quot;our entire conversation so far. Return your answer in JSON &quot;</span>
+            <span class="s2">&quot;format (not markdown). Your JSON file must include exactly five &quot;</span>
+            <span class="s1">&#39;keys. The keys are &quot;mult_value&quot;, &quot;mult_type&quot;, &quot;adder&quot;, &#39;</span>
+            <span class="s1">&#39;&quot;section&quot;, &quot;comment&quot;. The value of the &quot;mult_value&quot; key should &#39;</span>
+            <span class="s2">&quot;be a numerical value corresponding to the multiplier value we &quot;</span>
+            <span class="s1">&#39;determined earlier. The value of the &quot;mult_type&quot; key should be &#39;</span>
+            <span class="s2">&quot;a string corresponding to the dimension that the multiplier &quot;</span>
+            <span class="s2">&quot;should be applied to, as we determined earlier. The value of &quot;</span>
+            <span class="s1">&#39;the &quot;adder&quot; key should be a numerical value corresponding to &#39;</span>
+            <span class="s2">&quot;the static value to be added to the total setback distance after &quot;</span>
+            <span class="s2">&quot;multiplication, as we determined earlier, or `null` if there is &quot;</span>
+            <span class="s2">&quot;no such value. </span><span class="si">{SECTION_PROMPT}</span><span class="s2"> </span><span class="si">{COMMENT_PROMPT}</span><span class="s2">&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">G</span></div>
+
+
+
+<div class="viewcode-block" id="setup_conditional">
+<a class="viewcode-back" href="../../../../_autosummary/elm.ords.extraction.graphs.setup_conditional.html#elm.ords.extraction.graphs.setup_conditional">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup_conditional</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Setup Graph to extract min/max setback values (after mult) for a</span>
+<span class="sd">    feature. These are typically given within the context of</span>
+<span class="sd">    &#39;the greater of&#39; or &#39;the lesser of&#39; clauses.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Keyword-value pairs to add to graph.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    nx.DiGraph</span>
+<span class="sd">        Graph instance that can be used to initialize an</span>
+<span class="sd">        `elm.tree.DecisionTree`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">_setup_graph_no_nodes</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+        <span class="s2">&quot;init&quot;</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;We will attempt to extract structured data for this ordinance. &quot;</span>
+            <span class="s2">&quot;Let&#39;s think step by step. Does the setback from </span><span class="si">{feature}</span><span class="s2"> &quot;</span>
+            <span class="s2">&quot;mention a minimum or maximum static setback distance regardless &quot;</span>
+            <span class="s2">&quot;of the outcome of the multiplier calculation? This is often &quot;</span>
+            <span class="s2">&quot;phrased as &#39;the greater of&#39; or &#39;the lesser of&#39;. Do not confuse &quot;</span>
+            <span class="s2">&quot;this value with static values to be added to multiplicative &quot;</span>
+            <span class="s2">&quot;setbacks. Begin your response with either &#39;Yes&#39; or &#39;No&#39; and &quot;</span>
+            <span class="s2">&quot;explain your answer.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;init&quot;</span><span class="p">,</span> <span class="s2">&quot;conversions&quot;</span><span class="p">,</span> <span class="n">condition</span><span class="o">=</span><span class="n">llm_response_starts_with_yes</span><span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+        <span class="s2">&quot;conversions&quot;</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Tell me the minimum and/or maximum setback distances, &quot;</span>
+            <span class="s2">&quot;converting to feet if necessary (remember that there are &quot;</span>
+            <span class="s2">&quot;3.28084 feet in one meter and 5280 feet in one mile). &quot;</span>
+            <span class="s2">&quot;Explain your answer and show your work if you had to perform &quot;</span>
+            <span class="s2">&quot;a conversion.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;conversions&quot;</span><span class="p">,</span> <span class="s2">&quot;out_condition&quot;</span><span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+        <span class="s2">&quot;out_condition&quot;</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Now we are ready to extract structured data. Respond based &quot;</span>
+            <span class="s2">&quot;on our entire conversation so far. Return your answer in JSON &quot;</span>
+            <span class="s2">&quot;format (not markdown). Your JSON file must include exactly two &quot;</span>
+            <span class="s1">&#39;keys. The keys are &quot;min_dist&quot; and &quot;max_dist&quot;. The value of the &#39;</span>
+            <span class="s1">&#39;&quot;min_dist&quot; key should be a numerical value corresponding to the &#39;</span>
+            <span class="s2">&quot;minimum setback value from </span><span class="si">{feature}</span><span class="s2"> we determined earlier, or &quot;</span>
+            <span class="s1">&#39;`null` if no such value exists. The value of the &quot;max_dist&quot; key &#39;</span>
+            <span class="s2">&quot;should be a numerical value corresponding to the maximum setback &quot;</span>
+            <span class="s2">&quot;value from </span><span class="si">{feature}</span><span class="s2"> we determined earlier, or `null` if no such &quot;</span>
+            <span class="s2">&quot;value exists.&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">G</span></div>
+
+
+
+<div class="viewcode-block" id="setup_graph_extra_restriction">
+<a class="viewcode-back" href="../../../../_autosummary/elm.ords.extraction.graphs.setup_graph_extra_restriction.html#elm.ords.extraction.graphs.setup_graph_extra_restriction">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup_graph_extra_restriction</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Setup Graph to extract non-setback ordinance values from text.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Keyword-value pairs to add to graph.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    nx.DiGraph</span>
+<span class="sd">        Graph instance that can be used to initialize an</span>
+<span class="sd">        `elm.tree.DecisionTree`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">_setup_graph_no_nodes</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+        <span class="s2">&quot;init&quot;</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;We will attempt to extract structured data for this &quot;</span>
+            <span class="s2">&quot;ordinance. Let&#39;s think step by step. Does the following text &quot;</span>
+            <span class="s2">&quot;explicitly limit the </span><span class="si">{restriction}</span><span class="s2"> allowed for </span><span class="si">{wes_type}</span><span class="s2">? &quot;</span>
+            <span class="s2">&quot;Do not infer based on other restrictions; if this particular &quot;</span>
+            <span class="s2">&quot;restriction is not explicitly mentioned then say &#39;No&#39;. Pay extra &quot;</span>
+            <span class="s2">&quot;attention to clarifying text found in parentheses and footnotes. &quot;</span>
+            <span class="s2">&quot;Begin your response with either &#39;Yes&#39; or &#39;No&#39; and explain &quot;</span>
+            <span class="s2">&quot;your answer.&quot;</span>
+            <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&quot;&quot;&quot;</span><span class="se">\n</span><span class="si">{text}</span><span class="se">\n</span><span class="s1">&quot;&quot;&quot;&#39;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;init&quot;</span><span class="p">,</span> <span class="s2">&quot;final&quot;</span><span class="p">,</span> <span class="n">condition</span><span class="o">=</span><span class="n">llm_response_starts_with_yes</span><span class="p">)</span>
+
+    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span>
+        <span class="s2">&quot;final&quot;</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="p">(</span>
+            <span class="s2">&quot;Now we are ready to extract structured data. Respond based &quot;</span>
+            <span class="s2">&quot;on our entire conversation so far. Return your answer in JSON &quot;</span>
+            <span class="s2">&quot;format (not markdown). Your JSON file must include exactly four &quot;</span>
+            <span class="s1">&#39;keys. The keys are &quot;value&quot;, &quot;units&quot;, &quot;section&quot;, &quot;comment&quot;. The &#39;</span>
+            <span class="s1">&#39;value of the &quot;value&quot; key should be a numerical value &#39;</span>
+            <span class="s2">&quot;corresponding to the </span><span class="si">{restriction}</span><span class="s2"> allowed for </span><span class="si">{wes_type}</span><span class="s2">, or &quot;</span>
+            <span class="s2">&quot;`null` if the text does not mention such a restriction. Use our &quot;</span>
+            <span class="s1">&#39;conversation to fill out this value. The value of the &quot;units&quot; &#39;</span>
+            <span class="s2">&quot;key should be a string corresponding to the units for the &quot;</span>
+            <span class="s2">&quot;</span><span class="si">{restriction}</span><span class="s2"> allowed for </span><span class="si">{wes_type}</span><span class="s2"> by the text below, or &quot;</span>
+            <span class="s2">&quot;`null` if the text does not mention such a restriction. Make &quot;</span>
+            <span class="s1">&#39;sure to include any &quot;per XXX&quot; clauses in the units. &#39;</span>
+            <span class="s2">&quot;</span><span class="si">{SECTION_PROMPT}</span><span class="s2"> </span><span class="si">{COMMENT_PROMPT}</span><span class="s2">&quot;</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">G</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alliance for Sustainable Energy, LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

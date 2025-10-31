@@ -1,0 +1,36 @@
+elm.ords.services.threaded.ThreadedService
+==========================================
+
+.. currentmodule:: elm.ords.services.threaded
+
+.. autoclass:: ThreadedService
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ThreadedService.acquire_resources
+      ~ThreadedService.call
+      ~ThreadedService.process
+      ~ThreadedService.process_using_futures
+      ~ThreadedService.release_resources
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ThreadedService.MAX_CONCURRENT_JOBS
+      ~ThreadedService.can_process
+      ~ThreadedService.name
+   
+   

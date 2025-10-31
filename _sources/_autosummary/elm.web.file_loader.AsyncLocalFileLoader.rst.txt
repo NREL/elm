@@ -1,0 +1,25 @@
+elm.web.file\_loader.AsyncLocalFileLoader
+=========================================
+
+.. currentmodule:: elm.web.file_loader
+
+.. autoclass:: AsyncLocalFileLoader
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~AsyncLocalFileLoader.fetch
+      ~AsyncLocalFileLoader.fetch_all
+   
+   
+
+   
+   
+   

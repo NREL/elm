@@ -1,0 +1,36 @@
+elm.ords.services.threaded.OrdDBFileWriter
+==========================================
+
+.. currentmodule:: elm.ords.services.threaded
+
+.. autoclass:: OrdDBFileWriter
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~OrdDBFileWriter.acquire_resources
+      ~OrdDBFileWriter.call
+      ~OrdDBFileWriter.process
+      ~OrdDBFileWriter.process_using_futures
+      ~OrdDBFileWriter.release_resources
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OrdDBFileWriter.MAX_CONCURRENT_JOBS
+      ~OrdDBFileWriter.can_process
+      ~OrdDBFileWriter.name
+   
+   

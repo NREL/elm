@@ -1,0 +1,34 @@
+elm.web.website\_crawl.ContentTypeExcludeFilter
+===============================================
+
+.. currentmodule:: elm.web.website_crawl
+
+.. autoclass:: ContentTypeExcludeFilter
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ContentTypeExcludeFilter.apply
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ContentTypeExcludeFilter.exclude_ext
+      ~ContentTypeExcludeFilter.EXCLUDE_EXTENSIONS
+      ~ContentTypeExcludeFilter.logger
+      ~ContentTypeExcludeFilter.name
+      ~ContentTypeExcludeFilter.stats
+   
+   

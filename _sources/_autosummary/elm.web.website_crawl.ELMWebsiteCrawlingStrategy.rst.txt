@@ -1,0 +1,35 @@
+elm.web.website\_crawl.ELMWebsiteCrawlingStrategy
+=================================================
+
+.. currentmodule:: elm.web.website_crawl
+
+.. autoclass:: ELMWebsiteCrawlingStrategy
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ELMWebsiteCrawlingStrategy.arun
+      ~ELMWebsiteCrawlingStrategy.can_process_url
+      ~ELMWebsiteCrawlingStrategy.found_enough_docs
+      ~ELMWebsiteCrawlingStrategy.link_discovery
+      ~ELMWebsiteCrawlingStrategy.shutdown
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ELMWebsiteCrawlingStrategy.BATCH_SIZE
+      ~ELMWebsiteCrawlingStrategy.ONE_SCORE_AT_A_TIME
+   
+   

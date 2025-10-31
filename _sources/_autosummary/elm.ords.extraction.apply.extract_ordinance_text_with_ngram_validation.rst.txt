@@ -1,0 +1,6 @@
+elm.ords.extraction.apply.extract\_ordinance\_text\_with\_ngram\_validation
+===========================================================================
+
+.. currentmodule:: elm.ords.extraction.apply
+
+.. autofunction:: extract_ordinance_text_with_ngram_validation

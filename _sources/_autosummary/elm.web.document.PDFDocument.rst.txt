@@ -1,0 +1,36 @@
+elm.web.document.PDFDocument
+============================
+
+.. currentmodule:: elm.web.document
+
+.. autoclass:: PDFDocument
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PDFDocument.from_file
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PDFDocument.CLEAN_HEADER_KWARGS
+      ~PDFDocument.FILE_EXTENSION
+      ~PDFDocument.WRITE_KWARGS
+      ~PDFDocument.empty
+      ~PDFDocument.num_raw_pages_to_keep
+      ~PDFDocument.raw_pages
+      ~PDFDocument.text
+   
+   

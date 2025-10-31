@@ -1,0 +1,39 @@
+elm.ords.services.openai
+========================
+
+.. automodule:: elm.ords.services.openai
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      count_tokens
+      usage_from_response
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      OpenAIService
+   
+   
+
+   
+   
+   
+
+
+

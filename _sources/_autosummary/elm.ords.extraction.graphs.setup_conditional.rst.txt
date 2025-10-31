@@ -1,0 +1,6 @@
+elm.ords.extraction.graphs.setup\_conditional
+=============================================
+
+.. currentmodule:: elm.ords.extraction.graphs
+
+.. autofunction:: setup_conditional

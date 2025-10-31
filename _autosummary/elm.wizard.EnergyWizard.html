@@ -1,0 +1,919 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>elm.wizard.EnergyWizard &mdash; elm 0.0.34 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=9dd25805"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="elm.wizard.EnergyWizardBase" href="elm.wizard.EnergyWizardBase.html" />
+    <link rel="prev" title="elm.wizard" href="elm.wizard.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            elm
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples.energy_wizard.html">The Energy Wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples.energy_wizard.html#downloading-and-embedding-pdfs">Downloading and Embedding PDFs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.energy_wizard.html#running-the-streamlit-app">Running the Streamlit App</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.ordinance_gpt.html">Ordinance GPT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples.ordinance_gpt.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.ordinance_gpt.html#running-from-python">Running from Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.ordinance_gpt.html#running-from-the-command-line-utility">Running from the Command Line Utility</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples.ordinance_gpt.html#execution">Execution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples.ordinance_gpt.html#debugging">Debugging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.ordinance_gpt.html#source-ordinance-documents">Source Ordinance Documents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples.ordinance_gpt.html#extension-to-other-technologies">Extension to Other Technologies</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../dev/ords_architecture.html"><strong>OrdinanceGPT: Architectural Design Document</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dev/ords_architecture.html#introduction"><strong>1. Introduction</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dev/ords_architecture.html#purpose"><strong>1.1 Purpose</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/ords_architecture.html#audience"><strong>1.2 Audience</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/ords_architecture.html#scope"><strong>1.3 Scope</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/ords_architecture.html#high-level-architecture"><strong>2. High-Level Architecture</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dev/ords_architecture.html#system-context"><strong>2.1 System Context</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/ords_architecture.html#detailed-design"><strong>3. Detailed Design</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dev/ords_architecture.html#web-scraper"><strong>3.1 Web Scraper</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/ords_architecture.html#document-parser"><strong>3.2 Document Parser</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/ords_architecture.html#key-concepts-and-classes"><strong>4 Key Concepts and Classes</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dev/ords_architecture.html#key-concept-services"><strong>4.1 Key Concept: Services</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/ords_architecture.html#key-classes"><strong>4.2 Key Classes</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/ords_architecture.html#workflows"><strong>5. Workflows</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dev/ords_architecture.html#downloading-documents-from-google"><strong>5.1 Downloading documents from Google</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dev/ords_architecture.html#querying-openai"><strong>5.2 Querying OpenAI</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/ords_architecture.html#appendix"><strong>6. Appendix</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../dev/ords_architecture.html#tools-and-libraries"><strong>6.1 Tools and Libraries</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../dev/ords_architecture.html#deliverables"><strong>7. Deliverables</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="elm.html">API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="elm.base.html">elm.base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.base.ApiBase.html">elm.base.ApiBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.base.ApiBase.html#elm.base.ApiBase"><code class="docutils literal notranslate"><span class="pre">ApiBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.base.ApiQueue.html">elm.base.ApiQueue</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.base.ApiQueue.html#elm.base.ApiQueue"><code class="docutils literal notranslate"><span class="pre">ApiQueue</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elm.chunk.html">elm.chunk</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.chunk.Chunker.html">elm.chunk.Chunker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.chunk.Chunker.html#elm.chunk.Chunker"><code class="docutils literal notranslate"><span class="pre">Chunker</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elm.cli.html">elm.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="elm.embed.html">elm.embed</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.embed.ChunkAndEmbed.html">elm.embed.ChunkAndEmbed</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed"><code class="docutils literal notranslate"><span class="pre">ChunkAndEmbed</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elm.exceptions.html">elm.exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.exceptions.ELMError.html">elm.exceptions.ELMError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.exceptions.ELMError.html#elm.exceptions.ELMError"><code class="docutils literal notranslate"><span class="pre">ELMError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.exceptions.ELMInputError.html">elm.exceptions.ELMInputError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.exceptions.ELMInputError.html#elm.exceptions.ELMInputError"><code class="docutils literal notranslate"><span class="pre">ELMInputError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.exceptions.ELMKeyError.html">elm.exceptions.ELMKeyError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.exceptions.ELMKeyError.html#elm.exceptions.ELMKeyError"><code class="docutils literal notranslate"><span class="pre">ELMKeyError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.exceptions.ELMRuntimeError.html">elm.exceptions.ELMRuntimeError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.exceptions.ELMRuntimeError.html#elm.exceptions.ELMRuntimeError"><code class="docutils literal notranslate"><span class="pre">ELMRuntimeError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elm.ords.html">elm.ords</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.ords.download.html">elm.ords.download</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.download.download_county_ordinance.html">elm.ords.download.download_county_ordinance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.ords.extraction.html">elm.ords.extraction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.extraction.apply.html">elm.ords.extraction.apply</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.extraction.date.html">elm.ords.extraction.date</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.extraction.features.html">elm.ords.extraction.features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.extraction.graphs.html">elm.ords.extraction.graphs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.extraction.ngrams.html">elm.ords.extraction.ngrams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.extraction.ordinance.html">elm.ords.extraction.ordinance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.extraction.parse.html">elm.ords.extraction.parse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.extraction.tree.html">elm.ords.extraction.tree</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.ords.llm.html">elm.ords.llm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.llm.calling.html">elm.ords.llm.calling</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.ords.process.html">elm.ords.process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.process.process_counties_with_openai.html">elm.ords.process.process_counties_with_openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.process.process_county.html">elm.ords.process.process_county</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.process.process_county_with_logging.html">elm.ords.process.process_county_with_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.ords.services.html">elm.ords.services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.services.base.html">elm.ords.services.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.services.cpu.html">elm.ords.services.cpu</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.services.openai.html">elm.ords.services.openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.services.provider.html">elm.ords.services.provider</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.services.queues.html">elm.ords.services.queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.services.threaded.html">elm.ords.services.threaded</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.services.usage.html">elm.ords.services.usage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.ords.utilities.html">elm.ords.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.utilities.counties.html">elm.ords.utilities.counties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.utilities.exceptions.html">elm.ords.utilities.exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.utilities.location.html">elm.ords.utilities.location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.utilities.parsing.html">elm.ords.utilities.parsing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.utilities.queued_logging.html">elm.ords.utilities.queued_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.ords.validation.html">elm.ords.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.validation.content.html">elm.ords.validation.content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.ords.validation.location.html">elm.ords.validation.location</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elm.pdf.html">elm.pdf</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.pdf.PDFtoTXT.html">elm.pdf.PDFtoTXT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT"><code class="docutils literal notranslate"><span class="pre">PDFtoTXT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elm.summary.html">elm.summary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.summary.Summary.html">elm.summary.Summary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.summary.Summary.html#elm.summary.Summary"><code class="docutils literal notranslate"><span class="pre">Summary</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elm.tree.html">elm.tree</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.tree.DecisionTree.html">elm.tree.DecisionTree</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.tree.DecisionTree.html#elm.tree.DecisionTree"><code class="docutils literal notranslate"><span class="pre">DecisionTree</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elm.utilities.html">elm.utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.utilities.parse.html">elm.utilities.parse</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.utilities.parse.clean_headers.html">elm.utilities.parse.clean_headers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.utilities.parse.combine_pages.html">elm.utilities.parse.combine_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.utilities.parse.format_html_tables.html">elm.utilities.parse.format_html_tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.utilities.parse.html_to_text.html">elm.utilities.parse.html_to_text</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.utilities.parse.is_multi_col.html">elm.utilities.parse.is_multi_col</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.utilities.parse.read_pdf.html">elm.utilities.parse.read_pdf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.utilities.parse.read_pdf_ocr.html">elm.utilities.parse.read_pdf_ocr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.utilities.parse.remove_blank_pages.html">elm.utilities.parse.remove_blank_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.utilities.parse.remove_empty_lines_or_page_footers.html">elm.utilities.parse.remove_empty_lines_or_page_footers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.utilities.parse.replace_common_pdf_conversion_chars.html">elm.utilities.parse.replace_common_pdf_conversion_chars</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.utilities.parse.replace_excessive_newlines.html">elm.utilities.parse.replace_excessive_newlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.utilities.parse.replace_multi_dot_lines.html">elm.utilities.parse.replace_multi_dot_lines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.utilities.parse.resembles_html.html">elm.utilities.parse.resembles_html</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.utilities.retry.html">elm.utilities.retry</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.utilities.retry.async_retry_with_exponential_backoff.html">elm.utilities.retry.async_retry_with_exponential_backoff</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.utilities.retry.retry_with_exponential_backoff.html">elm.utilities.retry.retry_with_exponential_backoff</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.utilities.try_import.html">elm.utilities.try_import</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.utilities.try_import.try_import.html">elm.utilities.try_import.try_import</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.utilities.validation.html">elm.utilities.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.utilities.validation.validate_azure_api_params.html">elm.utilities.validation.validate_azure_api_params</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elm.version.html">elm.version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="elm.web.html">elm.web</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elm.web.document.html">elm.web.document</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.document.BaseDocument.html">elm.web.document.BaseDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.document.HTMLDocument.html">elm.web.document.HTMLDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.document.PDFDocument.html">elm.web.document.PDFDocument</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.web.file_loader.html">elm.web.file_loader</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.file_loader.AsyncFileLoader.html">elm.web.file_loader.AsyncFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.file_loader.AsyncLocalFileLoader.html">elm.web.file_loader.AsyncLocalFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.file_loader.AsyncWebFileLoader.html">elm.web.file_loader.AsyncWebFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.file_loader.BaseAsyncFileLoader.html">elm.web.file_loader.BaseAsyncFileLoader</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.web.html_pw.html">elm.web.html_pw</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.html_pw.load_html_with_pw.html">elm.web.html_pw.load_html_with_pw</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.web.osti.html">elm.web.osti</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.osti.OstiList.html">elm.web.osti.OstiList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.osti.OstiRecord.html">elm.web.osti.OstiRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.web.rhub.html">elm.web.rhub</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.rhub.ProfilesList.html">elm.web.rhub.ProfilesList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.rhub.ProfilesRecord.html">elm.web.rhub.ProfilesRecord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.rhub.PublicationsList.html">elm.web.rhub.PublicationsList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.rhub.PublicationsRecord.html">elm.web.rhub.PublicationsRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.web.search.html">elm.web.search</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.search.base.html">elm.web.search.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.search.bing.html">elm.web.search.bing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.search.duckduckgo.html">elm.web.search.duckduckgo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.search.dux.html">elm.web.search.dux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.search.google.html">elm.web.search.google</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.search.run.html">elm.web.search.run</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.search.tavily.html">elm.web.search.tavily</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.search.yahoo.html">elm.web.search.yahoo</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.web.utilities.html">elm.web.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.utilities.DEFAULT_HEADERS.html">elm.web.utilities.DEFAULT_HEADERS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.utilities.clean_search_query.html">elm.web.utilities.clean_search_query</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.utilities.compute_fn_from_url.html">elm.web.utilities.compute_fn_from_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.utilities.filter_documents.html">elm.web.utilities.filter_documents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.utilities.get_redirected_url.html">elm.web.utilities.get_redirected_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.utilities.pw_page.html">elm.web.utilities.pw_page</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.utilities.write_url_doc_to_file.html">elm.web.utilities.write_url_doc_to_file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.utilities.PWKwargs.html">elm.web.utilities.PWKwargs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.web.website_crawl.html">elm.web.website_crawl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS.html">elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.website_crawl.ELM_URL_FILTER.html">elm.web.website_crawl.ELM_URL_FILTER</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.website_crawl.ContentTypeExcludeFilter.html">elm.web.website_crawl.ContentTypeExcludeFilter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.website_crawl.ELMLinkScorer.html">elm.web.website_crawl.ELMLinkScorer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.website_crawl.ELMWebsiteCrawler.html">elm.web.website_crawl.ELMWebsiteCrawler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html">elm.web.website_crawl.ELMWebsiteCrawlingStrategy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elm.web.website_crawl.PeekablePriorityQueue.html">elm.web.website_crawl.PeekablePriorityQueue</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="elm.wizard.html">elm.wizard</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">elm.wizard.EnergyWizard</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#elm.wizard.EnergyWizard"><code class="docutils literal notranslate"><span class="pre">EnergyWizard</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.wizard.EnergyWizardBase.html">elm.wizard.EnergyWizardBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase"><code class="docutils literal notranslate"><span class="pre">EnergyWizardBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="elm.wizard.EnergyWizardPostgres.html">elm.wizard.EnergyWizardPostgres</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres"><code class="docutils literal notranslate"><span class="pre">EnergyWizardPostgres</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../_cli/cli.html">CLI reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../_cli/elm.html">elm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../_cli/elm.html#elm-ords">ords</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">elm</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="elm.html">elm</a></li>
+          <li class="breadcrumb-item"><a href="elm.wizard.html">elm.wizard</a></li>
+      <li class="breadcrumb-item active">elm.wizard.EnergyWizard</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/nrel/elm/blob/main/docs/source/_autosummary/elm.wizard.EnergyWizard.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="elm-wizard-energywizard">
+<h1>elm.wizard.EnergyWizard<a class="headerlink" href="#elm-wizard-energywizard" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EnergyWizard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token_budget</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/elm/wizard.html#EnergyWizard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elm.wizard.EnergyWizard" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase" title="elm.wizard.EnergyWizardBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnergyWizardBase</span></code></a></p>
+<p>Interface to ask OpenAI LLMs about energy research.</p>
+<p>This class is for execution on a local machine with a vector database in
+memory</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>corpus</strong> (<em>pd.DataFrame</em>) – Corpus of text in dataframe format. Must have columns “text” and
+“embedding”.</p></li>
+<li><p><strong>model</strong> (<em>str</em>) – GPT model name, default is the DEFAULT_MODEL global var</p></li>
+<li><p><strong>token_budget</strong> (<em>int</em>) – Number of tokens that can be embedded in the prompt. Note that the
+default budget for GPT-3.5-Turbo is 4096, but you want to subtract
+some tokens to account for the response budget.</p></li>
+<li><p><strong>ref_col</strong> (<em>None | str</em>) – Optional column label in the corpus that provides a reference text
+string for each chunk of text.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.call_api" title="elm.wizard.EnergyWizard.call_api"><code class="xref py py-obj docutils literal notranslate"><span class="pre">call_api</span></code></a>(url, headers, request_json)</p></td>
+<td><p>Make an asyncronous OpenAI API call.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.call_api_async" title="elm.wizard.EnergyWizard.call_api_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">call_api_async</span></code></a>(url, headers, all_request_jsons)</p></td>
+<td><p>Use GPT to clean raw pdf text in parallel calls to the OpenAI API.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.chat" title="elm.wizard.EnergyWizard.chat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat</span></code></a>(query[, stream, temperature, convo, ...])</p></td>
+<td><p>Answers a query by doing a semantic search of relevant text with embeddings and then sending engineered query to the LLM.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.clear" title="elm.wizard.EnergyWizard.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
+<td><p>Clear chat history and reduce messages to just the initial model role message.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.cosine_dist" title="elm.wizard.EnergyWizard.cosine_dist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cosine_dist</span></code></a>(query_embedding)</p></td>
+<td><p>Compute the cosine distance of the query embedding array vs.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.count_tokens" title="elm.wizard.EnergyWizard.count_tokens"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count_tokens</span></code></a>(text, model[, fallback_model])</p></td>
+<td><p>Return the number of tokens in a string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.engineer_query" title="elm.wizard.EnergyWizard.engineer_query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">engineer_query</span></code></a>(query[, token_budget, ...])</p></td>
+<td><p>Engineer a query for GPT using the corpus of information</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.generic_async_query" title="elm.wizard.EnergyWizard.generic_async_query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generic_async_query</span></code></a>(queries[, model_role, ...])</p></td>
+<td><p>Run a number of generic single queries asynchronously (not conversational)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.generic_query" title="elm.wizard.EnergyWizard.generic_query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generic_query</span></code></a>(query[, model_role, temperature])</p></td>
+<td><p>Ask a generic single query without conversation</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.get_embedding" title="elm.wizard.EnergyWizard.get_embedding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_embedding</span></code></a>(text)</p></td>
+<td><p>Get the 1D array (list) embedding of a text string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.make_ref_list" title="elm.wizard.EnergyWizard.make_ref_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_ref_list</span></code></a>(idx)</p></td>
+<td><p>Make a reference list</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.preflight_corpus" title="elm.wizard.EnergyWizard.preflight_corpus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preflight_corpus</span></code></a>(corpus[, required])</p></td>
+<td><p>Run preflight checks on the text corpus.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.query_vector_db" title="elm.wizard.EnergyWizard.query_vector_db"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query_vector_db</span></code></a>(query[, limit])</p></td>
+<td><p>Returns a list of strings and relatednesses, sorted from most related to least.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.DEFAULT_MODEL" title="elm.wizard.EnergyWizard.DEFAULT_MODEL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DEFAULT_MODEL</span></code></a></p></td>
+<td><p>Default model to do pdf text cleaning.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.EMBEDDING_MODEL" title="elm.wizard.EnergyWizard.EMBEDDING_MODEL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EMBEDDING_MODEL</span></code></a></p></td>
+<td><p>Default model to do text embeddings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.EMBEDDING_URL" title="elm.wizard.EnergyWizard.EMBEDDING_URL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EMBEDDING_URL</span></code></a></p></td>
+<td><p>OpenAI embedding API URL</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.HEADERS" title="elm.wizard.EnergyWizard.HEADERS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HEADERS</span></code></a></p></td>
+<td><p>OpenAI API Headers</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.MODEL_INSTRUCTION" title="elm.wizard.EnergyWizard.MODEL_INSTRUCTION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MODEL_INSTRUCTION</span></code></a></p></td>
+<td><p>Prefix to the engineered prompt</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.MODEL_ROLE" title="elm.wizard.EnergyWizard.MODEL_ROLE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MODEL_ROLE</span></code></a></p></td>
+<td><p>High level model role, somewhat redundant to MODEL_INSTRUCTION</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.TOKENIZER_ALIASES" title="elm.wizard.EnergyWizard.TOKENIZER_ALIASES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TOKENIZER_ALIASES</span></code></a></p></td>
+<td><p>Optional mappings for unusual Azure names to tiktoken/openai names.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.TOKENIZER_PATTERNS" title="elm.wizard.EnergyWizard.TOKENIZER_PATTERNS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TOKENIZER_PATTERNS</span></code></a></p></td>
+<td><p>Order-prioritized list of model sub-strings to look for in model name to send to tokenizer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.URL" title="elm.wizard.EnergyWizard.URL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">URL</span></code></a></p></td>
+<td><p>OpenAI API URL to be used with environment variable OPENAI_API_KEY.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#elm.wizard.EnergyWizard.all_messages_txt" title="elm.wizard.EnergyWizard.all_messages_txt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_messages_txt</span></code></a></p></td>
+<td><p>Get a string printout of the full conversation with the LLM</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.preflight_corpus">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">preflight_corpus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('text',</span> <span class="pre">'embedding')</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/elm/wizard.html#EnergyWizard.preflight_corpus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elm.wizard.EnergyWizard.preflight_corpus" title="Link to this definition"></a></dt>
+<dd><p>Run preflight checks on the text corpus.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>corpus</strong> (<em>pd.DataFrame</em>) – Corpus of text in dataframe format. Must have columns “text” and
+“embedding”.</p></li>
+<li><p><strong>required</strong> (<em>list | tuple</em>) – Column names required to be in the corpus df</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>corpus</strong> (<em>pd.DataFrame</em>) – Corpus of text in dataframe format. Must have columns “text” and
+“embedding”.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.cosine_dist">
+<span class="sig-name descname"><span class="pre">cosine_dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_embedding</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/elm/wizard.html#EnergyWizard.cosine_dist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elm.wizard.EnergyWizard.cosine_dist" title="Link to this definition"></a></dt>
+<dd><p>Compute the cosine distance of the query embedding array vs. all of
+the embedding arrays of the full text corpus</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>query_embedding</strong> (<em>np.ndarray</em>) – 1D array of the numerical embedding of the request query.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>out</strong> (<em>np.ndarray</em>) – 1D array with length equal to the number of entries in the text
+corpus. Each value is a distance score where smaller is closer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.query_vector_db">
+<span class="sig-name descname"><span class="pre">query_vector_db</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/elm/wizard.html#EnergyWizard.query_vector_db"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elm.wizard.EnergyWizard.query_vector_db" title="Link to this definition"></a></dt>
+<dd><p>Returns a list of strings and relatednesses, sorted from most
+related to least.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> (<em>str</em>) – Question being asked of GPT</p></li>
+<li><p><strong>limit</strong> (<em>int</em>) – Number of top results to return.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>strings</strong> (<em>np.ndarray</em>) – 1D array of related strings</p></li>
+<li><p><strong>score</strong> (<em>np.ndarray</em>) – 1D array of float scores of strings</p></li>
+<li><p><strong>idx</strong> (<em>np.ndarray</em>) – 1D array of indices in the text corpus corresponding to the
+ranked strings/scores outputs.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.make_ref_list">
+<span class="sig-name descname"><span class="pre">make_ref_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/elm/wizard.html#EnergyWizard.make_ref_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#elm.wizard.EnergyWizard.make_ref_list" title="Link to this definition"></a></dt>
+<dd><p>Make a reference list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>used_index</strong> (<em>np.ndarray</em>) – Indices of the used text from the text corpus</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ref_list</strong> (<em>list</em>) – A list of references (strs) used. This takes information straight
+from <code class="docutils literal notranslate"><span class="pre">ref_col</span></code>. Ideally, this is something like:
+[“{ref_title} ({ref_url})”]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.DEFAULT_MODEL">
+<span class="sig-name descname"><span class="pre">DEFAULT_MODEL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'gpt-3.5-turbo'</span></em><a class="headerlink" href="#elm.wizard.EnergyWizard.DEFAULT_MODEL" title="Link to this definition"></a></dt>
+<dd><p>Default model to do pdf text cleaning.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.EMBEDDING_MODEL">
+<span class="sig-name descname"><span class="pre">EMBEDDING_MODEL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'text-embedding-ada-002'</span></em><a class="headerlink" href="#elm.wizard.EnergyWizard.EMBEDDING_MODEL" title="Link to this definition"></a></dt>
+<dd><p>Default model to do text embeddings.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.EMBEDDING_URL">
+<span class="sig-name descname"><span class="pre">EMBEDDING_URL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://api.openai.com/v1/embeddings'</span></em><a class="headerlink" href="#elm.wizard.EnergyWizard.EMBEDDING_URL" title="Link to this definition"></a></dt>
+<dd><p>OpenAI embedding API URL</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.HEADERS">
+<span class="sig-name descname"><span class="pre">HEADERS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'Authorization':</span> <span class="pre">'Bearer</span> <span class="pre">None',</span> <span class="pre">'Content-Type':</span> <span class="pre">'application/json',</span> <span class="pre">'api-key':</span> <span class="pre">'None'}</span></em><a class="headerlink" href="#elm.wizard.EnergyWizard.HEADERS" title="Link to this definition"></a></dt>
+<dd><p>OpenAI API Headers</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.MODEL_INSTRUCTION">
+<span class="sig-name descname"><span class="pre">MODEL_INSTRUCTION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Use</span> <span class="pre">the</span> <span class="pre">information</span> <span class="pre">below</span> <span class="pre">to</span> <span class="pre">answer</span> <span class="pre">the</span> <span class="pre">subsequent</span> <span class="pre">question.</span> <span class="pre">If</span> <span class="pre">the</span> <span class="pre">answer</span> <span class="pre">cannot</span> <span class="pre">be</span> <span class="pre">found</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">text,</span> <span class="pre">write</span> <span class="pre">&quot;I</span> <span class="pre">could</span> <span class="pre">not</span> <span class="pre">find</span> <span class="pre">an</span> <span class="pre">answer.&quot;'</span></em><a class="headerlink" href="#elm.wizard.EnergyWizard.MODEL_INSTRUCTION" title="Link to this definition"></a></dt>
+<dd><p>Prefix to the engineered prompt</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.MODEL_ROLE">
+<span class="sig-name descname"><span class="pre">MODEL_ROLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'You</span> <span class="pre">parse</span> <span class="pre">through</span> <span class="pre">articles</span> <span class="pre">to</span> <span class="pre">answer</span> <span class="pre">questions.'</span></em><a class="headerlink" href="#elm.wizard.EnergyWizard.MODEL_ROLE" title="Link to this definition"></a></dt>
+<dd><p>High level model role, somewhat redundant to MODEL_INSTRUCTION</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.TOKENIZER_ALIASES">
+<span class="sig-name descname"><span class="pre">TOKENIZER_ALIASES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'gpt-35-turbo':</span> <span class="pre">'gpt-3.5-turbo',</span> <span class="pre">'gpt-4-32k':</span> <span class="pre">'gpt-4-32k-0314',</span> <span class="pre">'llmev-gpt-4-32k':</span> <span class="pre">'gpt-4-32k-0314',</span> <span class="pre">'wetosa-gpt-4':</span> <span class="pre">'gpt-4',</span> <span class="pre">'wetosa-gpt-4-standard':</span> <span class="pre">'gpt-4',</span> <span class="pre">'wetosa-gpt-4o':</span> <span class="pre">'gpt-4o'}</span></em><a class="headerlink" href="#elm.wizard.EnergyWizard.TOKENIZER_ALIASES" title="Link to this definition"></a></dt>
+<dd><p>Optional mappings for unusual Azure names to tiktoken/openai names.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.TOKENIZER_PATTERNS">
+<span class="sig-name descname"><span class="pre">TOKENIZER_PATTERNS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('gpt-5',</span> <span class="pre">'gpt-4o',</span> <span class="pre">'gpt-4-32k',</span> <span class="pre">'gpt-4')</span></em><a class="headerlink" href="#elm.wizard.EnergyWizard.TOKENIZER_PATTERNS" title="Link to this definition"></a></dt>
+<dd><p>Order-prioritized list of model sub-strings to look for in model name
+to send to tokenizer. As an alternative to alias lookup, this will use the
+tokenizer pattern if found in the model string</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.URL">
+<span class="sig-name descname"><span class="pre">URL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://api.openai.com/v1/chat/completions'</span></em><a class="headerlink" href="#elm.wizard.EnergyWizard.URL" title="Link to this definition"></a></dt>
+<dd><p>OpenAI API URL to be used with environment variable OPENAI_API_KEY. Use
+an Azure API endpoint to trigger Azure usage along with environment
+variables AZURE_OPENAI_KEY, AZURE_OPENAI_VERSION, and
+AZURE_OPENAI_ENDPOINT</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.all_messages_txt">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">all_messages_txt</span></span><a class="headerlink" href="#elm.wizard.EnergyWizard.all_messages_txt" title="Link to this definition"></a></dt>
+<dd><p>Get a string printout of the full conversation with the LLM</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>str</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.call_api">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">call_api</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_json</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#elm.wizard.EnergyWizard.call_api" title="Link to this definition"></a></dt>
+<dd><p>Make an asyncronous OpenAI API call.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul>
+<li><p><strong>url</strong> (<em>str</em>) –</p>
+<dl class="simple">
+<dt>OpenAI API url, typically either:</dt><dd><p><a class="reference external" href="https://api.openai.com/v1/embeddings">https://api.openai.com/v1/embeddings</a>
+<a class="reference external" href="https://api.openai.com/v1/chat/completions">https://api.openai.com/v1/chat/completions</a></p>
+</dd>
+</dl>
+</li>
+<li><p><strong>headers</strong> (<em>dict</em>) –</p>
+<dl class="simple">
+<dt>OpenAI API headers, typically:</dt><dd><dl class="simple">
+<dt>{“Content-Type”: “application/json”,</dt><dd><p>“Authorization”: f”Bearer {openai.api_key}”}</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><p><strong>request_json</strong> (<em>dict</em>) –</p>
+<dl>
+<dt>API data input, typically looks like this for chat completion:</dt><dd><dl>
+<dt>{“model”: “gpt-3.5-turbo”,</dt><dd><dl class="simple">
+<dt>“messages”: [{“role”: “system”, “content”: “You do this…”},</dt><dd><p>{“role”: “user”, “content”: “Do this: {}”}],</p>
+</dd>
+</dl>
+<p>“temperature”: 0.0}</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>out</strong> (<em>dict</em>) – API response in json format</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.call_api_async">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">call_api_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">headers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_request_jsons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40000.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#elm.wizard.EnergyWizard.call_api_async" title="Link to this definition"></a></dt>
+<dd><p>Use GPT to clean raw pdf text in parallel calls to the OpenAI API.</p>
+<p>NOTE: you need to call this using the await command in ipython or
+jupyter, e.g.: <cite>out = await PDFtoTXT.clean_txt_async()</cite></p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul>
+<li><p><strong>url</strong> (<em>str</em>) –</p>
+<dl class="simple">
+<dt>OpenAI API url, typically either:</dt><dd><p><a class="reference external" href="https://api.openai.com/v1/embeddings">https://api.openai.com/v1/embeddings</a>
+<a class="reference external" href="https://api.openai.com/v1/chat/completions">https://api.openai.com/v1/chat/completions</a></p>
+</dd>
+</dl>
+</li>
+<li><p><strong>headers</strong> (<em>dict</em>) –</p>
+<dl class="simple">
+<dt>OpenAI API headers, typically:</dt><dd><dl class="simple">
+<dt>{“Content-Type”: “application/json”,</dt><dd><p>“Authorization”: f”Bearer {openai.api_key}”}</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><p><strong>all_request_jsons</strong> (<em>list</em>) – List of API data input, one entry typically looks like this for
+chat completion:</p>
+<blockquote>
+<div><dl>
+<dt>{“model”: “gpt-3.5-turbo”,</dt><dd><dl class="simple">
+<dt>“messages”: [{“role”: “system”, “content”: “You do this…”},</dt><dd><p>{“role”: “user”, “content”: “Do this: {}”}],</p>
+</dd>
+</dl>
+<p>“temperature”: 0.0}</p>
+</dd>
+</dl>
+</div></blockquote>
+</li>
+<li><p><strong>ignore_error</strong> (<em>None | callable</em>) – Optional callable to parse API error string. If the callable
+returns True, the error will be ignored, the API call will not be
+tried again, and the output will be an empty string.</p></li>
+<li><p><strong>rate_limit</strong> (<em>float</em>) – OpenAI API rate limit (tokens / minute). Note that the
+gpt-3.5-turbo limit is 90k as of 4/2023, but we’re using a large
+factor of safety (~1/2) because we can only count the tokens on the
+input side and assume the output is about the same count.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>out</strong> (<em>list</em>) – List of API outputs where each list entry is a GPT answer from the
+corresponding message in the all_request_jsons input.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.chat">
+<span class="sig-name descname"><span class="pre">chat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token_budget</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_info_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_references</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_chat_obj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#elm.wizard.EnergyWizard.chat" title="Link to this definition"></a></dt>
+<dd><p>Answers a query by doing a semantic search of relevant text with
+embeddings and then sending engineered query to the LLM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> (<em>str</em>) – Question being asked of EnergyWizard</p></li>
+<li><p><strong>stream</strong> (<em>bool</em>) – Flag to print subsequent chunks of the response in a streaming
+fashion</p></li>
+<li><p><strong>temperature</strong> (<em>float</em>) – GPT model temperature, a measure of response entropy from 0 to 1. 0
+is more reliable and nearly deterministic; 1 will give the model
+more creative freedom and may not return as factual of results.</p></li>
+<li><p><strong>convo</strong> (<em>bool</em>) – Flag to perform semantic search with full conversation history
+(True) or just the single query (False). Call EnergyWizard.clear()
+to reset the chat history.</p></li>
+<li><p><strong>token_budget</strong> (<em>int</em>) – Option to override the class init token budget.</p></li>
+<li><p><strong>new_info_threshold</strong> (<em>float</em>) – New text added to the engineered query must contain at least this
+much new information. This helps prevent (for example) the table of
+contents being added multiple times.</p></li>
+<li><p><strong>print_references</strong> (<em>bool</em>) – Flag to print references if EnergyWizard is initialized with a
+valid <code class="docutils literal notranslate"><span class="pre">ref_col</span></code>.</p></li>
+<li><p><strong>return_chat_obj</strong> (<em>bool</em>) – Flag to return the ChatCompletion object from OpenAI API instead of
+the message string.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>response</strong> (<em>str | ChatCompletion</em>) – GPT response string <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">not</span> <span class="pre">return_chat_obj</span></code> or OpenAI
+ChatCompletion object <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">return_chat_obj</span></code></p></li>
+<li><p><strong>query</strong> (<em>str</em>) – The engineered query asked of GPT including retrieved context</p></li>
+<li><p><strong>references</strong> (<em>list</em>) – The list of references (strs) used in the engineered prompt is
+returned here</p></li>
+<li><p><strong>performance</strong> (<em>dict | None</em>) – dictionary with keys of <code class="docutils literal notranslate"><span class="pre">total_chat_time</span></code>,
+<code class="docutils literal notranslate"><span class="pre">chat_completion_time</span></code> and <code class="docutils literal notranslate"><span class="pre">vectordb_query_time</span></code>. If
+return_chat_obj, this is None</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#elm.wizard.EnergyWizard.clear" title="Link to this definition"></a></dt>
+<dd><p>Clear chat history and reduce messages to just the initial model
+role message.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.count_tokens">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">count_tokens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fallback_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gpt-5'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#elm.wizard.EnergyWizard.count_tokens" title="Link to this definition"></a></dt>
+<dd><p>Return the number of tokens in a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> (<em>str</em>) – Text string to get number of tokens for</p></li>
+<li><p><strong>model</strong> (<em>str</em>) – specification of OpenAI model to use (e.g., “gpt-3.5-turbo”)</p></li>
+<li><p><strong>fallback_model</strong> (<em>str, default=’gpt-5’</em>) – Model to be used for tokenizer if input model can’t be found
+in <a class="reference internal" href="#elm.wizard.EnergyWizard.TOKENIZER_ALIASES" title="elm.wizard.EnergyWizard.TOKENIZER_ALIASES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TOKENIZER_ALIASES</span></code></a> and doesn’t have any easily
+noticeable patterns.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>n</strong> (<em>int</em>) – Number of tokens in text</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.engineer_query">
+<span class="sig-name descname"><span class="pre">engineer_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token_budget</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_info_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#elm.wizard.EnergyWizard.engineer_query" title="Link to this definition"></a></dt>
+<dd><p>Engineer a query for GPT using the corpus of information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> (<em>str</em>) – Question being asked of GPT</p></li>
+<li><p><strong>token_budget</strong> (<em>int</em>) – Option to override the class init token budget.</p></li>
+<li><p><strong>new_info_threshold</strong> (<em>float</em>) – New text added to the engineered query must contain at least this
+much new information. This helps prevent (for example) the table of
+contents being added multiple times.</p></li>
+<li><p><strong>convo</strong> (<em>bool</em>) – Flag to perform semantic search with full conversation history
+(True) or just the single query (False). Call EnergyWizard.clear()
+to reset the chat history.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>message</strong> (<em>str</em>) – Engineered question to GPT including information from corpus and
+the original query</p></li>
+<li><p><strong>references</strong> (<em>list</em>) – The list of references (strs) used in the engineered prompt is
+returned here</p></li>
+<li><p><strong>used_index</strong> (<em>list</em>) – Shows the indices of the documents used in making a query to the
+vector database</p></li>
+<li><p><strong>vector_query_time</strong> (<em>float</em>) – measures vector database query time</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.generic_async_query">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generic_async_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">queries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_role</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40000.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#elm.wizard.EnergyWizard.generic_async_query" title="Link to this definition"></a></dt>
+<dd><p>Run a number of generic single queries asynchronously
+(not conversational)</p>
+<p>NOTE: you need to call this using the await command in ipython or
+jupyter, e.g.: <cite>out = await Summary.run_async()</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> (<em>list</em>) – Questions to ask ChatGPT (list of strings)</p></li>
+<li><p><strong>model_role</strong> (<em>str | None</em>) – Role for the model to take, e.g.: “You are a research assistant”.
+This defaults to self.MODEL_ROLE</p></li>
+<li><p><strong>temperature</strong> (<em>float</em>) – GPT model temperature, a measure of response entropy from 0 to 1. 0
+is more reliable and nearly deterministic; 1 will give the model
+more creative freedom and may not return as factual of results.</p></li>
+<li><p><strong>ignore_error</strong> (<em>None | callable</em>) – Optional callable to parse API error string. If the callable
+returns True, the error will be ignored, the API call will not be
+tried again, and the output will be an empty string.</p></li>
+<li><p><strong>rate_limit</strong> (<em>float</em>) – OpenAI API rate limit (tokens / minute). Note that the
+gpt-3.5-turbo limit is 90k as of 4/2023, but we’re using a large
+factor of safety (~1/2) because we can only count the tokens on the
+input side and assume the output is about the same count.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>response</strong> (<em>list</em>) – Model responses with same length as query input.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.generic_query">
+<span class="sig-name descname"><span class="pre">generic_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_role</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#elm.wizard.EnergyWizard.generic_query" title="Link to this definition"></a></dt>
+<dd><p>Ask a generic single query without conversation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> (<em>str</em>) – Question to ask ChatGPT</p></li>
+<li><p><strong>model_role</strong> (<em>str | None</em>) – Role for the model to take, e.g.: “You are a research assistant”.
+This defaults to self.MODEL_ROLE</p></li>
+<li><p><strong>temperature</strong> (<em>float</em>) – GPT model temperature, a measure of response entropy from 0 to 1. 0
+is more reliable and nearly deterministic; 1 will give the model
+more creative freedom and may not return as factual of results.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>response</strong> (<em>str</em>) – Model response</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="elm.wizard.EnergyWizard.get_embedding">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#elm.wizard.EnergyWizard.get_embedding" title="Link to this definition"></a></dt>
+<dd><p>Get the 1D array (list) embedding of a text string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – Text to embed</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>embedding</strong> (<em>list</em>) – List of float that represents the numerical embedding of the text</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="elm.wizard.html" class="btn btn-neutral float-left" title="elm.wizard" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="elm.wizard.EnergyWizardBase.html" class="btn btn-neutral float-right" title="elm.wizard.EnergyWizardBase" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alliance for Sustainable Energy, LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

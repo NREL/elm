@@ -1,0 +1,6 @@
+elm.ords.download.download\_county\_ordinance
+=============================================
+
+.. currentmodule:: elm.ords.download
+
+.. autofunction:: download_county_ordinance

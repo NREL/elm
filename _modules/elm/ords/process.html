@@ -1,0 +1,1117 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>elm.ords.process &mdash; elm 0.0.34 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=9dd25805"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            elm
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.energy_wizard.html">The Energy Wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples.energy_wizard.html#downloading-and-embedding-pdfs">Downloading and Embedding PDFs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples.energy_wizard.html#running-the-streamlit-app">Running the Streamlit App</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.ordinance_gpt.html">Ordinance GPT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples.ordinance_gpt.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples.ordinance_gpt.html#running-from-python">Running from Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples.ordinance_gpt.html#running-from-the-command-line-utility">Running from the Command Line Utility</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../examples.ordinance_gpt.html#execution">Execution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../examples.ordinance_gpt.html#debugging">Debugging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples.ordinance_gpt.html#source-ordinance-documents">Source Ordinance Documents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples.ordinance_gpt.html#extension-to-other-technologies">Extension to Other Technologies</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../dev/ords_architecture.html"><strong>OrdinanceGPT: Architectural Design Document</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../dev/ords_architecture.html#introduction"><strong>1. Introduction</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dev/ords_architecture.html#purpose"><strong>1.1 Purpose</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dev/ords_architecture.html#audience"><strong>1.2 Audience</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dev/ords_architecture.html#scope"><strong>1.3 Scope</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dev/ords_architecture.html#high-level-architecture"><strong>2. High-Level Architecture</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dev/ords_architecture.html#system-context"><strong>2.1 System Context</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dev/ords_architecture.html#detailed-design"><strong>3. Detailed Design</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dev/ords_architecture.html#web-scraper"><strong>3.1 Web Scraper</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dev/ords_architecture.html#document-parser"><strong>3.2 Document Parser</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dev/ords_architecture.html#key-concepts-and-classes"><strong>4 Key Concepts and Classes</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dev/ords_architecture.html#key-concept-services"><strong>4.1 Key Concept: Services</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dev/ords_architecture.html#key-classes"><strong>4.2 Key Classes</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dev/ords_architecture.html#workflows"><strong>5. Workflows</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dev/ords_architecture.html#downloading-documents-from-google"><strong>5.1 Downloading documents from Google</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dev/ords_architecture.html#querying-openai"><strong>5.2 Querying OpenAI</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dev/ords_architecture.html#appendix"><strong>6. Appendix</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dev/ords_architecture.html#tools-and-libraries"><strong>6.1 Tools and Libraries</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dev/ords_architecture.html#deliverables"><strong>7. Deliverables</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/elm.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.base.html">elm.base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.base.ApiBase.html">elm.base.ApiBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.base.ApiBase.html#elm.base.ApiBase"><code class="docutils literal notranslate"><span class="pre">ApiBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.base.ApiQueue.html">elm.base.ApiQueue</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.base.ApiQueue.html#elm.base.ApiQueue"><code class="docutils literal notranslate"><span class="pre">ApiQueue</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.chunk.html">elm.chunk</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.chunk.Chunker.html">elm.chunk.Chunker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker"><code class="docutils literal notranslate"><span class="pre">Chunker</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.cli.html">elm.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.embed.html">elm.embed</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.embed.ChunkAndEmbed.html">elm.embed.ChunkAndEmbed</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed"><code class="docutils literal notranslate"><span class="pre">ChunkAndEmbed</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.exceptions.html">elm.exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.exceptions.ELMError.html">elm.exceptions.ELMError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.exceptions.ELMError.html#elm.exceptions.ELMError"><code class="docutils literal notranslate"><span class="pre">ELMError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.exceptions.ELMInputError.html">elm.exceptions.ELMInputError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.exceptions.ELMInputError.html#elm.exceptions.ELMInputError"><code class="docutils literal notranslate"><span class="pre">ELMInputError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.exceptions.ELMKeyError.html">elm.exceptions.ELMKeyError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.exceptions.ELMKeyError.html#elm.exceptions.ELMKeyError"><code class="docutils literal notranslate"><span class="pre">ELMKeyError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.exceptions.ELMRuntimeError.html">elm.exceptions.ELMRuntimeError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.exceptions.ELMRuntimeError.html#elm.exceptions.ELMRuntimeError"><code class="docutils literal notranslate"><span class="pre">ELMRuntimeError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.ords.html">elm.ords</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.ords.download.html">elm.ords.download</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.download.download_county_ordinance.html">elm.ords.download.download_county_ordinance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.ords.extraction.html">elm.ords.extraction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.extraction.apply.html">elm.ords.extraction.apply</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.extraction.date.html">elm.ords.extraction.date</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.extraction.features.html">elm.ords.extraction.features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.extraction.graphs.html">elm.ords.extraction.graphs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.extraction.ngrams.html">elm.ords.extraction.ngrams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.extraction.ordinance.html">elm.ords.extraction.ordinance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.extraction.parse.html">elm.ords.extraction.parse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.extraction.tree.html">elm.ords.extraction.tree</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.ords.llm.html">elm.ords.llm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.llm.calling.html">elm.ords.llm.calling</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.ords.process.html">elm.ords.process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.process.process_counties_with_openai.html">elm.ords.process.process_counties_with_openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.process.process_county.html">elm.ords.process.process_county</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.process.process_county_with_logging.html">elm.ords.process.process_county_with_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.ords.services.html">elm.ords.services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.services.base.html">elm.ords.services.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.services.cpu.html">elm.ords.services.cpu</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.services.openai.html">elm.ords.services.openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.services.provider.html">elm.ords.services.provider</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.services.queues.html">elm.ords.services.queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.services.threaded.html">elm.ords.services.threaded</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.services.usage.html">elm.ords.services.usage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.ords.utilities.html">elm.ords.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.utilities.counties.html">elm.ords.utilities.counties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.utilities.exceptions.html">elm.ords.utilities.exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.utilities.location.html">elm.ords.utilities.location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.utilities.parsing.html">elm.ords.utilities.parsing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.utilities.queued_logging.html">elm.ords.utilities.queued_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.ords.validation.html">elm.ords.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.validation.content.html">elm.ords.validation.content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.validation.location.html">elm.ords.validation.location</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.pdf.html">elm.pdf</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.pdf.PDFtoTXT.html">elm.pdf.PDFtoTXT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT"><code class="docutils literal notranslate"><span class="pre">PDFtoTXT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.summary.html">elm.summary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.summary.Summary.html">elm.summary.Summary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.summary.Summary.html#elm.summary.Summary"><code class="docutils literal notranslate"><span class="pre">Summary</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.tree.html">elm.tree</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.tree.DecisionTree.html">elm.tree.DecisionTree</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.tree.DecisionTree.html#elm.tree.DecisionTree"><code class="docutils literal notranslate"><span class="pre">DecisionTree</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.utilities.html">elm.utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.html">elm.utilities.parse</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.clean_headers.html">elm.utilities.parse.clean_headers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.combine_pages.html">elm.utilities.parse.combine_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.format_html_tables.html">elm.utilities.parse.format_html_tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.html_to_text.html">elm.utilities.parse.html_to_text</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.is_multi_col.html">elm.utilities.parse.is_multi_col</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.read_pdf.html">elm.utilities.parse.read_pdf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.read_pdf_ocr.html">elm.utilities.parse.read_pdf_ocr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.remove_blank_pages.html">elm.utilities.parse.remove_blank_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.remove_empty_lines_or_page_footers.html">elm.utilities.parse.remove_empty_lines_or_page_footers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.replace_common_pdf_conversion_chars.html">elm.utilities.parse.replace_common_pdf_conversion_chars</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.replace_excessive_newlines.html">elm.utilities.parse.replace_excessive_newlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.replace_multi_dot_lines.html">elm.utilities.parse.replace_multi_dot_lines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.resembles_html.html">elm.utilities.parse.resembles_html</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.utilities.retry.html">elm.utilities.retry</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.retry.async_retry_with_exponential_backoff.html">elm.utilities.retry.async_retry_with_exponential_backoff</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.retry.retry_with_exponential_backoff.html">elm.utilities.retry.retry_with_exponential_backoff</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.utilities.try_import.html">elm.utilities.try_import</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.try_import.try_import.html">elm.utilities.try_import.try_import</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.utilities.validation.html">elm.utilities.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.validation.validate_azure_api_params.html">elm.utilities.validation.validate_azure_api_params</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.version.html">elm.version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.web.html">elm.web</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.web.document.html">elm.web.document</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.document.BaseDocument.html">elm.web.document.BaseDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.document.HTMLDocument.html">elm.web.document.HTMLDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.document.PDFDocument.html">elm.web.document.PDFDocument</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.web.file_loader.html">elm.web.file_loader</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.file_loader.AsyncFileLoader.html">elm.web.file_loader.AsyncFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.file_loader.AsyncLocalFileLoader.html">elm.web.file_loader.AsyncLocalFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.file_loader.AsyncWebFileLoader.html">elm.web.file_loader.AsyncWebFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.file_loader.BaseAsyncFileLoader.html">elm.web.file_loader.BaseAsyncFileLoader</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.web.html_pw.html">elm.web.html_pw</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.html_pw.load_html_with_pw.html">elm.web.html_pw.load_html_with_pw</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.web.osti.html">elm.web.osti</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.osti.OstiList.html">elm.web.osti.OstiList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.osti.OstiRecord.html">elm.web.osti.OstiRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.web.rhub.html">elm.web.rhub</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.rhub.ProfilesList.html">elm.web.rhub.ProfilesList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.rhub.ProfilesRecord.html">elm.web.rhub.ProfilesRecord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.rhub.PublicationsList.html">elm.web.rhub.PublicationsList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.rhub.PublicationsRecord.html">elm.web.rhub.PublicationsRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.web.search.html">elm.web.search</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.search.base.html">elm.web.search.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.search.bing.html">elm.web.search.bing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.search.duckduckgo.html">elm.web.search.duckduckgo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.search.dux.html">elm.web.search.dux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.search.google.html">elm.web.search.google</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.search.run.html">elm.web.search.run</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.search.tavily.html">elm.web.search.tavily</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.search.yahoo.html">elm.web.search.yahoo</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.web.utilities.html">elm.web.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.utilities.DEFAULT_HEADERS.html">elm.web.utilities.DEFAULT_HEADERS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.utilities.clean_search_query.html">elm.web.utilities.clean_search_query</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.utilities.compute_fn_from_url.html">elm.web.utilities.compute_fn_from_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.utilities.filter_documents.html">elm.web.utilities.filter_documents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.utilities.get_redirected_url.html">elm.web.utilities.get_redirected_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.utilities.pw_page.html">elm.web.utilities.pw_page</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.utilities.write_url_doc_to_file.html">elm.web.utilities.write_url_doc_to_file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.utilities.PWKwargs.html">elm.web.utilities.PWKwargs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.web.website_crawl.html">elm.web.website_crawl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS.html">elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.website_crawl.ELM_URL_FILTER.html">elm.web.website_crawl.ELM_URL_FILTER</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.website_crawl.ContentTypeExcludeFilter.html">elm.web.website_crawl.ContentTypeExcludeFilter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.website_crawl.ELMLinkScorer.html">elm.web.website_crawl.ELMLinkScorer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawler.html">elm.web.website_crawl.ELMWebsiteCrawler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html">elm.web.website_crawl.ELMWebsiteCrawlingStrategy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html">elm.web.website_crawl.PeekablePriorityQueue</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.wizard.html">elm.wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.wizard.EnergyWizard.html">elm.wizard.EnergyWizard</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard"><code class="docutils literal notranslate"><span class="pre">EnergyWizard</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.wizard.EnergyWizardBase.html">elm.wizard.EnergyWizardBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase"><code class="docutils literal notranslate"><span class="pre">EnergyWizardBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.wizard.EnergyWizardPostgres.html">elm.wizard.EnergyWizardPostgres</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres"><code class="docutils literal notranslate"><span class="pre">EnergyWizardPostgres</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../_cli/cli.html">CLI reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../_cli/elm.html">elm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_cli/elm.html#elm-ords">ords</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">elm</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">elm.ords.process</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for elm.ords.process</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;ELM Ordinance full processing logic&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_text_splitters.character</span><span class="w"> </span><span class="kn">import</span> <span class="n">RecursiveCharacterTextSplitter</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm</span><span class="w"> </span><span class="kn">import</span> <span class="n">ApiBase</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">validate_azure_api_params</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.download</span><span class="w"> </span><span class="kn">import</span> <span class="n">download_county_ordinance</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.extraction</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">extract_ordinance_text_with_ngram_validation</span><span class="p">,</span>
+    <span class="n">extract_ordinance_values</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.usage</span><span class="w"> </span><span class="kn">import</span> <span class="n">UsageTracker</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIService</span><span class="p">,</span> <span class="n">usage_from_response</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunningAsyncServices</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.threaded</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">TempFileCache</span><span class="p">,</span>
+    <span class="n">FileMover</span><span class="p">,</span>
+    <span class="n">CleanedFileWriter</span><span class="p">,</span>
+    <span class="n">OrdDBFileWriter</span><span class="p">,</span>
+    <span class="n">UsageUpdater</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.services.cpu</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDFLoader</span><span class="p">,</span> <span class="n">read_pdf_doc</span><span class="p">,</span> <span class="n">read_pdf_doc_ocr</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">RTS_SEPARATORS</span><span class="p">,</span>
+    <span class="n">load_all_county_info</span><span class="p">,</span>
+    <span class="n">load_counties_from_fp</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.utilities.location</span><span class="w"> </span><span class="kn">import</span> <span class="n">County</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.ords.utilities.queued_logging</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">LocationFileLog</span><span class="p">,</span>
+    <span class="n">LogListener</span><span class="p">,</span>
+    <span class="n">NoLocationFilter</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="n">OUT_COLS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;county&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;state&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FIPS&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;feature&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;fixed_value&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mult_value&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mult_type&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;adder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;min_dist&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;max_dist&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;value&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;units&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ord_year&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;last_updated&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;section&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;source&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;comment&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">CHECK_COLS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;fixed_value&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mult_value&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;adder&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;min_dist&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;max_dist&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;value&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="process_counties_with_openai">
+<a class="viewcode-back" href="../../../_autosummary/elm.ords.process.process_counties_with_openai.html#elm.ords.process.process_counties_with_openai">[docs]</a>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">process_counties_with_openai</span><span class="p">(</span>
+    <span class="n">out_dir</span><span class="p">,</span>
+    <span class="n">county_fp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4&quot;</span><span class="p">,</span>
+    <span class="n">azure_api_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">azure_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">azure_endpoint</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">llm_call_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">llm_service_rate_limit</span><span class="o">=</span><span class="mi">4000</span><span class="p">,</span>
+    <span class="n">text_splitter_chunk_size</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span>
+    <span class="n">text_splitter_chunk_overlap</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
+    <span class="n">num_urls_to_check_per_county</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">max_num_concurrent_browsers</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">file_loader_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">pytesseract_exe_fp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">td_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">tpe_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">ppe_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">log_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">clean_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">county_ords_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">county_dbs_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">log_level</span><span class="o">=</span><span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Download and extract ordinances for a list of counties.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    out_dir : path-like</span>
+<span class="sd">        Path to output directory. This directory will be created if it</span>
+<span class="sd">        does not exist. This directory will contain the structured</span>
+<span class="sd">        ordinance output CSV as well as all of the scraped ordinance</span>
+<span class="sd">        documents (PDFs and HTML text files). Usage information and</span>
+<span class="sd">        default options for log/clean directories will also be stored</span>
+<span class="sd">        here.</span>
+<span class="sd">    county_fp : path-like, optional</span>
+<span class="sd">        Path to CSV file containing a list of counties to extract</span>
+<span class="sd">        ordinance information for. This CSV should have &quot;County&quot; and</span>
+<span class="sd">        &quot;State&quot; columns that contains the county and state names.</span>
+<span class="sd">        By default, ``None``, which runs the extraction for all known</span>
+<span class="sd">        counties (this is untested and not currently recommended).</span>
+<span class="sd">    model : str, optional</span>
+<span class="sd">        Name of LLM model to perform scraping. By default, ``&quot;gpt-4&quot;``.</span>
+<span class="sd">    azure_api_key : str, optional</span>
+<span class="sd">        Azure OpenAI API key. By default, ``None``, which pulls the key</span>
+<span class="sd">        from the environment variable ``AZURE_OPENAI_API_KEY`` instead.</span>
+<span class="sd">    azure_version : str, optional</span>
+<span class="sd">        Azure OpenAI API version. By default, ``None``, which pulls the</span>
+<span class="sd">        version from the environment variable ``AZURE_OPENAI_VERSION``</span>
+<span class="sd">        instead.</span>
+<span class="sd">    azure_endpoint : str, optional</span>
+<span class="sd">        Azure OpenAI API endpoint. By default, ``None``, which pulls the</span>
+<span class="sd">        endpoint from the environment variable ``AZURE_OPENAI_ENDPOINT``</span>
+<span class="sd">        instead.</span>
+<span class="sd">    llm_call_kwargs : dict, optional</span>
+<span class="sd">        Keyword-value pairs used to initialize an</span>
+<span class="sd">        `elm.ords.llm.LLMCaller` instance. By default, ``None``.</span>
+<span class="sd">    llm_service_rate_limit : int, optional</span>
+<span class="sd">        Token rate limit of LLm service being used (OpenAI).</span>
+<span class="sd">        By default, ``4000``.</span>
+<span class="sd">    text_splitter_chunk_size : int, optional</span>
+<span class="sd">        Chunk size input to</span>
+<span class="sd">        `langchain_text_splitters.character.RecursiveCharacterTextSplitter`.</span>
+<span class="sd">        By default, ``3000``.</span>
+<span class="sd">    text_splitter_chunk_overlap : int, optional</span>
+<span class="sd">        Chunk overlap input to</span>
+<span class="sd">        `langchain_text_splitters.character.RecursiveCharacterTextSplitter`.</span>
+<span class="sd">        By default, ``300``.</span>
+<span class="sd">    num_urls_to_check_per_county : int, optional</span>
+<span class="sd">        Number of unique Google search result URL&#39;s to check for</span>
+<span class="sd">        ordinance document. By default, ``5``.</span>
+<span class="sd">    max_num_concurrent_browsers : int, optional</span>
+<span class="sd">        Number of unique concurrent browser instances to open when</span>
+<span class="sd">        performing Google search. Setting this number too high on a</span>
+<span class="sd">        machine with limited processing can lead to increased timeouts</span>
+<span class="sd">        and therefore decreased quality of Google search results.</span>
+<span class="sd">        By default, ``10``.</span>
+<span class="sd">    pytesseract_exe_fp : path-like, optional</span>
+<span class="sd">        Path to pytesseract executable. If this option is specified, OCR</span>
+<span class="sd">        parsing for PDf files will be enabled via pytesseract.</span>
+<span class="sd">        By default, ``None``.</span>
+<span class="sd">    td_kwargs : dict, optional</span>
+<span class="sd">        Keyword-value argument pairs to pass to</span>
+<span class="sd">        :class:`tempfile.TemporaryDirectory`. The temporary directory is</span>
+<span class="sd">        used to store files downloaded from the web that are still being</span>
+<span class="sd">        parsed for ordinance information. By default, ``None``.</span>
+<span class="sd">    tpe_kwargs : dict, optional</span>
+<span class="sd">        Keyword-value argument pairs to pass to</span>
+<span class="sd">        :class:`concurrent.futures.ThreadPoolExecutor`. The thread pool</span>
+<span class="sd">        executor is used to run I/O intensive tasks like writing to a</span>
+<span class="sd">        log file. By default, ``None``.</span>
+<span class="sd">    ppe_kwargs : dict, optional</span>
+<span class="sd">        Keyword-value argument pairs to pass to</span>
+<span class="sd">        :class:`concurrent.futures.ProcessPoolExecutor`. The process</span>
+<span class="sd">        pool executor is used to run CPU intensive tasks like loading</span>
+<span class="sd">        a PDF file. By default, ``None``.</span>
+<span class="sd">    log_dir : path-like, optional</span>
+<span class="sd">        Path to directory for log files. This directory will be created</span>
+<span class="sd">        if it does not exist. By default, ``None``, which</span>
+<span class="sd">        creates a ``logs`` folder in the output directory for the</span>
+<span class="sd">        county-specific log files.</span>
+<span class="sd">    clean_dir : path-like, optional</span>
+<span class="sd">        Path to directory for cleaned ordinance text output. This</span>
+<span class="sd">        directory will be created if it does not exist. By default,</span>
+<span class="sd">        ``None``, which creates a ``clean`` folder in the output</span>
+<span class="sd">        directory for the cleaned ordinance text files.</span>
+<span class="sd">    county_ords_dir : path-like, optional</span>
+<span class="sd">        Path to directory for individual county ordinance file outputs.</span>
+<span class="sd">        This directory will be created if it does not exist.</span>
+<span class="sd">        By default, ``None``, which creates a ``county_ord_files``</span>
+<span class="sd">        folder in the output directory.</span>
+<span class="sd">    county_dbs_dir : path-like, optional</span>
+<span class="sd">        Path to directory for individual county ordinance database</span>
+<span class="sd">        outputs. This directory will be created if it does not exist.</span>
+<span class="sd">        By default, ``None``, which creates a ``county_dbs`` folder in</span>
+<span class="sd">        the output directory.</span>
+<span class="sd">    log_level : str, optional</span>
+<span class="sd">        Log level to set for county retrieval and parsing loggers.</span>
+<span class="sd">        By default, ``&quot;INFO&quot;``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pd.DataFrame</span>
+<span class="sd">        DataFrame of parsed ordinance information. This file will also</span>
+<span class="sd">        be stored in the output directory under &quot;wind_db.csv&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">log_listener</span> <span class="o">=</span> <span class="n">LogListener</span><span class="p">([</span><span class="s2">&quot;elm&quot;</span><span class="p">],</span> <span class="n">level</span><span class="o">=</span><span class="n">log_level</span><span class="p">)</span>
+    <span class="n">dirs</span> <span class="o">=</span> <span class="n">_setup_folders</span><span class="p">(</span>
+        <span class="n">out_dir</span><span class="p">,</span>
+        <span class="n">log_dir</span><span class="o">=</span><span class="n">log_dir</span><span class="p">,</span>
+        <span class="n">clean_dir</span><span class="o">=</span><span class="n">clean_dir</span><span class="p">,</span>
+        <span class="n">cod</span><span class="o">=</span><span class="n">county_ords_dir</span><span class="p">,</span>
+        <span class="n">cdd</span><span class="o">=</span><span class="n">county_dbs_dir</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">out_dir</span><span class="p">,</span> <span class="n">log_dir</span><span class="p">,</span> <span class="n">clean_dir</span><span class="p">,</span> <span class="n">county_ords_dir</span><span class="p">,</span> <span class="n">county_dbs_dir</span> <span class="o">=</span> <span class="n">dirs</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">log_listener</span> <span class="k">as</span> <span class="n">ll</span><span class="p">:</span>
+        <span class="n">_setup_main_logging</span><span class="p">(</span><span class="n">log_dir</span><span class="p">,</span> <span class="n">log_level</span><span class="p">,</span> <span class="n">ll</span><span class="p">)</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="k">await</span> <span class="n">_process_with_logs</span><span class="p">(</span>
+            <span class="n">out_dir</span><span class="p">,</span>
+            <span class="n">log_dir</span><span class="p">,</span>
+            <span class="n">clean_dir</span><span class="p">,</span>
+            <span class="n">county_ords_dir</span><span class="p">,</span>
+            <span class="n">county_dbs_dir</span><span class="p">,</span>
+            <span class="n">ll</span><span class="p">,</span>
+            <span class="n">county_fp</span><span class="o">=</span><span class="n">county_fp</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+            <span class="n">azure_api_key</span><span class="o">=</span><span class="n">azure_api_key</span><span class="p">,</span>
+            <span class="n">azure_version</span><span class="o">=</span><span class="n">azure_version</span><span class="p">,</span>
+            <span class="n">azure_endpoint</span><span class="o">=</span><span class="n">azure_endpoint</span><span class="p">,</span>
+            <span class="n">llm_call_kwargs</span><span class="o">=</span><span class="n">llm_call_kwargs</span><span class="p">,</span>
+            <span class="n">llm_service_rate_limit</span><span class="o">=</span><span class="n">llm_service_rate_limit</span><span class="p">,</span>
+            <span class="n">text_splitter_chunk_size</span><span class="o">=</span><span class="n">text_splitter_chunk_size</span><span class="p">,</span>
+            <span class="n">text_splitter_chunk_overlap</span><span class="o">=</span><span class="n">text_splitter_chunk_overlap</span><span class="p">,</span>
+            <span class="n">num_urls_to_check_per_county</span><span class="o">=</span><span class="n">num_urls_to_check_per_county</span><span class="p">,</span>
+            <span class="n">max_num_concurrent_browsers</span><span class="o">=</span><span class="n">max_num_concurrent_browsers</span><span class="p">,</span>
+            <span class="n">file_loader_kwargs</span><span class="o">=</span><span class="n">file_loader_kwargs</span><span class="p">,</span>
+            <span class="n">pytesseract_exe_fp</span><span class="o">=</span><span class="n">pytesseract_exe_fp</span><span class="p">,</span>
+            <span class="n">td_kwargs</span><span class="o">=</span><span class="n">td_kwargs</span><span class="p">,</span>
+            <span class="n">tpe_kwargs</span><span class="o">=</span><span class="n">tpe_kwargs</span><span class="p">,</span>
+            <span class="n">ppe_kwargs</span><span class="o">=</span><span class="n">ppe_kwargs</span><span class="p">,</span>
+            <span class="n">log_level</span><span class="o">=</span><span class="n">log_level</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="n">_record_total_time</span><span class="p">(</span><span class="n">out_dir</span> <span class="o">/</span> <span class="s2">&quot;usage.json&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">db</span></div>
+
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_process_with_logs</span><span class="p">(</span>
+    <span class="n">out_dir</span><span class="p">,</span>
+    <span class="n">log_dir</span><span class="p">,</span>
+    <span class="n">clean_dir</span><span class="p">,</span>
+    <span class="n">county_ords_dir</span><span class="p">,</span>
+    <span class="n">county_dbs_dir</span><span class="p">,</span>
+    <span class="n">log_listener</span><span class="p">,</span>
+    <span class="n">county_fp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4&quot;</span><span class="p">,</span>
+    <span class="n">azure_api_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">azure_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">azure_endpoint</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">llm_call_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">llm_service_rate_limit</span><span class="o">=</span><span class="mi">4000</span><span class="p">,</span>
+    <span class="n">text_splitter_chunk_size</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span>
+    <span class="n">text_splitter_chunk_overlap</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
+    <span class="n">num_urls_to_check_per_county</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">max_num_concurrent_browsers</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">file_loader_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">pytesseract_exe_fp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">td_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">tpe_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">ppe_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">log_level</span><span class="o">=</span><span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process counties with logging enabled.&quot;&quot;&quot;</span>
+    <span class="n">counties</span> <span class="o">=</span> <span class="n">_load_counties_to_process</span><span class="p">(</span><span class="n">county_fp</span><span class="p">)</span>
+    <span class="n">azure_api_key</span><span class="p">,</span> <span class="n">azure_version</span><span class="p">,</span> <span class="n">azure_endpoint</span> <span class="o">=</span> <span class="n">validate_azure_api_params</span><span class="p">(</span>
+        <span class="n">azure_api_key</span><span class="p">,</span> <span class="n">azure_version</span><span class="p">,</span> <span class="n">azure_endpoint</span>
+    <span class="p">)</span>
+
+    <span class="n">tpe_kwargs</span> <span class="o">=</span> <span class="n">_configure_thread_pool_kwargs</span><span class="p">(</span><span class="n">tpe_kwargs</span><span class="p">)</span>
+    <span class="n">file_loader_kwargs</span> <span class="o">=</span> <span class="n">_configure_file_loader_kwargs</span><span class="p">(</span><span class="n">file_loader_kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pytesseract_exe_fp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_setup_pytesseract</span><span class="p">(</span><span class="n">pytesseract_exe_fp</span><span class="p">)</span>
+        <span class="n">file_loader_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;pdf_ocr_read_coroutine&quot;</span><span class="p">:</span> <span class="n">read_pdf_doc_ocr</span><span class="p">})</span>
+
+    <span class="n">text_splitter</span> <span class="o">=</span> <span class="n">RecursiveCharacterTextSplitter</span><span class="p">(</span>
+        <span class="n">RTS_SEPARATORS</span><span class="p">,</span>
+        <span class="n">chunk_size</span><span class="o">=</span><span class="n">text_splitter_chunk_size</span><span class="p">,</span>
+        <span class="n">chunk_overlap</span><span class="o">=</span><span class="n">text_splitter_chunk_overlap</span><span class="p">,</span>
+        <span class="n">length_function</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">ApiBase</span><span class="o">.</span><span class="n">count_tokens</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">AsyncAzureOpenAI</span><span class="p">(</span>
+        <span class="n">api_key</span><span class="o">=</span><span class="n">azure_api_key</span><span class="p">,</span>
+        <span class="n">api_version</span><span class="o">=</span><span class="n">azure_version</span><span class="p">,</span>
+        <span class="n">azure_endpoint</span><span class="o">=</span><span class="n">azure_endpoint</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">services</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">OpenAIService</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">rate_limit</span><span class="o">=</span><span class="n">llm_service_rate_limit</span><span class="p">),</span>
+        <span class="n">TempFileCache</span><span class="p">(</span><span class="n">td_kwargs</span><span class="o">=</span><span class="n">td_kwargs</span><span class="p">,</span> <span class="n">tpe_kwargs</span><span class="o">=</span><span class="n">tpe_kwargs</span><span class="p">),</span>
+        <span class="n">FileMover</span><span class="p">(</span><span class="n">county_ords_dir</span><span class="p">,</span> <span class="n">tpe_kwargs</span><span class="o">=</span><span class="n">tpe_kwargs</span><span class="p">),</span>
+        <span class="n">CleanedFileWriter</span><span class="p">(</span><span class="n">clean_dir</span><span class="p">,</span> <span class="n">tpe_kwargs</span><span class="o">=</span><span class="n">tpe_kwargs</span><span class="p">),</span>
+        <span class="n">OrdDBFileWriter</span><span class="p">(</span><span class="n">county_dbs_dir</span><span class="p">,</span> <span class="n">tpe_kwargs</span><span class="o">=</span><span class="n">tpe_kwargs</span><span class="p">),</span>
+        <span class="n">UsageUpdater</span><span class="p">(</span><span class="n">out_dir</span> <span class="o">/</span> <span class="s2">&quot;usage.json&quot;</span><span class="p">,</span> <span class="n">tpe_kwargs</span><span class="o">=</span><span class="n">tpe_kwargs</span><span class="p">),</span>
+        <span class="n">PDFLoader</span><span class="p">(</span><span class="o">**</span><span class="p">(</span><span class="n">ppe_kwargs</span> <span class="ow">or</span> <span class="p">{})),</span>
+    <span class="p">]</span>
+
+    <span class="n">browser_semaphore</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">asyncio</span><span class="o">.</span><span class="n">Semaphore</span><span class="p">(</span><span class="n">max_num_concurrent_browsers</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">max_num_concurrent_browsers</span>
+        <span class="k">else</span> <span class="kc">None</span>
+    <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">with</span> <span class="n">RunningAsyncServices</span><span class="p">(</span><span class="n">services</span><span class="p">):</span>
+        <span class="n">tasks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">trackers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">__</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">counties</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">county</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">fips</span> <span class="o">=</span> <span class="n">row</span><span class="p">[[</span><span class="s2">&quot;County&quot;</span><span class="p">,</span> <span class="s2">&quot;State&quot;</span><span class="p">,</span> <span class="s2">&quot;FIPS&quot;</span><span class="p">]]</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="n">County</span><span class="p">(</span><span class="n">county</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">fips</span><span class="o">=</span><span class="n">fips</span><span class="p">)</span>
+            <span class="n">usage_tracker</span> <span class="o">=</span> <span class="n">UsageTracker</span><span class="p">(</span>
+                <span class="n">location</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="n">usage_from_response</span>
+            <span class="p">)</span>
+            <span class="n">trackers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">usage_tracker</span><span class="p">)</span>
+            <span class="n">task</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
+                <span class="n">process_county_with_logging</span><span class="p">(</span>
+                    <span class="n">log_listener</span><span class="p">,</span>
+                    <span class="n">log_dir</span><span class="p">,</span>
+                    <span class="n">location</span><span class="p">,</span>
+                    <span class="n">text_splitter</span><span class="p">,</span>
+                    <span class="n">num_urls</span><span class="o">=</span><span class="n">num_urls_to_check_per_county</span><span class="p">,</span>
+                    <span class="n">file_loader_kwargs</span><span class="o">=</span><span class="n">file_loader_kwargs</span><span class="p">,</span>
+                    <span class="n">browser_semaphore</span><span class="o">=</span><span class="n">browser_semaphore</span><span class="p">,</span>
+                    <span class="n">level</span><span class="o">=</span><span class="n">log_level</span><span class="p">,</span>
+                    <span class="n">llm_service</span><span class="o">=</span><span class="n">OpenAIService</span><span class="p">,</span>
+                    <span class="n">usage_tracker</span><span class="o">=</span><span class="n">usage_tracker</span><span class="p">,</span>
+                    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+                    <span class="o">**</span><span class="p">(</span><span class="n">llm_call_kwargs</span> <span class="ow">or</span> <span class="p">{}),</span>
+                <span class="p">),</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">location</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">tasks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+        <span class="n">docs</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">tasks</span><span class="p">)</span>
+
+    <span class="n">db</span> <span class="o">=</span> <span class="n">_docs_to_db</span><span class="p">(</span><span class="n">docs</span><span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">out_dir</span> <span class="o">/</span> <span class="s2">&quot;wind_db.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">db</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_setup_main_logging</span><span class="p">(</span><span class="n">log_dir</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">listener</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Setup main logger for catching exceptions during execution.&quot;&quot;&quot;</span>
+    <span class="n">handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="n">log_dir</span> <span class="o">/</span> <span class="s2">&quot;main.log&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="n">handler</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+    <span class="n">handler</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">NoLocationFilter</span><span class="p">())</span>
+    <span class="n">listener</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_setup_folders</span><span class="p">(</span>
+    <span class="n">out_dir</span><span class="p">,</span>
+    <span class="n">log_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">clean_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">cod</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">cdd</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Setup output directory folders.&quot;&quot;&quot;</span>
+    <span class="n">out_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)</span>
+    <span class="n">out_folders</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">out_dir</span><span class="p">,</span>
+        <span class="n">Path</span><span class="p">(</span><span class="n">log_dir</span><span class="p">)</span> <span class="k">if</span> <span class="n">log_dir</span> <span class="k">else</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="s2">&quot;logs&quot;</span><span class="p">,</span>
+        <span class="n">Path</span><span class="p">(</span><span class="n">clean_dir</span><span class="p">)</span> <span class="k">if</span> <span class="n">clean_dir</span> <span class="k">else</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="s2">&quot;clean&quot;</span><span class="p">,</span>
+        <span class="n">Path</span><span class="p">(</span><span class="n">cod</span><span class="p">)</span> <span class="k">if</span> <span class="n">cod</span> <span class="k">else</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="s2">&quot;county_ord_files&quot;</span><span class="p">,</span>
+        <span class="n">Path</span><span class="p">(</span><span class="n">cdd</span><span class="p">)</span> <span class="k">if</span> <span class="n">cdd</span> <span class="k">else</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="s2">&quot;county_dbs&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="n">out_folders</span><span class="p">:</span>
+        <span class="n">folder</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out_folders</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_load_counties_to_process</span><span class="p">(</span><span class="n">county_fp</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load the counties to retrieve documents for.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">county_fp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No `county_fp` input! Loading all counties&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">load_all_county_info</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">load_counties_from_fp</span><span class="p">(</span><span class="n">county_fp</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_configure_thread_pool_kwargs</span><span class="p">(</span><span class="n">tpe_kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set thread pool workers to 5 if user didn&#39;t specify.&quot;&quot;&quot;</span>
+    <span class="n">tpe_kwargs</span> <span class="o">=</span> <span class="n">tpe_kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
+    <span class="n">tpe_kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;max_workers&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tpe_kwargs</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_configure_file_loader_kwargs</span><span class="p">(</span><span class="n">file_loader_kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add PDF reading coroutine to kwargs.&quot;&quot;&quot;</span>
+    <span class="n">file_loader_kwargs</span> <span class="o">=</span> <span class="n">file_loader_kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
+    <span class="n">file_loader_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;pdf_read_coroutine&quot;</span><span class="p">:</span> <span class="n">read_pdf_doc</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">file_loader_kwargs</span>
+
+
+<div class="viewcode-block" id="process_county_with_logging">
+<a class="viewcode-back" href="../../../_autosummary/elm.ords.process.process_county_with_logging.html#elm.ords.process.process_county_with_logging">[docs]</a>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">process_county_with_logging</span><span class="p">(</span>
+    <span class="n">listener</span><span class="p">,</span>
+    <span class="n">log_dir</span><span class="p">,</span>
+    <span class="n">county</span><span class="p">,</span>
+    <span class="n">text_splitter</span><span class="p">,</span>
+    <span class="n">num_urls</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">file_loader_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">browser_semaphore</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">level</span><span class="o">=</span><span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve ordinance document for a single county with async logs.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    listener : elm.ords.utilities.queued_logging.LogListener</span>
+<span class="sd">        Active ``LogListener`` instance that can be passed to</span>
+<span class="sd">        :class:`elm.ords.utilities.queued_logging.LocationFileLog`.</span>
+<span class="sd">    log_dir : path-like</span>
+<span class="sd">        Path to output directory to contain log file.</span>
+<span class="sd">    county : elm.ords.utilities.location.Location</span>
+<span class="sd">        County to retrieve ordinance document for.</span>
+<span class="sd">    text_splitter : obj, optional</span>
+<span class="sd">        Instance of an object that implements a `split_text` method.</span>
+<span class="sd">        The method should take text as input (str) and return a list</span>
+<span class="sd">        of text chunks. Langchain&#39;s text splitters should work for this</span>
+<span class="sd">        input.</span>
+<span class="sd">    num_urls : int, optional</span>
+<span class="sd">        Number of unique Google search result URL&#39;s to check for</span>
+<span class="sd">        ordinance document. By default, ``5``.</span>
+<span class="sd">    file_loader_kwargs : dict, optional</span>
+<span class="sd">        Dictionary of keyword-argument pairs to initialize</span>
+<span class="sd">        :class:`elm.web.file_loader.AsyncFileLoader` with. The</span>
+<span class="sd">        &quot;pw_launch_kwargs&quot; key in these will also be used to initialize</span>
+<span class="sd">        the :class:`elm.web.google_search.PlaywrightGoogleLinkSearch`</span>
+<span class="sd">        used for the google URL search. By default, ``None``.</span>
+<span class="sd">    browser_semaphore : asyncio.Semaphore, optional</span>
+<span class="sd">        Semaphore instance that can be used to limit the number of</span>
+<span class="sd">        playwright browsers open concurrently. If ``None``, no limits</span>
+<span class="sd">        are applied. By default, ``None``.</span>
+<span class="sd">    level : str, optional</span>
+<span class="sd">        Log level to set for retrieval logger. By default, ``&quot;INFO&quot;``.</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Keyword-value pairs used to initialize an</span>
+<span class="sd">        `elm.ords.llm.LLMCaller` instance.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    elm.web.document.BaseDocument | None</span>
+<span class="sd">        Document instance for the ordinance document, or ``None`` if no</span>
+<span class="sd">        document was found. Extracted ordinance information is stored in</span>
+<span class="sd">        the document&#39;s ``metadata`` attribute.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">LocationFileLog</span><span class="p">(</span>
+        <span class="n">listener</span><span class="p">,</span> <span class="n">log_dir</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">county</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">level</span>
+    <span class="p">):</span>
+        <span class="n">task</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
+            <span class="n">process_county</span><span class="p">(</span>
+                <span class="n">county</span><span class="p">,</span>
+                <span class="n">text_splitter</span><span class="p">,</span>
+                <span class="n">num_urls</span><span class="o">=</span><span class="n">num_urls</span><span class="p">,</span>
+                <span class="n">file_loader_kwargs</span><span class="o">=</span><span class="n">file_loader_kwargs</span><span class="p">,</span>
+                <span class="n">browser_semaphore</span><span class="o">=</span><span class="n">browser_semaphore</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">county</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">doc</span><span class="p">,</span> <span class="o">*</span><span class="n">__</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+            <span class="k">raise</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;Encountered error while processing </span><span class="si">%s</span><span class="s2">:&quot;</span><span class="p">,</span> <span class="n">county</span><span class="o">.</span><span class="n">full_name</span>
+            <span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">doc</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">doc</span></div>
+
+
+
+<div class="viewcode-block" id="process_county">
+<a class="viewcode-back" href="../../../_autosummary/elm.ords.process.process_county.html#elm.ords.process.process_county">[docs]</a>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">process_county</span><span class="p">(</span>
+    <span class="n">county</span><span class="p">,</span>
+    <span class="n">text_splitter</span><span class="p">,</span>
+    <span class="n">num_urls</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">file_loader_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">browser_semaphore</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Download and parse ordinance document for a single county.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    county : elm.ords.utilities.location.Location</span>
+<span class="sd">        County to retrieve ordinance document for.</span>
+<span class="sd">    text_splitter : obj, optional</span>
+<span class="sd">        Instance of an object that implements a `split_text` method.</span>
+<span class="sd">        The method should take text as input (str) and return a list</span>
+<span class="sd">        of text chunks. Langchain&#39;s text splitters should work for this</span>
+<span class="sd">        input.</span>
+<span class="sd">    num_urls : int, optional</span>
+<span class="sd">        Number of unique Google search result URL&#39;s to check for</span>
+<span class="sd">        ordinance document. By default, ``5``.</span>
+<span class="sd">    file_loader_kwargs : dict, optional</span>
+<span class="sd">        Dictionary of keyword-argument pairs to initialize</span>
+<span class="sd">        :class:`elm.web.file_loader.AsyncFileLoader` with. The</span>
+<span class="sd">        &quot;pw_launch_kwargs&quot; key in these will also be used to initialize</span>
+<span class="sd">        the :class:`elm.web.google_search.PlaywrightGoogleLinkSearch`</span>
+<span class="sd">        used for the google URL search. By default, ``None``.</span>
+<span class="sd">    browser_semaphore : asyncio.Semaphore, optional</span>
+<span class="sd">        Semaphore instance that can be used to limit the number of</span>
+<span class="sd">        playwright browsers open concurrently. If ``None``, no limits</span>
+<span class="sd">        are applied. By default, ``None``.</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Keyword-value pairs used to initialize an</span>
+<span class="sd">        `elm.ords.llm.LLMCaller` instance.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    elm.web.document.BaseDocument | None</span>
+<span class="sd">        Document instance for the ordinance document, or ``None`` if no</span>
+<span class="sd">        document was found. Extracted ordinance information is stored in</span>
+<span class="sd">        the document&#39;s ``metadata`` attribute.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">download_county_ordinance</span><span class="p">(</span>
+        <span class="n">county</span><span class="p">,</span>
+        <span class="n">text_splitter</span><span class="p">,</span>
+        <span class="n">num_urls</span><span class="o">=</span><span class="n">num_urls</span><span class="p">,</span>
+        <span class="n">file_loader_kwargs</span><span class="o">=</span><span class="n">file_loader_kwargs</span><span class="p">,</span>
+        <span class="n">browser_semaphore</span><span class="o">=</span><span class="n">browser_semaphore</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">doc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">_record_time_and_usage</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">doc</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">county</span>
+    <span class="n">doc</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;location_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">county</span><span class="o">.</span><span class="n">full_name</span>
+    <span class="k">await</span> <span class="n">_record_usage</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">doc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">extract_ordinance_text_with_ngram_validation</span><span class="p">(</span>
+        <span class="n">doc</span><span class="p">,</span> <span class="n">text_splitter</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span>
+    <span class="k">await</span> <span class="n">_record_usage</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">doc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">_write_cleaned_text</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">extract_ordinance_values</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">ord_count</span> <span class="o">=</span> <span class="n">_num_ords_in_doc</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ord_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">_move_file_to_out_dir</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">_write_ord_db</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> ordinance value(s) found for </span><span class="si">%s</span><span class="s2">. Outputs are here: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+            <span class="n">ord_count</span><span class="p">,</span>
+            <span class="n">county</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;ord_db_fp&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No ordinances found for </span><span class="si">%s</span><span class="s2">.&quot;</span><span class="p">,</span> <span class="n">county</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>
+
+    <span class="k">await</span> <span class="n">_record_time_and_usage</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">doc</span></div>
+
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_record_usage</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dump usage to file if tracker found in kwargs.&quot;&quot;&quot;</span>
+    <span class="n">usage_tracker</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;usage_tracker&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">usage_tracker</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">UsageUpdater</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">usage_tracker</span><span class="p">)</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_record_time_and_usage</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add elapsed time before updating usage to file.&quot;&quot;&quot;</span>
+    <span class="n">seconds_elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+    <span class="n">usage_tracker</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;usage_tracker&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">usage_tracker</span><span class="p">:</span>
+        <span class="n">usage_tracker</span><span class="p">[</span><span class="s2">&quot;total_time_seconds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">seconds_elapsed</span>
+        <span class="n">usage_tracker</span><span class="p">[</span><span class="s2">&quot;total_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">seconds_elapsed</span><span class="p">))</span>
+        <span class="k">await</span> <span class="n">UsageUpdater</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">usage_tracker</span><span class="p">)</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_move_file_to_out_dir</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Move PDF or HTML text file to output directory.&quot;&quot;&quot;</span>
+    <span class="n">out_fp</span> <span class="o">=</span> <span class="k">await</span> <span class="n">FileMover</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+    <span class="n">doc</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;out_fp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">out_fp</span>
+    <span class="k">return</span> <span class="n">doc</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_write_cleaned_text</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write cleaned text to `clean_dir`.&quot;&quot;&quot;</span>
+    <span class="n">out_fp</span> <span class="o">=</span> <span class="k">await</span> <span class="n">CleanedFileWriter</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+    <span class="n">doc</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;cleaned_fp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">out_fp</span>
+    <span class="k">return</span> <span class="n">doc</span>
+
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_write_ord_db</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write cleaned text to `county_dbs_dir`.&quot;&quot;&quot;</span>
+    <span class="n">out_fp</span> <span class="o">=</span> <span class="k">await</span> <span class="n">OrdDBFileWriter</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+    <span class="n">doc</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;ord_db_fp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">out_fp</span>
+    <span class="k">return</span> <span class="n">doc</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_setup_pytesseract</span><span class="p">(</span><span class="n">exe_fp</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set the pytesseract command.&quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pytesseract</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting `tesseract_cmd` to </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">exe_fp</span><span class="p">)</span>
+    <span class="n">pytesseract</span><span class="o">.</span><span class="n">pytesseract</span><span class="o">.</span><span class="n">tesseract_cmd</span> <span class="o">=</span> <span class="n">exe_fp</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_record_total_time</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">seconds_elapsed</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dump usage to an existing file.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">usage_info</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="n">usage_info</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+
+    <span class="n">total_time_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">seconds_elapsed</span><span class="p">))</span>
+    <span class="n">usage_info</span><span class="p">[</span><span class="s2">&quot;total_time_seconds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">seconds_elapsed</span>
+    <span class="n">usage_info</span><span class="p">[</span><span class="s2">&quot;total_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">total_time_str</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">usage_info</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Total processing time: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">total_time_str</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_num_ords_in_doc</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if doc contains any scraped ordinance values.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">doc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="k">if</span> <span class="s2">&quot;ordinance_values&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">attrs</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="n">ord_vals</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;ordinance_values&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">ord_vals</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="n">check_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">CHECK_COLS</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">ord_vals</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">check_cols</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="o">~</span><span class="n">ord_vals</span><span class="p">[</span><span class="n">check_cols</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">())</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_docs_to_db</span><span class="p">(</span><span class="n">docs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert list of docs to output database.&quot;&quot;&quot;</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">doc</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+            <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="n">_num_ords_in_doc</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="n">_db_results</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">_formatted_db</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">db</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">OUT_COLS</span><span class="p">)</span>
+
+    <span class="n">db</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="n">_empirical_adjustments</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_formatted_db</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_db_results</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract results from doc metadata to DataFrame.&quot;&quot;&quot;</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ordinance_values&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">results</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;source&quot;</span><span class="p">)</span>
+    <span class="n">year</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;ord_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">year</span> <span class="k">if</span> <span class="n">year</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">year</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;last_updated&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y&quot;</span><span class="p">)</span>
+
+    <span class="n">location</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">]</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;FIPS&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">fips</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;county&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">name</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">state</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_empirical_adjustments</span><span class="p">(</span><span class="n">db</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Post-processing adjustments based on empirical observations.</span>
+
+<span class="sd">    Current adjustments include:</span>
+
+<span class="sd">        - Limit adder to max of 250 ft.</span>
+<span class="sd">            - Chat GPT likes to report large values here, but in</span>
+<span class="sd">            practice all values manually observed in ordinance documents</span>
+<span class="sd">            are below 250 ft.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;adder&quot;</span> <span class="ow">in</span> <span class="n">db</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">db</span><span class="p">[</span><span class="s2">&quot;adder&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">250</span><span class="p">,</span> <span class="s2">&quot;adder&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">db</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_formatted_db</span><span class="p">(</span><span class="n">db</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Format DataFrame for output.&quot;&quot;&quot;</span>
+    <span class="n">out_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">OUT_COLS</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">db</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">db</span><span class="p">[</span><span class="n">out_cols</span><span class="p">]</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alliance for Sustainable Energy, LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

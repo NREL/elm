@@ -1,0 +1,36 @@
+elm.ords.services.threaded.CleanedFileWriter
+============================================
+
+.. currentmodule:: elm.ords.services.threaded
+
+.. autoclass:: CleanedFileWriter
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~CleanedFileWriter.acquire_resources
+      ~CleanedFileWriter.call
+      ~CleanedFileWriter.process
+      ~CleanedFileWriter.process_using_futures
+      ~CleanedFileWriter.release_resources
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~CleanedFileWriter.MAX_CONCURRENT_JOBS
+      ~CleanedFileWriter.can_process
+      ~CleanedFileWriter.name
+   
+   

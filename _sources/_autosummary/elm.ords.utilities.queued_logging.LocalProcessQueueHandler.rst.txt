@@ -1,0 +1,47 @@
+elm.ords.utilities.queued\_logging.LocalProcessQueueHandler
+===========================================================
+
+.. currentmodule:: elm.ords.utilities.queued_logging
+
+.. autoclass:: LocalProcessQueueHandler
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~LocalProcessQueueHandler.acquire
+      ~LocalProcessQueueHandler.addFilter
+      ~LocalProcessQueueHandler.close
+      ~LocalProcessQueueHandler.createLock
+      ~LocalProcessQueueHandler.emit
+      ~LocalProcessQueueHandler.enqueue
+      ~LocalProcessQueueHandler.filter
+      ~LocalProcessQueueHandler.flush
+      ~LocalProcessQueueHandler.format
+      ~LocalProcessQueueHandler.get_name
+      ~LocalProcessQueueHandler.handle
+      ~LocalProcessQueueHandler.handleError
+      ~LocalProcessQueueHandler.prepare
+      ~LocalProcessQueueHandler.release
+      ~LocalProcessQueueHandler.removeFilter
+      ~LocalProcessQueueHandler.setFormatter
+      ~LocalProcessQueueHandler.setLevel
+      ~LocalProcessQueueHandler.set_name
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~LocalProcessQueueHandler.name
+   
+   

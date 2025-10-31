@@ -1,0 +1,6 @@
+elm.utilities.parse.combine\_pages
+==================================
+
+.. currentmodule:: elm.utilities.parse
+
+.. autofunction:: combine_pages

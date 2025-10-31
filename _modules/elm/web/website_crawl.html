@@ -1,0 +1,1028 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>elm.web.website_crawl &mdash; elm 0.0.34 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=9dd25805"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            elm
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.energy_wizard.html">The Energy Wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples.energy_wizard.html#downloading-and-embedding-pdfs">Downloading and Embedding PDFs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples.energy_wizard.html#running-the-streamlit-app">Running the Streamlit App</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.ordinance_gpt.html">Ordinance GPT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples.ordinance_gpt.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples.ordinance_gpt.html#running-from-python">Running from Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples.ordinance_gpt.html#running-from-the-command-line-utility">Running from the Command Line Utility</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../examples.ordinance_gpt.html#execution">Execution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../examples.ordinance_gpt.html#debugging">Debugging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples.ordinance_gpt.html#source-ordinance-documents">Source Ordinance Documents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples.ordinance_gpt.html#extension-to-other-technologies">Extension to Other Technologies</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/index.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../dev/ords_architecture.html"><strong>OrdinanceGPT: Architectural Design Document</strong></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../dev/ords_architecture.html#introduction"><strong>1. Introduction</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dev/ords_architecture.html#purpose"><strong>1.1 Purpose</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dev/ords_architecture.html#audience"><strong>1.2 Audience</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dev/ords_architecture.html#scope"><strong>1.3 Scope</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dev/ords_architecture.html#high-level-architecture"><strong>2. High-Level Architecture</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dev/ords_architecture.html#system-context"><strong>2.1 System Context</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dev/ords_architecture.html#detailed-design"><strong>3. Detailed Design</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dev/ords_architecture.html#web-scraper"><strong>3.1 Web Scraper</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dev/ords_architecture.html#document-parser"><strong>3.2 Document Parser</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dev/ords_architecture.html#key-concepts-and-classes"><strong>4 Key Concepts and Classes</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dev/ords_architecture.html#key-concept-services"><strong>4.1 Key Concept: Services</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dev/ords_architecture.html#key-classes"><strong>4.2 Key Classes</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dev/ords_architecture.html#workflows"><strong>5. Workflows</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dev/ords_architecture.html#downloading-documents-from-google"><strong>5.1 Downloading documents from Google</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../dev/ords_architecture.html#querying-openai"><strong>5.2 Querying OpenAI</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dev/ords_architecture.html#appendix"><strong>6. Appendix</strong></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../dev/ords_architecture.html#tools-and-libraries"><strong>6.1 Tools and Libraries</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../dev/ords_architecture.html#deliverables"><strong>7. Deliverables</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../_autosummary/elm.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.base.html">elm.base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.base.ApiBase.html">elm.base.ApiBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.base.ApiBase.html#elm.base.ApiBase"><code class="docutils literal notranslate"><span class="pre">ApiBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.base.ApiQueue.html">elm.base.ApiQueue</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.base.ApiQueue.html#elm.base.ApiQueue"><code class="docutils literal notranslate"><span class="pre">ApiQueue</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.chunk.html">elm.chunk</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.chunk.Chunker.html">elm.chunk.Chunker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.chunk.Chunker.html#elm.chunk.Chunker"><code class="docutils literal notranslate"><span class="pre">Chunker</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.cli.html">elm.cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.embed.html">elm.embed</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.embed.ChunkAndEmbed.html">elm.embed.ChunkAndEmbed</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.embed.ChunkAndEmbed.html#elm.embed.ChunkAndEmbed"><code class="docutils literal notranslate"><span class="pre">ChunkAndEmbed</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.exceptions.html">elm.exceptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.exceptions.ELMError.html">elm.exceptions.ELMError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.exceptions.ELMError.html#elm.exceptions.ELMError"><code class="docutils literal notranslate"><span class="pre">ELMError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.exceptions.ELMInputError.html">elm.exceptions.ELMInputError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.exceptions.ELMInputError.html#elm.exceptions.ELMInputError"><code class="docutils literal notranslate"><span class="pre">ELMInputError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.exceptions.ELMKeyError.html">elm.exceptions.ELMKeyError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.exceptions.ELMKeyError.html#elm.exceptions.ELMKeyError"><code class="docutils literal notranslate"><span class="pre">ELMKeyError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.exceptions.ELMRuntimeError.html">elm.exceptions.ELMRuntimeError</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.exceptions.ELMRuntimeError.html#elm.exceptions.ELMRuntimeError"><code class="docutils literal notranslate"><span class="pre">ELMRuntimeError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.ords.html">elm.ords</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.ords.download.html">elm.ords.download</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.download.download_county_ordinance.html">elm.ords.download.download_county_ordinance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.ords.extraction.html">elm.ords.extraction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.extraction.apply.html">elm.ords.extraction.apply</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.extraction.date.html">elm.ords.extraction.date</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.extraction.features.html">elm.ords.extraction.features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.extraction.graphs.html">elm.ords.extraction.graphs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.extraction.ngrams.html">elm.ords.extraction.ngrams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.extraction.ordinance.html">elm.ords.extraction.ordinance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.extraction.parse.html">elm.ords.extraction.parse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.extraction.tree.html">elm.ords.extraction.tree</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.ords.llm.html">elm.ords.llm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.llm.calling.html">elm.ords.llm.calling</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.ords.process.html">elm.ords.process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.process.process_counties_with_openai.html">elm.ords.process.process_counties_with_openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.process.process_county.html">elm.ords.process.process_county</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.process.process_county_with_logging.html">elm.ords.process.process_county_with_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.ords.services.html">elm.ords.services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.services.base.html">elm.ords.services.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.services.cpu.html">elm.ords.services.cpu</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.services.openai.html">elm.ords.services.openai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.services.provider.html">elm.ords.services.provider</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.services.queues.html">elm.ords.services.queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.services.threaded.html">elm.ords.services.threaded</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.services.usage.html">elm.ords.services.usage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.ords.utilities.html">elm.ords.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.utilities.counties.html">elm.ords.utilities.counties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.utilities.exceptions.html">elm.ords.utilities.exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.utilities.location.html">elm.ords.utilities.location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.utilities.parsing.html">elm.ords.utilities.parsing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.utilities.queued_logging.html">elm.ords.utilities.queued_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.ords.validation.html">elm.ords.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.validation.content.html">elm.ords.validation.content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.ords.validation.location.html">elm.ords.validation.location</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.pdf.html">elm.pdf</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.pdf.PDFtoTXT.html">elm.pdf.PDFtoTXT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.pdf.PDFtoTXT.html#elm.pdf.PDFtoTXT"><code class="docutils literal notranslate"><span class="pre">PDFtoTXT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.summary.html">elm.summary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.summary.Summary.html">elm.summary.Summary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.summary.Summary.html#elm.summary.Summary"><code class="docutils literal notranslate"><span class="pre">Summary</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.tree.html">elm.tree</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.tree.DecisionTree.html">elm.tree.DecisionTree</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.tree.DecisionTree.html#elm.tree.DecisionTree"><code class="docutils literal notranslate"><span class="pre">DecisionTree</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.utilities.html">elm.utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.html">elm.utilities.parse</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.clean_headers.html">elm.utilities.parse.clean_headers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.combine_pages.html">elm.utilities.parse.combine_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.format_html_tables.html">elm.utilities.parse.format_html_tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.html_to_text.html">elm.utilities.parse.html_to_text</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.is_multi_col.html">elm.utilities.parse.is_multi_col</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.read_pdf.html">elm.utilities.parse.read_pdf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.read_pdf_ocr.html">elm.utilities.parse.read_pdf_ocr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.remove_blank_pages.html">elm.utilities.parse.remove_blank_pages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.remove_empty_lines_or_page_footers.html">elm.utilities.parse.remove_empty_lines_or_page_footers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.replace_common_pdf_conversion_chars.html">elm.utilities.parse.replace_common_pdf_conversion_chars</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.replace_excessive_newlines.html">elm.utilities.parse.replace_excessive_newlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.replace_multi_dot_lines.html">elm.utilities.parse.replace_multi_dot_lines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.parse.resembles_html.html">elm.utilities.parse.resembles_html</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.utilities.retry.html">elm.utilities.retry</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.retry.async_retry_with_exponential_backoff.html">elm.utilities.retry.async_retry_with_exponential_backoff</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.retry.retry_with_exponential_backoff.html">elm.utilities.retry.retry_with_exponential_backoff</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.utilities.try_import.html">elm.utilities.try_import</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.try_import.try_import.html">elm.utilities.try_import.try_import</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.utilities.validation.html">elm.utilities.validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.utilities.validation.validate_azure_api_params.html">elm.utilities.validation.validate_azure_api_params</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.version.html">elm.version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.web.html">elm.web</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.web.document.html">elm.web.document</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.document.BaseDocument.html">elm.web.document.BaseDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.document.HTMLDocument.html">elm.web.document.HTMLDocument</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.document.PDFDocument.html">elm.web.document.PDFDocument</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.web.file_loader.html">elm.web.file_loader</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.file_loader.AsyncFileLoader.html">elm.web.file_loader.AsyncFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.file_loader.AsyncLocalFileLoader.html">elm.web.file_loader.AsyncLocalFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.file_loader.AsyncWebFileLoader.html">elm.web.file_loader.AsyncWebFileLoader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.file_loader.BaseAsyncFileLoader.html">elm.web.file_loader.BaseAsyncFileLoader</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.web.html_pw.html">elm.web.html_pw</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.html_pw.load_html_with_pw.html">elm.web.html_pw.load_html_with_pw</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.web.osti.html">elm.web.osti</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.osti.OstiList.html">elm.web.osti.OstiList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.osti.OstiRecord.html">elm.web.osti.OstiRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.web.rhub.html">elm.web.rhub</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.rhub.ProfilesList.html">elm.web.rhub.ProfilesList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.rhub.ProfilesRecord.html">elm.web.rhub.ProfilesRecord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.rhub.PublicationsList.html">elm.web.rhub.PublicationsList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.rhub.PublicationsRecord.html">elm.web.rhub.PublicationsRecord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.web.search.html">elm.web.search</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.search.base.html">elm.web.search.base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.search.bing.html">elm.web.search.bing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.search.duckduckgo.html">elm.web.search.duckduckgo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.search.dux.html">elm.web.search.dux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.search.google.html">elm.web.search.google</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.search.run.html">elm.web.search.run</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.search.tavily.html">elm.web.search.tavily</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.search.yahoo.html">elm.web.search.yahoo</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.web.utilities.html">elm.web.utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.utilities.DEFAULT_HEADERS.html">elm.web.utilities.DEFAULT_HEADERS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.utilities.clean_search_query.html">elm.web.utilities.clean_search_query</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.utilities.compute_fn_from_url.html">elm.web.utilities.compute_fn_from_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.utilities.filter_documents.html">elm.web.utilities.filter_documents</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.utilities.get_redirected_url.html">elm.web.utilities.get_redirected_url</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.utilities.pw_page.html">elm.web.utilities.pw_page</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.utilities.write_url_doc_to_file.html">elm.web.utilities.write_url_doc_to_file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.utilities.PWKwargs.html">elm.web.utilities.PWKwargs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.web.website_crawl.html">elm.web.website_crawl</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS.html">elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.website_crawl.ELM_URL_FILTER.html">elm.web.website_crawl.ELM_URL_FILTER</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.website_crawl.ContentTypeExcludeFilter.html">elm.web.website_crawl.ContentTypeExcludeFilter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.website_crawl.ELMLinkScorer.html">elm.web.website_crawl.ELMLinkScorer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawler.html">elm.web.website_crawl.ELMWebsiteCrawler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html">elm.web.website_crawl.ELMWebsiteCrawlingStrategy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html">elm.web.website_crawl.PeekablePriorityQueue</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../_autosummary/elm.wizard.html">elm.wizard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.wizard.EnergyWizard.html">elm.wizard.EnergyWizard</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.wizard.EnergyWizard.html#elm.wizard.EnergyWizard"><code class="docutils literal notranslate"><span class="pre">EnergyWizard</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.wizard.EnergyWizardBase.html">elm.wizard.EnergyWizardBase</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.wizard.EnergyWizardBase.html#elm.wizard.EnergyWizardBase"><code class="docutils literal notranslate"><span class="pre">EnergyWizardBase</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/elm.wizard.EnergyWizardPostgres.html">elm.wizard.EnergyWizardPostgres</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/elm.wizard.EnergyWizardPostgres.html#elm.wizard.EnergyWizardPostgres"><code class="docutils literal notranslate"><span class="pre">EnergyWizardPostgres</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../_cli/cli.html">CLI reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../_cli/elm.html">elm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../_cli/elm.html#elm-ords">ords</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">elm</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">elm.web.website_crawl</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for elm.web.website_crawl</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># flake8: noqa</span>
+<span class="c1"># pylint: disable=no-member</span>
+<span class="sd">&quot;&quot;&quot;ELM Document retrieval from a website&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">asyncio</span><span class="w"> </span><span class="kn">import</span> <span class="n">PriorityQueue</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">inf</span> <span class="k">as</span> <span class="n">infinity</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">aclosing</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">crawl4ai</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncWebCrawler</span><span class="p">,</span> <span class="n">CrawlerRunConfig</span><span class="p">,</span> <span class="n">BrowserConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">crawl4ai.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">normalize_url_for_deep_crawl</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">crawl4ai.content_scraping_strategy</span><span class="w"> </span><span class="kn">import</span> <span class="n">LXMLWebScrapingStrategy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">crawl4ai.deep_crawling</span><span class="w"> </span><span class="kn">import</span> <span class="n">BestFirstCrawlingStrategy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">crawl4ai.deep_crawling.filters</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">FilterChain</span><span class="p">,</span> <span class="n">URLPatternFilter</span><span class="p">,</span>
+                                            <span class="n">ContentTypeFilter</span><span class="p">,</span> <span class="n">URLFilter</span><span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.web.file_loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncFileLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">elm.web.document</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTMLDocument</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">BEST_ZONING_ORDINANCE_KEYWORDS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;pdf&quot;</span><span class="p">:</span> <span class="mi">1152</span><span class="p">,</span>
+                                  <span class="s2">&quot;zoning&quot;</span><span class="p">:</span> <span class="mi">576</span><span class="p">,</span>
+                                  <span class="s2">&quot;ordinance&quot;</span><span class="p">:</span> <span class="mi">288</span><span class="p">,</span>
+                                  <span class="s2">&quot;planning&quot;</span><span class="p">:</span> <span class="mi">144</span><span class="p">,</span>
+                                  <span class="s2">&quot;plan&quot;</span><span class="p">:</span> <span class="mi">72</span><span class="p">,</span>
+                                  <span class="s2">&quot;government&quot;</span><span class="p">:</span> <span class="mi">36</span><span class="p">,</span>
+                                  <span class="s2">&quot;code&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+                                  <span class="s2">&quot;area&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+                                  <span class="s2">&quot;land development&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+                                  <span class="s2">&quot;land&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                                  <span class="s2">&quot;municipal&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                                  <span class="s2">&quot;department&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="sd">&quot;&quot;&quot;Keywords and their associated point values for scoring URLs.</span>
+
+<span class="sd">These keywords are used to prioritize URLs based on their relevance</span>
+<span class="sd">to contain documents of interest.</span>
+
+<span class="sd">The general scoring strategy employed here is that the top keyword</span>
+<span class="sd">should be worth more points than the sum of all of the keywords below</span>
+<span class="sd">it. This is just the default strategy, and can/should be modified by</span>
+<span class="sd">users to better suit their own use cases.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">_BLACKLIST_SUBSTRINGS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;*login*&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;*signup*&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;*sign up*&quot;</span><span class="p">,</span>
+                         <span class="sa">r</span><span class="s2">&quot;*sign</span><span class="si">%20u</span><span class="s2">p*&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;*signin*&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;*sign in*&quot;</span><span class="p">,</span>
+                         <span class="sa">r</span><span class="s2">&quot;*sign</span><span class="si">%20i</span><span class="s2">n*&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;*register*&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;*subscribe*&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;*donate*&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;*shop*&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;*cart*&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;*careers*&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;*events*&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;*calendar*&quot;</span><span class="p">]</span>
+
+<span class="n">ELM_URL_FILTER</span> <span class="o">=</span> <span class="n">URLPatternFilter</span><span class="p">(</span><span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">patterns</span><span class="o">=</span><span class="n">_BLACKLIST_SUBSTRINGS</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Filter used to exclude URLs that are not relevant to the search&quot;&quot;&quot;</span>
+
+<span class="n">_SCORE_KEY</span> <span class="o">=</span> <span class="s2">&quot;website_link_relevance_score&quot;</span>
+
+
+<div class="viewcode-block" id="PeekablePriorityQueue">
+<a class="viewcode-back" href="../../../_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html#elm.web.website_crawl.PeekablePriorityQueue">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PeekablePriorityQueue</span><span class="p">(</span><span class="n">PriorityQueue</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A priority queue that allows peeking at the next item&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PeekablePriorityQueue.peek">
+<a class="viewcode-back" href="../../../_autosummary/elm.web.website_crawl.PeekablePriorityQueue.html#elm.web.website_crawl.PeekablePriorityQueue.peek">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">peek</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Peek at the next item in the queue without removing it&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ELMLinkScorer">
+<a class="viewcode-back" href="../../../_autosummary/elm.web.website_crawl.ELMLinkScorer.html#elm.web.website_crawl.ELMLinkScorer">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ELMLinkScorer</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom URL scorer for ELM website crawling&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keyword_points</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        keyword_points : dict, optional</span>
+<span class="sd">            Dictionary mapping keywords to their associated point values</span>
+<span class="sd">            for scoring URLs. If ``None``, uses</span>
+<span class="sd">            :obj:`elm.web.website_crawl.BEST_ZONING_ORDINANCE_KEYWORDS`.</span>
+<span class="sd">            By default, ``None``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keyword_points</span> <span class="o">=</span> <span class="n">keyword_points</span> <span class="ow">or</span> <span class="n">BEST_ZONING_ORDINANCE_KEYWORDS</span>
+
+<div class="viewcode-block" id="ELMLinkScorer.score">
+<a class="viewcode-back" href="../../../_autosummary/elm.web.website_crawl.ELMLinkScorer.html#elm.web.website_crawl.ELMLinkScorer.score">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">links</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Score a link based on its title text and URL.</span>
+
+<span class="sd">        The score is calculated by summing the point values of the</span>
+<span class="sd">        keywords found in both the link title text and the URL. The</span>
+<span class="sd">        higher the score, the more relevant the link is considered to be</span>
+<span class="sd">        for the purpose of retrieving zoning ordinance documents.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        links : list of dict</span>
+<span class="sd">            A list of dictionaries representing links to be scored.</span>
+<span class="sd">            Each dictionary should contain at least the keys &quot;text&quot; and</span>
+<span class="sd">            &quot;href&quot;. The &quot;text&quot; key should contain the link title text,</span>
+<span class="sd">            and the &quot;href&quot; key should contain the URL.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        links : list of dict</span>
+<span class="sd">            The input list of links with an additional key &quot;score&quot; added</span>
+<span class="sd">            to each dictionary. Each &quot;score&quot; key contains the calculated</span>
+<span class="sd">            score for that link.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
+            <span class="n">link</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_assign_value</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+                             <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_assign_value</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)))</span>
+
+        <span class="k">return</span> <span class="n">links</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_assign_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Assign a score based on the presence of keywords in the text&quot;&quot;&quot;</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">kw</span><span class="p">,</span> <span class="n">kw_score</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keyword_points</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">kw</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">casefold</span><span class="p">():</span>
+                <span class="n">score</span> <span class="o">+=</span> <span class="n">kw_score</span>
+        <span class="k">return</span> <span class="n">score</span></div>
+
+
+
+<div class="viewcode-block" id="ContentTypeExcludeFilter">
+<a class="viewcode-back" href="../../../_autosummary/elm.web.website_crawl.ContentTypeExcludeFilter.html#elm.web.website_crawl.ContentTypeExcludeFilter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ContentTypeExcludeFilter</span><span class="p">(</span><span class="n">URLFilter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Content type to exclude filter using fast lookups&quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;exclude_ext&quot;</span><span class="p">,</span> <span class="p">)</span>
+
+    <span class="c1"># Fast extension to mime type mapping</span>
+    <span class="n">EXCLUDE_EXTENSIONS</span> <span class="o">=</span> <span class="p">{</span><span class="c1"># Images</span>
+                          <span class="s1">&#39;bmp&#39;</span><span class="p">,</span> <span class="s1">&#39;gif&#39;</span><span class="p">,</span> <span class="s1">&#39;ico&#39;</span><span class="p">,</span> <span class="s1">&#39;jpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="s1">&#39;svg&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;tiff&#39;</span><span class="p">,</span> <span class="s1">&#39;webp&#39;</span><span class="p">,</span>
+                          <span class="c1"># Audio</span>
+                          <span class="s1">&#39;aac&#39;</span><span class="p">,</span> <span class="s1">&#39;m4a&#39;</span><span class="p">,</span> <span class="s1">&#39;mp3&#39;</span><span class="p">,</span> <span class="s1">&#39;ogg&#39;</span><span class="p">,</span> <span class="s1">&#39;wav&#39;</span><span class="p">,</span>
+                          <span class="c1"># Video</span>
+                          <span class="s1">&#39;avi&#39;</span><span class="p">,</span> <span class="s1">&#39;flv&#39;</span><span class="p">,</span> <span class="s1">&#39;mkv&#39;</span><span class="p">,</span> <span class="s1">&#39;mp4&#39;</span><span class="p">,</span> <span class="s1">&#39;mpeg&#39;</span><span class="p">,</span> <span class="s1">&#39;mov&#39;</span><span class="p">,</span> <span class="s1">&#39;webm&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;wmv&#39;</span><span class="p">,</span>
+                          <span class="c1"># Applications</span>
+                          <span class="s1">&#39;7z&#39;</span><span class="p">,</span> <span class="s1">&#39;exe&#39;</span><span class="p">,</span> <span class="s1">&#39;gz&#39;</span><span class="p">,</span> <span class="s1">&#39;json&#39;</span><span class="p">,</span> <span class="s1">&#39;msi&#39;</span><span class="p">,</span> <span class="s1">&#39;pdf&#39;</span><span class="p">,</span> <span class="s1">&#39;rar&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;tar&#39;</span><span class="p">,</span> <span class="s1">&#39;xml&#39;</span><span class="p">,</span> <span class="s1">&#39;zip&#39;</span><span class="p">,</span>
+                          <span class="c1"># Fonts</span>
+                          <span class="s1">&#39;otf&#39;</span><span class="p">,</span> <span class="s1">&#39;ttf&#39;</span><span class="p">,</span> <span class="s1">&#39;woff&#39;</span><span class="p">,</span> <span class="s1">&#39;woff2&#39;</span><span class="p">,</span>
+                          <span class="c1"># OpenDocument Formats</span>
+                          <span class="s1">&#39;odp&#39;</span><span class="p">,</span> <span class="s1">&#39;ods&#39;</span><span class="p">,</span> <span class="s1">&#39;odt&#39;</span><span class="p">,</span>
+                          <span class="c1"># Archives</span>
+                          <span class="s1">&#39;bz2&#39;</span><span class="p">,</span> <span class="s1">&#39;tar.gz&#39;</span><span class="p">,</span> <span class="s1">&#39;tgz&#39;</span><span class="p">,</span>
+                          <span class="c1"># Others</span>
+                          <span class="s1">&#39;ai&#39;</span><span class="p">,</span> <span class="s1">&#39;apk&#39;</span><span class="p">,</span> <span class="s1">&#39;bin&#39;</span><span class="p">,</span> <span class="s1">&#39;deb&#39;</span><span class="p">,</span> <span class="s1">&#39;dmg&#39;</span><span class="p">,</span> <span class="s1">&#39;eps&#39;</span><span class="p">,</span> <span class="s1">&#39;epub&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;iso&#39;</span><span class="p">,</span> <span class="s1">&#39;jar&#39;</span><span class="p">,</span> <span class="s1">&#39;mid&#39;</span><span class="p">,</span> <span class="s1">&#39;midi&#39;</span><span class="p">,</span> <span class="s1">&#39;ps&#39;</span><span class="p">,</span> <span class="s1">&#39;rpm&#39;</span><span class="p">,</span> <span class="s1">&#39;rtf&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;sqlite&#39;</span><span class="p">,</span> <span class="s1">&#39;swf&#39;</span><span class="p">}</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;File extensions to exclude from the crawl.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exclude_extensions</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        exclude_extensions : str or list of str, optional</span>
+<span class="sd">            File extensions to exclude from the crawl. If a string is</span>
+<span class="sd">            provided, it is treated as a single extension. If a list is</span>
+<span class="sd">            provided, each item in the list is treated as an extension.</span>
+<span class="sd">            If ``None``, uses the default set of excluded extensions</span>
+<span class="sd">            defined in</span>
+<span class="sd">            :obj:`ContentTypeExcludeFilter.EXCLUDE_EXTENSIONS`.</span>
+<span class="sd">            By default, ``None``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exclude_extensions</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">exclude_extensions</span> <span class="o">=</span> <span class="p">[</span><span class="n">exclude_extensions</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">exclude_ext</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">casefold</span><span class="p">()</span>
+                                     <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">(</span><span class="n">exclude_extensions</span>
+                                               <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">EXCLUDE_EXTENSIONS</span><span class="p">))</span>
+
+    <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_url_cached</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Cached URL checking&quot;&quot;&quot;</span>
+
+        <span class="n">ext</span> <span class="o">=</span> <span class="n">ContentTypeFilter</span><span class="o">.</span><span class="n">_extract_extension</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ext</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="n">ext</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">exclude_ext</span>
+
+<div class="viewcode-block" id="ContentTypeExcludeFilter.apply">
+<a class="viewcode-back" href="../../../_autosummary/elm.web.website_crawl.ContentTypeExcludeFilter.html#elm.web.website_crawl.ContentTypeExcludeFilter.apply">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fast extension check with caching&quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_url_cached</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_stats</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ELMWebsiteCrawlingStrategy">
+<a class="viewcode-back" href="../../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html#elm.web.website_crawl.ELMWebsiteCrawlingStrategy">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ELMWebsiteCrawlingStrategy</span><span class="p">(</span><span class="n">BestFirstCrawlingStrategy</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom crawling strategy for ELM website searching&quot;&quot;&quot;</span>
+
+    <span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of URLs to process in each batch&quot;&quot;&quot;</span>
+
+    <span class="n">ONE_SCORE_AT_A_TIME</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether to batch process only links with the same score.</span>
+
+<span class="sd">    This works best if the score is an integer value, since scores are</span>
+<span class="sd">    compared directly using the `==` operator.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ELMWebsiteCrawlingStrategy.found_enough_docs">
+<a class="viewcode-back" href="../../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html#elm.web.website_crawl.ELMWebsiteCrawlingStrategy.found_enough_docs">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">found_enough_docs</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">out_docs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if enough documents have been found.</span>
+
+<span class="sd">        If :obj:`ELMWebsiteCrawlingStrategy.ONE_SCORE_AT_A_TIME` is</span>
+<span class="sd">        ``True``, this function returns ``True`` when 5 documents have</span>
+<span class="sd">        been found, otherwise it returns ``True`` when 8 documents</span>
+<span class="sd">        have been found.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        out_docs : list</span>
+<span class="sd">            List of documents found during the crawl.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            Whether enough documents have been found to stop the crawl.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">doc_threshold</span> <span class="o">=</span> <span class="mi">5</span> <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ONE_SCORE_AT_A_TIME</span> <span class="k">else</span> <span class="mi">8</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">out_docs</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">doc_threshold</span></div>
+
+
+<div class="viewcode-block" id="ELMWebsiteCrawlingStrategy.link_discovery">
+<a class="viewcode-back" href="../../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawlingStrategy.html#elm.web.website_crawl.ELMWebsiteCrawlingStrategy.link_discovery">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">link_discovery</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">source_url</span><span class="p">,</span> <span class="n">current_depth</span><span class="p">,</span> <span class="n">visited</span><span class="p">,</span>
+                             <span class="n">next_links</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extract links from the crawl result, validate them, and append new</span>
+<span class="sd">        URLs (with their parent references) to next_links.</span>
+<span class="sd">        Also updates the depths dictionary.</span>
+
+<span class="sd">        .. NOTE:: Overridden from original BestFirstCrawlingStrategy to</span>
+<span class="sd">                  implement return full link dictionary instead of just</span>
+<span class="sd">                  URLs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_depth</span> <span class="o">=</span> <span class="n">current_depth</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">new_depth</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_depth</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">remaining_capacity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_pages</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pages_crawled</span>
+        <span class="k">if</span> <span class="n">remaining_capacity</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Max pages limit (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_pages</span><span class="si">}</span><span class="s2">) reached, &quot;</span>
+                             <span class="s2">&quot;stopping link discovery&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">links</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;internal&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">link</span><span class="p">[</span><span class="s2">&quot;is_external&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">include_external</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;external&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+                <span class="n">link</span><span class="p">[</span><span class="s2">&quot;is_external&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+
+        <span class="n">valid_links</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">url</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Link without href, skipping&quot;</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="n">base_url</span> <span class="o">=</span> <span class="n">normalize_url_for_deep_crawl</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">source_url</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">base_url</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_process_url</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">new_depth</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">urls_skipped</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">continue</span>
+
+            <span class="n">valid_links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">valid_links</span><span class="p">:</span>
+            <span class="n">link</span><span class="p">[</span><span class="s2">&quot;source_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source_url</span>
+            <span class="n">link</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_depth</span>
+            <span class="n">next_links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="p">)</span></div>
+
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_arun_best_first</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_url</span><span class="p">,</span> <span class="n">crawler</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Core best-first crawl method using a priority queue.</span>
+
+<span class="sd">        The queue items are tuples of</span>
+<span class="sd">        (score, depth, url, parent_url, is_external).</span>
+<span class="sd">        Lower scores are treated as higher priority.</span>
+<span class="sd">        URLs are processed in batches for efficiency.</span>
+
+<span class="sd">        .. NOTE:: Overridden from original BestFirstCrawlingStrategy to</span>
+<span class="sd">                  implement pass the full link dictionary to the</span>
+<span class="sd">                  `url_scorer` (instead of just the URL string). Also</span>
+<span class="sd">                  fixes queue scoring bug in the original code. Also</span>
+<span class="sd">                  don&#39;t allow discovering links from external URLs.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">queue</span> <span class="o">=</span> <span class="n">PeekablePriorityQueue</span><span class="p">()</span>
+        <span class="k">await</span> <span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">start_url</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+        <span class="n">visited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">queue</span><span class="o">.</span><span class="n">empty</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cancel_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pages_crawled</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_pages</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Max pages limit (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_pages</span><span class="si">}</span><span class="s2">) &quot;</span>
+                                 <span class="s2">&quot;reached, stopping crawl&quot;</span><span class="p">)</span>
+                <span class="k">break</span>
+
+            <span class="n">batch</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">curr_score</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BATCH_SIZE</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">queue</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
+                    <span class="k">break</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ONE_SCORE_AT_A_TIME</span> <span class="ow">and</span> <span class="n">curr_score</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">item</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">peek</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">curr_score</span><span class="p">:</span>
+                        <span class="k">break</span>
+
+                <span class="n">item</span> <span class="o">=</span> <span class="k">await</span> <span class="n">queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                <span class="n">score</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">parent_url</span><span class="p">,</span> <span class="n">is_external</span> <span class="o">=</span> <span class="n">item</span>
+                <span class="k">if</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+                <span class="n">batch</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ONE_SCORE_AT_A_TIME</span> <span class="ow">and</span> <span class="n">curr_score</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">curr_score</span> <span class="o">=</span> <span class="n">score</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">batch</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">urls</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">batch</span><span class="p">]</span>
+            <span class="n">batch_config</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">deep_crawl_strategy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">stream_gen</span> <span class="o">=</span> <span class="k">await</span> <span class="n">crawler</span><span class="o">.</span><span class="n">arun_many</span><span class="p">(</span><span class="n">urls</span><span class="o">=</span><span class="n">urls</span><span class="p">,</span>
+                                                 <span class="n">config</span><span class="o">=</span><span class="n">batch_config</span><span class="p">)</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">stream_gen</span><span class="p">:</span>
+                <span class="n">result_url</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">url</span>
+                <span class="n">corresponding</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">item</span>
+                                      <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">batch</span>
+                                      <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">result_url</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">corresponding</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="n">score</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">parent_url</span><span class="p">,</span> <span class="n">is_external</span> <span class="o">=</span> <span class="n">corresponding</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">or</span> <span class="p">{}</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">depth</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;parent_url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parent_url</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">score</span>
+
+                <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_pages_crawled</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="k">yield</span> <span class="n">result</span>
+
+                <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">success</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_external</span><span class="p">:</span>
+                    <span class="n">new_links</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">link_discovery</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">result_url</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span>
+                                              <span class="n">visited</span><span class="p">,</span> <span class="n">new_links</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">url_scorer</span><span class="p">:</span>
+                        <span class="n">new_links</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">url_scorer</span><span class="p">(</span><span class="n">new_links</span><span class="p">)</span>
+
+                    <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">new_links</span><span class="p">:</span>
+                        <span class="k">await</span> <span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">link</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;score&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                                         <span class="n">link</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+                                         <span class="n">link</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">),</span>
+                                         <span class="n">link</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;source_url&quot;</span><span class="p">),</span>
+                                         <span class="n">link</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;is_external&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)))</span></div>
+
+
+
+<div class="viewcode-block" id="ELMWebsiteCrawler">
+<a class="viewcode-back" href="../../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawler.html#elm.web.website_crawl.ELMWebsiteCrawler">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ELMWebsiteCrawler</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Crawl a website for documents of interest&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validator</span><span class="p">,</span> <span class="n">file_loader_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">browser_config_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">crawl_strategy_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">crawler_config_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cte_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">extra_url_filters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_external</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">url_scorer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_pages</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">page_limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        validator : callable</span>
+<span class="sd">            An async callable that takes a document instance (containing</span>
+<span class="sd">            the text from a PDF or a webpage) and returns a boolean</span>
+<span class="sd">            indicating whether the text passes the validation check.</span>
+<span class="sd">            This is used to determine whether or not to keep (i.e.</span>
+<span class="sd">            return) the document.</span>
+<span class="sd">        file_loader_kwargs : dict, optional</span>
+<span class="sd">            Additional keyword-value argument pairs to pass to the</span>
+<span class="sd">            :class:`~elm.web.file_loader.AsyncFileLoader` class.</span>
+<span class="sd">            By default, ``None``.</span>
+<span class="sd">        browser_config_kwargs : dict, optional</span>
+<span class="sd">            Additional keyword-value argument pairs to pass to the</span>
+<span class="sd">            :class:`crawl4ai.async_configs.BrowserConfig` class.</span>
+<span class="sd">            By default, ``None``.</span>
+<span class="sd">        crawl_strategy_kwargs : dict, optional</span>
+<span class="sd">            Additional keyword-value argument pairs to pass to the</span>
+<span class="sd">            :class:`ELMWebsiteCrawlingStrategy` class.</span>
+<span class="sd">            By default, ``None``.</span>
+<span class="sd">        crawler_config_kwargs : dict, optional</span>
+<span class="sd">            Additional keyword-value argument pairs to pass to the</span>
+<span class="sd">            :class:`crawl4ai.async_configs.CrawlerRunConfig` class.</span>
+<span class="sd">            By default, ``None``.</span>
+<span class="sd">        cte_kwargs : dict, optional</span>
+<span class="sd">            Additional keyword-value argument pairs to pass to the</span>
+<span class="sd">            :class:`ContentTypeExcludeFilter` class. This filter is used</span>
+<span class="sd">            to exclude URLs based on their content type.</span>
+<span class="sd">            By default, ``None``.</span>
+<span class="sd">        extra_url_filters : list, optional</span>
+<span class="sd">            Additional URL filters to apply during crawling. Each filter</span>
+<span class="sd">            must have a (non-async) ``apply`` method that takes a URL</span>
+<span class="sd">            and returns a boolean indicating whether the URL should be</span>
+<span class="sd">            included in the crawl. By default, ``None``.</span>
+<span class="sd">        include_external : bool, optional</span>
+<span class="sd">            Whether to include external links in the crawl.</span>
+<span class="sd">            By default, ``False``.</span>
+<span class="sd">        url_scorer : callable, optional</span>
+<span class="sd">            An async callable that takes a list of dictionaries</span>
+<span class="sd">            containing URL information and assigns each dictionary a</span>
+<span class="sd">            `score` key representing the score for that URL. The input</span>
+<span class="sd">            URL dictionaries will each have at least one key: &quot;href&quot;.</span>
+<span class="sd">            This key will contain the URL of the link. The dictionary</span>
+<span class="sd">            may also have other attributes such as &quot;text&quot;, which</span>
+<span class="sd">            contains the link title text. If ``None``, uses the</span>
+<span class="sd">            :meth:`ELMLinkScorer.score` method to score the URLs.</span>
+<span class="sd">            By default, ``None``.</span>
+<span class="sd">        max_pages : int, optional</span>
+<span class="sd">            Maximum number of **successful** pages to crawl.</span>
+<span class="sd">            By default, ``100``.</span>
+<span class="sd">        page_limit : int, optional</span>
+<span class="sd">            Maximum number of pages to crawl regardless of success</span>
+<span class="sd">            status. If ``None``, a page limit of 2 * `max_pages` is</span>
+<span class="sd">            used. To set no limit (not recommended), use ``math.inf``.</span>
+<span class="sd">            By default, ``None``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validator</span> <span class="o">=</span> <span class="n">validator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">page_limit</span> <span class="o">=</span> <span class="n">page_limit</span> <span class="ow">or</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">max_pages</span>
+
+        <span class="n">flk</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;verify_ssl&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+        <span class="n">flk</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">file_loader_kwargs</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">afl</span> <span class="o">=</span> <span class="n">AsyncFileLoader</span><span class="p">(</span><span class="o">**</span><span class="n">flk</span><span class="p">)</span>
+
+        <span class="n">bck</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;headless&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;verbose&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+        <span class="n">bck</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">browser_config_kwargs</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">browser_config</span> <span class="o">=</span> <span class="n">BrowserConfig</span><span class="p">(</span><span class="o">**</span><span class="n">bck</span><span class="p">)</span>
+
+        <span class="n">cte_kwargs</span> <span class="o">=</span> <span class="n">cte_kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">url_filters</span> <span class="o">=</span> <span class="p">[</span><span class="n">ELM_URL_FILTER</span><span class="p">,</span> <span class="n">ContentTypeExcludeFilter</span><span class="p">(</span><span class="o">**</span><span class="n">cte_kwargs</span><span class="p">)]</span>
+        <span class="n">url_filters</span> <span class="o">+=</span> <span class="n">extra_url_filters</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filter_chain</span> <span class="o">=</span> <span class="n">FilterChain</span><span class="p">(</span><span class="n">url_filters</span><span class="p">)</span>
+
+        <span class="n">strategy_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;max_depth&quot;</span><span class="p">:</span> <span class="n">infinity</span><span class="p">,</span>
+                           <span class="s2">&quot;include_external&quot;</span><span class="p">:</span> <span class="n">include_external</span><span class="p">,</span>
+                           <span class="s2">&quot;filter_chain&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_chain</span><span class="p">,</span>
+                           <span class="s2">&quot;url_scorer&quot;</span><span class="p">:</span> <span class="n">url_scorer</span> <span class="ow">or</span> <span class="n">ELMLinkScorer</span><span class="p">()</span><span class="o">.</span><span class="n">score</span><span class="p">,</span>
+                           <span class="s2">&quot;max_pages&quot;</span><span class="p">:</span> <span class="n">max_pages</span><span class="p">,</span>
+                           <span class="s2">&quot;logger&quot;</span><span class="p">:</span> <span class="n">logger</span><span class="p">}</span>
+        <span class="n">strategy_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">crawl_strategy_kwargs</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">crawl_strategy</span> <span class="o">=</span> <span class="n">ELMWebsiteCrawlingStrategy</span><span class="p">(</span><span class="o">**</span><span class="n">strategy_kwargs</span><span class="p">)</span>
+
+        <span class="n">cck</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;deep_crawl_strategy&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">crawl_strategy</span><span class="p">,</span>
+               <span class="s2">&quot;scraping_strategy&quot;</span><span class="p">:</span> <span class="n">LXMLWebScrapingStrategy</span><span class="p">(),</span>
+               <span class="s2">&quot;stream&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+               <span class="s2">&quot;verbose&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+               <span class="s2">&quot;pdf&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+               <span class="s2">&quot;log_console&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+               <span class="s2">&quot;exclude_social_media_domains&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;youtube.com&quot;</span><span class="p">],</span>
+               <span class="s2">&quot;exclude_social_media_links&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+               <span class="s2">&quot;semaphore_count&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+        <span class="n">cck</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">crawler_config_kwargs</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">CrawlerRunConfig</span><span class="p">(</span><span class="o">**</span><span class="n">cck</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ELMWebsiteCrawler.run">
+<a class="viewcode-back" href="../../../_autosummary/elm.web.website_crawl.ELMWebsiteCrawler.html#elm.web.website_crawl.ELMWebsiteCrawler.run">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">termination_callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">on_result_hook</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_c4ai_results</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Crawl a website for documents of interest</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        base_url : str</span>
+<span class="sd">            The base URL to start crawling from.</span>
+<span class="sd">        termination_callback : callable, optional</span>
+<span class="sd">            An async callable that takes a list of documents and returns</span>
+<span class="sd">            a boolean indicating whether to stop crawling. If ``None``,</span>
+<span class="sd">            the :meth:`ELMWebsiteCrawlingStrategy.found_enough_docs` is</span>
+<span class="sd">            used, which simply terminates when roughly a handful of</span>
+<span class="sd">            documents have been found. By default, ``None``.</span>
+<span class="sd">        on_result_hook : callable, optional</span>
+<span class="sd">            An async callable that is called every time a result is</span>
+<span class="sd">            found during the crawl. This can be used to perform</span>
+<span class="sd">            additional processing on each result or to monitor the crawl</span>
+<span class="sd">            progress. The callable should accept a single argument,</span>
+<span class="sd">            which is the crawl result object. If ``None``, no additional</span>
+<span class="sd">            processing is done on the results. By default, ``None``.</span>
+<span class="sd">        return_c4ai_results : bool, optional</span>
+<span class="sd">            Whether to return the raw crawl4ai results along with the</span>
+<span class="sd">            documents. If ``True``, returns a tuple of (documents,</span>
+<span class="sd">            crawl4ai_results). If ``False``, returns only the documents.</span>
+<span class="sd">            By default, ``False``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out_docs</span>
+<span class="sd">            List of document instances that passed the validation</span>
+<span class="sd">            check. Each document contains the text from a PDF or a</span>
+<span class="sd">            webpage, and has an attribute `source` that contains the</span>
+<span class="sd">            URL of the document.</span>
+<span class="sd">        results : list, optional</span>
+<span class="sd">            List of crawl4ai results containing metadata about the</span>
+<span class="sd">            crawled pages. This is only returned if</span>
+<span class="sd">            `return_c4ai_results` is ``True``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">out_docs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">should_stop</span> <span class="o">=</span> <span class="p">(</span><span class="n">termination_callback</span>
+                       <span class="ow">or</span> <span class="n">ELMWebsiteCrawlingStrategy</span><span class="o">.</span><span class="n">found_enough_docs</span><span class="p">)</span>
+        <span class="n">page_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">AsyncWebCrawler</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">browser_config</span><span class="p">)</span> <span class="k">as</span> <span class="n">crawler</span><span class="p">:</span>
+            <span class="n">crawl_results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">crawler</span><span class="o">.</span><span class="n">arun</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+            <span class="k">async</span> <span class="k">with</span> <span class="n">aclosing</span><span class="p">(</span><span class="n">crawl_results</span><span class="p">)</span> <span class="k">as</span> <span class="n">agen</span><span class="p">:</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">agen</span><span class="p">:</span>
+                    <span class="n">page_count</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="n">page_count</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_limit</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Exiting crawl due to page limit&quot;</span><span class="p">)</span>
+                        <span class="k">break</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Crawled </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">on_result_hook</span><span class="p">:</span>
+                        <span class="k">await</span> <span class="n">on_result_hook</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+                    <span class="n">score</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;score&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="n">depth</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">- Depth: </span><span class="si">%d</span><span class="s2"> | Score: </span><span class="si">%.2f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+
+                    <span class="n">doc</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_doc_from_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+                    <span class="n">doc</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">_SCORE_KEY</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span>
+                    <span class="k">if</span> <span class="n">doc</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Empty document, skipping&quot;</span><span class="p">)</span>
+                        <span class="k">continue</span>
+
+                    <span class="k">if</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">validator</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Document passed validation check&quot;</span><span class="p">)</span>
+                        <span class="n">out_docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="k">await</span> <span class="n">should_stop</span><span class="p">(</span><span class="n">out_docs</span><span class="p">):</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Exiting crawl early&quot;</span><span class="p">)</span>
+                        <span class="k">break</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Crawled </span><span class="si">%d</span><span class="s2"> pages&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Found </span><span class="si">%d</span><span class="s2"> potential documents&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">out_docs</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Average score: </span><span class="si">%.2f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">_compute_avg_score</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
+
+        <span class="n">depth_counts</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="n">depth</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">depth_counts</span><span class="p">[</span><span class="n">depth</span><span class="p">]</span> <span class="o">=</span> <span class="n">depth_counts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">depth</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Pages crawled by depth:&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">depth</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">depth_counts</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Depth </span><span class="si">{</span><span class="n">depth</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2"> pages&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">out_docs</span><span class="p">:</span>
+            <span class="n">out_docs</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">x</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">_SCORE_KEY</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">return_c4ai_results</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">out_docs</span><span class="p">,</span> <span class="n">results</span>
+
+        <span class="k">return</span> <span class="n">out_docs</span></div>
+
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_doc_from_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get document instance from crawling result&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">markdown</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">md</span> <span class="o">:=</span> <span class="n">result</span><span class="o">.</span><span class="n">markdown</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">doc</span> <span class="o">=</span> <span class="n">HTMLDocument</span><span class="p">([</span><span class="n">md</span><span class="p">])</span>
+            <span class="n">doc</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">url</span>
+            <span class="k">return</span> <span class="n">doc</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">afl</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">url</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_compute_avg_score</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the average score of the crawled results&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;score&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alliance for Sustainable Energy, LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
